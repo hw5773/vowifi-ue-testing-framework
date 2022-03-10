@@ -1,0 +1,104 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 1 (0x1)
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=FR, ST=Radius, L=Somewhere, O=Example Inc/emailAddress=admin@example.org, CN=Example Certificate Authority
+        Validity
+            Not Before: Mar 10 16:32:54 2022 GMT
+            Not After : May  9 16:32:54 2022 GMT
+        Subject: C=FR, ST=Radius, O=Example Inc, CN=Example Server Certificate/emailAddress=admin@example.org
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:c3:af:73:ee:34:77:3b:33:6c:d9:54:f5:6e:91:
+                    9a:e0:dc:b0:d2:23:f1:2e:a5:5c:b7:61:f9:41:c8:
+                    b7:ca:0a:1c:25:5d:ce:94:52:e0:0e:44:e5:e5:22:
+                    d3:cc:c6:98:c6:4b:30:fc:0a:16:e7:33:d2:a3:1c:
+                    a1:b5:a0:57:cc:da:16:20:dd:6a:3b:56:22:db:cd:
+                    b7:15:41:80:ec:d5:cc:18:fe:16:93:e6:8f:cc:c4:
+                    10:89:85:e0:57:cd:a0:90:9e:2e:2c:f6:f6:93:d3:
+                    2f:9f:9d:64:09:c9:1d:23:48:90:38:db:f6:05:72:
+                    67:df:9c:20:db:31:dc:83:36:38:35:04:73:7b:02:
+                    b7:70:a6:39:71:20:a7:89:89:9d:88:d1:b0:b1:37:
+                    71:08:33:d5:64:d8:b2:b0:72:fd:9d:a8:f6:6c:59:
+                    da:7a:b5:cb:1e:7f:32:e9:7a:d9:ee:23:e9:17:de:
+                    23:15:7a:7b:19:fb:26:59:2c:c4:68:51:73:e4:0a:
+                    8f:ba:4f:41:c4:3c:10:09:dd:35:6a:7b:b5:3a:e5:
+                    06:3c:86:11:49:92:8b:7e:d7:7a:4c:ad:cf:e1:2e:
+                    e6:9e:d2:af:eb:8b:4e:09:14:56:53:0c:fa:9c:d1:
+                    ec:33:1e:2c:18:b4:28:1f:ca:4f:2f:df:65:f4:7a:
+                    cf:41
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Key Identifier: 
+                89:39:A4:E3:A1:89:12:8A:12:4E:55:EE:01:80:B5:D1:A4:32:24:6B
+            X509v3 Authority Key Identifier: 
+                keyid:29:01:D2:71:C2:C9:2E:2D:0E:2F:AA:B9:BB:E6:4D:AE:60:D9:EA:66
+                DirName:/C=FR/ST=Radius/L=Somewhere/O=Example Inc/emailAddress=admin@example.org/CN=Example Certificate Authority
+                serial:39:72:8B:5A:3F:A9:69:FD:D1:4F:DB:D3:8F:A3:38:2A:DA:E3:78:31
+
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Key Usage: 
+                Digital Signature, Non Repudiation, Key Encipherment
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, 1.3.6.1.5.5.7.3.14
+            X509v3 CRL Distribution Points: 
+
+                Full Name:
+                  URI:http://www.example.com/example_ca.crl
+
+            Authority Information Access: 
+                OCSP - URI:http://www.example.org/ocsp
+
+            X509v3 Subject Alternative Name: 
+                DNS:radius.example.org, othername:<unsupported>
+    Signature Algorithm: sha256WithRSAEncryption
+         9d:d8:1f:fa:55:f1:34:b8:af:2b:c1:57:fa:87:f6:9b:e1:8d:
+         fc:0b:97:d6:f8:6d:58:f6:53:46:a9:e9:af:0f:8e:52:11:ca:
+         00:1d:86:8b:73:4f:56:40:27:bf:31:4b:9e:7e:7a:38:7e:a2:
+         31:36:c8:88:cd:86:dc:51:fa:ef:2d:cb:43:aa:0d:73:9d:a7:
+         b0:bf:c9:b2:da:96:e8:12:2f:f3:3b:fa:55:08:af:03:6c:76:
+         80:bf:d1:fd:66:77:7f:c3:a6:07:c9:47:41:06:d1:de:46:f3:
+         a8:64:b5:9d:ab:bb:22:95:3b:97:70:ca:1e:35:eb:03:27:ac:
+         a5:09:6d:27:25:5e:4c:ae:6b:59:9e:9c:9b:f9:c7:84:ff:d8:
+         26:4e:37:84:5c:8f:5c:4a:67:fb:8c:be:c1:06:45:4f:66:90:
+         4f:49:38:dd:0c:b9:be:1a:f9:f4:ad:c4:b7:80:8d:58:a7:e4:
+         e5:d5:dd:84:a2:e5:3b:1c:c5:bc:81:ef:2a:34:a3:f5:6c:3b:
+         db:a3:cd:34:d0:e9:83:e3:6f:aa:0c:06:af:47:33:26:fe:e5:
+         3d:ae:de:bc:07:99:6a:75:9a:54:75:01:d6:12:9e:3d:d8:f1:
+         ac:4a:1c:60:65:72:39:36:59:1f:da:eb:3e:e4:b6:07:ca:4f:
+         fe:cb:de:74
+-----BEGIN CERTIFICATE-----
+MIIFZzCCBE+gAwIBAgIBATANBgkqhkiG9w0BAQsFADCBkjELMAkGA1UEBhMCRlIx
+DzANBgNVBAgMBlJhZGl1czESMBAGA1UEBwwJU29tZXdoZXJlMRQwEgYDVQQKDAtF
+eGFtcGxlIEluYzEgMB4GCSqGSIb3DQEJARYRYWRtaW5AZXhhbXBsZS5vcmcxJjAk
+BgNVBAMMHUV4YW1wbGUgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MB4XDTIyMDMxMDE2
+MzI1NFoXDTIyMDUwOTE2MzI1NFowezELMAkGA1UEBhMCRlIxDzANBgNVBAgMBlJh
+ZGl1czEUMBIGA1UECgwLRXhhbXBsZSBJbmMxIzAhBgNVBAMMGkV4YW1wbGUgU2Vy
+dmVyIENlcnRpZmljYXRlMSAwHgYJKoZIhvcNAQkBFhFhZG1pbkBleGFtcGxlLm9y
+ZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMOvc+40dzszbNlU9W6R
+muDcsNIj8S6lXLdh+UHIt8oKHCVdzpRS4A5E5eUi08zGmMZLMPwKFucz0qMcobWg
+V8zaFiDdajtWItvNtxVBgOzVzBj+FpPmj8zEEImF4FfNoJCeLiz29pPTL5+dZAnJ
+HSNIkDjb9gVyZ9+cINsx3IM2ODUEc3sCt3CmOXEgp4mJnYjRsLE3cQgz1WTYsrBy
+/Z2o9mxZ2nq1yx5/Mul62e4j6RfeIxV6exn7JlksxGhRc+QKj7pPQcQ8EAndNWp7
+tTrlBjyGEUmSi37Xekytz+Eu5p7Sr+uLTgkUVlMM+pzR7DMeLBi0KB/KTy/fZfR6
+z0ECAwEAAaOCAdwwggHYMB0GA1UdDgQWBBSJOaTjoYkSihJOVe4BgLXRpDIkazCB
+0gYDVR0jBIHKMIHHgBQpAdJxwskuLQ4vqrm75k2uYNnqZqGBmKSBlTCBkjELMAkG
+A1UEBhMCRlIxDzANBgNVBAgMBlJhZGl1czESMBAGA1UEBwwJU29tZXdoZXJlMRQw
+EgYDVQQKDAtFeGFtcGxlIEluYzEgMB4GCSqGSIb3DQEJARYRYWRtaW5AZXhhbXBs
+ZS5vcmcxJjAkBgNVBAMMHUV4YW1wbGUgQ2VydGlmaWNhdGUgQXV0aG9yaXR5ghQ5
+cotaP6lp/dFP29OPozgq2uN4MTAJBgNVHRMEAjAAMAsGA1UdDwQEAwIF4DAdBgNV
+HSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAw4wNgYDVR0fBC8wLTAroCmgJ4YlaHR0
+cDovL3d3dy5leGFtcGxlLmNvbS9leGFtcGxlX2NhLmNybDA3BggrBgEFBQcBAQQr
+MCkwJwYIKwYBBQUHMAGGG2h0dHA6Ly93d3cuZXhhbXBsZS5vcmcvb2NzcDA6BgNV
+HREEMzAxghJyYWRpdXMuZXhhbXBsZS5vcmegGwYIKwYBBQUHCAigDwwNKi5leGFt
+cGxlLmNvbTANBgkqhkiG9w0BAQsFAAOCAQEAndgf+lXxNLivK8FX+of2m+GN/AuX
+1vhtWPZTRqnprw+OUhHKAB2Gi3NPVkAnvzFLnn56OH6iMTbIiM2G3FH67y3LQ6oN
+c52nsL/JstqW6BIv8zv6VQivA2x2gL/R/WZ3f8OmB8lHQQbR3kbzqGS1nau7IpU7
+l3DKHjXrAyespQltJyVeTK5rWZ6cm/nHhP/YJk43hFyPXEpn+4y+wQZFT2aQT0k4
+3Qy5vhr59K3Et4CNWKfk5dXdhKLlOxzFvIHvKjSj9Ww726PNNNDpg+NvqgwGr0cz
+Jv7lPa7evAeZanWaVHUB1hKePdjxrEocYGVyOTZZH9rrPuS2B8pP/svedA==
+-----END CERTIFICATE-----

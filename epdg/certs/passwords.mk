@@ -1,0 +1,7 @@
+PASSWORD_SERVER	= 'whatever'
+PASSWORD_INNER	= 'whatever'
+PASSWORD_CA	= 'whatever'
+PASSWORD_CLIENT	= 'whatever'
+PASSWORD_OCSP	= 'whatever'
+USER_NAME	= 'user.example@example.org'
+CA_DEFAULT_DAYS  = '60'

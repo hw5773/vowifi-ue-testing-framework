@@ -1,0 +1,6 @@
+V	220509163254Z		01	unknown	/C=FR/ST=Radius/O=Example Inc/CN=Example Server Certificate/emailAddress=admin@example.org
+V	220509163254Z		02	unknown	/C=FR/ST=Radius/O=Example Inc/CN=Example Server Certificate/emailAddress=admin@example.org
+V	220509163254Z		03	unknown	/C=FR/ST=Radius/O=Example Inc/CN=Example user/emailAddress=user.example@example.org
+V	220509163254Z		04	unknown	/C=FR/ST=Radius/O=Example Inc/CN=Example user/emailAddress=user.example@example.org
+V	220509163254Z		05	unknown	/C=FR/ST=Radius/O=Example Inc/CN=Example OCSP Responder Certificate/emailAddress=admin@example.org
+V	220509163255Z		06	unknown	/C=FR/ST=Radius/O=Example Inc/CN=Example OCSP Responder Certificate/emailAddress=admin@example.org
