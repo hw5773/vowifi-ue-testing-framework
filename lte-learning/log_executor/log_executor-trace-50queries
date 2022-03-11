@@ -1,0 +1,1480 @@
+^Crafiul@rafiul-ThinkPad-T470:~/my-computer/research/lte/lte-github/lte-fuzzing/ue-state-fuzzing/log_executor/out/production/log_executor$ sudo java Log_executor -f /home/rafiul/-computer/research/lte/lte-github/lte-fuzzing/ue-state-fuzzing/log_executor/input -i /home/rafiul/my-computer/research/lte/lte-github/lte-fuzzing/ue-state-fuzzing/log_executor/lteue.properties
+file
+50
+Connecting to srsEPC...
+Initializing Buffers for srsLTE...
+Initialized Buffers for srsLTE
+Connected to srsLTE
+Connecting to UE...
+Connected to UE
+Initializing Buffers for UE...
+Initialized Buffers for UE
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: auth_request to MME controller
+RESULT FROM AUTH REQUEST: auth_failure_seq
+Received auth_failure_seq. Synched the SQN value
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: identity_request
+RESULT: identity_response
+Finished Query # 1
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: auth_request
+RESULT: auth_response
+Finished Query # 2
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+Finished Query # 3
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: attach_accept
+RESULT: attach_complete
+Finished Query # 4
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 5
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+Finished Query # 6
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: auth_request
+RESULT: auth_response
+Finished Query # 7
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+Finished Query # 8
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Sending adb restart-server command to UE_CONTROLLER
+Result for adb_server_restart: DONE
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: attach_accept
+RESULT: attach_complete
+Finished Query # 9
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 10
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+COMMAND: identity_request
+RESULT: identity_response
+Finished Query # 11
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+Finished Query # 12
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+Finished Query # 13
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_request_guti
+Finished Query # 14
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 15
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: identity_request
+Timeout occured for identity_request
+RESULT: null_action
+Finished Query # 16
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Sending adb restart-server command to UE_CONTROLLER
+Result for adb_server_restart: DONE
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: auth_request
+Timeout occured for auth_request
+RESULT: null_action
+Finished Query # 17
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: security_mode_command
+Timeout occured for security_mode_command
+RESULT: null_action
+Finished Query # 18
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: attach_accept
+Timeout occured for attach_accept
+RESULT: null_action
+Finished Query # 19
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 20
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: identity_request
+RESULT: identity_response
+Finished Query # 21
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+Finished Query # 22
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+Finished Query # 23
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Sending adb restart-server command to UE_CONTROLLER
+Result for adb_server_restart: DONE
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_request_guti
+Finished Query # 24
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 25
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: identity_request
+RESULT: identity_response
+Finished Query # 26
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: auth_request
+RESULT: auth_response
+Finished Query # 27
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+Finished Query # 28
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: attach_accept
+RESULT: attach_complete
+Finished Query # 29
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 30
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+Finished Query # 31
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Sending adb restart-server command to UE_CONTROLLER
+Result for adb_server_restart: DONE
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: auth_request
+RESULT: auth_response
+Finished Query # 32
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+Finished Query # 33
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: attach_accept
+RESULT: attach_complete
+Finished Query # 34
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 35
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: identity_request
+RESULT: attach_request_guti
+Finished Query # 36
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: auth_request
+RESULT: attach_request_guti
+Finished Query # 37
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+Finished Query # 38
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_request_guti
+Finished Query # 39
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Sending adb restart-server command to UE_CONTROLLER
+Result for adb_server_restart: DONE
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 40
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: identity_request
+Timeout occured for identity_request
+RESULT: null_action
+Finished Query # 41
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: auth_request
+Timeout occured for auth_request
+RESULT: null_action
+Finished Query # 42
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+Finished Query # 43
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: attach_accept
+Timeout occured for attach_accept
+RESULT: null_action
+Finished Query # 44
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 45
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: identity_request
+RESULT: identity_response
+Finished Query # 46
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+Finished Query # 47
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Sending adb restart-server command to UE_CONTROLLER
+Result for adb_server_restart: DONE
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: security_mode_command
+RESULT: attach_request_guti
+Finished Query # 48
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: attach_accept
+RESULT: attach_request_guti
+Finished Query # 49
+---- Starting RESET ----
+Sending symbol: RESET to MME controller
+Sending symbol: RESET to UE controller
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request_guti
+Sending symbol: detach_request to MME controller to delete the UE context
+Sending symbol: enable_s1 to UE controller
+Response of ENABLE_S1: attach_request
+Sending symbol: RESET to MME controller
+---- RESET DONE ----
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: security_mode_command
+RESULT: security_mode_complete
+COMMAND: attach_accept
+RESULT: attach_complete
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+COMMAND: auth_request
+RESULT: auth_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: identity_request
+RESULT: identity_response
+COMMAND: enable_s1
+Sending symbol: enable_s1 to UE controller
+RESULT: attach_request_guti
+Finished Query # 50
+command to run: /home/rafiul/my-computer/research/lte/lte-github/lte-fuzzing/ue-state-fuzzing/log_executor/src/kill_enb.sh
+command to run: /home/rafiul/my-computer/research/lte/lte-github/lte-fuzzing/ue-state-fuzzing/log_executor/src/kill_epc.sh
+
