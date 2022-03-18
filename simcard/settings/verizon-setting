@@ -1,0 +1,78 @@
+Using PC/SC reader interface
+Reading ...
+Autodetection failed
+ICCID: 89148000006806313548
+IMSI: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+GID1: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+GID2: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+SMSP: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+SPN: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+PLMNsel: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+PLMNwAcT: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+OPLMNwAcT: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+HPLMNAcT: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+MSISDN: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+AD: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+SIM Service Table: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+EHPLMN:
+	130184 # MCC: 311 MNC: 480
+	130095 # MCC: 310 MNC: 590
+	130098 # MCC: 310 MNC: 890
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+	ffffff # unused
+
+USIM Service Table: 0028130ce33e0000c002208200
+	Service 12 - Short Message Service Parameters (SMSP)
+	Service 14 - Capability Configuration Parameters 2 (CCP2)
+	Service 17 - Group Identifier Level 1
+	Service 18 - Group Identifier Level 2
+	Service 21 - MSISDN
+	Service 27 - GSM Access
+	Service 28 - Data download via SMS-PP
+	Service 33 - shall be set to 1
+	Service 34 - Enabled Services Table
+	Service 38 - GSM security context
+	Service 39 - CPBCCH Information
+	Service 40 - Investigation Scan
+	Service 42 - Operator controlled PLMN selector with Access Technology
+	Service 43 - HPLMN selector with Access Technology
+	Service 44 - Extension 5
+	Service 45 - PLMN Network Name
+	Service 46 - Operator PLMN List
+	Service 71 - Equivalent HPLMN
+	Service 72 - Additional TERMINAL PROFILE after UICC activation
+	Service 74 - Last RPLMN Selection Indication
+	Service 86 - Allowed CSG Lists and corresponding indications
+	Service 90 - Operator CSG Lists and corresponding indications
+	Service 96 - Non-Access Stratum configuration by USIM
+
+P-CSCF:
+	7063736366312e616e79696d732e767a696d732e636f6d # pcscf1.anyims.vzims.com
+
+Home Network Domain Name: vzims.com
+IMS private user identity: 311480650277804@vzims.com
+IMS public user identity:
+	sip:311480650277804@ims.mnc480.mcc311.3gppnetwork.org
+	sip:+17654146571@vzims.com
+	tel:+17654146571
+
+ISIM Service Table: 010000
+	Service 1 - P-CSCF address
+
+Done !
+

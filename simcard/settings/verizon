@@ -1,0 +1,796 @@
+################################################################################
+# MF/EF.DIR                                                                    #
+################################################################################
+# directory: MF (3f00)
+# file: EF.DIR (2f00)
+# structure: linear_fixed
+# RAW FCP Template: 62268205422100260483022f00a503c001408a01058b062f060106000080020098810200ac8801f0
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 38, 'num_of_rec': 4}, 'file_identifier': '2f00', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '40'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '2f06', 'ef_arr_record_nr': 1}, 'file_size': 152, 'total_file_size': 172, 'short_file_identifier': 30}
+select MF
+select EF.DIR
+update_record_decoded 1 '{"application_template": [{"application_id": "a0000003431002f310ffff89020000ff"}, {"application_label": "CSIM"}]}'
+update_record_decoded 2 '{"application_template": [{"application_id": "a0000000871004f310ffff89080000ff"}, {"application_label": "ISIM"}]}'
+update_record_decoded 3 '{"application_template": [{"application_id": "a0000000871002f310ffff89080000ff"}, {"application_label": "USIM"}]}'
+update_record_decoded 4 '{"application_template": [{"application_id": "a000000063504b43532d3135"}, {"application_label": "PKCS#15"}]}'
+#
+################################################################################
+# MF/EF.ICCID                                                                  #
+################################################################################
+# directory: MF (3f00)
+# file: EF.ICCID (2fe2)
+# structure: transparent
+# RAW FCP Template: 62208202412183022fe2a503c001408a01058b062f06010300008002000a8102001c
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '2fe2', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '40'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '2f06', 'ef_arr_record_nr': 1}, 'file_size': 10, 'total_file_size': 28}
+select MF
+select EF.ICCID
+update_binary_decoded '{"iccid": "89148000006806313548"}'
+#
+################################################################################
+# MF/EF.PL                                                                     #
+################################################################################
+# directory: MF (3f00)
+# file: EF.PL (2f05)
+# structure: transparent
+# RAW FCP Template: 62208202412183022f05a503c001408a01058b062f06010500008002000681020018
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '2f05', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '40'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '2f06', 'ef_arr_record_nr': 1}, 'file_size': 6, 'total_file_size': 24}
+select MF
+select EF.PL
+update_binary_decoded '["en", "es", null]'
+#
+################################################################################
+# MF/EF.ARR                                                                    #
+################################################################################
+# directory: MF (3f00)
+# file: EF.ARR (2f06)
+# structure: linear_fixed
+# RAW FCP Template: 622382054221003f0e83022f06a503c001408a01058b062f06010100008002037281020386
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 63, 'num_of_rec': 14}, 'file_identifier': '2f06', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '40'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '2f06', 'ef_arr_record_nr': 1}, 'file_size': 882, 'total_file_size': 902}
+select MF
+select EF.ARR
+update_record_decoded 1 '[[{"access_mode": ["activate_file_or_record", "deactivate_file_or_record", "update_erase"]}, {"control_reference_template": "ADM1"}], [{"access_mode": ["read_search_compare"]}, {"always": null}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 2 '[[{"access_mode": ["delete_file", "write_append", "update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 50}}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 3 '[[{"access_mode": ["activate_file_or_record", "deactivate_file_or_record"]}, {"control_reference_template": "ADM1"}], [{"access_mode": ["delete_file"]}, {"never": null}], [{"access_mode": ["read_search_compare"]}, {"always": null}]]'
+update_record_decoded 4 '[[{"access_mode": ["delete_file", "activate_file_or_record", "deactivate_file_or_record", "write_append", "update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 50}}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 5 '[[{"access_mode": ["update_erase"]}, {"control_reference_template": "PIN1"}], [{"access_mode": ["activate_file_or_record", "deactivate_file_or_record"]}, {"control_reference_template": "ADM1"}], [{"access_mode": ["read_search_compare"]}, {"always": null}]]'
+update_record_decoded 6 '[[{"access_mode": ["activate_file_or_record", "deactivate_file_or_record", "update_erase"]}, {"control_reference_template": "ADM1"}], [{"access_mode": ["delete_file"]}, {"never": null}], [{"access_mode": ["read_search_compare"]}, {"always": null}]]'
+update_record_decoded 7 '[[{"access_mode": ["delete_file", "activate_file_or_record", "deactivate_file_or_record", "write_append", "update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 50}}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 8 '[[{"access_mode": ["delete_file", "activate_file_or_record", "deactivate_file_or_record", "write_append", "update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 50}}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 9 '[[{"access_mode": ["delete_file", "activate_file_or_record", "deactivate_file_or_record", "write_append", "update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 50}}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 10 '[[{"access_mode": ["delete_file", "activate_file_or_record", "deactivate_file_or_record", "write_append", "update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 50}}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 11 '[[{"access_mode": ["update_erase"]}, {"control_reference_template": "ADM1"}], [{"access_mode": ["read_search_compare"]}, {"always": null}]]'
+update_record_decoded 12 '[]'
+update_record_decoded 13 '[[{"access_mode": ["delete_file", "write_append", "update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 50}}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 14 '[[{"access_mode": ["update_erase", "read_search_compare"]}, {"never": null}]]'
+#
+################################################################################
+# MF/EF.UMPC                                                                   #
+################################################################################
+# directory: MF (3f00)
+# bad file: MF/EF.UMPC, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.ADN                                                         #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.ADN, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.FDN                                                         #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.FDN, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.SMS                                                         #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.SMS, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.CCP                                                         #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.CCP, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.ECCP                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.ECCP, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.MSISDN                                                      #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.MSISDN, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.SMSP                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.SMSP, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.SMSS                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.SMSS, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.EXT1                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.EXT1, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.EXT2                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.EXT2, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.EXT3                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.EXT3, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.BDN                                                         #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.BDN, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.EXT4                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.EXT4, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.SMSR                                                        #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.SMSR, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/DF.TELECOM/EF.CMI                                                         #
+################################################################################
+# directory: MF/DF.TELECOM (3f00/7f10)
+# bad file: MF/DF.TELECOM/EF.CMI, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.IMPI                                                          #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# file: EF.IMPI (6f02)
+# structure: transparent
+# RAW FCP Template: 62208202412183026f02a503c001008a01058b066f06010200008002004181020053
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f02', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 65, 'total_file_size': 83}
+select MF
+select ADF.ISIM
+select EF.IMPI
+update_binary_decoded '{"nai": "311480650277804@vzims.com"}'
+#
+################################################################################
+# MF/ADF.ISIM/EF.DOMAIN                                                        #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.DOMAIN, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.IMPU                                                          #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# file: EF.IMPU (6f04)
+# structure: linear_fixed
+# RAW FCP Template: 62238205422100460383026f04a503c001008a01058b066f0601020000800200d2810200e6
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 70, 'num_of_rec': 3}, 'file_identifier': '6f04', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 210, 'total_file_size': 230}
+select MF
+select ADF.ISIM
+select EF.IMPU
+update_record_decoded 1 '{"impu": "sip:311480650277804@ims.mnc480.mcc311.3gppnetwork.org"}'
+update_record_decoded 2 '{"impu": "sip:+17654146571@vzims.com"}'
+update_record_decoded 3 '{"impu": "tel:+17654146571"}'
+#
+################################################################################
+# MF/ADF.ISIM/EF.AD                                                            #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# file: EF.AD (6fad)
+# structure: transparent
+# RAW FCP Template: 62238202412183026fada503c001008a01058b066f06010300008002000381020015880118
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6fad', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 3, 'total_file_size': 21, 'short_file_identifier': 3}
+select MF
+select ADF.ISIM
+select EF.AD
+update_binary_decoded '{"ms_operation_mode": "normal", "rfu1": 0, "rfu2": 0, "ofm": false, "extensions": null}'
+#
+################################################################################
+# MF/ADF.ISIM/EF.ARR                                                           #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# file: EF.ARR (6f06)
+# structure: linear_fixed
+# RAW FCP Template: 622382054221003f0683026f06a503c001008a01058b066f06010100008002017a8102018e
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 63, 'num_of_rec': 6}, 'file_identifier': '6f06', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 378, 'total_file_size': 398}
+select MF
+select ADF.ISIM
+select EF.ARR
+update_record_decoded 1 '[[{"access_mode": ["read_search_compare"]}, {"always": null}], [{"access_mode": ["delete_file", "activate_file_or_record", "deactivate_file_or_record", "update_erase"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 2 '[[{"access_mode": ["read_search_compare"]}, {"control_reference_template": "PIN1"}], [{"access_mode": ["activate_file_or_record", "deactivate_file_or_record", "update_erase"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 3 '[[{"access_mode": ["read_search_compare"]}, {"always": null}], [{"access_mode": ["activate_file_or_record", "deactivate_file_or_record", "update_erase"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 4 '[[{"access_mode": ["update_erase", "read_search_compare"]}, {"control_reference_template": "ADM1"}]]'
+update_record_decoded 5 '[[{"access_mode": ["update_erase", "read_search_compare"]}, {"never": null}]]'
+update_record_decoded 6 '[[{"access_mode": ["read_search_compare"]}, {"control_reference_template": "PIN1"}], [{"access_mode": ["delete_file", "activate_file_or_record", "deactivate_file_or_record", "update_erase"]}, {"control_reference_template": "ADM1"}], [{"command_header": {"INS": 212}}, {"control_reference_template": "ADM1"}]]'
+#
+################################################################################
+# MF/ADF.ISIM/EF.IST                                                           #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# file: EF.IST (6f07)
+# structure: transparent
+# RAW FCP Template: 62208202412183026f07a503c001008a01058b066f06010600008002000381020015
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f07', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 3, 'total_file_size': 21}
+select MF
+select ADF.ISIM
+select EF.IST
+update_binary_decoded '{"1": {"activated": true, "description": "P-CSCF address"}, "2": {"activated": false, "description": "Generic Bootstrapping Architecture (GBA)"}, "3": {"activated": false, "description": "HTTP Digest"}, "4": {"activated": false, "description": "GBA-based Local Key Establishment Mechanism"}, "5": {"activated": false, "description": "Support of P-CSCF discovery for IMS Local Break Out"}, "6": {"activated": false, "description": "Short Message Storage (SMS)"}, "7": {"activated": false, "description": "Short Message Status Reports (SMSR)"}, "8": {"activated": false, "description": "Support for SM-over-IP including data download via SMS-PP as defined in TS 31.111 [31]"}, "9": {"activated": false, "description": "Communication Control for IMS by ISIM"}, "10": {"activated": false, "description": "Support of UICC access to IMS"}, "11": {"activated": false, "description": "URI support by UICC"}, "12": {"activated": false, "description": "Media Type support"}, "13": {"activated": false, "description": "IMS call disconnection cause"}, "14": {"activated": false, "description": "URI support for MO SHORT MESSAGE CONTROL"}, "15": {"activated": false, "description": "MCPTT"}, "16": {"activated": false, "description": "URI support for SMS-PP DOWNLOAD as defined in 3GPP TS 31.111 [31]"}, "17": {"activated": false, "description": "From Preferred"}, "18": {"activated": false, "description": "IMS configuration data"}, "19": {"activated": false, "description": "XCAP Configuration Data"}, "20": {"activated": false, "description": "WebRTC URI"}, "21": {"activated": false, "description": "MuD and MiD configuration data"}, "22": {"activated": false}, "23": {"activated": false}, "24": {"activated": false}}'
+#
+################################################################################
+# MF/ADF.ISIM/EF.P-CSCF                                                        #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# file: EF.P-CSCF (6f09)
+# structure: linear_fixed
+# RAW FCP Template: 62258205422100220183026f09a503c001008a01058b066f060106000080020022810200368800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 34, 'num_of_rec': 1}, 'file_identifier': '6f09', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 34, 'total_file_size': 54, 'short_file_identifier': None}
+select MF
+select ADF.ISIM
+select EF.P-CSCF
+update_record_decoded 1 '{"addr": "pcscf1.anyims.vzims.com", "addr_type": "00"}'
+#
+################################################################################
+# MF/ADF.ISIM/EF.GBABP                                                         #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.GBABP, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.GBANL                                                         #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.GBANL, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.NAFKCA                                                        #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.NAFKCA, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.SMS                                                           #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.SMS, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.SMSS                                                          #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.SMSS, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.SMSR                                                          #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.SMSR, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.SMSP                                                          #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.SMSP, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.UICCIARI                                                      #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.UICCIARI, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.FromPreferred                                                 #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.FromPreferred, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.IMSConfigData                                                 #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.IMSConfigData, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.XCAPConfigData                                                #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.XCAPConfigData, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.WebRTCURI                                                     #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.WebRTCURI, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.ISIM/EF.MuDMiDConfigData                                              #
+################################################################################
+# directory: MF/ADF.ISIM (3f00/a0000000871004)
+# bad file: MF/ADF.ISIM/EF.MuDMiDConfigData, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.LI                                                            #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.LI (6f05)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f05a503c001008a01058b066f06010800008002000681020018880110
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f05', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 6, 'total_file_size': 24, 'short_file_identifier': 2}
+select MF
+select ADF.USIM
+select EF.LI
+update_binary_decoded '["en", "es", null]'
+#
+################################################################################
+# MF/ADF.USIM/EF.IMSI                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.IMSI (6f07)
+# structure: transparent
+# RAW FCP Template: 62208202412183026f07a503c001008a01058b066f0601020000800200098102001b
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f07', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 9, 'total_file_size': 27}
+select MF
+select ADF.USIM
+select EF.IMSI
+update_binary_decoded '{"imsi": "311480650277804"}'
+#
+################################################################################
+# MF/ADF.USIM/EF.Keys                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.Keys (6f08)
+# structure: transparent
+# RAW FCP Template: 62208202412183026f08a503c001008a01058b066f06010300008002002181020033
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f08', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 33, 'total_file_size': 51}
+select MF
+select ADF.USIM
+select EF.Keys
+update_binary_decoded '{"ksi": 7, "ck": "ffffffffffffffffffffffffffffffff", "ik": "ffffffffffffffffffffffffffffffff"}'
+#
+################################################################################
+# MF/ADF.USIM/EF.KeysPS                                                        #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.KeysPS (6f09)
+# structure: transparent
+# RAW FCP Template: 62208202412183026f09a503c001008a01058b066f06010300008002002181020033
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f09', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 33, 'total_file_size': 51}
+select MF
+select ADF.USIM
+select EF.KeysPS
+update_binary_decoded '{"ksi": 7, "ck": "6bd88316f483f6c80720db3cbbebe01f", "ik": "32735d03f3a03d6916a20a3e65faa243"}'
+#
+################################################################################
+# MF/ADF.USIM/EF.PLMNwAcT                                                      #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.PLMNwAcT, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.HPPLMN                                                        #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.HPPLMN (6f31)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f31a503c001008a01058b066f06010200008002000181020013880190
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f31', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 1, 'total_file_size': 19, 'short_file_identifier': 18}
+select MF
+select ADF.USIM
+select EF.HPPLMN
+update_binary_decoded '1'
+#
+################################################################################
+# MF/ADF.USIM/EF.ACMmax                                                        #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.ACMmax, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.UST                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.UST (6f38)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f38a503c001008a01058b066f06010f00008002000d8102001f880120
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f38', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 13, 'total_file_size': 31, 'short_file_identifier': 4}
+select MF
+select ADF.USIM
+select EF.UST
+update_binary_decoded '{"1": {"activated": false, "description": "Local Phone Book"}, "2": {"activated": false, "description": "Fixed Dialling Numbers (FDN)"}, "3": {"activated": false, "description": "Extension 2"}, "4": {"activated": false, "description": "Service Dialling Numbers (SDN)"}, "5": {"activated": false, "description": "Extension3"}, "6": {"activated": false, "description": "Barred Dialling Numbers (BDN)"}, "7": {"activated": false, "description": "Extension4"}, "8": {"activated": false, "description": "Outgoing Call Information (OCI and OCT)"}, "9": {"activated": false, "description": "Incoming Call Information (ICI and ICT)"}, "10": {"activated": false, "description": "Short Message Storage (SMS)"}, "11": {"activated": false, "description": "Short Message Status Reports (SMSR)"}, "12": {"activated": true, "description": "Short Message Service Parameters (SMSP)"}, "13": {"activated": false, "description": "Advice of Charge (AoC)"}, "14": {"activated": true, "description": "Capability Configuration Parameters 2 (CCP2)"}, "15": {"activated": false, "description": "Cell Broadcast Message Identifier"}, "16": {"activated": false, "description": "Cell Broadcast Message Identifier Ranges"}, "17": {"activated": true, "description": "Group Identifier Level 1"}, "18": {"activated": true, "description": "Group Identifier Level 2"}, "19": {"activated": false, "description": "Service Provider Name"}, "20": {"activated": false, "description": "User controlled PLMN selector with Access Technology"}, "21": {"activated": true, "description": "MSISDN"}, "22": {"activated": false, "description": "Image (IMG)"}, "23": {"activated": false, "description": "Support of Localised Service Areas (SoLSA)"}, "24": {"activated": false, "description": "Enhanced Multi-Level Precedence and Pre-emption Service"}, "25": {"activated": false, "description": "Automatic Answer for eMLPP"}, "26": {"activated": false, "description": "RFU"}, "27": {"activated": true, "description": "GSM Access"}, "28": {"activated": true, "description": "Data download via SMS-PP"}, "29": {"activated": false, "description": "Data download via SMS-CB"}, "30": {"activated": false, "description": "Call Control by USIM"}, "31": {"activated": false, "description": "MO-SMS Control by USIM"}, "32": {"activated": false, "description": "RUN AT COMMAND command"}, "33": {"activated": true, "description": "shall be set to 1"}, "34": {"activated": true, "description": "Enabled Services Table"}, "35": {"activated": false, "description": "APN Control List (ACL)"}, "36": {"activated": false, "description": "Depersonalisation Control Keys"}, "37": {"activated": false, "description": "Co-operative Network List"}, "38": {"activated": true, "description": "GSM security context"}, "39": {"activated": true, "description": "CPBCCH Information"}, "40": {"activated": true, "description": "Investigation Scan"}, "41": {"activated": false, "description": "MexE"}, "42": {"activated": true, "description": "Operator controlled PLMN selector with Access Technology"}, "43": {"activated": true, "description": "HPLMN selector with Access Technology"}, "44": {"activated": true, "description": "Extension 5"}, "45": {"activated": true, "description": "PLMN Network Name"}, "46": {"activated": true, "description": "Operator PLMN List"}, "47": {"activated": false, "description": "Mailbox Dialling Numbers"}, "48": {"activated": false, "description": "Message Waiting Indication Status"}, "49": {"activated": false, "description": "Call Forwarding Indication Status"}, "50": {"activated": false, "description": "Reserved and shall be ignored"}, "51": {"activated": false, "description": "Service Provider Display Information"}, "52": {"activated": false, "description": "Multimedia Messaging Service (MMS)"}, "53": {"activated": false, "description": "Extension 8"}, "54": {"activated": false, "description": "Call control on GPRS by USIM"}, "55": {"activated": false, "description": "MMS User Connectivity Parameters"}, "56": {"activated": false, "description": "Network's indication of alerting in the MS (NIA)"}, "57": {"activated": false, "description": "VGCS Group Identifier List (EFVGCS and EFVGCSS)"}, "58": {"activated": false, "description": "VBS Group Identifier List (EFVBS and EFVBSS)"}, "59": {"activated": false, "description": "Pseudonym"}, "60": {"activated": false, "description": "User Controlled PLMN selector for I-WLAN access"}, "61": {"activated": false, "description": "Operator Controlled PLMN selector for I-WLAN access"}, "62": {"activated": false, "description": "User controlled WSID list"}, "63": {"activated": false, "description": "Operator controlled WSID list"}, "64": {"activated": false, "description": "VGCS security"}, "65": {"activated": false, "description": "VBS security"}, "66": {"activated": false, "description": "WLAN Reauthentication Identity"}, "67": {"activated": false, "description": "Multimedia Messages Storage"}, "68": {"activated": false, "description": "Generic Bootstrapping Architecture (GBA)"}, "69": {"activated": false, "description": "MBMS security"}, "70": {"activated": false, "description": "Data download via USSD and USSD application mode"}, "71": {"activated": true, "description": "Equivalent HPLMN"}, "72": {"activated": true, "description": "Additional TERMINAL PROFILE after UICC activation"}, "73": {"activated": false, "description": "Equivalent HPLMN Presentation Indication"}, "74": {"activated": true, "description": "Last RPLMN Selection Indication"}, "75": {"activated": false, "description": "OMA BCAST Smart Card Profile"}, "76": {"activated": false, "description": "GBA-based Local Key Establishment Mechanism"}, "77": {"activated": false, "description": "Terminal Applications"}, "78": {"activated": false, "description": "Service Provider Name Icon"}, "79": {"activated": false, "description": "PLMN Network Name Icon"}, "80": {"activated": false, "description": "Connectivity Parameters for USIM IP connections"}, "81": {"activated": false, "description": "Home I-WLAN Specific Identifier List"}, "82": {"activated": false, "description": "I-WLAN Equivalent HPLMN Presentation Indication"}, "83": {"activated": false, "description": "I-WLAN HPLMN Priority Indication"}, "84": {"activated": false, "description": "I-WLAN Last Registered PLMN"}, "85": {"activated": false, "description": "EPS Mobility Management Information"}, "86": {"activated": true, "description": "Allowed CSG Lists and corresponding indications"}, "87": {"activated": false, "description": "Call control on EPS PDN connection by USIM"}, "88": {"activated": false, "description": "HPLMN Direct Access"}, "89": {"activated": false, "description": "eCall Data"}, "90": {"activated": true, "description": "Operator CSG Lists and corresponding indications"}, "91": {"activated": false, "description": "Support for SM-over-IP"}, "92": {"activated": false, "description": "Support of CSG Display Control"}, "93": {"activated": false, "description": "Communication Control for IMS by USIM"}, "94": {"activated": false, "description": "Extended Terminal Applications"}, "95": {"activated": false, "description": "Support of UICC access to IMS"}, "96": {"activated": true, "description": "Non-Access Stratum configuration by USIM"}, "97": {"activated": false, "description": "PWS configuration by USIM"}, "98": {"activated": false, "description": "RFU"}, "99": {"activated": false, "description": "URI support by UICC"}, "100": {"activated": false, "description": "Extended EARFCN support"}, "101": {"activated": false, "description": "ProSe"}, "102": {"activated": false, "description": "USAT Application Pairing"}, "103": {"activated": false, "description": "Media Type support"}, "104": {"activated": false, "description": "IMS call disconnection cause"}}'
+#
+################################################################################
+# MF/ADF.USIM/EF.ACM                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.ACM, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.GID1                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.GID1 (6f3e)
+# structure: transparent
+# RAW FCP Template: 62228202412183026f3ea503c001008a01058b066f06010e0000800200088102001a8800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f3e', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 8, 'total_file_size': 26, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.GID1
+update_binary_decoded '{"raw": "bae0000000000000"}'
+#
+################################################################################
+# MF/ADF.USIM/EF.GID2                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.GID2 (6f3f)
+# structure: transparent
+# RAW FCP Template: 62228202412183026f3fa503c001008a01058b066f06010e0000800200088102001a8800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f3f', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 8, 'total_file_size': 26, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.GID2
+update_binary_decoded '{"raw": "ffffffffffffffff"}'
+#
+################################################################################
+# MF/ADF.USIM/EF.SPN                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.SPN (6f46)
+# structure: transparent
+# RAW FCP Template: 62228202412183026f46a503c001008a01058b066f060113000080020011810200238800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f46', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 17, 'total_file_size': 35, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.SPN
+update_binary_decoded '{"rfu": 63, "hide_in_oplmn": true, "show_in_hplmn": true, "spn": ""}'
+#
+################################################################################
+# MF/ADF.USIM/EF.PUCT                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.PUCT, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.CBMI                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.CBMI, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.ACC                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.ACC (6f78)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f78a503c001008a01058b066f06010200008002000281020014880130
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f78', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 2, 'total_file_size': 20, 'short_file_identifier': 6}
+select MF
+select ADF.USIM
+select EF.ACC
+update_binary_decoded '"0010"'
+#
+################################################################################
+# MF/ADF.USIM/EF.FPLMN                                                         #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.FPLMN (6f7b)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f7ba503c001008a01058b066f06011100008002000c8102001e880168
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f7b', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 12, 'total_file_size': 30, 'short_file_identifier': 13}
+select MF
+select ADF.USIM
+select EF.FPLMN
+update_binary_decoded '[{"mcc": "310", "mnc": "260"}, {"mcc": "311", "mnc": "490"}, null, null]'
+#
+################################################################################
+# MF/ADF.USIM/EF.LOCI                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.LOCI (6f7e)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f7ea503c001008a01058b066f06010300008002000b8102001d880158
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f7e', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 11, 'total_file_size': 29, 'short_file_identifier': 11}
+select MF
+select ADF.USIM
+select EF.LOCI
+update_binary_decoded '{"tmsi": "ffffffff", "lai": {"mcc_mnc": "311048", "lac": "fffe"}, "rfu": 255, "lu_status": 1}'
+#
+################################################################################
+# MF/ADF.USIM/EF.AD                                                            #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.AD (6fad)
+# structure: transparent
+# RAW FCP Template: 62238202412183026fada503c001008a01058b066f06010a00008002000481020016880118
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6fad', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 4, 'total_file_size': 22, 'short_file_identifier': 3}
+select MF
+select ADF.USIM
+select EF.AD
+update_binary_decoded '{"ms_operation_mode": "normal", "additional_info": {"ciphering_indicator": false, "csg_display_control": false, "prose_services": false, "extended_drx": false}, "rfu": 0, "mnc_len": 3, "extensions": ""}'
+#
+################################################################################
+# MF/ADF.USIM/EF.CBMID                                                         #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.CBMID, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.ECC                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.ECC (6fb7)
+# structure: linear_fixed
+# RAW FCP Template: 622682054221000e0583026fb7a503c001008a01058b066f06010a0000800200468102005a880108
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 14, 'num_of_rec': 5}, 'file_identifier': '6fb7', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 70, 'total_file_size': 90, 'short_file_identifier': 1}
+select MF
+select ADF.USIM
+select EF.ECC
+update_record_decoded 1 '{"call_code": "911", "service_category": {"police": false, "ambulance": false, "fire_brigade": false, "marine_guard": false, "mountain_rescue": false, "manual_ecall": false, "automatic_ecall": false}, "alpha_id": "911"}'
+update_record_decoded 2 '{"call_code": "112", "service_category": {"police": false, "ambulance": false, "fire_brigade": false, "marine_guard": false, "mountain_rescue": false, "manual_ecall": false, "automatic_ecall": false}, "alpha_id": "112"}'
+update_record_decoded 3 'null'
+update_record_decoded 4 'null'
+update_record_decoded 5 'null'
+#
+################################################################################
+# MF/ADF.USIM/EF.CBMIR                                                         #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.CBMIR, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.PSLOCI                                                        #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.PSLOCI (6f73)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f73a503c001008a01058b066f06010300008002000e81020020880160
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f73', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 14, 'total_file_size': 32, 'short_file_identifier': 12}
+select MF
+select ADF.USIM
+select EF.PSLOCI
+update_binary_decoded '{"ptmsi": "ffffffff", "ptmsi_sig": "ffffff", "rai": "130184fffeff", "rau_status": 1}'
+#
+################################################################################
+# MF/ADF.USIM/EF.FDN                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.FDN (6f3b)
+# structure: linear_fixed
+# RAW FCP Template: 62258205422100270a83026f3ba503c001008a01058b066f0601050000800201868102019a8800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 39, 'num_of_rec': 10}, 'file_identifier': '6f3b', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 390, 'total_file_size': 410, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.FDN
+update_record_decoded 1 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 2 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 3 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 4 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 5 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 6 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 7 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 8 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 9 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 10 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+#
+################################################################################
+# MF/ADF.USIM/EF.SMS                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.SMS, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.MSISDN                                                        #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.MSISDN (6f40)
+# structure: linear_fixed
+# RAW FCP Template: 62258205422100270283026f40a503c001008a01058b066f06010e00008002004e810200628800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 39, 'num_of_rec': 2}, 'file_identifier': '6f40', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 78, 'total_file_size': 98, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.MSISDN
+update_record_decoded 1 '{"msisdn": [1, 1, "+17654146571"]}'
+update_record_decoded 2 '{"msisdn": null}'
+#
+################################################################################
+# MF/ADF.USIM/EF.SMSP                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.SMSP (6f42)
+# structure: linear_fixed
+# RAW FCP Template: 622582054221002e0383026f42a503c001008a01058b066f06011000008002008a8102009e8800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 46, 'num_of_rec': 3}, 'file_identifier': '6f42', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 138, 'total_file_size': 158, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.SMSP
+update_record_decoded 1 '{"alpha_id": "SMSC", "parameter_indicators": {"tp_dest_addr": false, "tp_sc_addr": true, "tp_pid": true, "tp_dcs": true, "tp_vp": true}, "tp_dest_addr": {"length": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "call_number": ""}, "tp_sc_addr": {"length": 7, "ton_npi": {"ext": true, "type_of_number": "international", "numbering_plan_id": "isdn_e164"}, "call_number": "19037029920f"}, "tp_pid": "00", "tp_dcs": "00", "tp_vp_minutes": 635040}'
+update_record_decoded 2 '{"alpha_id": "", "parameter_indicators": {"tp_dest_addr": false, "tp_sc_addr": false, "tp_pid": false, "tp_dcs": false, "tp_vp": false}, "tp_dest_addr": {"length": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "call_number": ""}, "tp_sc_addr": {"length": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "call_number": ""}, "tp_pid": "ff", "tp_dcs": "ff", "tp_vp_minutes": 635040}'
+update_record_decoded 3 '{"alpha_id": "", "parameter_indicators": {"tp_dest_addr": false, "tp_sc_addr": false, "tp_pid": false, "tp_dcs": false, "tp_vp": false}, "tp_dest_addr": {"length": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "call_number": ""}, "tp_sc_addr": {"length": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "call_number": ""}, "tp_pid": "ff", "tp_dcs": "ff", "tp_vp_minutes": 635040}'
+#
+################################################################################
+# MF/ADF.USIM/EF.SMSS                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.SMSS, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.SDN                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.SDN (6f49)
+# structure: linear_fixed
+# RAW FCP Template: 62258205422100220a83026f49a503c001008a01058b066f06010e000080020154810201688800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 34, 'num_of_rec': 10}, 'file_identifier': '6f49', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 340, 'total_file_size': 360, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.SDN
+update_record_decoded 1 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 2 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 3 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 4 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 5 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 6 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 7 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 8 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 9 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+update_record_decoded 10 '{"alpha_id": "", "len_of_bcd": 255, "ton_npi": {"ext": true, "type_of_number": "reserved_for_extension", "numbering_plan_id": "reserved_for_extension"}, "dialing_nr": "", "cap_conf_id": 255, "ext1_record_id": 255}'
+#
+################################################################################
+# MF/ADF.USIM/EF.EXT2                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.EXT2 (6f4b)
+# structure: linear_fixed
+# RAW FCP Template: 622582054221000d0283026f4ba503c001008a01058b066f06011200008002001a8102002e8800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 13, 'num_of_rec': 2}, 'file_identifier': '6f4b', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 26, 'total_file_size': 46, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.EXT2
+update_record_decoded 1 '{"record_type": 0, "extension_data": "ffffffffffffffffffffff", "identifier": 255}'
+update_record_decoded 2 '{"record_type": 0, "extension_data": "ffffffffffffffffffffff", "identifier": 255}'
+#
+################################################################################
+# MF/ADF.USIM/EF.EXT3                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.EXT3 (6f4c)
+# structure: linear_fixed
+# RAW FCP Template: 622582054221000d0283026f4ca503c001008a01058b066f06010600008002001a8102002e8800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 13, 'num_of_rec': 2}, 'file_identifier': '6f4c', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 26, 'total_file_size': 46, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.EXT3
+update_record_decoded 1 '{"record_type": 0, "extension_data": "ffffffffffffffffffffff", "identifier": 255}'
+update_record_decoded 2 '{"record_type": 0, "extension_data": "ffffffffffffffffffffff", "identifier": 255}'
+#
+################################################################################
+# MF/ADF.USIM/EF.SMSR                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.SMSR, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.ICI                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.ICI, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.OCI                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.OCI, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.ICT                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.ICT, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.OCT                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.OCT, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.EXT5                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.EXT5 (6f4e)
+# structure: linear_fixed
+# RAW FCP Template: 622582054221000d0283026f4ea503c001008a01058b066f06010400008002001a8102002e8800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 13, 'num_of_rec': 2}, 'file_identifier': '6f4e', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 26, 'total_file_size': 46, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.EXT5
+update_record_decoded 1 '{"record_type": 0, "extension_data": "ffffffffffffffffffffff", "identifier": 255}'
+update_record_decoded 2 '{"record_type": 0, "extension_data": "ffffffffffffffffffffff", "identifier": 255}'
+#
+################################################################################
+# MF/ADF.USIM/EF.CCP2                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.CCP2 (6f4f)
+# structure: linear_fixed
+# RAW FCP Template: 622682054221000f0283026f4fa503c001008a01058b066f06010900008002001e810200328801b0
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'linear_fixed'}, 'record_len': 15, 'num_of_rec': 2}, 'file_identifier': '6f4f', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 30, 'total_file_size': 50, 'short_file_identifier': 22}
+select MF
+select ADF.USIM
+select EF.CCP2
+update_record_decoded 1 '{"raw": "ffffffffffffffffffffffffffffff"}'
+update_record_decoded 2 '{"raw": "ffffffffffffffffffffffffffffff"}'
+#
+################################################################################
+# MF/ADF.USIM/EF.eMLPP                                                         #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.eMLPP, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.AAeM                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.AAeM, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.BDN                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.BDN, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.EXT4                                                          #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.EXT4, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.CMI                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# bad file: MF/ADF.USIM/EF.CMI, 6a82: Wrong parameters - File not found
+#
+################################################################################
+# MF/ADF.USIM/EF.EST                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.EST (6f56)
+# structure: transparent
+# RAW FCP Template: 62238202412183026f56a503c001008a01058b066f06010500008002000181020013880128
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f56', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 1, 'total_file_size': 19, 'short_file_identifier': 5}
+select MF
+select ADF.USIM
+select EF.EST
+update_binary_decoded '{"1": {"activated": false, "description": "Fixed Dialling Numbers (FDN)"}, "2": {"activated": false, "description": "Barred Dialling Numbers (BDN)"}, "3": {"activated": false, "description": "APN Control List (ACL)"}, "4": {"activated": false}, "5": {"activated": false}, "6": {"activated": false}, "7": {"activated": false}, "8": {"activated": false}}'
+#
+################################################################################
+# MF/ADF.USIM/EF.ACL                                                           #
+################################################################################
+# directory: MF/ADF.USIM (3f00/a0000000871002)
+# file: EF.ACL (6f57)
+# structure: transparent
+# RAW FCP Template: 62228202412183026f57a503c001008a01058b066f0601050000800200ff810201178800
+# Decoded FCP Template: {'file_descriptor': {'file_descriptor_byte': {'shareable': True, 'file_type': 'working_ef', 'structure': 'transparent'}, 'record_len': None, 'num_of_rec': None}, 'file_identifier': '6f57', 'proprietary_information': {'unknown_ber_tlv_ie_c0': {'raw': '00'}}, 'life_cycle_status_integer': 'operational_activated', 'security_attrib_referenced': {'ef_arr_file_id': '6f06', 'ef_arr_record_nr': 1}, 'file_size': 255, 'total_file_size': 279, 'short_file_identifier': None}
+select MF
+select ADF.USIM
+select EF.ACL
+# bad file: MF/ADF.USIM/EF.ACL, Failed to transmit with protocol T0. Transaction failed., failed to read (offset 0)

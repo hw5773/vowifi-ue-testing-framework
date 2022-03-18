@@ -1,0 +1,89 @@
+Using PC/SC reader interface
+Reading ...
+Autodetection failed
+ICCID: 8901260245784161215
+GID1: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+GID2: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+SMSP: 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff
+SPN: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+PLMNsel: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+PLMNwAcT: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+OPLMNwAcT: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+HPLMNAcT: Can't read file -- SW match failed! Expected 9000 and got 6a82.
+MSISDN (NPI=1 ToN=0): 17657759216
+USIM Service Table: 86ef112c27fe01740200ff050100000e01
+	Service 2 - Fixed Dialling Numbers (FDN)
+	Service 3 - Extension 2
+	Service 8 - Outgoing Call Information (OCI and OCT)
+	Service 9 - Incoming Call Information (ICI and ICT)
+	Service 10 - Short Message Storage (SMS)
+	Service 11 - Short Message Status Reports (SMSR)
+	Service 12 - Short Message Service Parameters (SMSP)
+	Service 14 - Capability Configuration Parameters 2 (CCP2)
+	Service 15 - Cell Broadcast Message Identifier
+	Service 16 - Cell Broadcast Message Identifier Ranges
+	Service 17 - Group Identifier Level 1
+	Service 21 - MSISDN
+	Service 27 - GSM Access
+	Service 28 - Data download via SMS-PP
+	Service 30 - Call Control by USIM
+	Service 33 - shall be set to 1
+	Service 34 - Enabled Services Table
+	Service 35 - APN Control List (ACL)
+	Service 38 - GSM security context
+	Service 42 - Operator controlled PLMN selector with Access Technology
+	Service 43 - HPLMN selector with Access Technology
+	Service 44 - Extension 5
+	Service 45 - PLMN Network Name
+	Service 46 - Operator PLMN List
+	Service 47 - Mailbox Dialling Numbers
+	Service 48 - Message Waiting Indication Status
+	Service 49 - Call Forwarding Indication Status
+	Service 59 - Pseudonym
+	Service 61 - Operator Controlled PLMN selector for I-WLAN access
+	Service 62 - User controlled WSID list
+	Service 63 - Operator controlled WSID list
+	Service 66 - WLAN Reauthentication Identity
+	Service 81 - Home I-WLAN Specific Identifier List
+	Service 82 - I-WLAN Equivalent HPLMN Presentation Indication
+	Service 83 - I-WLAN HPLMN Priority Indication
+	Service 84 - I-WLAN Last Registered PLMN
+	Service 85 - EPS Mobility Management Information
+	Service 86 - Allowed CSG Lists and corresponding indications
+	Service 87 - Call control on EPS PDN connection by USIM
+	Service 88 - HPLMN Direct Access
+	Service 89 - eCall Data
+	Service 91 - Support for SM-over-IP
+	Service 97 - PWS configuration by USIM
+	Service 122 - 5GS Mobility Management Information
+	Service 123 - 5G Security Parameters
+	Service 124 - Subscription identifier privacy support
+	Service 129 - 5GS Operator PLMN List
+
+P-CSCF:
+	Not available
+	Not available
+	Not available
+	Not available
+
+Home Network Domain Name: msg.pc.t-mobile.com
+IMS private user identity: 310260248416121@msg.pc.t-mobile.com
+IMS public user identity:
+	sip:310260248416121@ims.mnc260.mcc310.3gppnetwork.org
+	sip:17657759216@msg.pc.t-mobile.com
+	Not available
+	Not available
+	Not available
+
+UICC IARI:
+	Not available
+	Not available
+
+ISIM Service Table: e200
+	Service 2 - Generic Bootstrapping Architecture (GBA)
+	Service 6 - Short Message Storage (SMS)
+	Service 7 - Short Message Status Reports (SMSR)
+	Service 8 - Support for SM-over-IP including data download via SMS-PP as defined in TS 31.111 [31]
+
+Done !
+
