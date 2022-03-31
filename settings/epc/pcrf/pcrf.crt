@@ -1,0 +1,85 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            47:61:ac:e1:45:e5:5e:cf:b8:a5:fb:4d:da:c6:0c:23:17:13:05:1e
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=US, ST=Indiana, L=West Lafayette, O=VoWiFi CA, OU=CA, CN=ca.vowifi.org/emailAddress=ca@vowifi.org
+        Validity
+            Not Before: Mar 29 20:56:10 2022 GMT
+            Not After : Mar 29 20:56:10 2023 GMT
+        Subject: C=US, ST=Indiana, L=We Lafayette, O=VoWiFi EPC, OU=PCRF, CN=pcrf.mnc260.mcc310.3gppnetwork.org/emailAddress=pcrf@vowifi.org
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:a9:5b:d4:e7:9c:0d:7b:ba:d4:da:cc:fd:97:bd:
+                    63:a2:26:96:a3:1b:dc:10:38:9b:11:2f:51:f9:f3:
+                    4d:d7:e7:6e:76:32:ac:c9:38:a2:35:ea:04:db:ec:
+                    14:37:3a:9d:1b:c8:47:4e:2e:12:19:2d:c2:2f:1a:
+                    a8:4b:93:df:1d:1b:f0:1b:42:ec:95:03:82:fe:25:
+                    a1:17:8a:5a:b9:e5:5f:92:db:0a:e9:07:97:d9:fe:
+                    e0:76:01:80:4e:32:c7:b6:27:7e:c6:b3:6b:67:84:
+                    46:21:9f:50:bf:25:2c:6f:c3:14:ea:e1:94:63:19:
+                    6e:ac:08:15:f6:82:71:0d:83:e7:33:2b:26:bf:33:
+                    95:32:7f:70:1b:fd:11:53:a2:cc:99:bd:cf:66:5b:
+                    f1:23:db:e9:c1:93:00:86:ef:f5:ec:0a:3f:d1:06:
+                    48:b6:d2:91:8c:1a:e9:ec:b7:ed:3e:e5:2b:cf:61:
+                    58:6a:af:45:7a:3e:24:26:8d:74:c9:4d:e4:91:42:
+                    b2:f9:4d:78:cc:18:cf:10:b4:ad:c0:4c:2f:49:b1:
+                    4f:53:50:48:f7:1a:7d:80:72:af:cb:c6:6c:3e:65:
+                    ed:84:a3:78:fe:a8:5b:cf:a0:7f:88:0b:27:a4:ae:
+                    13:5a:c2:0e:b6:1b:46:3c:ab:76:99:a2:12:7b:71:
+                    3b:bd
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                79:D4:8E:57:D3:6A:F2:0A:A3:4A:3B:6F:D9:E4:32:14:2B:49:8F:8E
+            X509v3 Authority Key Identifier: 
+                keyid:F3:58:E0:C1:AA:E9:08:ED:F9:FB:DB:AD:8B:4E:73:F5:7D:CC:85:39
+
+    Signature Algorithm: sha256WithRSAEncryption
+         ac:9b:6f:8f:b3:26:b6:11:19:30:b3:c6:20:5d:ab:0f:dd:4c:
+         1f:57:04:72:1c:d2:63:37:46:80:60:d5:e1:fa:8c:f0:19:d0:
+         ce:97:73:51:eb:d8:e1:39:7f:39:eb:e5:68:76:0c:e7:fc:4d:
+         c8:0c:ff:4e:dd:3b:7d:64:f8:9c:6d:9b:55:cc:b2:c2:50:54:
+         b1:9b:f6:87:a6:2c:b2:7a:a9:f0:59:69:87:bb:bf:a6:38:6b:
+         ec:40:12:2b:18:06:7a:ba:12:97:fa:e2:0c:8d:80:19:e3:9a:
+         c0:61:50:a3:40:4d:d8:e9:76:21:21:08:62:6c:bb:68:1f:84:
+         25:fe:c7:e5:ad:fe:1a:c0:92:af:7e:ff:e1:17:53:86:f6:29:
+         b7:51:44:94:16:28:d4:9a:d1:50:40:c3:11:cd:5f:ca:9b:d1:
+         cb:a4:2c:03:c2:48:8f:6c:4c:5d:b6:db:41:95:d8:fc:38:d4:
+         e3:55:92:6b:36:40:f2:ac:6f:c7:81:b4:1b:5b:bb:64:61:c8:
+         2d:b5:38:2f:e1:dc:45:17:bb:78:2f:cf:26:a6:1b:f9:77:da:
+         c8:89:97:69:6b:a1:e8:9b:81:ab:69:ac:5b:3c:3d:b6:e2:e8:
+         24:a2:7c:54:8d:81:a1:3c:3a:a6:5c:5c:5e:ef:fb:74:b2:e4:
+         fb:13:89:1c
+-----BEGIN CERTIFICATE-----
+MIIEQTCCAymgAwIBAgIUR2Gs4UXlXs+4pftN2sYMIxcTBR4wDQYJKoZIhvcNAQEL
+BQAwgY8xCzAJBgNVBAYTAlVTMRAwDgYDVQQIDAdJbmRpYW5hMRcwFQYDVQQHDA5X
+ZXN0IExhZmF5ZXR0ZTESMBAGA1UECgwJVm9XaUZpIENBMQswCQYDVQQLDAJDQTEW
+MBQGA1UEAwwNY2Eudm93aWZpLm9yZzEcMBoGCSqGSIb3DQEJARYNY2FAdm93aWZp
+Lm9yZzAeFw0yMjAzMjkyMDU2MTBaFw0yMzAzMjkyMDU2MTBaMIGnMQswCQYDVQQG
+EwJVUzEQMA4GA1UECAwHSW5kaWFuYTEVMBMGA1UEBwwMV2UgTGFmYXlldHRlMRMw
+EQYDVQQKDApWb1dpRmkgRVBDMQ0wCwYDVQQLDARQQ1JGMSswKQYDVQQDDCJwY3Jm
+Lm1uYzI2MC5tY2MzMTAuM2dwcG5ldHdvcmsub3JnMR4wHAYJKoZIhvcNAQkBFg9w
+Y3JmQHZvd2lmaS5vcmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCp
+W9TnnA17utTazP2XvWOiJpajG9wQOJsRL1H5803X5252MqzJOKI16gTb7BQ3Op0b
+yEdOLhIZLcIvGqhLk98dG/AbQuyVA4L+JaEXilq55V+S2wrpB5fZ/uB2AYBOMse2
+J37Gs2tnhEYhn1C/JSxvwxTq4ZRjGW6sCBX2gnENg+czKya/M5Uyf3Ab/RFTosyZ
+vc9mW/Ej2+nBkwCG7/XsCj/RBki20pGMGunst+0+5SvPYVhqr0V6PiQmjXTJTeSR
+QrL5TXjMGM8QtK3ATC9JsU9TUEj3Gn2Acq/Lxmw+Ze2Eo3j+qFvPoH+ICyekrhNa
+wg62G0Y8q3aZohJ7cTu9AgMBAAGjezB5MAkGA1UdEwQCMAAwLAYJYIZIAYb4QgEN
+BB8WHU9wZW5TU0wgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0GA1UdDgQWBBR51I5X
+02ryCqNKO2/Z5DIUK0mPjjAfBgNVHSMEGDAWgBTzWODBqukI7fn7262LTnP1fcyF
+OTANBgkqhkiG9w0BAQsFAAOCAQEArJtvj7MmthEZMLPGIF2rD91MH1cEchzSYzdG
+gGDV4fqM8BnQzpdzUevY4Tl/OevlaHYM5/xNyAz/Tt07fWT4nG2bVcyywlBUsZv2
+h6Yssnqp8Flph7u/pjhr7EASKxgGeroSl/riDI2AGeOawGFQo0BN2Ol2ISEIYmy7
+aB+EJf7H5a3+GsCSr37/4RdThvYpt1FElBYo1JrRUEDDEc1fypvRy6QsA8JIj2xM
+XbbbQZXY/DjU41WSazZA8qxvx4G0G1u7ZGHILbU4L+HcRRe7eC/PJqYb+XfayImX
+aWuh6JuBq2msWzw9tuLoJKJ8VI2BoTw6plxcXu/7dLLk+xOJHA==
+-----END CERTIFICATE-----

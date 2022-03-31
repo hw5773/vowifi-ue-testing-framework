@@ -1,0 +1,27 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "ims.mnc260.mcc310.3gppnetwork.org" {
+  type master;
+  file "/etc/bind/db.ims.mnc260.mcc310.3gppnetwork.org";
+};
+
+zone "epc.mnc260.mcc310.3gppnetwork.org" {
+  type master;
+  file "/etc/bind/db.epc.mnc260.mcc310.3gppnetwork.org";
+};
+
+zone "mnc260.mcc310.3gppnetwork.org" {
+  type master;
+  file "/etc/bind/db.mnc260.mcc310.3gppnetwork.org";
+};
+
+zone "msg.pc.t-mobile.com" {
+  type master;
+  file "/etc/bind/db.msg.pc.t-mobile.com";
+};
