@@ -54,7 +54,7 @@ int ims_find_credentials(struct sip_msg* _m, str* _realm,
 	int res;
 	str* r;
 
-	LM_DBG("Searching credentials in realm [%.*s]\n", _realm->len, _realm->s);
+	LM_INFO("Searching credentials in realm [%.*s]\n", _realm->len, _realm->s);
 
 	/*
 	 * Determine if we should use WWW-Authorization or
@@ -81,7 +81,7 @@ int ims_find_credentials(struct sip_msg* _m, str* _realm,
 	 */
 	if (*hook == 0) {
 		/* No credentials parsed yet */
-		LM_DBG("*hook == 0, No credentials parsed yet\n");
+		LM_INFO("*hook == 0, No credentials parsed yet\n");
 		if (parse_headers(_m, hdr_flags, 0) == -1) {
 			LM_ERR("Error while parsing headers\n");
 			return -1;
@@ -89,7 +89,7 @@ int ims_find_credentials(struct sip_msg* _m, str* _realm,
 	}
 
 	ptr = *hook;
-	LM_DBG("*hook = %p\n", ptr);
+	LM_INFO("*hook = %p\n", ptr);
 	/*
 	 * Iterate through the credentials in the message and
 	 * find credentials with given realm
@@ -100,10 +100,10 @@ int ims_find_credentials(struct sip_msg* _m, str* _realm,
 			LM_ERR("Error while parsing credentials\n");
 			return (res == -1) ? -2 : -3;
 		} else if (res == 0) {
-			LM_DBG("Credential parsed successfully\n");
+			LM_INFO("Credential parsed successfully\n");
 			if (_realm->len) {
 				r = &(((auth_body_t*) (ptr->parsed))->digest.realm);
-				LM_DBG("Comparing realm <%.*s> and <%.*s>\n", _realm->len, _realm->s, r->len, r->s);
+				LM_INFO("Comparing realm <%.*s> and <%.*s>\n", _realm->len, _realm->s, r->len, r->s);
 				if (r->len == _realm->len) {
 					if (!strncasecmp(_realm->s, r->s, r->len)) {
 						*_h = ptr;
@@ -153,6 +153,7 @@ int get_nonce_response(struct sip_msg *msg, str *username, str realm,str *nonce,
 	struct hdr_field* h = 0;
 	int ret;
 
+  LM_INFO("get_nonce_response(): 1\n");
 
 	ret = parse_headers(msg, is_proxy_auth ? HDR_PROXYAUTH_F : HDR_AUTHORIZATION_F, 0);
 
@@ -160,12 +161,14 @@ int get_nonce_response(struct sip_msg *msg, str *username, str realm,str *nonce,
 		return 0;
 	}
 
+  LM_INFO("get_nonce_response(): 2\n");
 	if ((!is_proxy_auth && !msg->authorization)
 		|| (is_proxy_auth && !msg->proxy_auth)) {
 		return 0;
 	}
 
-	LM_DBG("Calling find_credentials with realm [%.*s]\n", realm.len, realm.s);
+  LM_INFO("get_nonce_response(): 3\n");
+	LM_INFO("Calling find_credentials with realm [%.*s]\n", realm.len, realm.s);
 	ret = ims_find_credentials(msg, &realm, is_proxy_auth ? HDR_PROXYAUTH_T : HDR_AUTHORIZATION_T, &h);
 	if (ret < 0) {
 		return 0;
@@ -174,6 +177,7 @@ int get_nonce_response(struct sip_msg *msg, str *username, str realm,str *nonce,
 		return 0;
 	}
 
+  LM_INFO("get_nonce_response(): 4\n");
 	if (h && h->parsed) {
 		if (nonce)
 			*nonce = ((auth_body_t*) h->parsed)->digest.nonce;
@@ -192,6 +196,7 @@ int get_nonce_response(struct sip_msg *msg, str *username, str realm,str *nonce,
 		if (username)
 			*username = ((auth_body_t*) h->parsed)->digest.username.whole;
 	}
+  LM_INFO("get_nonce_response(): 5\n");
 	LM_DBG("Found nonce response\n");
 	return 1;
 }

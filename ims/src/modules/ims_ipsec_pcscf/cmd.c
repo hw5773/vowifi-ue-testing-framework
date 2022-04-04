@@ -414,7 +414,6 @@ static int create_ipsec_tunnel(const struct ip_addr *remote_addr, ipsec_t* s)
             return -1;
         }
     } else if(remote_addr->af == AF_INET6){
-        LM_INFO("ipsec_listen_addr6: %s\n", ipsec_listen_addr6.s);
         if(str2ip6buf(&ipsec_listen_addr6, &ipsec_addr) < 0){
             LM_ERR("Unable to convert ipsec addr6 [%.*s]\n", ipsec_listen_addr6.len, ipsec_listen_addr6.s);
             close_mnl_socket(sock);

@@ -228,15 +228,15 @@ static int ipsec_add_listen_ifaces()
 				return -1;
 			}
 
-			//if(add_listen_iface(addr6, NULL, ipsec_client_port + i, PROTO_UDP, 0) != 0) {
-			//	LM_ERR("Error adding listen ipsec client UDP interface for IPv6\n");
-			//	return -1;
-			//}
+			if(add_listen_iface(addr6, NULL, ipsec_client_port + i, PROTO_UDP, 0) != 0) {
+				LM_ERR("Error adding listen ipsec client UDP interface for IPv6\n");
+				return -1;
+			}
 
-			//if(add_listen_iface(addr6, NULL, ipsec_server_port + i, PROTO_UDP, 0) != 0) {
-			//	LM_ERR("Error adding listen ipsec server UDP interface for IPv6\n");
-			//	return -1;
-			//}
+			if(add_listen_iface(addr6, NULL, ipsec_server_port + i, PROTO_UDP, 0) != 0) {
+				LM_ERR("Error adding listen ipsec server UDP interface for IPv6\n");
+				return -1;
+			}
 		}
 	}
 
