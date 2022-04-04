@@ -1,0 +1,2 @@
+CFG_DEFS:=-DNAME='"kamcmd"' -DSRNAME='"kamailio"' -DVERSION='"1.5"' -D__OS_linux -DRUN_DIR='"/var/run/kamailio/"' -DUSE_READLINE -DMOD_NAME="utils/kamcmd"
+CFG_INCLUDES:=

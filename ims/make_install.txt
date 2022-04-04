@@ -1,0 +1,1285 @@
+make -C src/ install 
+make[1]: Entering directory '/home/hyun/kamailio/src'
+touch           /usr/local/sbin//kamailio
+install -m 755 kamailio /usr/local/sbin/
+mkdir -p /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_diameter_server.so]		ims_diameter_server.so
+touch           /usr/local/lib64/kamailio//libkamailio_ims.so.0.1
+install -m 755 libkamailio_ims.so.0.1 /usr/local/lib64/kamailio/
+rm -f /usr/local/lib64/kamailio//libkamailio_ims.so.0 \
+		/usr/local/lib64/kamailio//libkamailio_ims.so 
+cd /usr/local/lib64/kamailio/ ; ln -s libkamailio_ims.so.0.1 libkamailio_ims.so.0 
+cd /usr/local/lib64/kamailio/ ; ln -s libkamailio_ims.so.0.1 libkamailio_ims.so 
+touch           /usr/local/lib64/kamailio/modules/ims_diameter_server.so
+install -m 755  ims_diameter_server.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M domain.so]		domain.so
+touch           /usr/local/lib64/kamailio//libsrdb1.so.1.0
+install -m 755 libsrdb1.so.1.0 /usr/local/lib64/kamailio/
+rm -f /usr/local/lib64/kamailio//libsrdb1.so.1 \
+		/usr/local/lib64/kamailio//libsrdb1.so 
+cd /usr/local/lib64/kamailio/ ; ln -s libsrdb1.so.1.0 libsrdb1.so.1 
+cd /usr/local/lib64/kamailio/ ; ln -s libsrdb1.so.1.0 libsrdb1.so 
+touch           /usr/local/lib64/kamailio/modules/domain.so
+install -m 755  domain.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/tm.so
+install -m 755  tm.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M msrp.so]		msrp.so
+touch           /usr/local/lib64/kamailio//libsrutils.so.1.0
+install -m 755 libsrutils.so.1.0 /usr/local/lib64/kamailio/
+rm -f /usr/local/lib64/kamailio//libsrutils.so.1 \
+		/usr/local/lib64/kamailio//libsrutils.so 
+cd /usr/local/lib64/kamailio/ ; ln -s libsrutils.so.1.0 libsrutils.so.1 
+cd /usr/local/lib64/kamailio/ ; ln -s libsrutils.so.1.0 libsrutils.so 
+touch           /usr/local/lib64/kamailio/modules/msrp.so
+install -m 755  msrp.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/tmx.so
+install -m 755  tmx.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/presence_mwi.so
+install -m 755  presence_mwi.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M keepalive.so]		keepalive.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/keepalive.so
+install -m 755  keepalive.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sst.so
+install -m 755  sst.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M debugger.so]		debugger.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/debugger.so
+install -m 755  debugger.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M siputils.so]		siputils.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/siputils.so
+install -m 755  siputils.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/pua_xmpp.so
+install -m 755  pua_xmpp.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M ims_dialog.so]		ims_dialog.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_dialog.so
+install -m 755  ims_dialog.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M dmq_usrloc.so]		dmq_usrloc.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/dmq_usrloc.so
+install -m 755  dmq_usrloc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M avpops.so]		avpops.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/avpops.so
+install -m 755  avpops.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M p_usrloc.so]		p_usrloc.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/p_usrloc.so
+install -m 755  p_usrloc.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/enum.so
+install -m 755  enum.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/evrexec.so
+install -m 755  evrexec.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M db_cluster.so]		db_cluster.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/db_cluster.so
+install -m 755  db_cluster.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/blst.so
+install -m 755  blst.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M sipjson.so]		sipjson.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/sipjson.so
+install -m 755  sipjson.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M uid_uri_db.so]		uid_uri_db.so
+touch           /usr/local/lib64/kamailio//libsrdb2.so.1.0
+install -m 755 libsrdb2.so.1.0 /usr/local/lib64/kamailio/
+rm -f /usr/local/lib64/kamailio//libsrdb2.so.1 \
+		/usr/local/lib64/kamailio//libsrdb2.so 
+cd /usr/local/lib64/kamailio/ ; ln -s libsrdb2.so.1.0 libsrdb2.so.1 
+cd /usr/local/lib64/kamailio/ ; ln -s libsrdb2.so.1.0 libsrdb2.so 
+touch           /usr/local/lib64/kamailio/modules/uid_uri_db.so
+install -m 755  uid_uri_db.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M auth.so]		auth.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/auth.so
+install -m 755  auth.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M utils.so]		utils.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/utils.so
+install -m 755  utils.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M uri_db.so]		uri_db.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/uri_db.so
+install -m 755  uri_db.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libtrie.so.1.0' is up to date.
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M userblacklist.so]		userblacklist.so
+touch           /usr/local/lib64/kamailio//libtrie.so.1.0
+install -m 755 libtrie.so.1.0 /usr/local/lib64/kamailio/
+rm -f /usr/local/lib64/kamailio//libtrie.so.1 \
+		/usr/local/lib64/kamailio//libtrie.so 
+cd /usr/local/lib64/kamailio/ ; ln -s libtrie.so.1.0 libtrie.so.1 
+cd /usr/local/lib64/kamailio/ ; ln -s libtrie.so.1.0 libtrie.so 
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/userblacklist.so
+install -m 755  userblacklist.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/topoh.so
+install -m 755  topoh.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/log_custom.so
+install -m 755  log_custom.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M ims_charging.so]		ims_charging.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_charging.so
+install -m 755  ims_charging.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/seas.so
+install -m 755  seas.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M dmq.so]		dmq.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/dmq.so
+install -m 755  dmq.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M pua_reginfo.so]		pua_reginfo.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/pua_reginfo.so
+install -m 755  pua_reginfo.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/print.so
+install -m 755  print.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sipdump.so
+install -m 755  sipdump.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_qos.so]		ims_qos.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_qos.so
+install -m 755  ims_qos.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/tsilo.so
+install -m 755  tsilo.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M auth_xkeys.so]		auth_xkeys.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/auth_xkeys.so
+install -m 755  auth_xkeys.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_registrar_pcscf.so]		ims_registrar_pcscf.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_registrar_pcscf.so
+install -m 755  ims_registrar_pcscf.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/app_jsdt.so
+install -m 755  app_jsdt.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/nat_traversal.so
+install -m 755  nat_traversal.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/xhttp_rpc.so
+install -m 755  xhttp_rpc.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/cdp.so
+install -m 755  cdp.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/presence_profile.so
+install -m 755  presence_profile.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/presence_reginfo.so
+install -m 755  presence_reginfo.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M uid_gflags.so]		uid_gflags.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/uid_gflags.so
+install -m 755  uid_gflags.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/pua_usrloc.so
+install -m 755  pua_usrloc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M prefix_route.so]		prefix_route.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/prefix_route.so
+install -m 755  prefix_route.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M dispatcher.so]		dispatcher.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/dispatcher.so
+install -m 755  dispatcher.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/corex.so
+install -m 755  corex.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libprint.so.1.2' is up to date.
+LD (gcc) [M print_lib.so]		print_lib.so
+touch           /usr/local/lib64/kamailio//libprint.so.1.2
+install -m 755 libprint.so.1.2 /usr/local/lib64/kamailio/
+rm -f /usr/local/lib64/kamailio//libprint.so.1 \
+		/usr/local/lib64/kamailio//libprint.so 
+cd /usr/local/lib64/kamailio/ ; ln -s libprint.so.1.2 libprint.so.1 
+cd /usr/local/lib64/kamailio/ ; ln -s libprint.so.1.2 libprint.so 
+touch           /usr/local/lib64/kamailio/modules/print_lib.so
+install -m 755  print_lib.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/ipops.so
+install -m 755  ipops.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/smsops.so
+install -m 755  smsops.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sdpops.so
+install -m 755  sdpops.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M uid_domain.so]		uid_domain.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/uid_domain.so
+install -m 755  uid_domain.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/rtimer.so
+install -m 755  rtimer.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M drouting.so]		drouting.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/drouting.so
+install -m 755  drouting.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M presence_xml.so]		presence_xml.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/presence_xml.so
+install -m 755  presence_xml.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/cfgutils.so
+install -m 755  cfgutils.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M htable.so]		htable.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/htable.so
+install -m 755  htable.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/xhttp.so
+install -m 755  xhttp.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M rtpengine.so]		rtpengine.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/rtpengine.so
+install -m 755  rtpengine.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M sca.so]		sca.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/sca.so
+install -m 755  sca.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/maxfwd.so
+install -m 755  maxfwd.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M alias_db.so]		alias_db.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/alias_db.so
+install -m 755  alias_db.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/pua_rpc.so
+install -m 755  pua_rpc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M presence.so]		presence.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/presence.so
+install -m 755  presence.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M dialog.so]		dialog.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/dialog.so
+install -m 755  dialog.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/presence_dialoginfo.so
+install -m 755  presence_dialoginfo.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M imc.so]		imc.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/imc.so
+install -m 755  imc.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/call_control.so
+install -m 755  call_control.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M pdt.so]		pdt.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/pdt.so
+install -m 755  pdt.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/pike.so
+install -m 755  pike.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M matrix.so]		matrix.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/matrix.so
+install -m 755  matrix.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M mtree.so]		mtree.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/mtree.so
+install -m 755  mtree.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M uac_redirect.so]		uac_redirect.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/uac_redirect.so
+install -m 755  uac_redirect.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sctp.so
+install -m 755  sctp.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_isc.so]		ims_isc.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_isc.so
+install -m 755  ims_isc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M db_mysql.so]		db_mysql.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+MYSQLON=yes make --no-print-directory -C ../../../utils/kamctl/ install-modules
+# install MySQL stuff
+if [ "yes" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.mysql > /tmp/kamctl.mysql ; \
+		install -m 644 /tmp/kamctl.mysql \
+			/usr/local/lib64/kamailio//kamctl/kamctl.mysql ; \
+		rm -fr /tmp/kamctl.mysql ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbctl.mysql > /tmp/kamdbctl.mysql ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.mysql ; \
+		install -m 644 /tmp/kamdbctl.mysql /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.mysql ; \
+		mkdir -p /usr/local/share/kamailio//mysql ; \
+		for FILE in mysql/ims_dialog-create.sql mysql/standard-create.sql mysql/avpops-create.sql mysql/pdt-create.sql mysql/acc-create.sql mysql/secfilter-create.sql mysql/sca-create.sql mysql/dialplan-create.sql mysql/domainpolicy-create.sql mysql/uid_gflags-create.sql mysql/htable-create.sql mysql/siptrace-create.sql mysql/uid_avp_db-create.sql mysql/ims_usrloc_pcscf-create.sql mysql/group-create.sql mysql/mtree-create.sql mysql/alias_db-create.sql mysql/pipelimit-create.sql mysql/speeddial-create.sql mysql/uac-create.sql mysql/imc-create.sql mysql/registrar-create.sql mysql/uri_db-create.sql mysql/usrloc-create.sql mysql/msilo-create.sql mysql/topos-create.sql mysql/permissions-create.sql mysql/cpl-create.sql mysql/uid_domain-create.sql mysql/rls-create.sql mysql/dispatcher-create.sql mysql/domain-create.sql mysql/presence-create.sql mysql/rtpengine-create.sql mysql/dialog-create.sql mysql/mohqueue-create.sql mysql/ims_charging-create.sql mysql/purple-create.sql mysql/rtpproxy-create.sql mysql/drouting-create.sql mysql/carrierroute-create.sql mysql/userblacklist-create.sql mysql/uid_auth_db-create.sql mysql/matrix-create.sql mysql/lcr-create.sql mysql/uid_uri_db-create.sql mysql/auth_db-create.sql mysql/ims_usrloc_scscf-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//mysql/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//mysql/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install PostgreSQL stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.pgsql > /tmp/kamctl.pgsql ; \
+		install -m 644 /tmp/kamctl.pgsql \
+			/usr/local/lib64/kamailio//kamctl/kamctl.pgsql ; \
+		rm -fr /tmp/kamctl.pgsql ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.pgsql > /tmp/kamdbctl.pgsql ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.pgsql ; \
+		install -m 644 /tmp/kamdbctl.pgsql /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.pgsql ; \
+		mkdir -p /usr/local/share/kamailio//postgres ; \
+		for FILE in postgres/standard-create.sql postgres/avpops-create.sql postgres/pdt-create.sql postgres/acc-create.sql postgres/secfilter-create.sql postgres/sca-create.sql postgres/dialplan-create.sql postgres/domainpolicy-create.sql postgres/uid_gflags-create.sql postgres/htable-create.sql postgres/siptrace-create.sql postgres/uid_avp_db-create.sql postgres/group-create.sql postgres/mtree-create.sql postgres/alias_db-create.sql postgres/pipelimit-create.sql postgres/speeddial-create.sql postgres/uac-create.sql postgres/imc-create.sql postgres/registrar-create.sql postgres/uri_db-create.sql postgres/usrloc-create.sql postgres/msilo-create.sql postgres/topos-create.sql postgres/permissions-create.sql postgres/cpl-create.sql postgres/uid_domain-create.sql postgres/rls-create.sql postgres/dispatcher-create.sql postgres/domain-create.sql postgres/presence-create.sql postgres/rtpengine-create.sql postgres/dialog-create.sql postgres/mohqueue-create.sql postgres/purple-create.sql postgres/rtpproxy-create.sql postgres/drouting-create.sql postgres/carrierroute-create.sql postgres/userblacklist-create.sql postgres/uid_auth_db-create.sql postgres/matrix-create.sql postgres/lcr-create.sql postgres/uid_uri_db-create.sql postgres/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//postgres/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//postgres/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install Oracle stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.oracle > /tmp/kamctl.oracle ; \
+		install -m 644 /tmp/kamctl.oracle \
+			/usr/local/lib64/kamailio//kamctl/kamctl.oracle ; \
+		rm -fr /tmp/kamctl.oracle ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbctl.oracle > /tmp/kamdbctl.oracle ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.oracle ; \
+		install -m 644 /tmp/kamdbctl.oracle /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.oracle ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbfunc.oracle > /tmp/kamdbfunc.oracle ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbfunc.oracle ; \
+		install -m 644 /tmp/kamdbfunc.oracle /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbfunc.oracle ; \
+		mkdir -p /usr/local/share/kamailio//oracle ; \
+		for FILE in oracle/admin oracle/standard-create.sql oracle/avpops-create.sql oracle/pdt-create.sql oracle/acc-create.sql oracle/secfilter-create.sql oracle/sca-create.sql oracle/dialplan-create.sql oracle/domainpolicy-create.sql oracle/uid_gflags-create.sql oracle/htable-create.sql oracle/siptrace-create.sql oracle/uid_avp_db-create.sql oracle/inc oracle/group-create.sql oracle/mtree-create.sql oracle/alias_db-create.sql oracle/pipelimit-create.sql oracle/speeddial-create.sql oracle/uac-create.sql oracle/imc-create.sql oracle/registrar-create.sql oracle/uri_db-create.sql oracle/usrloc-create.sql oracle/msilo-create.sql oracle/topos-create.sql oracle/permissions-create.sql oracle/cpl-create.sql oracle/uid_domain-create.sql oracle/rls-create.sql oracle/dispatcher-create.sql oracle/README.TYPES oracle/domain-create.sql oracle/presence-create.sql oracle/rtpengine-create.sql oracle/dialog-create.sql oracle/mohqueue-create.sql oracle/purple-create.sql oracle/rtpproxy-create.sql oracle/drouting-create.sql oracle/carrierroute-create.sql oracle/userblacklist-create.sql oracle/uid_auth_db-create.sql oracle/matrix-create.sql oracle/lcr-create.sql oracle/uid_uri_db-create.sql oracle/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		mkdir -p /usr/local/share/kamailio//oracle/inc ; \
+		for FILE in oracle/inc/_grantroot.tmpl oracle/inc/_grantfunc.tmpl oracle/inc/_dropsch.tmpl oracle/inc/_create_compat.sql oracle/inc/_createsch.tmpl ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/inc/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/inc/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		mkdir -p /usr/local/share/kamailio//oracle/admin ; \
+		for FILE in oracle/admin/_create_as_sys.tmpl oracle/admin/README oracle/admin/_drop_as_sys.tmpl ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/admin/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/admin/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		make -C ../db_oracle/ ; \
+		install -m 755 ../db_oracle/kamailio_orasel /usr/local/sbin/ ; \
+	fi
+# install Berkeley database stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/share/kamailio/#/usr/local/share/kamailio/#g" \
+			< kamctl.db_berkeley > /tmp/kamctl.db_berkeley ; \
+		install -m 644 /tmp/kamctl.db_berkeley \
+			/usr/local/lib64/kamailio//kamctl/kamctl.db_berkeley ; \
+		rm -fr /tmp/kamctl.db_berkeley ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.db_berkeley > /tmp/kamdbctl.db_berkeley ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.db_berkeley ; \
+		install -m 644 /tmp/kamdbctl.db_berkeley /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.db_berkeley ; \
+		mkdir -p /usr/local/share/kamailio//db_berkeley/kamailio ; \
+		for FILE in db_berkeley/kamailio/presentity db_berkeley/kamailio/purplemap db_berkeley/kamailio/silo db_berkeley/kamailio/active_watchers db_berkeley/kamailio/mohqueues db_berkeley/kamailio/dr_groups db_berkeley/kamailio/dr_rules db_berkeley/kamailio/mtree db_berkeley/kamailio/lcr_gw db_berkeley/kamailio/uri db_berkeley/kamailio/acc_cdrs db_berkeley/kamailio/sip_trace db_berkeley/kamailio/domain_attrs db_berkeley/kamailio/xcap db_berkeley/kamailio/userblacklist db_berkeley/kamailio/aliases db_berkeley/kamailio/address db_berkeley/kamailio/subscriber db_berkeley/kamailio/dispatcher db_berkeley/kamailio/carrierfailureroute db_berkeley/kamailio/uid_global_attrs db_berkeley/kamailio/pua db_berkeley/kamailio/uid_domain db_berkeley/kamailio/uid_user_attrs db_berkeley/kamailio/htable db_berkeley/kamailio/rtpengine db_berkeley/kamailio/imc_rooms db_berkeley/kamailio/re_grp db_berkeley/kamailio/rtpproxy db_berkeley/kamailio/location db_berkeley/kamailio/uid_domain_attrs db_berkeley/kamailio/dialog db_berkeley/kamailio/domain_name db_berkeley/kamailio/version db_berkeley/kamailio/watchers db_berkeley/kamailio/pdt db_berkeley/kamailio/matrix db_berkeley/kamailio/rls_presentity db_berkeley/kamailio/location_attrs db_berkeley/kamailio/uid_uri db_berkeley/kamailio/dbaliases db_berkeley/kamailio/lcr_rule_target db_berkeley/kamailio/carrier_name db_berkeley/kamailio/pl_pipes db_berkeley/kamailio/uacreg db_berkeley/kamailio/carrierroute db_berkeley/kamailio/mohqcalls db_berkeley/kamailio/missed_calls db_berkeley/kamailio/cpl db_berkeley/kamailio/trusted db_berkeley/kamailio/mtrees db_berkeley/kamailio/uid_uri_attrs db_berkeley/kamailio/dr_gateways db_berkeley/kamailio/topos_t db_berkeley/kamailio/rls_watchers db_berkeley/kamailio/imc_members db_berkeley/kamailio/usr_preferences db_berkeley/kamailio/speed_dial db_berkeley/kamailio/lcr_rule db_berkeley/kamailio/sca_subscriptions db_berkeley/kamailio/domainpolicy db_berkeley/kamailio/dialog_vars db_berkeley/kamailio/dialplan db_berkeley/kamailio/acc db_berkeley/kamailio/dr_gw_lists db_berkeley/kamailio/grp db_berkeley/kamailio/globalblacklist db_berkeley/kamailio/topos_d db_berkeley/kamailio/uid_credentials db_berkeley/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//db_berkeley/kamailio/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//db_berkeley/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		make -C ../db_berkeley/ ; \
+		install -m 755 ../db_berkeley/kambdb_recover /usr/local/sbin/ ; \
+	fi
+# install dbtext stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/share/kamailio/#/usr/local/share/kamailio/#g" \
+			< kamctl.dbtext > /tmp/kamctl.dbtext ; \
+		install -m 644 /tmp/kamctl.dbtext \
+			/usr/local/lib64/kamailio//kamctl/kamctl.dbtext ; \
+		rm -fr /tmp/kamctl.dbtext ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.dbtext > /tmp/kamdbctl.dbtext ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.dbtext ; \
+		install -m 644 /tmp/kamdbctl.dbtext /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.dbtext ; \
+		mkdir -p /usr/local/lib64/kamailio//kamctl/dbtextdb ; \
+		touch           /usr/local/lib64/kamailio//kamctl/dbtextdb/dbtextdb.py ; \
+		install -m 755 dbtextdb/dbtextdb.py /usr/local/lib64/kamailio//kamctl/dbtextdb/ ; \
+		mkdir -p /usr/local/share/kamailio//dbtext/kamailio ; \
+		for FILE in dbtext/kamailio/presentity dbtext/kamailio/purplemap dbtext/kamailio/silo dbtext/kamailio/active_watchers dbtext/kamailio/mohqueues dbtext/kamailio/dr_groups dbtext/kamailio/dr_rules dbtext/kamailio/mtree dbtext/kamailio/lcr_gw dbtext/kamailio/uri dbtext/kamailio/acc_cdrs dbtext/kamailio/sip_trace dbtext/kamailio/domain_attrs dbtext/kamailio/xcap dbtext/kamailio/userblacklist dbtext/kamailio/aliases dbtext/kamailio/address dbtext/kamailio/subscriber dbtext/kamailio/dispatcher dbtext/kamailio/carrierfailureroute dbtext/kamailio/uid_global_attrs dbtext/kamailio/pua dbtext/kamailio/uid_domain dbtext/kamailio/uid_user_attrs dbtext/kamailio/htable dbtext/kamailio/rtpengine dbtext/kamailio/imc_rooms dbtext/kamailio/re_grp dbtext/kamailio/rtpproxy dbtext/kamailio/location dbtext/kamailio/uid_domain_attrs dbtext/kamailio/dialog dbtext/kamailio/domain_name dbtext/kamailio/version dbtext/kamailio/watchers dbtext/kamailio/pdt dbtext/kamailio/matrix dbtext/kamailio/rls_presentity dbtext/kamailio/location_attrs dbtext/kamailio/uid_uri dbtext/kamailio/dbaliases dbtext/kamailio/lcr_rule_target dbtext/kamailio/carrier_name dbtext/kamailio/pl_pipes dbtext/kamailio/uacreg dbtext/kamailio/carrierroute dbtext/kamailio/mohqcalls dbtext/kamailio/missed_calls dbtext/kamailio/cpl dbtext/kamailio/trusted dbtext/kamailio/mtrees dbtext/kamailio/uid_uri_attrs dbtext/kamailio/dr_gateways dbtext/kamailio/topos_t dbtext/kamailio/rls_watchers dbtext/kamailio/imc_members dbtext/kamailio/usr_preferences dbtext/kamailio/speed_dial dbtext/kamailio/lcr_rule dbtext/kamailio/sca_subscriptions dbtext/kamailio/domainpolicy dbtext/kamailio/dialog_vars dbtext/kamailio/dialplan dbtext/kamailio/acc dbtext/kamailio/dr_gw_lists dbtext/kamailio/grp dbtext/kamailio/globalblacklist dbtext/kamailio/topos_d dbtext/kamailio/uid_credentials dbtext/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+				touch           $FILE \
+					/usr/local/share/kamailio//dbtext/kamailio/`basename "$FILE"` ; \
+				install -m 644 $FILE \
+					/usr/local/share/kamailio//dbtext/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ;\
+	fi
+# install sqlite stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.sqlite > /tmp/kamctl.sqlite ; \
+		install -m 644 /tmp/kamctl.sqlite \
+			/usr/local/lib64/kamailio//kamctl/kamctl.sqlite ; \
+		rm -fr /tmp/kamctl.sqlite ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.sqlite > /tmp/kamdbctl.sqlite ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.sqlite ; \
+		install -m 644 /tmp/kamdbctl.sqlite /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.sqlite ; \
+		mkdir -p /usr/local/share/kamailio//db_sqlite ; \
+		for FILE in db_sqlite/standard-create.sql db_sqlite/avpops-create.sql db_sqlite/pdt-create.sql db_sqlite/acc-create.sql db_sqlite/secfilter-create.sql db_sqlite/sca-create.sql db_sqlite/dialplan-create.sql db_sqlite/domainpolicy-create.sql db_sqlite/uid_gflags-create.sql db_sqlite/htable-create.sql db_sqlite/siptrace-create.sql db_sqlite/uid_avp_db-create.sql db_sqlite/group-create.sql db_sqlite/mtree-create.sql db_sqlite/alias_db-create.sql db_sqlite/pipelimit-create.sql db_sqlite/speeddial-create.sql db_sqlite/uac-create.sql db_sqlite/imc-create.sql db_sqlite/registrar-create.sql db_sqlite/uri_db-create.sql db_sqlite/usrloc-create.sql db_sqlite/msilo-create.sql db_sqlite/topos-create.sql db_sqlite/permissions-create.sql db_sqlite/cpl-create.sql db_sqlite/uid_domain-create.sql db_sqlite/rls-create.sql db_sqlite/dispatcher-create.sql db_sqlite/domain-create.sql db_sqlite/presence-create.sql db_sqlite/rtpengine-create.sql db_sqlite/dialog-create.sql db_sqlite/mohqueue-create.sql db_sqlite/purple-create.sql db_sqlite/rtpproxy-create.sql db_sqlite/drouting-create.sql db_sqlite/carrierroute-create.sql db_sqlite/userblacklist-create.sql db_sqlite/uid_auth_db-create.sql db_sqlite/matrix-create.sql db_sqlite/lcr-create.sql db_sqlite/uid_uri_db-create.sql db_sqlite/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//db_sqlite/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//db_sqlite/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install Redis stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/share/kamailio//db_redis/kamailio ; \
+		for FILE in db_redis/kamailio/presentity db_redis/kamailio/purplemap db_redis/kamailio/silo db_redis/kamailio/active_watchers db_redis/kamailio/mohqueues db_redis/kamailio/dr_groups db_redis/kamailio/dr_rules db_redis/kamailio/mtree db_redis/kamailio/lcr_gw db_redis/kamailio/uri db_redis/kamailio/acc_cdrs db_redis/kamailio/sip_trace db_redis/kamailio/domain_attrs db_redis/kamailio/xcap db_redis/kamailio/userblacklist db_redis/kamailio/aliases db_redis/kamailio/address db_redis/kamailio/subscriber db_redis/kamailio/dispatcher db_redis/kamailio/carrierfailureroute db_redis/kamailio/uid_global_attrs db_redis/kamailio/pua db_redis/kamailio/uid_domain db_redis/kamailio/uid_user_attrs db_redis/kamailio/htable db_redis/kamailio/rtpengine db_redis/kamailio/imc_rooms db_redis/kamailio/re_grp db_redis/kamailio/rtpproxy db_redis/kamailio/location db_redis/kamailio/uid_domain_attrs db_redis/kamailio/dialog db_redis/kamailio/domain_name db_redis/kamailio/version db_redis/kamailio/watchers db_redis/kamailio/pdt db_redis/kamailio/matrix db_redis/kamailio/rls_presentity db_redis/kamailio/location_attrs db_redis/kamailio/uid_uri db_redis/kamailio/dbaliases db_redis/kamailio/lcr_rule_target db_redis/kamailio/carrier_name db_redis/kamailio/pl_pipes db_redis/kamailio/uacreg db_redis/kamailio/carrierroute db_redis/kamailio/mohqcalls db_redis/kamailio/missed_calls db_redis/kamailio/cpl db_redis/kamailio/trusted db_redis/kamailio/mtrees db_redis/kamailio/uid_uri_attrs db_redis/kamailio/dr_gateways db_redis/kamailio/topos_t db_redis/kamailio/rls_watchers db_redis/kamailio/imc_members db_redis/kamailio/usr_preferences db_redis/kamailio/speed_dial db_redis/kamailio/lcr_rule db_redis/kamailio/sca_subscriptions db_redis/kamailio/domainpolicy db_redis/kamailio/dialog_vars db_redis/kamailio/dialplan db_redis/kamailio/acc db_redis/kamailio/dr_gw_lists db_redis/kamailio/grp db_redis/kamailio/globalblacklist db_redis/kamailio/topos_d db_redis/kamailio/uid_credentials db_redis/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+				touch           $FILE \
+					/usr/local/share/kamailio//db_redis/kamailio/`basename "$FILE"` ; \
+				install -m 644 $FILE \
+					/usr/local/share/kamailio//db_redis/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+touch           /usr/local/lib64/kamailio/modules/db_mysql.so
+install -m 755  db_mysql.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/auth_diameter.so
+install -m 755  auth_diameter.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M mohqueue.so]		mohqueue.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/mohqueue.so
+install -m 755  mohqueue.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/timer.so
+install -m 755  timer.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M cfgt.so]		cfgt.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/cfgt.so
+install -m 755  cfgt.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libtrie.so.1.0' is up to date.
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M carrierroute.so]		carrierroute.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/carrierroute.so
+install -m 755  carrierroute.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M cfg_db.so]		cfg_db.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/cfg_db.so
+install -m 755  cfg_db.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M sqlops.so]		sqlops.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/sqlops.so
+install -m 755  sqlops.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/acc_diameter.so
+install -m 755  acc_diameter.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/pua_dialoginfo.so
+install -m 755  pua_dialoginfo.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/avp.so
+install -m 755  avp.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M ims_usrloc_scscf.so]		ims_usrloc_scscf.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_usrloc_scscf.so
+install -m 755  ims_usrloc_scscf.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/presence_conference.so
+install -m 755  presence_conference.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M uid_auth_db.so]		uid_auth_db.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/uid_auth_db.so
+install -m 755  uid_auth_db.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/pua_bla.so
+install -m 755  pua_bla.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M xcap_server.so]		xcap_server.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/xcap_server.so
+install -m 755  xcap_server.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/kemix.so
+install -m 755  kemix.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/diversion.so
+install -m 755  diversion.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/cfg_rpc.so
+install -m 755  cfg_rpc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M secfilter.so]		secfilter.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/secfilter.so
+install -m 755  secfilter.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/xprint.so
+install -m 755  xprint.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/outbound.so
+install -m 755  outbound.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M uid_avp_db.so]		uid_avp_db.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/uid_avp_db.so
+install -m 755  uid_avp_db.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/statsc.so
+install -m 755  statsc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M jsonrpcs.so]		jsonrpcs.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/jsonrpcs.so
+install -m 755  jsonrpcs.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M dialplan.so]		dialplan.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/dialplan.so
+install -m 755  dialplan.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M acc.so]		acc.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/acc.so
+install -m 755  acc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M domainpolicy.so]		domainpolicy.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/domainpolicy.so
+install -m 755  domainpolicy.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/nathelper.so
+install -m 755  nathelper.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M tmrec.so]		tmrec.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/tmrec.so
+install -m 755  tmrec.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/mqueue.so
+install -m 755  mqueue.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/stun.so
+install -m 755  stun.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/exec.so
+install -m 755  exec.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M ss7ops.so]		ss7ops.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ss7ops.so
+install -m 755  ss7ops.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/benchmark.so
+install -m 755  benchmark.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/ratelimit.so
+install -m 755  ratelimit.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M rtpproxy.so]		rtpproxy.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/rtpproxy.so
+install -m 755  rtpproxy.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M pv.so]		pv.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/pv.so
+install -m 755  pv.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/rr.so
+install -m 755  rr.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/statistics.so
+install -m 755  statistics.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/counters.so
+install -m 755  counters.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/malloc_test.so
+install -m 755  malloc_test.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sl.so
+install -m 755  sl.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_ocs.so]		ims_ocs.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_ocs.so
+install -m 755  ims_ocs.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/cdp_avp.so
+install -m 755  cdp_avp.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_ipsec_pcscf.so]		ims_ipsec_pcscf.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_ipsec_pcscf.so
+install -m 755  ims_ipsec_pcscf.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/textopsx.so
+install -m 755  textopsx.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+LD (gcc) [M db2_ops.so]		db2_ops.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/db2_ops.so
+install -m 755  db2_ops.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/tcpops.so
+install -m 755  tcpops.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M ims_usrloc_pcscf.so]		ims_usrloc_pcscf.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_usrloc_pcscf.so
+install -m 755  ims_usrloc_pcscf.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/xmlops.so
+install -m 755  xmlops.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M group.so]		group.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/group.so
+install -m 755  group.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/mangler.so
+install -m 755  mangler.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M siptrace.so]		siptrace.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/siptrace.so
+install -m 755  siptrace.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/statsd.so
+install -m 755  statsd.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M topos.so]		topos.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/topos.so
+install -m 755  topos.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/path.so
+install -m 755  path.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M permissions.so]		permissions.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/permissions.so
+install -m 755  permissions.so  /usr/local/lib64/kamailio/modules
+CC (gcc) [U kamcmd]		kamcmd.o
+CC (gcc) [U kamcmd]		parse_listen_id.o
+LD (gcc) [U kamcmd]		kamcmd
+sed -e "s#kamcmd#kamcmd#g" \
+		-e "s#sip-router#kamailio#g" \
+		< kamcmd.8 > /usr/local/share/man//man8/kamcmd.8
+chmod 644  /usr/local/share/man//man8/kamcmd.8
+touch           /usr/local/sbin//kamcmd
+install -m 755  kamcmd  /usr/local/sbin/
+touch           /usr/local/lib64/kamailio/modules/ctl.so
+install -m 755  ctl.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M uac.so]		uac.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/uac.so
+install -m 755  uac.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M xcap_client.so]		xcap_client.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/xcap_client.so
+install -m 755  xcap_client.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/nosip.so
+install -m 755  nosip.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_icscf.so]		ims_icscf.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_icscf.so
+install -m 755  ims_icscf.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M usrloc.so]		usrloc.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/usrloc.so
+install -m 755  usrloc.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M pua.so]		pua.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/pua.so
+install -m 755  pua.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_auth.so]		ims_auth.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_auth.so
+install -m 755  ims_auth.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb2.so.1.0' is up to date.
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M db_flatstore.so]		db_flatstore.so
+make[3]: Nothing to be done for 'install-if-newer'.
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/db_flatstore.so
+install -m 755  db_flatstore.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M sipcapture.so]		sipcapture.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/sipcapture.so
+install -m 755  sipcapture.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M db_text.so]		db_text.so
+make[3]: Nothing to be done for 'install-if-newer'.
+DBTEXTON=yes make --no-print-directory -C ../../../utils/kamctl/ install-modules
+# install MySQL stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.mysql > /tmp/kamctl.mysql ; \
+		install -m 644 /tmp/kamctl.mysql \
+			/usr/local/lib64/kamailio//kamctl/kamctl.mysql ; \
+		rm -fr /tmp/kamctl.mysql ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbctl.mysql > /tmp/kamdbctl.mysql ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.mysql ; \
+		install -m 644 /tmp/kamdbctl.mysql /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.mysql ; \
+		mkdir -p /usr/local/share/kamailio//mysql ; \
+		for FILE in mysql/ims_dialog-create.sql mysql/standard-create.sql mysql/avpops-create.sql mysql/pdt-create.sql mysql/acc-create.sql mysql/secfilter-create.sql mysql/sca-create.sql mysql/dialplan-create.sql mysql/domainpolicy-create.sql mysql/uid_gflags-create.sql mysql/htable-create.sql mysql/siptrace-create.sql mysql/uid_avp_db-create.sql mysql/ims_usrloc_pcscf-create.sql mysql/group-create.sql mysql/mtree-create.sql mysql/alias_db-create.sql mysql/pipelimit-create.sql mysql/speeddial-create.sql mysql/uac-create.sql mysql/imc-create.sql mysql/registrar-create.sql mysql/uri_db-create.sql mysql/usrloc-create.sql mysql/msilo-create.sql mysql/topos-create.sql mysql/permissions-create.sql mysql/cpl-create.sql mysql/uid_domain-create.sql mysql/rls-create.sql mysql/dispatcher-create.sql mysql/domain-create.sql mysql/presence-create.sql mysql/rtpengine-create.sql mysql/dialog-create.sql mysql/mohqueue-create.sql mysql/ims_charging-create.sql mysql/purple-create.sql mysql/rtpproxy-create.sql mysql/drouting-create.sql mysql/carrierroute-create.sql mysql/userblacklist-create.sql mysql/uid_auth_db-create.sql mysql/matrix-create.sql mysql/lcr-create.sql mysql/uid_uri_db-create.sql mysql/auth_db-create.sql mysql/ims_usrloc_scscf-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//mysql/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//mysql/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install PostgreSQL stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.pgsql > /tmp/kamctl.pgsql ; \
+		install -m 644 /tmp/kamctl.pgsql \
+			/usr/local/lib64/kamailio//kamctl/kamctl.pgsql ; \
+		rm -fr /tmp/kamctl.pgsql ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.pgsql > /tmp/kamdbctl.pgsql ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.pgsql ; \
+		install -m 644 /tmp/kamdbctl.pgsql /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.pgsql ; \
+		mkdir -p /usr/local/share/kamailio//postgres ; \
+		for FILE in postgres/standard-create.sql postgres/avpops-create.sql postgres/pdt-create.sql postgres/acc-create.sql postgres/secfilter-create.sql postgres/sca-create.sql postgres/dialplan-create.sql postgres/domainpolicy-create.sql postgres/uid_gflags-create.sql postgres/htable-create.sql postgres/siptrace-create.sql postgres/uid_avp_db-create.sql postgres/group-create.sql postgres/mtree-create.sql postgres/alias_db-create.sql postgres/pipelimit-create.sql postgres/speeddial-create.sql postgres/uac-create.sql postgres/imc-create.sql postgres/registrar-create.sql postgres/uri_db-create.sql postgres/usrloc-create.sql postgres/msilo-create.sql postgres/topos-create.sql postgres/permissions-create.sql postgres/cpl-create.sql postgres/uid_domain-create.sql postgres/rls-create.sql postgres/dispatcher-create.sql postgres/domain-create.sql postgres/presence-create.sql postgres/rtpengine-create.sql postgres/dialog-create.sql postgres/mohqueue-create.sql postgres/purple-create.sql postgres/rtpproxy-create.sql postgres/drouting-create.sql postgres/carrierroute-create.sql postgres/userblacklist-create.sql postgres/uid_auth_db-create.sql postgres/matrix-create.sql postgres/lcr-create.sql postgres/uid_uri_db-create.sql postgres/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//postgres/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//postgres/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install Oracle stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.oracle > /tmp/kamctl.oracle ; \
+		install -m 644 /tmp/kamctl.oracle \
+			/usr/local/lib64/kamailio//kamctl/kamctl.oracle ; \
+		rm -fr /tmp/kamctl.oracle ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbctl.oracle > /tmp/kamdbctl.oracle ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.oracle ; \
+		install -m 644 /tmp/kamdbctl.oracle /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.oracle ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbfunc.oracle > /tmp/kamdbfunc.oracle ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbfunc.oracle ; \
+		install -m 644 /tmp/kamdbfunc.oracle /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbfunc.oracle ; \
+		mkdir -p /usr/local/share/kamailio//oracle ; \
+		for FILE in oracle/admin oracle/standard-create.sql oracle/avpops-create.sql oracle/pdt-create.sql oracle/acc-create.sql oracle/secfilter-create.sql oracle/sca-create.sql oracle/dialplan-create.sql oracle/domainpolicy-create.sql oracle/uid_gflags-create.sql oracle/htable-create.sql oracle/siptrace-create.sql oracle/uid_avp_db-create.sql oracle/inc oracle/group-create.sql oracle/mtree-create.sql oracle/alias_db-create.sql oracle/pipelimit-create.sql oracle/speeddial-create.sql oracle/uac-create.sql oracle/imc-create.sql oracle/registrar-create.sql oracle/uri_db-create.sql oracle/usrloc-create.sql oracle/msilo-create.sql oracle/topos-create.sql oracle/permissions-create.sql oracle/cpl-create.sql oracle/uid_domain-create.sql oracle/rls-create.sql oracle/dispatcher-create.sql oracle/README.TYPES oracle/domain-create.sql oracle/presence-create.sql oracle/rtpengine-create.sql oracle/dialog-create.sql oracle/mohqueue-create.sql oracle/purple-create.sql oracle/rtpproxy-create.sql oracle/drouting-create.sql oracle/carrierroute-create.sql oracle/userblacklist-create.sql oracle/uid_auth_db-create.sql oracle/matrix-create.sql oracle/lcr-create.sql oracle/uid_uri_db-create.sql oracle/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		mkdir -p /usr/local/share/kamailio//oracle/inc ; \
+		for FILE in oracle/inc/_grantroot.tmpl oracle/inc/_grantfunc.tmpl oracle/inc/_dropsch.tmpl oracle/inc/_create_compat.sql oracle/inc/_createsch.tmpl ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/inc/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/inc/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		mkdir -p /usr/local/share/kamailio//oracle/admin ; \
+		for FILE in oracle/admin/_create_as_sys.tmpl oracle/admin/README oracle/admin/_drop_as_sys.tmpl ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/admin/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/admin/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		make -C ../db_oracle/ ; \
+		install -m 755 ../db_oracle/kamailio_orasel /usr/local/sbin/ ; \
+	fi
+# install Berkeley database stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/share/kamailio/#/usr/local/share/kamailio/#g" \
+			< kamctl.db_berkeley > /tmp/kamctl.db_berkeley ; \
+		install -m 644 /tmp/kamctl.db_berkeley \
+			/usr/local/lib64/kamailio//kamctl/kamctl.db_berkeley ; \
+		rm -fr /tmp/kamctl.db_berkeley ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.db_berkeley > /tmp/kamdbctl.db_berkeley ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.db_berkeley ; \
+		install -m 644 /tmp/kamdbctl.db_berkeley /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.db_berkeley ; \
+		mkdir -p /usr/local/share/kamailio//db_berkeley/kamailio ; \
+		for FILE in db_berkeley/kamailio/presentity db_berkeley/kamailio/purplemap db_berkeley/kamailio/silo db_berkeley/kamailio/active_watchers db_berkeley/kamailio/mohqueues db_berkeley/kamailio/dr_groups db_berkeley/kamailio/dr_rules db_berkeley/kamailio/mtree db_berkeley/kamailio/lcr_gw db_berkeley/kamailio/uri db_berkeley/kamailio/acc_cdrs db_berkeley/kamailio/sip_trace db_berkeley/kamailio/domain_attrs db_berkeley/kamailio/xcap db_berkeley/kamailio/userblacklist db_berkeley/kamailio/aliases db_berkeley/kamailio/address db_berkeley/kamailio/subscriber db_berkeley/kamailio/dispatcher db_berkeley/kamailio/carrierfailureroute db_berkeley/kamailio/uid_global_attrs db_berkeley/kamailio/pua db_berkeley/kamailio/uid_domain db_berkeley/kamailio/uid_user_attrs db_berkeley/kamailio/htable db_berkeley/kamailio/rtpengine db_berkeley/kamailio/imc_rooms db_berkeley/kamailio/re_grp db_berkeley/kamailio/rtpproxy db_berkeley/kamailio/location db_berkeley/kamailio/uid_domain_attrs db_berkeley/kamailio/dialog db_berkeley/kamailio/domain_name db_berkeley/kamailio/version db_berkeley/kamailio/watchers db_berkeley/kamailio/pdt db_berkeley/kamailio/matrix db_berkeley/kamailio/rls_presentity db_berkeley/kamailio/location_attrs db_berkeley/kamailio/uid_uri db_berkeley/kamailio/dbaliases db_berkeley/kamailio/lcr_rule_target db_berkeley/kamailio/carrier_name db_berkeley/kamailio/pl_pipes db_berkeley/kamailio/uacreg db_berkeley/kamailio/carrierroute db_berkeley/kamailio/mohqcalls db_berkeley/kamailio/missed_calls db_berkeley/kamailio/cpl db_berkeley/kamailio/trusted db_berkeley/kamailio/mtrees db_berkeley/kamailio/uid_uri_attrs db_berkeley/kamailio/dr_gateways db_berkeley/kamailio/topos_t db_berkeley/kamailio/rls_watchers db_berkeley/kamailio/imc_members db_berkeley/kamailio/usr_preferences db_berkeley/kamailio/speed_dial db_berkeley/kamailio/lcr_rule db_berkeley/kamailio/sca_subscriptions db_berkeley/kamailio/domainpolicy db_berkeley/kamailio/dialog_vars db_berkeley/kamailio/dialplan db_berkeley/kamailio/acc db_berkeley/kamailio/dr_gw_lists db_berkeley/kamailio/grp db_berkeley/kamailio/globalblacklist db_berkeley/kamailio/topos_d db_berkeley/kamailio/uid_credentials db_berkeley/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//db_berkeley/kamailio/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//db_berkeley/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		make -C ../db_berkeley/ ; \
+		install -m 755 ../db_berkeley/kambdb_recover /usr/local/sbin/ ; \
+	fi
+# install dbtext stuff
+if [ "yes" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/share/kamailio/#/usr/local/share/kamailio/#g" \
+			< kamctl.dbtext > /tmp/kamctl.dbtext ; \
+		install -m 644 /tmp/kamctl.dbtext \
+			/usr/local/lib64/kamailio//kamctl/kamctl.dbtext ; \
+		rm -fr /tmp/kamctl.dbtext ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.dbtext > /tmp/kamdbctl.dbtext ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.dbtext ; \
+		install -m 644 /tmp/kamdbctl.dbtext /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.dbtext ; \
+		mkdir -p /usr/local/lib64/kamailio//kamctl/dbtextdb ; \
+		touch           /usr/local/lib64/kamailio//kamctl/dbtextdb/dbtextdb.py ; \
+		install -m 755 dbtextdb/dbtextdb.py /usr/local/lib64/kamailio//kamctl/dbtextdb/ ; \
+		mkdir -p /usr/local/share/kamailio//dbtext/kamailio ; \
+		for FILE in dbtext/kamailio/presentity dbtext/kamailio/purplemap dbtext/kamailio/silo dbtext/kamailio/active_watchers dbtext/kamailio/mohqueues dbtext/kamailio/dr_groups dbtext/kamailio/dr_rules dbtext/kamailio/mtree dbtext/kamailio/lcr_gw dbtext/kamailio/uri dbtext/kamailio/acc_cdrs dbtext/kamailio/sip_trace dbtext/kamailio/domain_attrs dbtext/kamailio/xcap dbtext/kamailio/userblacklist dbtext/kamailio/aliases dbtext/kamailio/address dbtext/kamailio/subscriber dbtext/kamailio/dispatcher dbtext/kamailio/carrierfailureroute dbtext/kamailio/uid_global_attrs dbtext/kamailio/pua dbtext/kamailio/uid_domain dbtext/kamailio/uid_user_attrs dbtext/kamailio/htable dbtext/kamailio/rtpengine dbtext/kamailio/imc_rooms dbtext/kamailio/re_grp dbtext/kamailio/rtpproxy dbtext/kamailio/location dbtext/kamailio/uid_domain_attrs dbtext/kamailio/dialog dbtext/kamailio/domain_name dbtext/kamailio/version dbtext/kamailio/watchers dbtext/kamailio/pdt dbtext/kamailio/matrix dbtext/kamailio/rls_presentity dbtext/kamailio/location_attrs dbtext/kamailio/uid_uri dbtext/kamailio/dbaliases dbtext/kamailio/lcr_rule_target dbtext/kamailio/carrier_name dbtext/kamailio/pl_pipes dbtext/kamailio/uacreg dbtext/kamailio/carrierroute dbtext/kamailio/mohqcalls dbtext/kamailio/missed_calls dbtext/kamailio/cpl dbtext/kamailio/trusted dbtext/kamailio/mtrees dbtext/kamailio/uid_uri_attrs dbtext/kamailio/dr_gateways dbtext/kamailio/topos_t dbtext/kamailio/rls_watchers dbtext/kamailio/imc_members dbtext/kamailio/usr_preferences dbtext/kamailio/speed_dial dbtext/kamailio/lcr_rule dbtext/kamailio/sca_subscriptions dbtext/kamailio/domainpolicy dbtext/kamailio/dialog_vars dbtext/kamailio/dialplan dbtext/kamailio/acc dbtext/kamailio/dr_gw_lists dbtext/kamailio/grp dbtext/kamailio/globalblacklist dbtext/kamailio/topos_d dbtext/kamailio/uid_credentials dbtext/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+				touch           $FILE \
+					/usr/local/share/kamailio//dbtext/kamailio/`basename "$FILE"` ; \
+				install -m 644 $FILE \
+					/usr/local/share/kamailio//dbtext/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ;\
+	fi
+# install sqlite stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.sqlite > /tmp/kamctl.sqlite ; \
+		install -m 644 /tmp/kamctl.sqlite \
+			/usr/local/lib64/kamailio//kamctl/kamctl.sqlite ; \
+		rm -fr /tmp/kamctl.sqlite ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.sqlite > /tmp/kamdbctl.sqlite ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.sqlite ; \
+		install -m 644 /tmp/kamdbctl.sqlite /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.sqlite ; \
+		mkdir -p /usr/local/share/kamailio//db_sqlite ; \
+		for FILE in db_sqlite/standard-create.sql db_sqlite/avpops-create.sql db_sqlite/pdt-create.sql db_sqlite/acc-create.sql db_sqlite/secfilter-create.sql db_sqlite/sca-create.sql db_sqlite/dialplan-create.sql db_sqlite/domainpolicy-create.sql db_sqlite/uid_gflags-create.sql db_sqlite/htable-create.sql db_sqlite/siptrace-create.sql db_sqlite/uid_avp_db-create.sql db_sqlite/group-create.sql db_sqlite/mtree-create.sql db_sqlite/alias_db-create.sql db_sqlite/pipelimit-create.sql db_sqlite/speeddial-create.sql db_sqlite/uac-create.sql db_sqlite/imc-create.sql db_sqlite/registrar-create.sql db_sqlite/uri_db-create.sql db_sqlite/usrloc-create.sql db_sqlite/msilo-create.sql db_sqlite/topos-create.sql db_sqlite/permissions-create.sql db_sqlite/cpl-create.sql db_sqlite/uid_domain-create.sql db_sqlite/rls-create.sql db_sqlite/dispatcher-create.sql db_sqlite/domain-create.sql db_sqlite/presence-create.sql db_sqlite/rtpengine-create.sql db_sqlite/dialog-create.sql db_sqlite/mohqueue-create.sql db_sqlite/purple-create.sql db_sqlite/rtpproxy-create.sql db_sqlite/drouting-create.sql db_sqlite/carrierroute-create.sql db_sqlite/userblacklist-create.sql db_sqlite/uid_auth_db-create.sql db_sqlite/matrix-create.sql db_sqlite/lcr-create.sql db_sqlite/uid_uri_db-create.sql db_sqlite/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//db_sqlite/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//db_sqlite/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install Redis stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/share/kamailio//db_redis/kamailio ; \
+		for FILE in db_redis/kamailio/presentity db_redis/kamailio/purplemap db_redis/kamailio/silo db_redis/kamailio/active_watchers db_redis/kamailio/mohqueues db_redis/kamailio/dr_groups db_redis/kamailio/dr_rules db_redis/kamailio/mtree db_redis/kamailio/lcr_gw db_redis/kamailio/uri db_redis/kamailio/acc_cdrs db_redis/kamailio/sip_trace db_redis/kamailio/domain_attrs db_redis/kamailio/xcap db_redis/kamailio/userblacklist db_redis/kamailio/aliases db_redis/kamailio/address db_redis/kamailio/subscriber db_redis/kamailio/dispatcher db_redis/kamailio/carrierfailureroute db_redis/kamailio/uid_global_attrs db_redis/kamailio/pua db_redis/kamailio/uid_domain db_redis/kamailio/uid_user_attrs db_redis/kamailio/htable db_redis/kamailio/rtpengine db_redis/kamailio/imc_rooms db_redis/kamailio/re_grp db_redis/kamailio/rtpproxy db_redis/kamailio/location db_redis/kamailio/uid_domain_attrs db_redis/kamailio/dialog db_redis/kamailio/domain_name db_redis/kamailio/version db_redis/kamailio/watchers db_redis/kamailio/pdt db_redis/kamailio/matrix db_redis/kamailio/rls_presentity db_redis/kamailio/location_attrs db_redis/kamailio/uid_uri db_redis/kamailio/dbaliases db_redis/kamailio/lcr_rule_target db_redis/kamailio/carrier_name db_redis/kamailio/pl_pipes db_redis/kamailio/uacreg db_redis/kamailio/carrierroute db_redis/kamailio/mohqcalls db_redis/kamailio/missed_calls db_redis/kamailio/cpl db_redis/kamailio/trusted db_redis/kamailio/mtrees db_redis/kamailio/uid_uri_attrs db_redis/kamailio/dr_gateways db_redis/kamailio/topos_t db_redis/kamailio/rls_watchers db_redis/kamailio/imc_members db_redis/kamailio/usr_preferences db_redis/kamailio/speed_dial db_redis/kamailio/lcr_rule db_redis/kamailio/sca_subscriptions db_redis/kamailio/domainpolicy db_redis/kamailio/dialog_vars db_redis/kamailio/dialplan db_redis/kamailio/acc db_redis/kamailio/dr_gw_lists db_redis/kamailio/grp db_redis/kamailio/globalblacklist db_redis/kamailio/topos_d db_redis/kamailio/uid_credentials db_redis/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+				touch           $FILE \
+					/usr/local/share/kamailio//db_redis/kamailio/`basename "$FILE"` ; \
+				install -m 644 $FILE \
+					/usr/local/share/kamailio//db_redis/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+touch           /usr/local/lib64/kamailio/modules/db_text.so
+install -m 755  db_text.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/pdb.so
+install -m 755  pdb.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/textops.so
+install -m 755  textops.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sanity.so
+install -m 755  sanity.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/app_sqlang.so
+install -m 755  app_sqlang.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/call_obj.so
+install -m 755  call_obj.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/qos.so
+install -m 755  qos.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/xlog.so
+install -m 755  xlog.so  /usr/local/lib64/kamailio/modules
+gcc -g -D_GNU_SOURCE -std=c99 -fvisibility=hidden -pthread -o openssl_mutex_shared.so -O3 -Wall -shared -fPIC -ldl openssl_mutex_shared.c
+mkdir -p /usr/local/lib64/kamailio//openssl_mutex_shared
+touch           /usr/local/lib64/kamailio//openssl_mutex_shared/openssl_mutex_shared.so
+install -m 755 openssl_mutex_shared.so /usr/local/lib64/kamailio//openssl_mutex_shared
+touch           /usr/local/lib64/kamailio/modules/tls.so
+install -m 755  tls.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/async.so
+install -m 755  async.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libkamailio_ims.so.0.1' is up to date.
+LD (gcc) [M ims_registrar_scscf.so]		ims_registrar_scscf.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/ims_registrar_scscf.so
+install -m 755  ims_registrar_scscf.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M registrar.so]		registrar.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/registrar.so
+install -m 755  registrar.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M speeddial.so]		speeddial.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/speeddial.so
+install -m 755  speeddial.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M auth_db.so]		auth_db.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/auth_db.so
+install -m 755  auth_db.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/mediaproxy.so
+install -m 755  mediaproxy.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M rtjson.so]		rtjson.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/rtjson.so
+install -m 755  rtjson.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sipt.so
+install -m 755  sipt.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M pipelimit.so]		pipelimit.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/pipelimit.so
+install -m 755  pipelimit.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/sms.so
+install -m 755  sms.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/xmlrpc.so
+install -m 755  xmlrpc.so  /usr/local/lib64/kamailio/modules
+touch           /usr/local/lib64/kamailio/modules/xhttp_prom.so
+install -m 755  xhttp_prom.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrutils.so.1.0' is up to date.
+LD (gcc) [M kex.so]		kex.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/kex.so
+install -m 755  kex.so  /usr/local/lib64/kamailio/modules
+make[3]: 'libsrdb1.so.1.0' is up to date.
+LD (gcc) [M msilo.so]		msilo.so
+make[3]: Nothing to be done for 'install-if-newer'.
+touch           /usr/local/lib64/kamailio/modules/msilo.so
+install -m 755  msilo.so  /usr/local/lib64/kamailio/modules
+config files installed
+touch           /usr/local/share/doc/kamailio//INSTALL
+install -m 644 ../INSTALL /usr/local/share/doc/kamailio/
+touch           /usr/local/share/doc/kamailio//README
+install -m 644 ../README /usr/local/share/doc/kamailio/
+info - no docbook to man tool to convert auth.xml
+info - no docbook to man tool to convert avp.xml
+make[2]: 'kamcmd' is up to date.
+# kamctl config
+touch             /usr/local/etc/kamailio//kamctlrc.sample
+install -m 644 kamctlrc \
+		/usr/local/etc/kamailio//kamctlrc.sample
+if [ ! -f /usr/local/etc/kamailio//kamctlrc ]; then \
+		mv -f /usr/local/etc/kamailio//kamctlrc.sample \
+			/usr/local/etc/kamailio//kamctlrc; \
+	fi
+cat kamctl | \
+	sed -e "s#/usr/local/sbin##g" | \
+	sed -e "s#/usr/local/lib/kamailio#/usr/local/lib64/kamailio/#g" | \
+	sed -e "s#/usr/local/etc/kamailio#/usr/local/etc/kamailio/#g"  >/tmp/kamctl
+touch           /usr/local/sbin//kamctl
+install -m 755 /tmp/kamctl /usr/local/sbin/
+rm -fr /tmp/kamctl
+sed -e "s#/usr/local/sbin##g" \
+		< kamctl.base > /tmp/kamctl.base
+mkdir -p /usr/local/lib64/kamailio//kamctl
+touch           \
+		/usr/local/lib64/kamailio//kamctl
+install -m 644 /tmp/kamctl.base \
+		/usr/local/lib64/kamailio//kamctl/kamctl.base
+rm -fr /tmp/kamctl.base
+sed -e "s#/usr/local##g" \
+		< kamctl.ctlbase > /tmp/kamctl.ctlbase
+install -m 644 /tmp/kamctl.ctlbase \
+		/usr/local/lib64/kamailio//kamctl/kamctl.ctlbase
+rm -fr /tmp/kamctl.ctlbase
+sed -e "s#/usr/local##g" \
+		< kamctl.rpcfifo > /tmp/kamctl.rpcfifo
+install -m 644 /tmp/kamctl.rpcfifo \
+		/usr/local/lib64/kamailio//kamctl/kamctl.rpcfifo
+rm -fr /tmp/kamctl.rpcfifo
+sed -e "s#/usr/local##g" \
+		< kamctl.ser > /tmp/kamctl.ser
+install -m 644 /tmp/kamctl.ser \
+		/usr/local/lib64/kamailio//kamctl/kamctl.ser
+rm -fr /tmp/kamctl.ser
+sed -e "s#/usr/local##g" \
+		< kamctl.sqlbase > /tmp/kamctl.sqlbase
+install -m 644 /tmp/kamctl.sqlbase \
+		/usr/local/lib64/kamailio//kamctl/kamctl.sqlbase
+rm -fr /tmp/kamctl.sqlbase
+# install db setup base script
+sed -e "s#/usr/local/sbin##g" \
+		-e "s#/usr/local/etc/kamailio#/usr/local/etc/kamailio/#g" \
+		-e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbctl.base > /tmp/kamdbctl.base
+install -m 644 /tmp/kamdbctl.base \
+		/usr/local/lib64/kamailio//kamctl/kamdbctl.base
+rm -fr /tmp/kamdbctl.base
+cat kamdbctl | \
+	sed -e "s#/usr/local/sbin##g" | \
+	sed -e "s#/usr/local/lib/kamailio#/usr/local/lib64/kamailio/#g" | \
+	sed -e "s#/usr/local/etc/kamailio#/usr/local/etc/kamailio/#g"  >/tmp/kamdbctl
+touch           /usr/local/sbin//kamdbctl
+install -m 755 /tmp/kamdbctl /usr/local/sbin/
+rm -fr /tmp/kamdbctl
+sed -e "s#/etc//\.cfg#/usr/local/etc/kamailio/.cfg#g" \
+		-e "s#/usr/sbin/##g" \
+		-e "s#/usr/lib//modules/##g" \
+		-e "s#/usr/share/doc//##g" \
+		< kamctl.8 > /usr/local/share/man//man8/kamctl.8
+chmod 644  /usr/local/share/man//man8/kamctl.8
+sed -e "s#/etc//\.cfg#/usr/local/etc/kamailio/.cfg#g" \
+		-e "s#/usr/sbin/##g" \
+		-e "s#/usr/lib//modules/##g" \
+		-e "s#/usr/share/doc//##g" \
+		< kamdbctl.8 > /usr/local/share/man//man8/kamdbctl.8
+chmod 644  /usr/local/share/man//man8/kamdbctl.8
+# install MySQL stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.mysql > /tmp/kamctl.mysql ; \
+		install -m 644 /tmp/kamctl.mysql \
+			/usr/local/lib64/kamailio//kamctl/kamctl.mysql ; \
+		rm -fr /tmp/kamctl.mysql ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbctl.mysql > /tmp/kamdbctl.mysql ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.mysql ; \
+		install -m 644 /tmp/kamdbctl.mysql /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.mysql ; \
+		mkdir -p /usr/local/share/kamailio//mysql ; \
+		for FILE in mysql/ims_dialog-create.sql mysql/standard-create.sql mysql/avpops-create.sql mysql/pdt-create.sql mysql/acc-create.sql mysql/secfilter-create.sql mysql/sca-create.sql mysql/dialplan-create.sql mysql/domainpolicy-create.sql mysql/uid_gflags-create.sql mysql/htable-create.sql mysql/siptrace-create.sql mysql/uid_avp_db-create.sql mysql/ims_usrloc_pcscf-create.sql mysql/group-create.sql mysql/mtree-create.sql mysql/alias_db-create.sql mysql/pipelimit-create.sql mysql/speeddial-create.sql mysql/uac-create.sql mysql/imc-create.sql mysql/registrar-create.sql mysql/uri_db-create.sql mysql/usrloc-create.sql mysql/msilo-create.sql mysql/topos-create.sql mysql/permissions-create.sql mysql/cpl-create.sql mysql/uid_domain-create.sql mysql/rls-create.sql mysql/dispatcher-create.sql mysql/domain-create.sql mysql/presence-create.sql mysql/rtpengine-create.sql mysql/dialog-create.sql mysql/mohqueue-create.sql mysql/ims_charging-create.sql mysql/purple-create.sql mysql/rtpproxy-create.sql mysql/drouting-create.sql mysql/carrierroute-create.sql mysql/userblacklist-create.sql mysql/uid_auth_db-create.sql mysql/matrix-create.sql mysql/lcr-create.sql mysql/uid_uri_db-create.sql mysql/auth_db-create.sql mysql/ims_usrloc_scscf-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//mysql/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//mysql/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install PostgreSQL stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.pgsql > /tmp/kamctl.pgsql ; \
+		install -m 644 /tmp/kamctl.pgsql \
+			/usr/local/lib64/kamailio//kamctl/kamctl.pgsql ; \
+		rm -fr /tmp/kamctl.pgsql ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.pgsql > /tmp/kamdbctl.pgsql ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.pgsql ; \
+		install -m 644 /tmp/kamdbctl.pgsql /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.pgsql ; \
+		mkdir -p /usr/local/share/kamailio//postgres ; \
+		for FILE in postgres/standard-create.sql postgres/avpops-create.sql postgres/pdt-create.sql postgres/acc-create.sql postgres/secfilter-create.sql postgres/sca-create.sql postgres/dialplan-create.sql postgres/domainpolicy-create.sql postgres/uid_gflags-create.sql postgres/htable-create.sql postgres/siptrace-create.sql postgres/uid_avp_db-create.sql postgres/group-create.sql postgres/mtree-create.sql postgres/alias_db-create.sql postgres/pipelimit-create.sql postgres/speeddial-create.sql postgres/uac-create.sql postgres/imc-create.sql postgres/registrar-create.sql postgres/uri_db-create.sql postgres/usrloc-create.sql postgres/msilo-create.sql postgres/topos-create.sql postgres/permissions-create.sql postgres/cpl-create.sql postgres/uid_domain-create.sql postgres/rls-create.sql postgres/dispatcher-create.sql postgres/domain-create.sql postgres/presence-create.sql postgres/rtpengine-create.sql postgres/dialog-create.sql postgres/mohqueue-create.sql postgres/purple-create.sql postgres/rtpproxy-create.sql postgres/drouting-create.sql postgres/carrierroute-create.sql postgres/userblacklist-create.sql postgres/uid_auth_db-create.sql postgres/matrix-create.sql postgres/lcr-create.sql postgres/uid_uri_db-create.sql postgres/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//postgres/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//postgres/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install Oracle stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.oracle > /tmp/kamctl.oracle ; \
+		install -m 644 /tmp/kamctl.oracle \
+			/usr/local/lib64/kamailio//kamctl/kamctl.oracle ; \
+		rm -fr /tmp/kamctl.oracle ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbctl.oracle > /tmp/kamdbctl.oracle ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.oracle ; \
+		install -m 644 /tmp/kamdbctl.oracle /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.oracle ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+		< kamdbfunc.oracle > /tmp/kamdbfunc.oracle ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbfunc.oracle ; \
+		install -m 644 /tmp/kamdbfunc.oracle /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbfunc.oracle ; \
+		mkdir -p /usr/local/share/kamailio//oracle ; \
+		for FILE in oracle/admin oracle/standard-create.sql oracle/avpops-create.sql oracle/pdt-create.sql oracle/acc-create.sql oracle/secfilter-create.sql oracle/sca-create.sql oracle/dialplan-create.sql oracle/domainpolicy-create.sql oracle/uid_gflags-create.sql oracle/htable-create.sql oracle/siptrace-create.sql oracle/uid_avp_db-create.sql oracle/inc oracle/group-create.sql oracle/mtree-create.sql oracle/alias_db-create.sql oracle/pipelimit-create.sql oracle/speeddial-create.sql oracle/uac-create.sql oracle/imc-create.sql oracle/registrar-create.sql oracle/uri_db-create.sql oracle/usrloc-create.sql oracle/msilo-create.sql oracle/topos-create.sql oracle/permissions-create.sql oracle/cpl-create.sql oracle/uid_domain-create.sql oracle/rls-create.sql oracle/dispatcher-create.sql oracle/README.TYPES oracle/domain-create.sql oracle/presence-create.sql oracle/rtpengine-create.sql oracle/dialog-create.sql oracle/mohqueue-create.sql oracle/purple-create.sql oracle/rtpproxy-create.sql oracle/drouting-create.sql oracle/carrierroute-create.sql oracle/userblacklist-create.sql oracle/uid_auth_db-create.sql oracle/matrix-create.sql oracle/lcr-create.sql oracle/uid_uri_db-create.sql oracle/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		mkdir -p /usr/local/share/kamailio//oracle/inc ; \
+		for FILE in oracle/inc/_grantroot.tmpl oracle/inc/_grantfunc.tmpl oracle/inc/_dropsch.tmpl oracle/inc/_create_compat.sql oracle/inc/_createsch.tmpl ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/inc/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/inc/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		mkdir -p /usr/local/share/kamailio//oracle/admin ; \
+		for FILE in oracle/admin/_create_as_sys.tmpl oracle/admin/README oracle/admin/_drop_as_sys.tmpl ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//oracle/admin/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//oracle/admin/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		make -C ../db_oracle/ ; \
+		install -m 755 ../db_oracle/kamailio_orasel /usr/local/sbin/ ; \
+	fi
+# install Berkeley database stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/share/kamailio/#/usr/local/share/kamailio/#g" \
+			< kamctl.db_berkeley > /tmp/kamctl.db_berkeley ; \
+		install -m 644 /tmp/kamctl.db_berkeley \
+			/usr/local/lib64/kamailio//kamctl/kamctl.db_berkeley ; \
+		rm -fr /tmp/kamctl.db_berkeley ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.db_berkeley > /tmp/kamdbctl.db_berkeley ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.db_berkeley ; \
+		install -m 644 /tmp/kamdbctl.db_berkeley /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.db_berkeley ; \
+		mkdir -p /usr/local/share/kamailio//db_berkeley/kamailio ; \
+		for FILE in db_berkeley/kamailio/presentity db_berkeley/kamailio/purplemap db_berkeley/kamailio/silo db_berkeley/kamailio/active_watchers db_berkeley/kamailio/mohqueues db_berkeley/kamailio/dr_groups db_berkeley/kamailio/dr_rules db_berkeley/kamailio/mtree db_berkeley/kamailio/lcr_gw db_berkeley/kamailio/uri db_berkeley/kamailio/acc_cdrs db_berkeley/kamailio/sip_trace db_berkeley/kamailio/domain_attrs db_berkeley/kamailio/xcap db_berkeley/kamailio/userblacklist db_berkeley/kamailio/aliases db_berkeley/kamailio/address db_berkeley/kamailio/subscriber db_berkeley/kamailio/dispatcher db_berkeley/kamailio/carrierfailureroute db_berkeley/kamailio/uid_global_attrs db_berkeley/kamailio/pua db_berkeley/kamailio/uid_domain db_berkeley/kamailio/uid_user_attrs db_berkeley/kamailio/htable db_berkeley/kamailio/rtpengine db_berkeley/kamailio/imc_rooms db_berkeley/kamailio/re_grp db_berkeley/kamailio/rtpproxy db_berkeley/kamailio/location db_berkeley/kamailio/uid_domain_attrs db_berkeley/kamailio/dialog db_berkeley/kamailio/domain_name db_berkeley/kamailio/version db_berkeley/kamailio/watchers db_berkeley/kamailio/pdt db_berkeley/kamailio/matrix db_berkeley/kamailio/rls_presentity db_berkeley/kamailio/location_attrs db_berkeley/kamailio/uid_uri db_berkeley/kamailio/dbaliases db_berkeley/kamailio/lcr_rule_target db_berkeley/kamailio/carrier_name db_berkeley/kamailio/pl_pipes db_berkeley/kamailio/uacreg db_berkeley/kamailio/carrierroute db_berkeley/kamailio/mohqcalls db_berkeley/kamailio/missed_calls db_berkeley/kamailio/cpl db_berkeley/kamailio/trusted db_berkeley/kamailio/mtrees db_berkeley/kamailio/uid_uri_attrs db_berkeley/kamailio/dr_gateways db_berkeley/kamailio/topos_t db_berkeley/kamailio/rls_watchers db_berkeley/kamailio/imc_members db_berkeley/kamailio/usr_preferences db_berkeley/kamailio/speed_dial db_berkeley/kamailio/lcr_rule db_berkeley/kamailio/sca_subscriptions db_berkeley/kamailio/domainpolicy db_berkeley/kamailio/dialog_vars db_berkeley/kamailio/dialplan db_berkeley/kamailio/acc db_berkeley/kamailio/dr_gw_lists db_berkeley/kamailio/grp db_berkeley/kamailio/globalblacklist db_berkeley/kamailio/topos_d db_berkeley/kamailio/uid_credentials db_berkeley/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//db_berkeley/kamailio/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//db_berkeley/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+		make -C ../db_berkeley/ ; \
+		install -m 755 ../db_berkeley/kambdb_recover /usr/local/sbin/ ; \
+	fi
+# install dbtext stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/share/kamailio/#/usr/local/share/kamailio/#g" \
+			< kamctl.dbtext > /tmp/kamctl.dbtext ; \
+		install -m 644 /tmp/kamctl.dbtext \
+			/usr/local/lib64/kamailio//kamctl/kamctl.dbtext ; \
+		rm -fr /tmp/kamctl.dbtext ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.dbtext > /tmp/kamdbctl.dbtext ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.dbtext ; \
+		install -m 644 /tmp/kamdbctl.dbtext /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.dbtext ; \
+		mkdir -p /usr/local/lib64/kamailio//kamctl/dbtextdb ; \
+		touch           /usr/local/lib64/kamailio//kamctl/dbtextdb/dbtextdb.py ; \
+		install -m 755 dbtextdb/dbtextdb.py /usr/local/lib64/kamailio//kamctl/dbtextdb/ ; \
+		mkdir -p /usr/local/share/kamailio//dbtext/kamailio ; \
+		for FILE in dbtext/kamailio/presentity dbtext/kamailio/purplemap dbtext/kamailio/silo dbtext/kamailio/active_watchers dbtext/kamailio/mohqueues dbtext/kamailio/dr_groups dbtext/kamailio/dr_rules dbtext/kamailio/mtree dbtext/kamailio/lcr_gw dbtext/kamailio/uri dbtext/kamailio/acc_cdrs dbtext/kamailio/sip_trace dbtext/kamailio/domain_attrs dbtext/kamailio/xcap dbtext/kamailio/userblacklist dbtext/kamailio/aliases dbtext/kamailio/address dbtext/kamailio/subscriber dbtext/kamailio/dispatcher dbtext/kamailio/carrierfailureroute dbtext/kamailio/uid_global_attrs dbtext/kamailio/pua dbtext/kamailio/uid_domain dbtext/kamailio/uid_user_attrs dbtext/kamailio/htable dbtext/kamailio/rtpengine dbtext/kamailio/imc_rooms dbtext/kamailio/re_grp dbtext/kamailio/rtpproxy dbtext/kamailio/location dbtext/kamailio/uid_domain_attrs dbtext/kamailio/dialog dbtext/kamailio/domain_name dbtext/kamailio/version dbtext/kamailio/watchers dbtext/kamailio/pdt dbtext/kamailio/matrix dbtext/kamailio/rls_presentity dbtext/kamailio/location_attrs dbtext/kamailio/uid_uri dbtext/kamailio/dbaliases dbtext/kamailio/lcr_rule_target dbtext/kamailio/carrier_name dbtext/kamailio/pl_pipes dbtext/kamailio/uacreg dbtext/kamailio/carrierroute dbtext/kamailio/mohqcalls dbtext/kamailio/missed_calls dbtext/kamailio/cpl dbtext/kamailio/trusted dbtext/kamailio/mtrees dbtext/kamailio/uid_uri_attrs dbtext/kamailio/dr_gateways dbtext/kamailio/topos_t dbtext/kamailio/rls_watchers dbtext/kamailio/imc_members dbtext/kamailio/usr_preferences dbtext/kamailio/speed_dial dbtext/kamailio/lcr_rule dbtext/kamailio/sca_subscriptions dbtext/kamailio/domainpolicy dbtext/kamailio/dialog_vars dbtext/kamailio/dialplan dbtext/kamailio/acc dbtext/kamailio/dr_gw_lists dbtext/kamailio/grp dbtext/kamailio/globalblacklist dbtext/kamailio/topos_d dbtext/kamailio/uid_credentials dbtext/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+				touch           $FILE \
+					/usr/local/share/kamailio//dbtext/kamailio/`basename "$FILE"` ; \
+				install -m 644 $FILE \
+					/usr/local/share/kamailio//dbtext/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ;\
+	fi
+# install sqlite stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/lib64/kamailio//kamctl ; \
+		sed -e "s#/usr/local/sbin##g" \
+			< kamctl.sqlite > /tmp/kamctl.sqlite ; \
+		install -m 644 /tmp/kamctl.sqlite \
+			/usr/local/lib64/kamailio//kamctl/kamctl.sqlite ; \
+		rm -fr /tmp/kamctl.sqlite ; \
+		sed -e "s#/usr/local/share/kamailio#/usr/local/share/kamailio/#g" \
+			< kamdbctl.sqlite > /tmp/kamdbctl.sqlite ; \
+		touch           /usr/local/lib64/kamailio//kamctl/kamdbctl.sqlite ; \
+		install -m 644 /tmp/kamdbctl.sqlite /usr/local/lib64/kamailio//kamctl/ ; \
+		rm -fr /tmp/kamdbctl.sqlite ; \
+		mkdir -p /usr/local/share/kamailio//db_sqlite ; \
+		for FILE in db_sqlite/standard-create.sql db_sqlite/avpops-create.sql db_sqlite/pdt-create.sql db_sqlite/acc-create.sql db_sqlite/secfilter-create.sql db_sqlite/sca-create.sql db_sqlite/dialplan-create.sql db_sqlite/domainpolicy-create.sql db_sqlite/uid_gflags-create.sql db_sqlite/htable-create.sql db_sqlite/siptrace-create.sql db_sqlite/uid_avp_db-create.sql db_sqlite/group-create.sql db_sqlite/mtree-create.sql db_sqlite/alias_db-create.sql db_sqlite/pipelimit-create.sql db_sqlite/speeddial-create.sql db_sqlite/uac-create.sql db_sqlite/imc-create.sql db_sqlite/registrar-create.sql db_sqlite/uri_db-create.sql db_sqlite/usrloc-create.sql db_sqlite/msilo-create.sql db_sqlite/topos-create.sql db_sqlite/permissions-create.sql db_sqlite/cpl-create.sql db_sqlite/uid_domain-create.sql db_sqlite/rls-create.sql db_sqlite/dispatcher-create.sql db_sqlite/domain-create.sql db_sqlite/presence-create.sql db_sqlite/rtpengine-create.sql db_sqlite/dialog-create.sql db_sqlite/mohqueue-create.sql db_sqlite/purple-create.sql db_sqlite/rtpproxy-create.sql db_sqlite/drouting-create.sql db_sqlite/carrierroute-create.sql db_sqlite/userblacklist-create.sql db_sqlite/uid_auth_db-create.sql db_sqlite/matrix-create.sql db_sqlite/lcr-create.sql db_sqlite/uid_uri_db-create.sql db_sqlite/auth_db-create.sql ; do \
+			if [ -f $FILE ] ; then \
+			touch           $FILE \
+				/usr/local/share/kamailio//db_sqlite/`basename "$FILE"` ; \
+			install -m 644 $FILE \
+				/usr/local/share/kamailio//db_sqlite/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+# install Redis stuff
+if [ "" = "yes" ]; then \
+		mkdir -p /usr/local/share/kamailio//db_redis/kamailio ; \
+		for FILE in db_redis/kamailio/presentity db_redis/kamailio/purplemap db_redis/kamailio/silo db_redis/kamailio/active_watchers db_redis/kamailio/mohqueues db_redis/kamailio/dr_groups db_redis/kamailio/dr_rules db_redis/kamailio/mtree db_redis/kamailio/lcr_gw db_redis/kamailio/uri db_redis/kamailio/acc_cdrs db_redis/kamailio/sip_trace db_redis/kamailio/domain_attrs db_redis/kamailio/xcap db_redis/kamailio/userblacklist db_redis/kamailio/aliases db_redis/kamailio/address db_redis/kamailio/subscriber db_redis/kamailio/dispatcher db_redis/kamailio/carrierfailureroute db_redis/kamailio/uid_global_attrs db_redis/kamailio/pua db_redis/kamailio/uid_domain db_redis/kamailio/uid_user_attrs db_redis/kamailio/htable db_redis/kamailio/rtpengine db_redis/kamailio/imc_rooms db_redis/kamailio/re_grp db_redis/kamailio/rtpproxy db_redis/kamailio/location db_redis/kamailio/uid_domain_attrs db_redis/kamailio/dialog db_redis/kamailio/domain_name db_redis/kamailio/version db_redis/kamailio/watchers db_redis/kamailio/pdt db_redis/kamailio/matrix db_redis/kamailio/rls_presentity db_redis/kamailio/location_attrs db_redis/kamailio/uid_uri db_redis/kamailio/dbaliases db_redis/kamailio/lcr_rule_target db_redis/kamailio/carrier_name db_redis/kamailio/pl_pipes db_redis/kamailio/uacreg db_redis/kamailio/carrierroute db_redis/kamailio/mohqcalls db_redis/kamailio/missed_calls db_redis/kamailio/cpl db_redis/kamailio/trusted db_redis/kamailio/mtrees db_redis/kamailio/uid_uri_attrs db_redis/kamailio/dr_gateways db_redis/kamailio/topos_t db_redis/kamailio/rls_watchers db_redis/kamailio/imc_members db_redis/kamailio/usr_preferences db_redis/kamailio/speed_dial db_redis/kamailio/lcr_rule db_redis/kamailio/sca_subscriptions db_redis/kamailio/domainpolicy db_redis/kamailio/dialog_vars db_redis/kamailio/dialplan db_redis/kamailio/acc db_redis/kamailio/dr_gw_lists db_redis/kamailio/grp db_redis/kamailio/globalblacklist db_redis/kamailio/topos_d db_redis/kamailio/uid_credentials db_redis/kamailio/domain ; do \
+			if [ -f $FILE ] ; then \
+				touch           $FILE \
+					/usr/local/share/kamailio//db_redis/kamailio/`basename "$FILE"` ; \
+				install -m 644 $FILE \
+					/usr/local/share/kamailio//db_redis/kamailio/`basename "$FILE"` ; \
+			fi ;\
+		done ; \
+	fi
+make[1]: Leaving directory '/home/hyun/kamailio/src'

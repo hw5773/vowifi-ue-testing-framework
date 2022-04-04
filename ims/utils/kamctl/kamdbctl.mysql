@@ -1,0 +1,388 @@
+#
+# Script for adding and dropping Kamailio MySQL tables
+#
+# History:
+# 2006-04-07  removed gen_ha1 dependency - use md5sum;
+#             separated the serweb from kamailio tables;
+#             fixed the reinstall functionality (bogdan)
+# 2006-05-16  added ability to specify MD5 from a configuration file
+#             FreeBSD does not have the md5sum function (norm)
+# 2006-09-02  Added address table (juhe)
+# 2006-10-27  subscriber table cleanup; some columns are created only if
+#             serweb is installed (bogdan)
+# 2007-02-28  DB migration added (bogdan)
+# 2007-05-21  Move SQL database definitions out of this script (henning)
+# 2007-05-31  Move common definitions to kamdbctl.base file (henningw)
+# 2007-06-11  Use a common control tool for database tasks, like the kamctl
+
+# path to the database schemas
+DATA_DIR="/usr/local/share/kamailio"
+if [ -d "$DATA_DIR/mysql" ] ; then
+	DB_SCHEMA="$DATA_DIR/mysql"
+else
+	DB_SCHEMA="./mysql"
+fi
+
+#################################################################
+# config vars
+#################################################################
+
+# full privileges MySQL user
+if [ -z "$DBROOTUSER" ]; then
+	DBROOTUSER="root"
+fi
+
+# Set DBROOTPW in kamctlrc or via next line to set the database
+# root password if you want to run this script without any user prompt.
+# This is unsafe, but useful e.g. for automatic testing.
+#DBROOTPW=""
+
+
+if [ -z "$DBPORT" ] ; then
+	CMD="mysql -h $DBHOST -u$DBROOTUSER "
+	DUMP_CMD="mysqldump -h $DBHOST -u$DBROOTUSER -c -t "
+else
+	CMD="mysql -h $DBHOST -P $DBPORT -u$DBROOTUSER "
+	DUMP_CMD="mysqldump -h $DBHOST -P $DBPORT -u$DBROOTUSER -c -t "
+fi
+
+#################################################################
+
+
+# read password
+prompt_pw()
+{
+	savetty=`stty -g`
+	echo -n "MySQL password for $DBROOTUSER: "
+	stty -echo
+	read DBROOTPW
+	stty $savetty
+	echo
+	export DBROOTPW
+}
+
+# execute sql command with optional db name
+# and password parameters given
+sql_query()
+{
+	if [ $# -gt 1 ] ; then
+		if [ -n "$1" ]; then
+			DB="$1" # no quoting, mysql client don't like this
+		else
+			DB=""
+		fi
+		shift
+		if [ -n "$DBROOTPW" ]; then
+			$CMD "-p$DBROOTPW" $DB -e "$@"
+		else
+			$CMD $DB -e "$@"
+		fi
+	else
+		if [ -n "$DBROOTPW" ]; then
+			$CMD "-p$DBROOTPW" "$@"
+		else
+			$CMD "$@"
+		fi
+	fi
+}
+
+
+kamailio_drop()  # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "kamailio_drop function takes two params"
+		exit 1
+	fi
+
+	sql_query "" "DROP DATABASE $1;"
+
+	if [ $? -ne 0 ] ; then
+		merr "Dropping database $1 failed!"
+		exit 1
+	fi
+	minfo "Database $1 deleted"
+}
+
+
+db_charset_test()
+{
+	if [ -n "$DBROOTPW" ]; then
+		CURRCHARSET=`echo "show variables like '%character_set_server%'" | $CMD "-p$DBROOTPW" | $AWK '{print $2}' | $SED -e 1d`
+		ALLCHARSETS=`echo "show character set" | $CMD "-p$DBROOTPW" | $AWK '{print $1}' | $SED -e 1d | $GREP -iv -e "utf8\|ucs2"`
+	else
+		CURRCHARSET=`echo "show variables like '%character_set_server%'" | $CMD | $AWK '{print $2}' | $SED -e 1d`
+		ALLCHARSETS=`echo "show character set" | $CMD | $AWK '{print $1}' | $SED -e 1d | $GREP -iv -e "utf8\|ucs2"`
+	fi
+
+	while [ `echo "$ALLCHARSETS" | $GREP -icw $CURRCHARSET`  = "0" ]
+	do
+		mwarn "Your current default mysql characters set cannot be used to create DB. Please choice another one from the following list:"
+		mecho "$ALLCHARSETS"
+		mecho "Enter character set name: "
+		read CURRCHARSET
+		if [ `echo $CURRCHARSET | $GREP -cE "\w+"` = "0" ]; then
+			merr "can't continue: user break"
+			exit 1
+		fi
+	done
+	CHARSET=$CURRCHARSET
+}
+
+kamailio_db_create () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "kamailio_db_create function takes one param"
+		exit 1
+	fi
+
+	if [ "$CHARSET" = "" ]; then
+		minfo "test server charset"
+		db_charset_test
+	fi
+
+	minfo "creating database $1 ..."
+
+	sql_query "" "CREATE DATABASE $1 CHARACTER SET $CHARSET;"
+
+	if [ $? -ne 0 ] ; then
+		merr "Creating database $1 failed!"
+		exit 1
+	fi
+}
+
+kamailio_db_grant () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "kamailio_db_grant function takes one param"
+		exit 1
+	fi
+
+	minfo "granting privileges to database $1 ..."
+
+	# Users: kamailio is the regular user, kamailioro only for reading
+	sql_query "" "CREATE USER '${DBRWUSER}'@'$DBHOST' IDENTIFIED BY '$DBRWPW';
+		GRANT ALL PRIVILEGES ON $1.* TO '${DBRWUSER}'@'$DBHOST';
+		CREATE USER '${DBROUSER}'@'$DBHOST' IDENTIFIED BY '$DBROPW';
+		GRANT SELECT ON $1.* TO '${DBROUSER}'@'$DBHOST';"
+
+	if [ $? -ne 0 ] ; then
+		merr "granting privileges to database $1 failed!"
+		exit 1
+	fi
+
+	if [ "$DBHOST" != "localhost" ] ; then
+		sql_query "" "CREATE USER '$DBRWUSER'@'localhost' IDENTIFIED BY '$DBRWPW';
+			GRANT ALL PRIVILEGES ON $1.* TO '$DBRWUSER'@'localhost';
+			CREATE USER '$DBROUSER'@'localhost' IDENTIFIED BY '$DBROPW';
+			GRANT SELECT ON $1.* TO '$DBROUSER'@'localhost';"
+		if [ $? -ne 0 ] ; then
+			merr "granting localhost privileges to database $1 failed!"
+			exit 1
+		fi
+	fi
+
+	if [ ! -z "$DBACCESSHOST" ] ; then
+		sql_query "" "CREATE USER '$DBRWUSER'@'$DBACCESSHOST' IDENTIFIED BY '$DBRWPW';
+			GRANT ALL PRIVILEGES ON $1.* TO '$DBRWUSER'@'$DBACCESSHOST';
+			CREATE USER '$DBROUSER'@'$DBACCESSHOST' IDENTIFIED BY '$DBROPW';
+			GRANT SELECT ON $1.* TO '$DBROUSER'@'$DBACCESSHOST';"
+		if [ $? -ne 0 ] ; then
+			merr "granting access host privileges to database $1 failed!"
+			exit 1
+		fi
+	fi
+}
+
+kamailio_db_revoke () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "kamailio_db_revoke function takes one param"
+		exit 1
+	fi
+
+	minfo "revoking privileges to database $1 ..."
+
+	# Users: kamailio is the regular user, kamailioro only for reading
+	sql_query "" "REVOKE ALL PRIVILEGES ON $1.* FROM '${DBRWUSER}'@'$DBHOST';
+		REVOKE SELECT ON $1.* FROM '${DBROUSER}'@'$DBHOST';"
+
+	if [ $? -ne 0 ] ; then
+		merr "revoking privileges to database $1 failed!"
+		exit 1
+	fi
+
+	if [ "$DBHOST" != "localhost" ] ; then
+		sql_query "" "REVOKE ALL PRIVILEGES ON $1.* FROM '$DBRWUSER'@'localhost';
+			REVOKE SELECT ON $1.* FROM '$DBROUSER'@'localhost';"
+		if [ $? -ne 0 ] ; then
+			merr "granting localhost privileges to database $1 failed!"
+			exit 1
+		fi
+	fi
+
+	if [ ! -z "$DBACCESSHOST" ] ; then
+		sql_query "" "REVOKE ALL PRIVILEGES ON $1.* FROM '$DBRWUSER'@'$DBACCESSHOST';
+			REVOKE SELECT ON $1.* FROM '$DBROUSER'@'$DBACCESSHOST';"
+		if [ $? -ne 0 ] ; then
+			merr "granting access host privileges to database $1 failed!"
+			exit 1
+		fi
+	fi
+}
+
+
+kamailio_create () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "kamailio_create function takes one param"
+		exit 1
+	fi
+
+	kamailio_db_create $1
+
+	kamailio_db_grant $1
+
+	standard_create $1
+
+	get_answer $INSTALL_PRESENCE_TABLES "Install presence related tables? (y/n): "
+	if [ "$ANSWER" = "y" ]; then
+		presence_create $1
+	fi
+
+	get_answer $INSTALL_EXTRA_TABLES "Install tables for $EXTRA_MODULES? (y/n): "
+	if [ "$ANSWER" = "y" ]; then
+		HAS_EXTRA="yes"
+		extra_create $1
+	fi
+
+	get_answer $INSTALL_DBUID_TABLES "Install tables for $DBUID_MODULES? (y/n): "
+	if [ "$ANSWER" = "y" ]; then
+		HAS_EXTRA="yes"
+		dbuid_create $1
+	fi
+} # end kamailio_create
+
+standard_create () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "standard_create function takes one param"
+		exit 1
+	fi
+
+	minfo "creating standard tables into $1 ..."
+
+	for TABLE in $STANDARD_MODULES; do
+		mdbg "Creating core table: $TABLE"
+		sql_query $1 < $DB_SCHEMA/$TABLE-create.sql
+		if [ $? -ne 0 ] ; then
+			merr "Creating core tables failed at $TABLE!"
+			exit 1
+		fi
+	done
+
+	minfo "Core Kamailio tables succesfully created."
+
+	if [ -e $DB_SCHEMA/extensions-create.sql ]
+	then
+		minfo "Creating custom extensions tables"
+		sql_query $1 < $DB_SCHEMA/extensions-create.sql
+		if [ $? -ne 0 ] ; then
+			merr "Creating custom extensions tables failed!"
+			exit 1
+		fi
+	fi
+}  # end standard_create
+
+
+presence_create () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "presence_create function takes one param"
+		exit 1
+	fi
+
+	minfo "creating presence tables into $1 ..."
+
+	for TABLE in $PRESENCE_MODULES; do
+		mdbg "Creating presence tables for $TABLE"
+		sql_query $1 < $DB_SCHEMA/$TABLE-create.sql
+		if [ $? -ne 0 ] ; then
+			merr "Creating presence tables failed at $TABLE!"
+			exit 1
+		fi
+	done
+
+	minfo "Presence tables succesfully created."
+}  # end presence_create
+
+
+extra_create () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "extra_create function takes one param"
+		exit 1
+	fi
+
+	minfo "creating extra tables into $1 ..."
+
+	for TABLE in $EXTRA_MODULES; do
+		mdbg "Creating extra table: $TABLE"
+		sql_query $1 < $DB_SCHEMA/$TABLE-create.sql
+		if [ $? -ne 0 ] ; then
+			merr "Creating extra tables failed at $TABLE!"
+			exit 1
+			fi
+		done
+	minfo "Extra tables succesfully created."
+}  # end extra_create
+
+dbuid_create () # pars: <database name>
+{
+	if [ $# -ne 1 ] ; then
+		merr "dbuid_create function takes one param"
+		exit 1
+	fi
+
+	minfo "creating uid tables into $1 ..."
+
+	for TABLE in $DBUID_MODULES; do
+		mdbg "Creating uid table: $TABLE"
+		sql_query $1 < $DB_SCHEMA/$TABLE-create.sql
+		if [ $? -ne 0 ] ; then
+			merr "Creating uid tables failed at $TABLE!"
+			exit 1
+			fi
+		done
+	minfo "UID tables succesfully created."
+}  # end uid_create
+
+
+kamailio_add_tables () # params: <database name> <tables group name>
+{
+	if [ $# -ne 2 ] ; then
+		merr "kamailio_add_tables function takes two params"
+		exit 1
+	fi
+
+	minfo "creating group of tables [$2] into database [$1] ..."
+
+	if [ -e $DB_SCHEMA/$2-create.sql ]
+	then
+		sql_query $1 < $DB_SCHEMA/$2-create.sql
+		if [ $? -ne 0 ] ; then
+			merr "Creating group of tables [$2] failed"
+			exit 1
+		fi
+	else
+		merr "Script for creating group of tables [$2] not found"
+		exit 1
+	fi
+}  # end kamailio_add_tables
+
+
+export DBROOTPW
+if [ "$#" -ne 0 ] && [ "$DBROOTPW" = "" ]; then
+	if [ "$DBROOTPWSKIP" = "" ]; then
+		prompt_pw
+	fi
+fi
