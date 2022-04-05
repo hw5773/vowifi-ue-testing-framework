@@ -1803,9 +1803,6 @@ int str2ip6buf(str* st, ip_addr_t* ipb)
 	unsigned char* limit;
 	unsigned char* s;
 
-  LM_INFO("st->s: %p, st->len: %d\n", st->s, st->len);
-  if (st->s)
-    LM_INFO("st->s: %s\n", st->s);
 	/* just in case that e.g. the VIA parser get confused */
 	if(unlikely(!st->s || st->len <= 0)) {
 		LM_ERR("invalid name, no conversion to IP address possible\n");

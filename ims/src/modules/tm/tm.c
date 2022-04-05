@@ -1886,6 +1886,7 @@ static int w_t_replicate_to( struct sip_msg  *p_msg ,
 static int w_t_relay( struct sip_msg  *p_msg ,
 		char *_foo, char *_bar)
 {
+  LM_INFO("w_t_relay()\n");
 	return _w_t_relay_to(p_msg, (struct proxy_l *)0, PROTO_NONE);
 }
 
@@ -1895,6 +1896,7 @@ static int w_t_relay( struct sip_msg  *p_msg ,
 static int w_t_relay2( struct sip_msg  *p_msg , char *proxy,
 		char *_foo)
 {
+  LM_INFO("w_t_relay2()\n");
 	return _w_t_relay_to(p_msg, (struct proxy_l*) proxy, p_msg->rcv.proto);
 }
 

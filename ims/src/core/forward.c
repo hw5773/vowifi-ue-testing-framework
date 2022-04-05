@@ -292,7 +292,7 @@ not_forced:
 				/* FIXME */
 				case AF_INET:	send_sock=sendipv4_tcp;
 								break;
-				case AF_INET6:	send_sock=sendipv6_tcp;
+				case AF_INET6: send_sock=sendipv6_tcp;
 								break;
 				default:	LM_ERR("don't know how to forward to af %d\n",
 									to->s.sa_family);
@@ -346,6 +346,7 @@ not_forced:
 		default:
 			LM_CRIT("unsupported proto %d (%s)\n", proto, proto2a(proto));
 	}
+
 	return send_sock;
 }
 

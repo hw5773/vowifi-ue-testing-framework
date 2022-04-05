@@ -276,11 +276,13 @@ int challenge(struct sip_msg* msg, char* str1, char* alg, int is_proxy_auth, cha
     tm_cell_t *t = 0;
     cfg_action_t* cfg_action;
 
+    //LM_INFO("challenge 1\n");
     if (fixup_get_svalue(msg, (gparam_t*) route, &route_name) != 0) {
         LM_ERR("no async route block for assign_server_unreg\n");
         return -1;
     }
     
+    //LM_INFO("challenge 2\n");
     if (!alg) {
 	LM_DBG("no algorithm specified in cfg... using default\n");
     } else {
@@ -290,36 +292,43 @@ int challenge(struct sip_msg* msg, char* str1, char* alg, int is_proxy_auth, cha
 	}
     }
     
+    //LM_INFO("challenge 3\n");
     LM_DBG("Looking for route block [%.*s]\n", route_name.len, route_name.s);
     int ri = route_get(&main_rt, route_name.s);
     if (ri < 0) {
         LM_ERR("unable to find route block [%.*s]\n", route_name.len, route_name.s);
         return -1;
     }
+    //LM_INFO("challenge 4\n");
     cfg_action = main_rt.rlist[ri];
     if (cfg_action == NULL) {
         LM_ERR("empty action lists in route block [%.*s]\n", route_name.len, route_name.s);
         return -1;
     }
 
+    //LM_INFO("challenge 5\n");
     if (get_str_fparam(&realm, msg, (fparam_t*) str1) < 0) {
         LM_ERR("failed to get realm value\n");
         return CSCF_RETURN_ERROR;
     }
 
+    //LM_INFO("challenge 6\n");
     if (realm.len == 0) {
         LM_ERR("invalid realm value - empty content\n");
         return CSCF_RETURN_ERROR;
     }
 
+    //LM_INFO("challenge 7\n");
     create_return_code(CSCF_RETURN_ERROR);
 
     LM_DBG("Need to challenge for realm [%.*s]\n", realm.len, realm.s);
 
+    //LM_INFO("challenge 8\n");
     if (msg->first_line.type != SIP_REQUEST) {
         LM_ERR("This message is not a request\n");
         return CSCF_RETURN_ERROR;
     }
+    //LM_INFO("challenge 9\n");
     if (!is_proxy_auth) {
         LM_DBG("Checking if REGISTER is authorized for realm [%.*s]...\n", realm.len, realm.s);
 
@@ -331,6 +340,7 @@ int challenge(struct sip_msg* msg, char* str1, char* alg, int is_proxy_auth, cha
         }
     }
 
+    //LM_INFO("challenge 10\n");
     /* get the private_identity */
 	if (is_proxy_auth)
 		private_identity = cscf_get_private_identity_from(msg, realm);
@@ -342,23 +352,27 @@ int challenge(struct sip_msg* msg, char* str1, char* alg, int is_proxy_auth, cha
         return CSCF_RETURN_BREAK;
     }
     /* get the public_identity */
+    //LM_INFO("challenge 11\n");
 	if (is_proxy_auth)
 		public_identity = cscf_get_public_identity_from(msg);
 	else
 		public_identity = cscf_get_public_identity(msg);
 	
+    //LM_INFO("challenge 12\n");
     if (!public_identity.len) {
         LM_ERR("No public identity specified (To:)\n");
         stateful_request_reply(msg, 403, MSG_403_NO_PUBLIC);
         return CSCF_RETURN_BREAK;
     }
 
+    //LM_INFO("challenge 13\n");
     if (algo.len > 0) {
 	algo_type = get_algorithm_type(algo);
     } else {
 	algo_type = registration_default_algorithm_type;
     }
     
+    //LM_INFO("challenge 14\n");
 //    /* check if it is a synchronization request */
 //    //TODO this is MAR syncing - have removed it currently - TOD maybe put back in
 //    auts = ims_get_auts(msg, realm, is_proxy_auth);
@@ -398,6 +412,7 @@ int challenge(struct sip_msg* msg, char* str1, char* alg, int is_proxy_auth, cha
     /* loop because some other process might steal the auth_vector that we just retrieved */
     //while (!(av = get_auth_vector(private_identity, public_identity, AUTH_VECTOR_UNUSED, 0, &aud_hash))) {
 
+    //LM_INFO("challenge 15\n");
     if ((av = get_auth_vector(private_identity, public_identity, AUTH_VECTOR_UNUSED, 0, &aud_hash))) {
         if (!av) {
             LM_ERR("Error retrieving an auth vector\n");
@@ -474,13 +489,16 @@ int challenge(struct sip_msg* msg, char* str1, char* alg, int is_proxy_auth, cha
             return CSCF_RETURN_BREAK;
         }
     }
+    //LM_INFO("challenge 16\n");
     return CSCF_RETURN_BREAK;
 }
 int www_challenge2(struct sip_msg* msg, char* _route, char* str1, char* str2) {
+    LM_INFO("www_challenge2\n");
     return challenge(msg, str1, 0, 0, _route);
 }
 
 int www_challenge3(struct sip_msg* msg, char* _route, char* str1, char* str2) {
+    LM_INFO("www_challenge3\n");
     return challenge(msg, str1, str2, 0, _route);
 }
 
@@ -725,25 +743,30 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
     auth_vector *av = 0;
     uint32_t nc_parsed = 0; /* the numerical representation of nc */
 	
+    LM_WARN("authenticate(): AUTH_ERROR: %d\n", AUTH_ERROR);
 	LM_DBG("Running authenticate, is_proxy_auth=%d\n", is_proxy_auth);
 
     ret = AUTH_ERROR;
 
+    //LM_WARN("authenticate(): 1\n");
     if (get_str_fparam(&realm, msg, (fparam_t*) _realm) < 0) {
         LM_ERR("failed to get realm value\n");
         return AUTH_NO_CREDENTIALS;
     }
 
+    //LM_WARN("authenticate(): 2, _realm: %s, realm.s: %s\n", _realm, realm.s);
     if (realm.len == 0) {
         LM_ERR("invalid realm value - empty content\n");
         return AUTH_NO_CREDENTIALS;
     }
 
+    //LM_WARN("authenticate(): 3\n");
     if (msg->first_line.type != SIP_REQUEST) {
         LM_ERR("This message is not a request\n");
         ret = AUTH_ERROR;
         goto end;
     }
+    //LM_WARN("authenticate(): 4\n");
     if (!is_proxy_auth) {
         LM_DBG("Checking if REGISTER is authorized for realm [%.*s]...\n", realm.len, realm.s);
 
@@ -756,42 +779,52 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         }
     }
 
+    //LM_WARN("authenticate(): 5\n");
     if (!realm.len) {
         LM_ERR("No realm found\n");
         return 0; //CSCF_RETURN_BREAK;
     }
 
+    //LM_WARN("authenticate(): 6\n");
 	if (is_proxy_auth) {
 		private_identity = cscf_get_private_identity_from(msg, realm);
 	} else {
 		private_identity = cscf_get_private_identity(msg, realm);
 	}
+    //LM_WARN("authenticate(): 7\n");
     if (!private_identity.len) {
         LM_ERR("private identity missing\n");
         return AUTH_NO_CREDENTIALS;
     }
 
+    //LM_WARN("authenticate(): 8\n");
     if (is_proxy_auth)
 		public_identity = cscf_get_public_identity_from(msg);
 	else 
 		public_identity = cscf_get_public_identity(msg);
     
+    //LM_WARN("authenticate(): 9\n");
 	if (!public_identity.len) {
         LM_ERR("public identity missing\n");
         return AUTH_NO_CREDENTIALS;
     }
 
+    LM_WARN("authenticate(): 10\n");
     if (!get_nonce_response(msg, &username, realm, &nonce, &response16, &qop, &qop_str, &nc, &cnonce, &uri, is_proxy_auth) ||
-            !nonce.len || !response16.len) {
+            !nonce.len) {
+            //!nonce.len || !response16.len) {
+        LM_INFO("Nonce or response missing: nonce len [%i], response16 len[%i]\n", nonce.len, response16.len);
         LM_DBG("Nonce or response missing: nonce len [%i], response16 len[%i]\n", nonce.len, response16.len);
         return AUTH_ERROR;
     }
 
+    LM_WARN("authenticate(): 11\n");
     if (qop == QOP_AUTHINT) {
         body = ims_get_body(msg);
         calc_H(&body, hbody);
     }
 
+    LM_WARN("authenticate(): 12\n");
     /* first, look for an already used vector (if nonce reuse is enabled) */
     if (max_nonce_reuse > 0) {
         LM_DBG("look for an already used vector for %.*s\n",
@@ -799,6 +832,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         av = get_auth_vector(private_identity, public_identity, AUTH_VECTOR_USED, &nonce, &aud_hash);
     }
 
+    LM_WARN("authenticate(): 13\n");
     if (!av) {
         /* if none found, or nonce reuse is disabled, look for a fresh vector
          * We should also drop every other used vector at this point
@@ -833,6 +867,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
             cnonce.len, cnonce.s,
             32, hbody);
 
+    LM_WARN("authenticate(): 14\n");
     if (!av) {
         LM_DBG("no matching auth vector found - maybe timer expired\n");
 
@@ -844,6 +879,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         goto end;
     }
 
+    LM_WARN("authenticate(): 15\n");
     if (qop != QOP_UNSPEC) {
         /* if QOP is sent, nc must be specified */
         /* the expected nc is the last used one plus 1 */
@@ -868,6 +904,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         }
 	}
 
+    LM_WARN("authenticate(): 16\n");
     switch (av->type) {
         case AUTH_AKAV1_MD5:
         case AUTH_AKAV2_MD5:
@@ -908,8 +945,10 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
             goto cleanup; /* release aud before returning */
     }
 
+    LM_WARN("authenticate(): 17\n");
     expires = cscf_get_max_expires(msg, 0);
 
+    LM_WARN("authenticate(): 18\n");
     if (response16.len == expected_len && strncasecmp(response16.s, expected, response16.len) == 0) {
         if (max_nonce_reuse > 0 && av->status == AUTH_VECTOR_SENT) {
             /* first use of a reusable vector */
@@ -1002,11 +1041,13 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
 		}
     }
 
+    LM_WARN("authenticate(): 19\n");
     if (ignore_failed_auth) {
         LM_WARN("NB: Ignoring all failed auth - check your config if you don't expect this\n");
         ret = AUTH_OK;
     }
 
+    LM_WARN("authenticate(): 20\n");
 cleanup:
     auth_data_unlock(aud_hash);
 end:
@@ -1017,6 +1058,7 @@ end:
  * Authenticate using WWW-Authorize header field
  */
 int www_authenticate(struct sip_msg* msg, char* _realm, char* str2) {
+    LM_INFO("www_authenticate\n");
     return authenticate(msg, _realm, str2, 0);
 }
 

@@ -51,7 +51,7 @@
 #define MSG_400_BAD_REQUEST				"Bad Request"
 #define MSG_400_BAD_Contact 			"Bad Request - Error parsing Contact header" 
 
-#define MSG_401_CHALLENGE				"Unauthorized"
+#define MSG_401_CHALLENGE				"Unauthorized |"
 #define MSG_407_CHALLENGE				"Unauthorized - Challenging the UE"
 
 #define MSG_403_NO_PRIVATE				"Forbidden - Private identity not found (Authorization: username)"

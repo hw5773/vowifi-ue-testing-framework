@@ -447,6 +447,7 @@ static int prepare_new_uac( struct cell *t, struct sip_msg *i_req,
 					next_hop?next_hop:uri, fproto) == 0);
 #else
 		/* dst filled from the uri & request (send_socket) */
+    LM_WARN("here 2\n");
 		test_dst = (uri2dst2(dst, fsocket, snd_flags,
 					next_hop?next_hop:uri, fproto)==0);
 #endif
@@ -862,6 +863,7 @@ static int add_uac_from_buf( struct cell *t, struct sip_msg *request,
 		goto error;
 	}
 
+  LM_WARN("here 3\n");
 	if (uri2dst2(&t->uac[branch].dns_h, &t->uac[branch].request.dst,
 				fsocket, send_flags, uri, proto) == 0)
 	{
