@@ -1,1 +1,3 @@
-# vowifi-core-network
+# How to setup the VoWiFi testbed
+
+1. 
