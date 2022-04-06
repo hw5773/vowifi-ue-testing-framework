@@ -32,12 +32,12 @@
   
   - SIM writing and setting
     - sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=<IMSI> --msisdn=<Telephone Number> --ims-hdomain=msg.pc.t-mobile.com --impi=<IMSI>@msg.pc.t-mobile.com --impu=sip:<IMSI>@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k <key> -o <OPc>
-    - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script
+    - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/simcard/scripts/vowifi-setting.script
   
   ### Commands with an example value (you can just copy & paste the following command for the two SIM cards and only revise the ADM values)
     - SIM 1
       - sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=310260123456781 --msisdn=17657751234 --ims-hdomain=msg.pc.t-mobile.com --impi=310260123456781@msg.pc.t-mobile.com --impu=sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 11111111111111111111111111111111 -o 99999999999999999999999999999999
-      - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script
+      - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/simcard/scripts/vowifi-setting.script
   
     - SIM 2
       - sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=310260123456782 --msisdn=17657751235 --ims-hdomain=msg.pc.t-mobile.com --impi=310260123456782@msg.pc.t-mobile.com --impu=sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 22222222222222222222222222222222 -o 99999999999999999999999999999999
@@ -151,13 +151,13 @@
 
     - mysql -u root -p
     - create user pcscf@localhost identified by 'heslo';
-    - grant delete,insert,select,update on pcscf.* to pcscf@localhost;
+    - grant delete,insert,select,update on pcscf.\* to pcscf@localhost;
     - create user scscf@localhost identified by 'heslo';
-    - grant delete,insert,select,update on scscf.* to scscf@localhost;
+    - grant delete,insert,select,update on scscf.\* to scscf@localhost;
     - create user icscf@localhost identified by 'heslo';
-    - grant delete,insert,select,update on icscf.* to icscf@localhost;
+    - grant delete,insert,select,update on icscf.\* to icscf@localhost;
     - create user provisioning@localhost identified by 'provi';
-    - grant delete,insert,select,update on icscf.* to provisioning@localhost;
+    - grant delete,insert,select,update on icscf.\* to provisioning@localhost;
     - flush privileges;
 
     - use icscf;
@@ -165,32 +165,48 @@
     - insert into `s_cscf` values (1, 'First and only S-CSCF', 'sip:scscf.ims.mnc260.mcc310.3gppnetwork.org:6060');
     - insert into `s_cscf_capabilities` values (1,1,0),(2,1,1);
 
-  - [Guest] Running P-CSCF, I-CSCF, and S-CSCF
-    - (You may open three terminals from the host and you can enter into the VM by typing `vagrant ssh`.)
-
-    - [Terminal 1]
-      - cd VOWIFI_ROOT/settings/ims/pcscf
-      - sudo mkdir -p /var/run/kamailio_pcscf
-      - sudo kamailio -f kamailio.cfg -P /kamailio_pcscf.pid -DDeE
-
-    - [Terminal 2]
-      - cd VOWIFI_ROOT/settings/ims/icscf
-      - sudo mkdir -p /var/run/kamailio_icscf
-      - sudo kamailio -f kamailio.cfg -P /kamailio_icscf.pid -DDeE
-
-    - [Terminal 3]
-      - cd VOWIFI_ROOT/settings/ims/scscf
-      - sudo mkdir -p /var/run/kamailio_scscf
-      - sudo kamailio -f kamailio.cfg -P /kamailio_scscf.pid -DDeE
-
 ## DNS Setting
   - [Guest] Bind9 Installation
     - sudo apt-get install bind9
 
   - [Guest] Bind9 Configuration and Restart
-    - sudo cp VOWIFI_ROOT/settings/dns/* /etc/bind
+    - sudo cp VOWIFI_ROOT/settings/dns/\* /etc/bind
     - sudo systemctl restart bind9.service
 
   - [Guest] Add the nameserver
     - sudo vi /etc/resolv.conf
     - add "nameserver 127.0.0.1"
+
+## HSS Installation and Configuration
+  - [Host] Download Java 7 JDK
+
+## Running P-CSCF, I-CSCF, S-CSCF, and HSS
+  - Open four terminals
+
+  ### Terminal 1 - P-CSCF
+    - [Host] cd VOWIFI_ROOT/vagrant
+    - [Host] vagrant ssh
+    - [Guest] cd VOWIFI_ROOT/settings/ims/pcscf
+    - [Guest] sudo mkdir -p /var/run/kamailio_pcscf
+    - [Guest] sudo kamailio -f kamailio.cfg -P /kamailio_pcscf.pid -DDeE
+
+  ### Terminal 2 - I-CSCF
+    - [Host] cd VOWIFI_ROOT/vagrant
+    - [Host] vagrant ssh
+    - [Guest] cd VOWIFI_ROOT/settings/ims/icscf
+    - [Guest] sudo mkdir -p /var/run/kamailio_icscf
+    - [Guest] sudo kamailio -f kamailio.cfg -P /kamailio_icscf.pid -DDeE
+
+  ### Terminal 3 - S-CSCF
+    - [Host] cd VOWIFI_ROOT/vagrant
+    - [Host] vagrant ssh
+    - [Guest] cd VOWIFI_ROOT/settings/ims/scscf
+    - [Guest] sudo mkdir -p /var/run/kamailio_scscf
+    - [Guest] sudo kamailio -f kamailio.cfg -P /kamailio_scscf.pid -DDeE
+
+  ### Terminal 4 - HSS
+    - [Host] cd VOWIFI_ROOT/vagrant
+    - [Host] vagrant ssh
+    - [Guest] cd FHoSS/deploy
+    - [Guest] sudo ./startup.sh
+
