@@ -27,19 +27,19 @@
   - H/W: sysmoISIM-SJA2 (ISIM card), SIM card reader/writer
   - S/W: pysim
  
-  1. Clone the pysim tool to set up the VoWiFi sim card
+  a) Clone the pysim tool to set up the VoWiFi sim card
     - git clone https://github.com/osmocom/pysim.git
   
-  2. SIM writing and setting
+  b) SIM writing and setting
     - sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=<IMSI> --msisdn=<Telephone Number> --ims-hdomain=msg.pc.t-mobile.com --impi=<IMSI>@msg.pc.t-mobile.com --impu=sip:<IMSI>@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k <key> -o <OPc>
     - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script
   
-    * Commands with an example value (you can just copy & paste the following command for the two SIM cards and only revise the ADM values)
-    a) SIM 1
+  * Commands with an example value (you can just copy & paste the following command for the two SIM cards and only revise the ADM values)
+    - SIM 1
       - sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=310260123456781 --msisdn=17657751234 --ims-hdomain=msg.pc.t-mobile.com --impi=310260123456781@msg.pc.t-mobile.com --impu=sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 11111111111111111111111111111111 -o 99999999999999999999999999999999
       - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script
   
-    b) SIM 2
+    - SIM 2
       - sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=310260123456782 --msisdn=17657751235 --ims-hdomain=msg.pc.t-mobile.com --impi=310260123456782@msg.pc.t-mobile.com --impu=sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 22222222222222222222222222222222 -o 99999999999999999999999999999999
       - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script
   
@@ -57,26 +57,26 @@
   - sudo wifiap.status restart-ap
  
 5. ePDG installation and configuration
- 1) Installation
- - S/W: Strongswan
- - cd VOWIFI_ROOT/epdg
- - ./configure --prefix=/usr/local --enable-eap-aka --enable-eap-aka-3gpp --enable-eap-aka-3gpp2
- - (Please check if eap-aka, eap-aka-3gpp, and eap-aka-3gpp2 modules are all enabled.)
- - make && sudo make install 
+  a) Installation
+    - S/W: Strongswan
+    - cd VOWIFI_ROOT/epdg
+    - ./configure --prefix=/usr/local --enable-eap-aka --enable-eap-aka-3gpp --enable-eap-aka-3gpp2
+    - (Please check if eap-aka, eap-aka-3gpp, and eap-aka-3gpp2 modules are all enabled.)
+    - make && sudo make install 
+
+  b) Configuration - ipsec.conf
+    - The important attributes in this configuration file are as follows: 
+    - "leftsubnet": the network address of the VoWiFi network (fdad:dabb:ed::/64). The network bits should be 64 bits (it is required by UEs).
+    - "rightsubnet": the network address of the IPv6 addresses to be assigned to UEs (2607:fc20:ba53:1538::/64). The network bits should be 64 bits (it is required by UEs).
+    - "rightsourceip": the IPv6 pool for UEs (2607:fc20:ba53:1538:0:9:8a73:cc01-2607:fc20:ba53:1538:0:9:8a73:cc10)
  
- 2) Configuration - ipsec.conf
- - The important attributes in this configuration file are as follows:
-  - "leftsubnet": the network address of the VoWiFi network (fdad:dabb:ed::/64). The network bits should be 64 bits (it is required by UEs).
-  - "rightsubnet": the network address of the IPv6 addresses to be assigned to UEs (2607:fc20:ba53:1538::/64). The network bits should be 64 bits (it is required by UEs).
-  - "rightsourceip": the IPv6 pool for UEs (2607:fc20:ba53:1538:0:9:8a73:cc01-2607:fc20:ba53:1538:0:9:8a73:cc10)
+  c) Configuration - strongswan.conf
+    - The values in "attr" are provided to UE for the networking information. T-mobile uses 16386 to indicate the IPv6 address of the IMS server (in detail, it is the address of P-CSCF).
  
- 3) Configuration - strongswan.conf
- - The values in "attr" are provided to UE for the networking information. T-mobile uses 16386 to indicate the IPv6 address of the IMS server (in detail, it is the address of P-CSCF).
- 
- * Settings with an example value (you can revise the addresses)
- - attr {
-     16386 = fdad:dabb:ed::2
-   }
+  * Settings with an example value (you can revise the addresses)
+    - attr {
+        16386 = fdad:dabb:ed::2
+      }
  
  4) Configuration - ipsec.secrets
  - The format (syntax) of the configuration file for the EAP secrets
