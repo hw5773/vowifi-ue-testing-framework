@@ -27,10 +27,10 @@
   - H/W: sysmoISIM-SJA2 (ISIM card), SIM card reader/writer
   - S/W: pysim
  
-  1) Clone the pysim tool to set up the VoWiFi sim card
+  1. Clone the pysim tool to set up the VoWiFi sim card
     - git clone https://github.com/osmocom/pysim.git
   
-  2) SIM writing and setting
+  2. SIM writing and setting
     - sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=<IMSI> --msisdn=<Telephone Number> --ims-hdomain=msg.pc.t-mobile.com --impi=<IMSI>@msg.pc.t-mobile.com --impu=sip:<IMSI>@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k <key> -o <OPc>
     - sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script
   
