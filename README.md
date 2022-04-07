@@ -278,6 +278,39 @@
     fi
     ```
 
+  - [Guest] Change the domain names
+    - chmod +x configurator.sh
+    - vi webapps/hss.web.console/WEB-INF/web.xml
+    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+
+    - cp configurator.sh VOWIFI_ROOT/settings/hss
+    - cd VOWIFI_ROOT/settings/hss
+    - ./configurator.sh
+    - Domain Name: ims.mnc260.mcc310.3gppnetwork.org
+    - IP Address: 127.0.0.1
+    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+
+    - cp configurator.sh ~/FHoSS/config/
+    - cd ~/FHoSS/config
+    - ./configurator.sh
+    - Domain Name: ims.mnc260.mcc310.3gppnetwork.org
+    - IP Address: 127.0.0.1
+    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+
+    - cd ../src-web
+    - vi WEB-INF/web.xml
+    - Change "open-ims.test" to "ims.mnc260.mcc310.3gppnetwork.org"
+
+  - [Guest] Prepare the database for HSS
+    - mysql -u root -p
+    - drop database hss_db;
+    - create database hss_db;
+    - quit;
+
+    - cd VOWIFI_ROOT/settings/hss
+    - mysql -u root -p hss_db < hss_db.sql
+    - mysql -u root -p hss_db < userdata.sql
+
 ## Running P-CSCF, I-CSCF, S-CSCF, and HSS
   - Open four terminals
 
@@ -307,4 +340,31 @@
     - [Host] vagrant ssh
     - [Guest] cd FHoSS/deploy
     - [Guest] sudo ./startup.sh
+
+## Add IMS Subscription
+  - [Host] Open the browser
+  - http://localhost:8888/hss.web.console/ (the HSS setting page is running on the 8080 port of the guest VM. The port forwarding is set in the Vagrant setting file (from guest 8080 to host 8888))
+  - Login with ID: hssAdmin / Password: hss
+  
+  ### Subscription with an example value
+  - UE1: IMSI 310260123456781
+    - Click [Create] under [IMS Subscription]
+    - Name: 310260123456781
+    - Capabilities Set: cap_set1
+    - Preferred S-CSCF: scscf1
+    - Click [Save]
+
+    - Click [Create & Bind new IMPI]
+    - Identity: 310260123456781@msg.pc.t-mobile.com
+    - Secret Key: 11111111111111111111111111111111
+    - Digest-AKAv1
+    - Default: Digest-AKAv1-MD5
+    - OPc: 99999999999999999999999999999999
+    - Click [Save]
+
+    - Click (to be added)
+
+  - UE2: IMSI 310260123456782
+
+
 
