@@ -207,7 +207,7 @@
     - ant compile deploy
     - cd deploy
     - vi configurator.sh
-    - copy and paste the following code
+    - Copy and paste the following code
     ```
     #!/bin/bash
     # Initialization & global vars
@@ -277,6 +277,9 @@
       done 
     fi
     ```
+
+  - [Guest] Copy the configuration file of the Diameter protocol
+    - cp VOWIFI_ROOT/settings/hss/DiameterPeerHSS.xml ~/FHoSS/deploy
 
   - [Guest] Change the domain names
     - chmod +x configurator.sh
