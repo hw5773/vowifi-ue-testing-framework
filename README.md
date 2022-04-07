@@ -357,14 +357,51 @@
     - Click [Create & Bind new IMPI]
     - Identity: 310260123456781@msg.pc.t-mobile.com
     - Secret Key: 11111111111111111111111111111111
-    - Digest-AKAv1
+    - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
     - OPc: 99999999999999999999999999999999
     - Click [Save]
 
-    - Click (to be added)
+    - Click [Create & Bind new IMPU]
+    - Identity: sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org
+    - Service Profile: default_sp
+    - Charging-Info Set: default_charging_set
+    - Check "Can Register"
+    - Click [Save]
+
+    - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
+    - Check if the followings are correct
+      - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
+      - List IMPUs from Implicit-Set: sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org
+      - List of associated IMPIs: 310260123456781@msg.pc.t-mobile.com
 
   - UE2: IMSI 310260123456782
+    - Click [Create] under [IMS Subscription]
+    - Name: 310260123456782
+    - Capabilities Set: cap_set1
+    - Preferred S-CSCF: scscf1
+    - Click [Save]
 
+    - Click [Create & Bind new IMPI]
+    - Identity: 310260123456782@msg.pc.t-mobile.com
+    - Secret Key: 22222222222222222222222222222222
+    - Check Digest-AKAv1
+    - Default: Digest-AKAv1-MD5
+    - OPc: 99999999999999999999999999999999
+    - Click [Save]
 
+    - Click [Create & Bind new IMPU]
+    - Identity: sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org
+    - Service Profile: default_sp
+    - Charging-Info Set: default_charging_set
+    - Check "Can Register"
+    - Click [Save]
+
+    - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
+    - Check if the followings are correct
+      - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
+      - List IMPUs from Implicit-Set: sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org
+      - List of associated IMPIs: 310260123456782@msg.pc.t-mobile.com
+
+## Turn on WiFi on UEs
 
