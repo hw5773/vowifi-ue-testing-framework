@@ -220,28 +220,28 @@
     CONFFILES=`ls *.cfg *.xml *.sql *.properties 2>/dev/null`
 
     # Interaction
-printf "Domain Name:"
-read domainname 
-printf "IP Adress:"
-read ip_address
+    printf "Domain Name:"
+    read domainname 
+    printf "IP Adress:"
+    read ip_address
 
-# input domain is to be slashed for cfg regexes 
-slasheddomain=`echo $domainname | sed 's/\./\\\\\\\\\./g'`
+    # input domain is to be slashed for cfg regexes 
+    slasheddomain=`echo $domainname | sed 's/\./\\\\\\\\\./g'`
 
-  if [ $# != 0 ] 
-  then 
-  printf "changing: "
+    if [ $# != 0 ] 
+    then 
+    printf "changing: "
       for j in $* 
       do
-    sed -i -e "s/$DDOMAIN/$domainname/g" $j
-    sed -i -e "s/$DSDOMAIN/$slasheddomain/g" $j
-    sed -i -e "s/$DEFAULTIP/$ip_address/g" $j
-    printf "$j " 
+        sed -i -e "s/$DDOMAIN/$domainname/g" $j
+        sed -i -e "s/$DSDOMAIN/$slasheddomain/g" $j
+        sed -i -e "s/$DEFAULTIP/$ip_address/g" $j
+        printf "$j " 
       done
-  echo 
-  else 
-  printf "File to change [\"all\" for everything, \"exit\" to quit]:"
-  # loop
+      echo 
+    else 
+    printf "File to change [\"all\" for everything, \"exit\" to quit]:"
+    # loop
       while read filename ;
       do
         if [ "$filename" = "exit" ] 
@@ -251,31 +251,31 @@ slasheddomain=`echo $domainname | sed 's/\./\\\\\\\\\./g'`
 
       elif [ "$filename" = "all" ]
       then    
-          printf "changing: "
-         for i in $CONFFILES 
-         do
-        sed -i -e "s/$DDOMAIN/$domainname/g" $i
-        sed -i -e "s/$DSDOMAIN/$slasheddomain/g" $i
-        sed -i -e "s/$DEFAULTIP/$ip_address/g" $i
+        printf "changing: "
+          for i in $CONFFILES 
+          do
+            sed -i -e "s/$DDOMAIN/$domainname/g" $i
+            sed -i -e "s/$DSDOMAIN/$slasheddomain/g" $i
+            sed -i -e "s/$DEFAULTIP/$ip_address/g" $i
         
-        printf "$i " 
-         done 
-         echo 
-         break;
+            printf "$i " 
+          done 
+        echo 
+        break;
 
-        elif [ -w $filename ] 
-        then
-            printf "changing $filename \n"
-            sed -i -e "s/$DDOMAIN/$domainname/g" $filename
-            sed -i -e "s/$DSDOMAIN/$slasheddomain/g" $filename
-            sed -i -e "s/$DEFAULTIP/$ip_address/g" $filename
+      elif [ -w $filename ] 
+      then
+        printf "changing $filename \n"
+        sed -i -e "s/$DDOMAIN/$domainname/g" $filename
+        sed -i -e "s/$DSDOMAIN/$slasheddomain/g" $filename
+        sed -i -e "s/$DEFAULTIP/$ip_address/g" $filename
 
-          else 
-          printf "cannot access file $filename. skipping... \n" 
-        fi
+      else 
+        printf "cannot access file $filename. skipping... \n" 
+      fi
         printf "File to Change:"
       done 
-  fi
+    fi
     ```
 
 ## Running P-CSCF, I-CSCF, S-CSCF, and HSS
