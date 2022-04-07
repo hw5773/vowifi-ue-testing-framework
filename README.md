@@ -210,11 +210,10 @@
     - copy and paste the following code
     ```
     #!/bin/bash
-
-# Initialization & global vars
-# if you execute this script for the second time
-# you should change these variables to the latest
-# domain name and ip address
+    # Initialization & global vars
+    # if you execute this script for the second time
+    # you should change these variables to the latest
+    # domain name and ip address
 DDOMAIN="open-ims\.test"
 DSDOMAIN="open-ims\\\.test"
 DEFAULTIP="127\.0\.0\.1"
