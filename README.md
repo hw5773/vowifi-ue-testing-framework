@@ -55,6 +55,12 @@
   - sudo wifi-ap.config set dhcp.range-stop=10.0.60.254
   - sudo wifi-ap.config set disabled=false
   - sudo wifiap.status restart-ap
+
+## ePDG address setting
+  - sudo vi /etc/hosts (on the WiFi AP machine)
+  - add the following record
+  `<ePDG's IP address> epdg.epc.mnc260.mcc310.pub.3gppnetwork.org`
+
  
 ## ePDG installation and configuration
   - Installation
