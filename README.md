@@ -186,7 +186,7 @@
 
   - [Guest] Add the nameserver
     - `sudo vi /etc/resolv.conf`
-    - `add "nameserver 127.0.0.1"`
+    - add `nameserver 127.0.0.1` to the first line of the file.
 
 ## HSS Installation and Configuration
   - [Host] Download Oracle Java 7 JDK by using any browser (https://www.oracle.com/java/technologies/javase/javase7-archive-downloads.html)
