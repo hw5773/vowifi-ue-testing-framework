@@ -47,7 +47,7 @@
   - S/W: wifi-ap (or hostapd + dnsmasq)
   - `sudo apt-get install snapd`
   - `snap install wifi-ap`
-  - `sudo wifi-ap.config set wifi.interface=<wifi interface>`
+  - `sudo wifi-ap.config set wifi.interface=<wifi interface name>` (e.g., wlan0)
   - `sudo wifi-ap.config set wifi.ssid=VoWiFi`
   - `sudo wifi-ap.config set wifi.security-passphrase=vowifiaccess`
   - `sudo wifi-ap.config set wifi.address=10.0.60.1`
