@@ -54,7 +54,7 @@
   - `sudo wifi-ap.config set dhcp.range-start=10.0.60.2`
   - `sudo wifi-ap.config set dhcp.range-stop=10.0.60.254`
   - `sudo wifi-ap.config set disabled=false`
-  - `sudo wifiap.status restart-ap`
+  - `sudo wifi-ap.status restart-ap`
 
 ## ePDG address setting
   - sudo vi /etc/hosts (on the WiFi AP machine)
