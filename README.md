@@ -358,6 +358,8 @@
     - [Host] `cd VOWIFI_ROOT/vagrant`
     - [Host] `vagrant ssh`
     - [Guest] `cd FHoSS/deploy`
+    - [Guest] vi hss.properties
+    - [Guest] Change `host=127.0.0.1` to `host=0.0.0.0`
     - [Guest] `sudo ./startup.sh`
 
 ## Add IMS Subscription
@@ -382,7 +384,7 @@
     - Click [Save]
 
     - Click [Create & Bind new IMPU]
-    - Identity: sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org
+    - Identity: `sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
     - Service Profile: default_sp
     - Charging-Info Set: default_charging_set
     - Check "Can Register"
@@ -410,7 +412,7 @@
     - Click [Save]
 
     - Click [Create & Bind new IMPU]
-    - Identity: sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org
+    - Identity: `sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
     - Service Profile: default_sp
     - Charging-Info Set: default_charging_set
     - Check "Can Register"
