@@ -162,13 +162,13 @@
 
     - `mysql -u root -p`
     - `create user pcscf@localhost identified by 'heslo';`
-    - `grant delete,insert,select,update on pcscf.\* to pcscf@localhost;`
+    - `grant delete,insert,select,update on pcscf.* to pcscf@localhost;`
     - `create user scscf@localhost identified by 'heslo';`
-    - `grant delete,insert,select,update on scscf.\* to scscf@localhost;`
+    - `grant delete,insert,select,update on scscf.* to scscf@localhost;`
     - `create user icscf@localhost identified by 'heslo';`
-    - `grant delete,insert,select,update on icscf.\* to icscf@localhost;`
+    - `grant delete,insert,select,update on icscf.* to icscf@localhost;`
     - `create user provisioning@localhost identified by 'provi';`
-    - `grant delete,insert,select,update on icscf.\* to provisioning@localhost;`
+    - `grant delete,insert,select,update on icscf.* to provisioning@localhost;`
     - `flush privileges;`
 
     - `use icscf;`
@@ -181,7 +181,7 @@
     - `sudo apt-get install bind9`
 
   - [Guest] Bind9 Configuration and Restart
-    - `sudo cp VOWIFI_ROOT/settings/dns/\* /etc/bind`
+    - `sudo cp VOWIFI_ROOT/settings/dns/* /etc/bind`
     - `sudo systemctl restart bind9.service`
 
   - [Guest] Add the nameserver
