@@ -61,6 +61,8 @@
   - add the following record
   `<ePDG's IP address> epdg.epc.mnc260.mcc310.pub.3gppnetwork.org`
 
+  ### With one laptop
+  Add the record `10.0.60.1 epdg.epc.mnc260.mcc310.pub.3gppnetwork.org` to /etc/hosts
  
 ## ePDG installation and configuration
   - Installation
