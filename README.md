@@ -132,8 +132,8 @@
   - [Guest] IMS Server Installation and Configuration
     - S/W: Kamailio
     - `cd VOWIFI_ROOT/ims`
-    - `sudo apt-get install automake autoconf build-essential bison flex libxml2-dev libcurl4-gnutls-dev libssl-dev libmysqlclient-dev libpcre3-dev g++ pkg-config libsctp-dev`
-    - `make include_modules="ims_usrloc_pcscf ims_registrar_pcscf xmlrpc db_mysql cdp cdp_avp ims_icscf presence ims_usrloc_scscf ims_registrar_scscf ims_auth ims_isc ims_charging" cfg`
+    - `sudo apt-get install automake autoconf build-essential bison flex libxml2-dev libcurl4-gnutls-dev libssl-dev libmysqlclient-dev libpcre3-dev g++ pkg-config libsctp-dev libmnl-dev`
+    - `make include_modules="ims_usrloc_pcscf ims_registrar_pcscf xmlrpc db_mysql cdp cdp_avp ims_icscf presence ims_usrloc_scscf ims_registrar_scscf ims_auth ims_isc ims_charging ims_dialog ims_ipsec_pcscf" cfg`
     - `make && sudo make install`
 
   - [Guest] Kamailio mysql Configuration
