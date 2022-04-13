@@ -84,6 +84,9 @@
   - Configuration - strongswan.conf
     - The values in "attr" are provided to UE for the networking information. T-mobile uses 16386 to indicate the IPv6 address of the IMS server (in detail, it is the address of P-CSCF).
  
+  - Running Strongswan
+    - sudo ipsec restart
+
   ### Settings with an example value (you can revise the addresses)
     - attr {
         16386 = fdad:dabb:ed::2
