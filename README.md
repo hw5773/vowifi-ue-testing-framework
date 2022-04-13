@@ -16,7 +16,7 @@
     - Finally, UE establishes the IPsec channel with P-CSCF and is registered to the IMS server (that is, S-CSCF for the UE is alive and provides the service) 
 
 ## VoWiFi settings and source codes of the ePDG/IMS server
-  - git clone https://github.com/hw5773/vowifi-core-network.git
+  - `git clone https://github.com/hw5773/vowifi-core-network.git`
   - Let's say the absolute path of the vowifi-core-network directory VOWIFI_ROOT
 
 ## VoWiFi network topology
@@ -28,7 +28,7 @@
   - S/W: pysim
  
   - Clone the pysim tool to set up the VoWiFi sim card
-    - git clone https://github.com/osmocom/pysim.git
+    - `git clone https://github.com/osmocom/pysim.git`
   
   - SIM writing and setting
     - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=<IMSI> --msisdn=<Telephone Number> --ims-hdomain=msg.pc.t-mobile.com --impi=<IMSI>@msg.pc.t-mobile.com --impu=sip:<IMSI>@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k <key> -o <OPc>`
