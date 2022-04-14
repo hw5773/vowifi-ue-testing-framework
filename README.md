@@ -15,6 +15,10 @@
     - S-CSCF refers to HSS to authenticate the UE
     - Finally, UE establishes the IPsec channel with P-CSCF and is registered to the IMS server (that is, S-CSCF for the UE is alive and provides the service) 
 
+## Kernel settings
+  - forwarding ipv6 packets should be enabled
+  - `sudo sysctl -w net.ipv6.conf.all.forwarding=1`
+
 ## VoWiFi settings and source codes of the ePDG/IMS server
   - `git clone https://github.com/hw5773/vowifi-core-network.git`
   - Let's say the absolute path of the vowifi-core-network directory VOWIFI_ROOT
@@ -370,13 +374,13 @@
   ### Subscription with an example value
   - UE1: IMSI 310260123456781
     - Click [Create] under [IMS Subscription]
-    - Name: 310260123456781
+    - Name: `310260123456781`
     - Capabilities Set: cap_set1
     - Preferred S-CSCF: scscf1
     - Click [Save]
 
     - Click [Create & Bind new IMPI]
-    - Identity: 310260123456781@msg.pc.t-mobile.com
+    - Identity: `310260123456781@msg.pc.t-mobile.com`
     - Secret Key: 11111111111111111111111111111111
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
@@ -390,6 +394,18 @@
     - Check "Can Register"
     - Click [Save]
 
+    - Click [Search] under [IMS Subscription]
+    - Name: 310260123456781
+    - Click [Create & Bind new IMPI]
+    - Identity: `310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
+    - Secret Key: 11111111111111111111111111111111
+    - Check Digest-AKAv1
+    - Default: Digest-AKAv1-MD5
+    - OPc: 99999999999999999999999999999999
+    - Associate IMPU: `sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
+    - Click [Add]
+    - Click [Save]
+   
     - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
     - Check if the followings are correct
       - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
@@ -416,6 +432,18 @@
     - Service Profile: default_sp
     - Charging-Info Set: default_charging_set
     - Check "Can Register"
+    - Click [Save]
+
+    - Click [Search] under [IMS Subscription]
+    - Name: 310260123456782
+    - Click [Create & Bind new IMPI]
+    - Identity: `310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
+    - Secret Key: 11111111111111111111111111111111
+    - Check Digest-AKAv1
+    - Default: Digest-AKAv1-MD5
+    - OPc: 99999999999999999999999999999999
+    - Associate IMPU: `sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
+    - Click [Add]
     - Click [Save]
 
     - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
