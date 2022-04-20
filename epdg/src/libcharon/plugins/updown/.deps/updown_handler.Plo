@@ -1,5 +1,5 @@
 updown_handler.lo: updown_handler.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h updown_handler.h \
+ /home/hyun/vowifi-core-network/epdg/config.h updown_handler.h \
  ../../../../src/libcharon/attributes/attribute_handler.h \
  ../../../../src/libcharon/sa/ike_sa.h \
  ../../../../src/libstrongswan/library.h \
@@ -262,7 +262,7 @@ updown_handler.lo: updown_handler.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 updown_handler.h:
 

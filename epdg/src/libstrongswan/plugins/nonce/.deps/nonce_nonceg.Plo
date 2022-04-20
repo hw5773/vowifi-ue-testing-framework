@@ -1,5 +1,5 @@
 nonce_nonceg.lo: nonce_nonceg.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h nonce_nonceg.h \
+ /home/hyun/vowifi-core-network/epdg/config.h nonce_nonceg.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -197,7 +197,7 @@ nonce_nonceg.lo: nonce_nonceg.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 nonce_nonceg.h:
 

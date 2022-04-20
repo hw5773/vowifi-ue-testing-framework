@@ -1,6 +1,6 @@
 networking/streams/stream.lo: networking/streams/stream.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h library.h \
- utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
+ library.h utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -158,7 +158,7 @@ networking/streams/stream.lo: networking/streams/stream.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 library.h:
 

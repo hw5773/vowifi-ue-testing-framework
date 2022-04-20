@@ -1,5 +1,5 @@
 utils/parser_helper.lo: utils/parser_helper.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
  /usr/include/limits.h \
@@ -150,7 +150,7 @@ utils/parser_helper.lo: utils/parser_helper.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h:
 

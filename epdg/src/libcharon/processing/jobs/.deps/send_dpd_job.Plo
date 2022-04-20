@@ -1,5 +1,5 @@
 processing/jobs/send_dpd_job.lo: processing/jobs/send_dpd_job.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -229,7 +229,7 @@ processing/jobs/send_dpd_job.lo: processing/jobs/send_dpd_job.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/stdlib.h:
 

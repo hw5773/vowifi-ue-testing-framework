@@ -1,5 +1,6 @@
-pki.o: pki.c /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
- command.h pki.h ../../src/libstrongswan/library.h \
+pki.o: pki.c /usr/include/stdc-predef.h \
+ /home/hyun/vowifi-core-network/epdg/config.h command.h pki.h \
+ ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -220,7 +221,7 @@ pki.o: pki.c /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 command.h:
 

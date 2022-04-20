@@ -1,5 +1,5 @@
 sa/ikev2/tasks/ike_auth_lifetime.lo: sa/ikev2/tasks/ike_auth_lifetime.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/ikev2/tasks/ike_auth_lifetime.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -232,7 +232,7 @@ sa/ikev2/tasks/ike_auth_lifetime.lo: sa/ikev2/tasks/ike_auth_lifetime.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/ike_auth_lifetime.h:
 

@@ -1,5 +1,5 @@
 xcbc_plugin.lo: xcbc_plugin.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h xcbc_plugin.h \
+ /home/hyun/vowifi-core-network/epdg/config.h xcbc_plugin.h \
  ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -201,7 +201,7 @@ xcbc_plugin.lo: xcbc_plugin.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 xcbc_plugin.h:
 

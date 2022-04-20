@@ -1,6 +1,6 @@
 sa/ikev1/keymat_v1.lo: sa/ikev1/keymat_v1.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h sa/ikev1/keymat_v1.h sa/keymat.h \
- ../../src/libstrongswan/library.h \
+ /home/hyun/vowifi-core-network/epdg/config.h sa/ikev1/keymat_v1.h \
+ sa/keymat.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -230,7 +230,7 @@ sa/ikev1/keymat_v1.lo: sa/ikev1/keymat_v1.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev1/keymat_v1.h:
 

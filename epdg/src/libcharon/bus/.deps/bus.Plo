@@ -1,5 +1,5 @@
 bus/bus.lo: bus/bus.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h bus/bus.h \
+ /home/hyun/vowifi-core-network/epdg/config.h bus/bus.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../src/libstrongswan/utils/debug.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -224,7 +224,7 @@ bus/bus.lo: bus/bus.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 bus/bus.h:
 

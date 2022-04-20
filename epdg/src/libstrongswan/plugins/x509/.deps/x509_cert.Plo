@@ -1,6 +1,7 @@
 x509_cert.lo: x509_cert.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h /usr/include/x86_64-linux-gnu/sys/stat.h \
- /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/x86_64-linux-gnu/sys/stat.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
@@ -225,7 +226,7 @@ x509_cert.lo: x509_cert.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 

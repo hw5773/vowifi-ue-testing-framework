@@ -1,5 +1,5 @@
 encoding/payloads/nonce_payload.lo: encoding/payloads/nonce_payload.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  encoding/payloads/nonce_payload.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -229,7 +229,7 @@ encoding/payloads/nonce_payload.lo: encoding/payloads/nonce_payload.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

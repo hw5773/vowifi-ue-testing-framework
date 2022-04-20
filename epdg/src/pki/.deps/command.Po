@@ -1,5 +1,5 @@
 command.o: command.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h command.h pki.h \
+ /home/hyun/vowifi-core-network/epdg/config.h command.h pki.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -202,7 +202,7 @@ command.o: command.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 command.h:
 

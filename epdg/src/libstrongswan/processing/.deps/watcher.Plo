@@ -1,6 +1,6 @@
 processing/watcher.lo: processing/watcher.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h processing/watcher.h library.h \
- utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
+ /home/hyun/vowifi-core-network/epdg/config.h processing/watcher.h \
+ library.h utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -162,7 +162,7 @@ processing/watcher.lo: processing/watcher.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 processing/watcher.h:
 

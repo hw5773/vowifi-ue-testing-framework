@@ -1,7 +1,7 @@
 processing/jobs/delete_child_sa_job.lo: \
  processing/jobs/delete_child_sa_job.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h processing/jobs/delete_child_sa_job.h \
- ../../src/libstrongswan/library.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
+ processing/jobs/delete_child_sa_job.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -230,7 +230,7 @@ processing/jobs/delete_child_sa_job.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 processing/jobs/delete_child_sa_job.h:
 

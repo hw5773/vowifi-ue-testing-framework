@@ -1,7 +1,7 @@
 crypto/transform.lo: crypto/transform.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h crypto/transform.h utils/utils.h \
- /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
- /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /home/hyun/vowifi-core-network/epdg/config.h crypto/transform.h \
+ utils/utils.h /usr/include/x86_64-linux-gnu/sys/types.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
@@ -152,7 +152,7 @@ crypto/transform.lo: crypto/transform.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 crypto/transform.h:
 

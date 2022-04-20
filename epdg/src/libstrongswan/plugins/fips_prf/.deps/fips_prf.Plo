@@ -1,5 +1,5 @@
 fips_prf.lo: fips_prf.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h fips_prf.h \
+ /home/hyun/vowifi-core-network/epdg/config.h fips_prf.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -197,7 +197,7 @@ fips_prf.lo: fips_prf.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 fips_prf.h:
 

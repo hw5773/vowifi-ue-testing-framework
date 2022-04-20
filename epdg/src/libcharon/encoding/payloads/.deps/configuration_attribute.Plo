@@ -1,6 +1,6 @@
 encoding/payloads/configuration_attribute.lo: \
  encoding/payloads/configuration_attribute.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  encoding/payloads/configuration_attribute.h \
  ../../src/libstrongswan/library.h \
@@ -231,7 +231,7 @@ encoding/payloads/configuration_attribute.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

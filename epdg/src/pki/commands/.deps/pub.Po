@@ -1,5 +1,5 @@
 commands/pub.o: commands/pub.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h /usr/include/errno.h \
+ /home/hyun/vowifi-core-network/epdg/config.h /usr/include/errno.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
@@ -203,7 +203,7 @@ commands/pub.o: commands/pub.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/errno.h:
 

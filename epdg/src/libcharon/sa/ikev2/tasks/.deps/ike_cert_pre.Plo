@@ -1,5 +1,5 @@
 sa/ikev2/tasks/ike_cert_pre.lo: sa/ikev2/tasks/ike_cert_pre.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/ikev2/tasks/ike_cert_pre.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -231,7 +231,7 @@ sa/ikev2/tasks/ike_cert_pre.lo: sa/ikev2/tasks/ike_cert_pre.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/ike_cert_pre.h:
 

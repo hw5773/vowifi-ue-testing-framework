@@ -1,7 +1,7 @@
 encoding/payloads/fragment_payload.lo: \
  encoding/payloads/fragment_payload.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h encoding/payloads/fragment_payload.h \
- ../../src/libstrongswan/library.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
+ encoding/payloads/fragment_payload.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -199,7 +199,7 @@ encoding/payloads/fragment_payload.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 encoding/payloads/fragment_payload.h:
 

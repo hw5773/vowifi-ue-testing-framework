@@ -1,5 +1,5 @@
 kernel_netlink_net.lo: kernel_netlink_net.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/include/x86_64-linux-gnu/sys/socket.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -290,7 +290,7 @@ kernel_netlink_net.lo: kernel_netlink_net.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/x86_64-linux-gnu/sys/socket.h:
 

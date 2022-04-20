@@ -1,5 +1,5 @@
 crypto/crypto_tester.lo: crypto/crypto_tester.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/include/dlfcn.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -159,7 +159,7 @@ crypto/crypto_tester.lo: crypto/crypto_tester.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/dlfcn.h:
 

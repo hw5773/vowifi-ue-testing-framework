@@ -1,5 +1,5 @@
 crypto/proposal/proposal_keywords.lo: crypto/proposal/proposal_keywords.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  crypto/proposal/proposal_keywords.h library.h \
  utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -149,7 +149,7 @@ crypto/proposal/proposal_keywords.lo: crypto/proposal/proposal_keywords.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 crypto/proposal/proposal_keywords.h:
 

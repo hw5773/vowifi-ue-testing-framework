@@ -1,5 +1,5 @@
 vici_socket.lo: vici_socket.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h vici_socket.h \
+ /home/hyun/vowifi-core-network/epdg/config.h vici_socket.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -206,7 +206,7 @@ vici_socket.lo: vici_socket.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 vici_socket.h:
 

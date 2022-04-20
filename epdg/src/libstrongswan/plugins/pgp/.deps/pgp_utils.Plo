@@ -1,5 +1,5 @@
 pgp_utils.lo: pgp_utils.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h pgp_utils.h \
+ /home/hyun/vowifi-core-network/epdg/config.h pgp_utils.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -197,7 +197,7 @@ pgp_utils.lo: pgp_utils.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 pgp_utils.h:
 

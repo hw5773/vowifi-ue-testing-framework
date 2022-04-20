@@ -1,5 +1,5 @@
 kernel/kernel_interface.lo: kernel/kernel_interface.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  kernel/kernel_interface.h ../../src/libstrongswan/networking/host.h \
  ../../src/libstrongswan/utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
@@ -214,7 +214,7 @@ kernel/kernel_interface.lo: kernel/kernel_interface.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 kernel/kernel_interface.h:
 

@@ -1,6 +1,7 @@
 crypto/prfs/mac_prf.lo: crypto/prfs/mac_prf.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h crypto/prfs/mac_prf.h crypto/mac.h \
- library.h utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
+ /home/hyun/vowifi-core-network/epdg/config.h crypto/prfs/mac_prf.h \
+ crypto/mac.h library.h utils/printf_hook/printf_hook.h \
+ /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -147,7 +148,7 @@ crypto/prfs/mac_prf.lo: crypto/prfs/mac_prf.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 crypto/prfs/mac_prf.h:
 

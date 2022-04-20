@@ -1,5 +1,5 @@
 config/child_cfg.lo: config/child_cfg.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h config/child_cfg.h \
+ /home/hyun/vowifi-core-network/epdg/config.h config/child_cfg.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -229,7 +229,7 @@ config/child_cfg.lo: config/child_cfg.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 config/child_cfg.h:
 

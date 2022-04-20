@@ -1,5 +1,5 @@
 plugins/plugin_loader.lo: plugins/plugin_loader.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  plugins/plugin_loader.h collections/enumerator.h utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -171,7 +171,7 @@ plugins/plugin_loader.lo: plugins/plugin_loader.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 plugins/plugin_loader.h:
 

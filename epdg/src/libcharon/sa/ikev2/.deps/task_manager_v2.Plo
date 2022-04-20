@@ -1,5 +1,5 @@
 sa/ikev2/task_manager_v2.lo: sa/ikev2/task_manager_v2.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/ikev2/task_manager_v2.h sa/task_manager.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
@@ -250,7 +250,7 @@ sa/ikev2/task_manager_v2.lo: sa/ikev2/task_manager_v2.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/task_manager_v2.h:
 

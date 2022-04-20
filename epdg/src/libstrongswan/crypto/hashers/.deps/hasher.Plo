@@ -1,5 +1,5 @@
 crypto/hashers/hasher.lo: crypto/hashers/hasher.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  crypto/hashers/hasher.h crypto/prfs/prf.h utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -121,7 +121,7 @@ crypto/hashers/hasher.lo: crypto/hashers/hasher.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 crypto/hashers/hasher.h:
 

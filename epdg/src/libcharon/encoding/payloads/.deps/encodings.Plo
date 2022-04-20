@@ -1,5 +1,5 @@
 encoding/payloads/encodings.lo: encoding/payloads/encodings.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  encoding/payloads/encodings.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -197,7 +197,7 @@ encoding/payloads/encodings.lo: encoding/payloads/encodings.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 encoding/payloads/encodings.h:
 

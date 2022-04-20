@@ -1,5 +1,5 @@
 pgp_cert.lo: pgp_cert.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h pgp_cert.h \
+ /home/hyun/vowifi-core-network/epdg/config.h pgp_cert.h \
  ../../../../src/libstrongswan/credentials/certificates/pgp_certificate.h \
  ../../../../src/libstrongswan/credentials/certificates/certificate.h \
  ../../../../src/libstrongswan/utils/identification.h \
@@ -200,7 +200,7 @@ pgp_cert.lo: pgp_cert.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 pgp_cert.h:
 

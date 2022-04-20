@@ -1,6 +1,6 @@
 crypto/proposal/proposal_keywords_static.lo: \
  crypto/proposal/proposal_keywords_static.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h /usr/include/string.h \
+ /home/hyun/vowifi-core-network/epdg/config.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -148,7 +148,7 @@ crypto/proposal/proposal_keywords_static.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/string.h:
 

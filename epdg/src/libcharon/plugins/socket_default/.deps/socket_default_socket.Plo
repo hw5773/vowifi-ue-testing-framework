@@ -1,5 +1,5 @@
 socket_default_socket.lo: socket_default_socket.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  socket_default_socket.h ../../../../src/libcharon/network/socket.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -291,7 +291,7 @@ socket_default_socket.lo: socket_default_socket.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 socket_default_socket.h:
 

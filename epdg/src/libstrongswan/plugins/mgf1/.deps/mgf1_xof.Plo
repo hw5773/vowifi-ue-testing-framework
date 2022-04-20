@@ -1,5 +1,5 @@
 mgf1_xof.lo: mgf1_xof.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h mgf1_xof.h \
+ /home/hyun/vowifi-core-network/epdg/config.h mgf1_xof.h \
  ../../../../src/libstrongswan/crypto/xofs/mgf1.h \
  ../../../../src/libstrongswan/crypto/xofs/xof.h \
  ../../../../src/libstrongswan/library.h \
@@ -199,7 +199,7 @@ mgf1_xof.lo: mgf1_xof.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 mgf1_xof.h:
 

@@ -1,5 +1,5 @@
 kernel_netlink_plugin.lo: kernel_netlink_plugin.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  kernel_netlink_plugin.h ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -234,7 +234,7 @@ kernel_netlink_plugin.lo: kernel_netlink_plugin.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 kernel_netlink_plugin.h:
 

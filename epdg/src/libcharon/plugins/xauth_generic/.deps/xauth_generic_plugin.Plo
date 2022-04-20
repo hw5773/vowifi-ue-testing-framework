@@ -1,5 +1,5 @@
 xauth_generic_plugin.lo: xauth_generic_plugin.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  xauth_generic_plugin.h ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -261,7 +261,7 @@ xauth_generic_plugin.lo: xauth_generic_plugin.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 xauth_generic_plugin.h:
 

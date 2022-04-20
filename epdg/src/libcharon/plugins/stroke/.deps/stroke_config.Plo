@@ -1,5 +1,5 @@
 stroke_config.lo: stroke_config.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h stroke_config.h \
+ /home/hyun/vowifi-core-network/epdg/config.h stroke_config.h \
  ../../../../src/libcharon/config/backend.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -269,7 +269,7 @@ stroke_config.lo: stroke_config.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 stroke_config.h:
 

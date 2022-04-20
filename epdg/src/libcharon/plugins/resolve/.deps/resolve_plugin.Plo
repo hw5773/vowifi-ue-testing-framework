@@ -1,5 +1,5 @@
 resolve_plugin.lo: resolve_plugin.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h resolve_plugin.h \
+ /home/hyun/vowifi-core-network/epdg/config.h resolve_plugin.h \
  ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -262,7 +262,7 @@ resolve_plugin.lo: resolve_plugin.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 resolve_plugin.h:
 

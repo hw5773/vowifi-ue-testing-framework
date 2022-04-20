@@ -1,5 +1,6 @@
 pkcs7_attributes.lo: pkcs7_attributes.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h ../../../../src/libstrongswan/library.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
+ ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -201,7 +202,7 @@ pkcs7_attributes.lo: pkcs7_attributes.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 ../../../../src/libstrongswan/library.h:
 

@@ -1,5 +1,5 @@
 pkcs7_generic.lo: pkcs7_generic.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h pkcs7_generic.h \
+ /home/hyun/vowifi-core-network/epdg/config.h pkcs7_generic.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -204,7 +204,7 @@ pkcs7_generic.lo: pkcs7_generic.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 pkcs7_generic.h:
 

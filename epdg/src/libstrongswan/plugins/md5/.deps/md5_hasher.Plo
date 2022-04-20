@@ -1,5 +1,5 @@
 md5_hasher.lo: md5_hasher.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h /usr/include/string.h \
+ /home/hyun/vowifi-core-network/epdg/config.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -132,7 +132,7 @@ md5_hasher.lo: md5_hasher.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/string.h:
 

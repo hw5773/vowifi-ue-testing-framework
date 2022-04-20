@@ -1,6 +1,6 @@
 sa/ikev2/authenticators/pubkey_authenticator.lo: \
  sa/ikev2/authenticators/pubkey_authenticator.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/ikev2/authenticators/pubkey_authenticator.h sa/authenticator.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -234,7 +234,7 @@ sa/ikev2/authenticators/pubkey_authenticator.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/authenticators/pubkey_authenticator.h:
 

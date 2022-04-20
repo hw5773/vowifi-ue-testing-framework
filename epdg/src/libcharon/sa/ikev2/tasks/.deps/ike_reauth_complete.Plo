@@ -1,7 +1,7 @@
 sa/ikev2/tasks/ike_reauth_complete.lo: \
  sa/ikev2/tasks/ike_reauth_complete.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h sa/ikev2/tasks/ike_reauth_complete.h \
- ../../src/libstrongswan/library.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
+ sa/ikev2/tasks/ike_reauth_complete.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -230,7 +230,7 @@ sa/ikev2/tasks/ike_reauth_complete.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/ike_reauth_complete.h:
 

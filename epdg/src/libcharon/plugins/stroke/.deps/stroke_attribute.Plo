@@ -1,5 +1,5 @@
 stroke_attribute.lo: stroke_attribute.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h stroke_attribute.h \
+ /home/hyun/vowifi-core-network/epdg/config.h stroke_attribute.h \
  ../../../../src/stroke/stroke_msg.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -265,7 +265,7 @@ stroke_attribute.lo: stroke_attribute.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 stroke_attribute.h:
 

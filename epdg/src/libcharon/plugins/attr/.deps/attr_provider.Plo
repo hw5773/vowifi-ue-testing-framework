@@ -1,5 +1,5 @@
 attr_provider.lo: attr_provider.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h attr_provider.h \
+ /home/hyun/vowifi-core-network/epdg/config.h attr_provider.h \
  ../../../../src/libcharon/attributes/attribute_provider.h \
  ../../../../src/libcharon/sa/ike_sa.h \
  ../../../../src/libstrongswan/library.h \
@@ -266,7 +266,7 @@ attr_provider.lo: attr_provider.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 attr_provider.h:
 

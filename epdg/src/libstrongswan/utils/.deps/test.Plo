@@ -1,6 +1,6 @@
 utils/test.lo: utils/test.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h utils/test.h collections/hashtable.h \
- collections/enumerator.h utils/utils.h \
+ /home/hyun/vowifi-core-network/epdg/config.h utils/test.h \
+ collections/hashtable.h collections/enumerator.h utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -153,7 +153,7 @@ utils/test.lo: utils/test.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 utils/test.h:
 

@@ -1,5 +1,5 @@
 constraints_validator.lo: constraints_validator.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  constraints_validator.h \
  ../../../../src/libstrongswan/credentials/cert_validator.h \
  ../../../../src/libstrongswan/library.h \
@@ -200,7 +200,7 @@ constraints_validator.lo: constraints_validator.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 constraints_validator.h:
 

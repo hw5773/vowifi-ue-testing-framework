@@ -14,6 +14,8 @@
  * for more details.
  */
 
+#include <inttypes.h>
+
 #include "keymat_v2.h"
 
 #include <daemon.h>
@@ -395,6 +397,8 @@ METHOD(keymat_v2_t, derive_ike_keys, bool,
 			prf_plus = prf_plus_create(rekey_prf, TRUE, prf_plus_seed);
 		}
 	}
+  DBG4(DBG_IKE, "Initiator SPI: %.16"PRIx64, id->get_initiator_spi(id));
+  DBG4(DBG_IKE, "Responder SPI: %.16"PRIx64, id->get_responder_spi(id));
 	DBG4(DBG_IKE, "SKEYSEED %B", &skeyseed);
 
 	chunk_clear(&skeyseed);

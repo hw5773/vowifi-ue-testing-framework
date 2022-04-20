@@ -1,5 +1,5 @@
 dnskey_encoder.lo: dnskey_encoder.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h dnskey_encoder.h \
+ /home/hyun/vowifi-core-network/epdg/config.h dnskey_encoder.h \
  ../../../../src/libstrongswan/credentials/cred_encoding.h \
  ../../../../src/libstrongswan/utils/chunk.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -137,7 +137,7 @@ dnskey_encoder.lo: dnskey_encoder.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 dnskey_encoder.h:
 

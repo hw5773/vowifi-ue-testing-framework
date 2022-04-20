@@ -1,5 +1,6 @@
 gmp_diffie_hellman.lo: gmp_diffie_hellman.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h /usr/include/x86_64-linux-gnu/gmp.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/x86_64-linux-gnu/gmp.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
@@ -197,7 +198,7 @@ gmp_diffie_hellman.lo: gmp_diffie_hellman.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/x86_64-linux-gnu/gmp.h:
 

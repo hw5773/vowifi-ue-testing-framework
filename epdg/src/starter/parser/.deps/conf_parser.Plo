@@ -1,5 +1,5 @@
 parser/conf_parser.lo: parser/conf_parser.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h parser/conf_parser.h \
+ /home/hyun/vowifi-core-network/epdg/config.h parser/conf_parser.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -200,7 +200,7 @@ parser/conf_parser.lo: parser/conf_parser.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 parser/conf_parser.h:
 

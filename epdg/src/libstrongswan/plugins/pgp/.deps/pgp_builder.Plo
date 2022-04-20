@@ -1,5 +1,5 @@
 pgp_builder.lo: pgp_builder.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h pgp_builder.h \
+ /home/hyun/vowifi-core-network/epdg/config.h pgp_builder.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -197,7 +197,7 @@ pgp_builder.lo: pgp_builder.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 pgp_builder.h:
 

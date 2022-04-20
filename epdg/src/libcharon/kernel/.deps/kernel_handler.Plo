@@ -1,5 +1,5 @@
 kernel/kernel_handler.lo: kernel/kernel_handler.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  kernel/kernel_handler.h kernel/kernel_listener.h \
  ../../src/libstrongswan/networking/host.h \
  ../../src/libstrongswan/utils/utils.h \
@@ -237,7 +237,7 @@ kernel/kernel_handler.lo: kernel/kernel_handler.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 kernel/kernel_handler.h:
 

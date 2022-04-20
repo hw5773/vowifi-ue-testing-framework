@@ -1,5 +1,5 @@
 encoding/payloads/certreq_payload.lo: encoding/payloads/certreq_payload.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h daemon.h \
  attributes/attribute_manager.h attributes/attribute_provider.h \
  sa/ike_sa.h ../../src/libstrongswan/library.h \
@@ -230,7 +230,7 @@ encoding/payloads/certreq_payload.lo: encoding/payloads/certreq_payload.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

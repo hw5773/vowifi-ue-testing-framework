@@ -1,5 +1,5 @@
 sa/ikev2/tasks/ike_vendor.lo: sa/ikev2/tasks/ike_vendor.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/ikev2/tasks/ike_vendor.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -229,7 +229,7 @@ sa/ikev2/tasks/ike_vendor.lo: sa/ikev2/tasks/ike_vendor.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/ike_vendor.h:
 

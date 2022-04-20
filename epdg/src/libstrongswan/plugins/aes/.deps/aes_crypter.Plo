@@ -1,5 +1,5 @@
 aes_crypter.lo: aes_crypter.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h aes_crypter.h \
+ /home/hyun/vowifi-core-network/epdg/config.h aes_crypter.h \
  ../../../../src/libstrongswan/crypto/crypters/crypter.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -197,7 +197,7 @@ aes_crypter.lo: aes_crypter.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 aes_crypter.h:
 

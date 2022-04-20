@@ -1,5 +1,5 @@
 rc2_crypter.lo: rc2_crypter.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h rc2_crypter.h \
+ /home/hyun/vowifi-core-network/epdg/config.h rc2_crypter.h \
  ../../../../src/libstrongswan/crypto/crypters/crypter.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -197,7 +197,7 @@ rc2_crypter.lo: rc2_crypter.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 rc2_crypter.h:
 

@@ -1,5 +1,5 @@
 sa/ikev1/task_manager_v1.lo: sa/ikev1/task_manager_v1.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/ikev1/task_manager_v1.h sa/task_manager.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
@@ -246,7 +246,7 @@ sa/ikev1/task_manager_v1.lo: sa/ikev1/task_manager_v1.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev1/task_manager_v1.h:
 

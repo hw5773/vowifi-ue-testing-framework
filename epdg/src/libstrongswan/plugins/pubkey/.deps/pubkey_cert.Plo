@@ -1,5 +1,5 @@
 pubkey_cert.lo: pubkey_cert.c /usr/include/stdc-predef.h \
- /home/hyun/strongswan/config.h pubkey_cert.h \
+ /home/hyun/vowifi-core-network/epdg/config.h pubkey_cert.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -201,7 +201,7 @@ pubkey_cert.lo: pubkey_cert.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 pubkey_cert.h:
 

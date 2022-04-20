@@ -1,5 +1,5 @@
 crypto/crypto_factory.lo: crypto/crypto_factory.c \
- /usr/include/stdc-predef.h /home/hyun/strongswan/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  crypto/crypto_factory.h library.h utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -150,7 +150,7 @@ crypto/crypto_factory.lo: crypto/crypto_factory.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/strongswan/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 crypto/crypto_factory.h:
 

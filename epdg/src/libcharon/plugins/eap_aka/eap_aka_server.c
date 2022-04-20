@@ -177,6 +177,7 @@ static status_t challenge(private_eap_aka_server_t *this, eap_payload_t **out)
 	chunk_t data, mk;
 	identification_t *id;
 
+  DBG1(DBG_IKE, "Start: challenge() function");
 	if (!this->mgr->provider_get_quintuplet(this->mgr, this->permanent,
 										rand, xres, &xres_len, ck, ik, autn))
 	{
@@ -287,6 +288,9 @@ static status_t reauthenticate(private_eap_aka_server_t *this,
 METHOD(eap_method_t, initiate, status_t,
 	private_eap_aka_server_t *this, eap_payload_t **out)
 {
+	DBG1(DBG_IKE, "METHOD function()");
+  DBG1(DBG_IKE, "this->use_permanent: %d, this->use_pseudonym: %d, this->use_reauth: %d",
+      this->use_permanent, this->use_pseudonym, this->use_reauth);
 	if (this->use_permanent || this->use_pseudonym || this->use_reauth)
 	{
 		return identity(this, out);
