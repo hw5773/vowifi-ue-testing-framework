@@ -14,8 +14,8 @@ def extract_isakmp_keys(fname, last_line):
                 continue
 
             if extract:
-
-
+                print (line.strip().split("  "))
+                extract = False
             elif "Initiator SPI" in line:
                 print (line.strip().split("] ")[1])
             elif "Responder SPI" in line:
