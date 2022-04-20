@@ -125,7 +125,7 @@
     - `vagrant ssh` (to get the shell of VM)
  
   - [Guest] Network setting in the VM
-    - `sudo route -A inet6 add default gw via fdad:dabb:ed::1 dev eth1` (the interface name might be different)
+    - `sudo route -A inet6 add default gw fdad:dabb:ed::1 dev eth1` (the interface name might be different)
 
   - [Guest] Downlod the Setting files for the IMS Server
     - `git clone https://github.com/hw5773/vowifi-core-network.git`
