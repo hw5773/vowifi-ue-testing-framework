@@ -14,15 +14,22 @@ def extract_isakmp_keys(fname, last_line):
                 continue
 
             if extract:
-                print (line.strip().split("  "))
-                extract = False
+                tmp = line.strip().split("]")[1].strip().split(":")[1].strip().split("  ")[0].strip().split(" ")
+                key += ''.join(tmp)
+                nbytes -= 16
+                if nbytes <= 0:
+                    print (key)
+                    extract = False
             elif "Initiator SPI" in line:
                 print (line.strip().split("] ")[1])
             elif "Responder SPI" in line:
                 print (line.strip().split("] ")[1])
             elif "Sk_ai secret" in line or "Sk_ar secret" in line or "Sk_ei secret" in line or "Sk_er secret" in line:
+                ktype = line.strip().split("] ")[1].strip().split("=>")[0].strip()
                 nbytes = int(line.strip().split("=>")[1].strip().split("bytes")[0].strip())
+                logging.debug("ktype: {}, nbytes: {}".format(ktype, nbytes))
                 extract = True
+                key = "{}: ".format(ktype)
 
     return nline
 
