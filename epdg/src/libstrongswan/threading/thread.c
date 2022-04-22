@@ -354,6 +354,12 @@ thread_t *thread_create(thread_main_t main, void *arg)
 		return NULL;
 	}
 
+  ///// Added for VoWiFi /////
+  printf("Spawning the thread for the Learner\n");
+  // TODO: spawn the thread
+  //if (pthread_create(
+  ////////////////////////////
+
 	return &this->public;
 }
 

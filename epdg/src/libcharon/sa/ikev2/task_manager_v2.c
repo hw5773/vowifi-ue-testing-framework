@@ -705,6 +705,7 @@ METHOD(task_manager_t, initiate, status_t,
 /**
  * handle an incoming response message
  */
+// TODO: Need to check this function
 static status_t process_response(private_task_manager_t *this,
 								 message_t *message)
 {
@@ -865,6 +866,7 @@ static bool handle_collisions(private_task_manager_t *this, task_t *task)
 /**
  * build a response depending on the "passive" task list
  */
+// TODO: Need to check this function
 static status_t build_response(private_task_manager_t *this, message_t *request)
 {
 	enumerator_t *enumerator;
@@ -984,6 +986,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 /**
  * handle an incoming request message
  */
+// TODO: Need to check this function
 static status_t process_request(private_task_manager_t *this,
 								message_t *message)
 {
@@ -1210,7 +1213,7 @@ static status_t process_request(private_task_manager_t *this,
 				{
 					case IKE_SA_INIT:
 						/* no point in keeping the SA when it was created with
-						 * an invalid IKE_SA_INIT message */
+					 * an invalid IKE_SA_INIT message */
 						return DESTROY_ME;
 					default:
 						/* remove tasks we queued for this request */

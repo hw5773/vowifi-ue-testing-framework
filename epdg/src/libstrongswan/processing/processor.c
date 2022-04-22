@@ -113,6 +113,10 @@ typedef struct {
 	 */
 	job_priority_t priority;
 
+///// Added for VoWiFi /////
+  thread_t *lthread;
+////////////////////////////
+
 } worker_thread_t;
 
 static void process_job(private_processor_t *this, worker_thread_t *worker);
