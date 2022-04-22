@@ -45,7 +45,6 @@ def main():
 
         response = client.recv(4)
         logging.info("Response: {}".format(response))
-
     except:
         logging.error("Error Occurred")
         logging.error("Closing the connection ...")

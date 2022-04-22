@@ -30,6 +30,9 @@ def ue_reboot():
     subprocess.run(cmd)
     time.sleep(1)
 
+def check_ue_availability():
+    pass
+
 def adb_server_restart():
     cmd = ["adb", "kill-server"]
     subprocess.run(cmd)
@@ -47,6 +50,7 @@ def handle_reset(client):
 def handle_ue_reboot(client):
     ue_reboot()
     time.sleep(30)
+    # TODO: Check Availability
     ack = 1
     client.send(ack.to_bytes(4, 'big', signed=True))
 
@@ -63,32 +67,34 @@ def handle_client_connection(client, server):
     try:
         while True:
             rcvd = client.recv(4)
-            opcode = int.from_bytes(rcvd, 'big', signed=True)
-            if opcode in opcodes:
-                logging.info("Received opcode: {} ({})".format(opcode, opcodes[opcode]))
 
-                if opcode == 1:
-                    handle_reset(client)
+            if len(rcvd) > 0:
+                opcode = int.from_bytes(rcvd, 'big', signed=True)
+                if opcode in opcodes:
+                    logging.info("Received opcode: {} ({})".format(opcode, opcodes[opcode]))
 
-                elif opcode == 2:
-                    handle_ue_reboot(client)
+                    if opcode == 1:
+                        handle_reset(client)
 
-                elif opcode == 3:
-                    handle_adb_server_restart(client)
+                    elif opcode == 2:
+                        handle_ue_reboot(client)
+
+                    elif opcode == 3:
+                        handle_adb_server_restart(client)
+                else:
+                    logging.info("Invalid opcode: {}".format(opcode))
 
     except KeyboardInterrupt:
         logging.info("Keyboard Interrupt")
-        logging.info("Closing the connection ...")
-        client_socket.close()
+        logging.info("Closing the connecting socket ...")
+        client.close()
         turn_off_wifi_interface()
 
     except:
-        logging.error("Error Occurred")
-        logging.error("Closing the connection ...")
-        client_socket.close()
+        logging.error("Error occurred")
+        logging.error("Closing the connecting socket ...")
+        client.close()
         turn_off_wifi_interface()
-
-    time.sleep(1)
 
 def command_line_args():
     parser = argparse.ArgumentParser()
@@ -108,7 +114,7 @@ def main():
         sys.exit(1)
 
     adb_server_restart()
-    time.sleep(1)
+    time.sleep(5)
 
     logging.info("Open the listening socket to receive the message to control the VoWiFi UE from the learner")
 
@@ -116,22 +122,18 @@ def main():
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((args.addr, args.port))
 
-    server.listen(5)  # max backlog of connections
+    server.listen(5)
 
     try:
         client, address = server.accept()
         logging.info("Accepted connection from {}:{}".format(address[0], address[1]))
-        logging.info("Handling Client Connection")
+        logging.info("Handling the connection with the client")
         handle_client_connection(client, server)
         logging.info("Closing the listening socket ...")
         server.close()
-    except KeyboardInterrupt:
-        logging.info("Keyboard Interrupt")
-        logging.info("Closing the connection ...")
-        server.close()
     except:
-        logging.error("Error Occurred")
-        logging.error("Closing the connection ...")
+        logging.error("Error occurred")
+        logging.error("Closing the listening socket ...")
         server.close()
 
 if __name__ == '__main__':
