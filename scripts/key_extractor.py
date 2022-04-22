@@ -10,7 +10,7 @@ def extract_isakmp_keys(fname, last_line):
     with open(fname, "r") as f:
         for line in f:
             nline += 1
-            if nline < last_line:
+            if nline <= last_line:
                 continue
 
             if extract:
@@ -20,16 +20,25 @@ def extract_isakmp_keys(fname, last_line):
                 if nbytes <= 0:
                     print (key)
                     extract = False
-            elif "Initiator SPI" in line:
-                print (line.strip().split("] ")[1])
-            elif "Responder SPI" in line:
-                print (line.strip().split("] ")[1])
+            elif "Initiator SPI" in line or "Responder SPI" in line:
+                key, tmp = line.strip().split("] ")[1].split(": ")
+                val = ""
+
+                for i in range(len(tmp)-1, -1, -2):
+                    val += tmp[i-1:i+1]
+                
+                print ("{}: {}".format(key, val))
+
             elif "Sk_ai secret" in line or "Sk_ar secret" in line or "Sk_ei secret" in line or "Sk_er secret" in line:
                 ktype = line.strip().split("] ")[1].strip().split("=>")[0].strip()
                 nbytes = int(line.strip().split("=>")[1].strip().split("bytes")[0].strip())
                 logging.debug("ktype: {}, nbytes: {}".format(ktype, nbytes))
                 extract = True
                 key = "{}: ".format(ktype)
+
+    if nline < last_line:
+        logging.debug("nline: {}, last_line: {}".format(nline, last_line))
+        extract_isakmp_keys(fname, 0)
 
     return nline
 
