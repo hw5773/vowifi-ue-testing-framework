@@ -10,25 +10,25 @@ import signal
 
 def get_opcodes():
     ret = {}
-    ret[0] = "reset"
-    ret[1] = "ue reboot"
-    ret[2] = "adb server reboot"
+    ret[1] = "reset"
+    ret[2] = "ue reboot"
+    ret[3] = "adb server reboot"
     return ret
 
 def turn_off_wifi_interface():
-    print ("turn off 1")
     cmd = ["adb", "shell", "svc", "wifi", "disable"]
-    print ("turn off 2")
     subprocess.run(cmd)
-    print ("turn off 3")
+    time.sleep(1)
 
 def turn_on_wifi_interface():
     cmd = ["adb", "shell", "svc", "wifi", "enable"]
     subprocess.run(cmd)
+    time.sleep(1)
 
 def ue_reboot():
     cmd = ["adb", "reboot"]
     subprocess.run(cmd)
+    time.sleep(1)
 
 def adb_server_restart():
     cmd = ["adb", "kill-server"]
@@ -41,17 +41,20 @@ def handle_reset(client):
     turn_off_wifi_interface()
     turn_on_wifi_interface()
     time.sleep(1)
-    client.send(1)
+    ack = 1
+    client.send(ack.to_bytes(4, 'big', signed=True))
 
 def handle_ue_reboot(client):
     ue_reboot()
     time.sleep(30)
-    client.send(1)
+    ack = 1
+    client.send(ack.to_bytes(4, 'big', signed=True))
 
 def handle_adb_server_restart(client):
     adb_server_restart()
     time.sleep(1)
-    client.send(1)
+    ack = 1
+    client.send(ack.to_bytes(4, 'big', signed=True))
 
 def handle_client_connection(client, server):
     logging.info("Client Handler initiated")
@@ -59,17 +62,18 @@ def handle_client_connection(client, server):
 
     try:
         while True:
-            opcode = int.from_bytes(client.recv(4), 'big', signed=True)
+            rcvd = client.recv(4)
+            opcode = int.from_bytes(rcvd, 'big', signed=True)
             if opcode in opcodes:
                 logging.info("Received opcode: {} ({})".format(opcode, opcodes[opcode]))
 
-                if opcode == 0:
+                if opcode == 1:
                     handle_reset(client)
 
-                elif opcode == 1:
+                elif opcode == 2:
                     handle_ue_reboot(client)
 
-                elif opcode == 2:
+                elif opcode == 3:
                     handle_adb_server_restart(client)
 
     except KeyboardInterrupt:

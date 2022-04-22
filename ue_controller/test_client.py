@@ -10,9 +10,9 @@ import signal
 
 def get_opcodes():
     ret = {}
-    ret[0] = "reset"
-    ret[1] = "ue reboot"
-    ret[2] = "adb server reboot"
+    ret[1] = "reset"
+    ret[2] = "ue reboot"
+    ret[3] = "adb server reboot"
     return ret
 
 def command_line_args():
