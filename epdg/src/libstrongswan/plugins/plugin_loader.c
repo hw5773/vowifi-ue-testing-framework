@@ -1284,7 +1284,9 @@ METHOD(plugin_loader_t, load_plugins, bool,
 	enumerator->destroy(enumerator);
 	if (!critical_failed)
 	{
+    //printf(">>>>> load_features() 1\n");
 		load_features(this);
+    //printf(">>>>> load_features() 2\n");
 		if (this->stats.critical > 0)
 		{
 			critical_failed = TRUE;

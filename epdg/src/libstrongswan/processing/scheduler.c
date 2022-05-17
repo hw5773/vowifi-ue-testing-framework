@@ -157,6 +157,7 @@ static event_t *remove_event(private_scheduler_t *this)
  */
 static job_requeue_t schedule(private_scheduler_t * this)
 {
+  printf(">>>>> schedule!\n");
 	timeval_t now;
 	event_t *event;
 	bool timed = FALSE, oldstate;

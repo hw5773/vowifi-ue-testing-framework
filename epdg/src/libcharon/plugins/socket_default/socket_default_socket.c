@@ -258,13 +258,16 @@ METHOD(socket_t, receiver, status_t,
 		this->port, this->natt, this->port, this->natt,
 	};
 
-	DBG2(DBG_NET, "waiting for data on sockets");
+  DBG2(DBG_NET, ">>>>> receiver 1");
+	DBG2(DBG_NET, "socket_default_socket: waiting for data on sockets");
 	oldstate = thread_cancelability(TRUE);
+  DBG2(DBG_NET, ">>>>> receiver 2");
 	if (poll(pfd, countof(pfd), -1) <= 0)
 	{
 		thread_cancelability(oldstate);
 		return FAILED;
 	}
+  DBG2(DBG_NET, ">>>>> receiver 3");
 	thread_cancelability(oldstate);
 
 	rr = this->rr_counter++;
@@ -280,6 +283,7 @@ METHOD(socket_t, receiver, status_t,
 			break;
 		}
 	}
+  DBG2(DBG_NET, ">>>>> receiver 4");
 	if (selected != -1)
 	{
 		struct msghdr msg;
@@ -301,6 +305,7 @@ METHOD(socket_t, receiver, status_t,
 		msg.msg_controllen = sizeof(ancillary);
 		msg.msg_flags = 0;
 		bytes_read = recvmsg(selected, &msg, 0);
+  DBG2(DBG_NET, ">>>>> receiver 5: bytes_read: %d", bytes_read);
 		if (bytes_read < 0)
 		{
 			DBG1(DBG_NET, "error reading socket: %s", strerror(errno));
@@ -311,6 +316,7 @@ METHOD(socket_t, receiver, status_t,
 			DBG1(DBG_NET, "receive buffer too small, packet discarded");
 			return FAILED;
 		}
+  DBG2(DBG_NET, ">>>>> receiver 6");
 		DBG3(DBG_NET, "received packet %b", buffer, bytes_read);
 
 		/* read ancillary data to get destination address */
@@ -346,7 +352,17 @@ METHOD(socket_t, receiver, status_t,
 		pkt->set_source(pkt, source);
 		pkt->set_destination(pkt, dest);
 		DBG2(DBG_NET, "received packet: from %#H to %#H", source, dest);
+  DBG2(DBG_NET, ">>>>> receiver 7");
 		data = chunk_create(buffer, bytes_read);
+  DBG2(DBG_NET, ">>>>> receiver 8 (ptr: %p, len: %d", data.ptr, data.len);
+    ///// Test
+    for (i=0; i<data.len; i++)
+    {
+      printf("%02x ", (data.ptr)[i]);
+      if (i % 16 == 15)
+        printf("\n");
+    }
+    //////////
 		pkt->set_data(pkt, chunk_clone(data));
 	}
 	else
@@ -654,6 +670,7 @@ METHOD(socket_t, supported_families, socket_family_t,
 static int open_socket(private_socket_default_socket_t *this,
 					   int family, uint16_t *port)
 {
+  //printf(">>>>> open_socket()\n");
 	int on = TRUE;
 	union {
 		struct sockaddr sockaddr;
@@ -802,6 +819,7 @@ static bool use_family(int family)
 static void open_socketpair(private_socket_default_socket_t *this, int family,
 							int *skt, int *skt_natt, char *label)
 {
+  //printf(">>>>> open_socketpair()\n");
 	if (!use_family(family))
 	{
 		*skt = -1;
@@ -854,6 +872,7 @@ socket_default_socket_t *socket_default_socket_create()
 {
 	private_socket_default_socket_t *this;
 
+  printf(">>>>> socket_default_socket_create()\n");
 	INIT(this,
 		.public = {
 			.socket = {

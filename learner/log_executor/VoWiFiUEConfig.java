@@ -20,16 +20,16 @@ import java.io.IOException;
 public class VoWiFiUEConfig extends LearningConfig {
     String alphabet;
     String hostname;
-    String ue_controller_ip_address;
-    String epdg_controller_ip_address;
-    String ims_controller_ip_address;
-    int ue_port;
-    int epdg_port;
-    int ims_port;
+    String ueControllerIPAddress;
+    String epdgControllerIPAddress;
+    String imsControllerIPAddress;
+    int uePort;
+    int epdgPort;
+    int imsPort;
 
-    boolean combine_query;
-    String delimiter_input;
-    String delimiter_output;
+    boolean combineQuery;
+    String delimiterInput;
+    String delimiterOutput;
 
     public VoWiFiUEConfig(String filename) throws IOException {
         super(filename);
@@ -50,40 +50,40 @@ public class VoWiFiUEConfig extends LearningConfig {
             hostname = properties.getProperty("hostname");
 
         if(properties.getProperty("ue_controller_ip_address") != null)
-            ue_controller_ip_address = properties.getProperty("ue_controller_ip_address");
+            ueControllerIPAddress = properties.getProperty("ue_controller_ip_address");
 
         if(properties.getProperty("epdg_controller_ip_address") != null)
-            enodeb_controller_ip_address = properties.getProperty("epdg_controller_ip_address");
+            epdgControllerIPAddress = properties.getProperty("epdg_controller_ip_address");
 
         if(properties.getProperty("ims_controller_ip_address") != null)
-            mme_controller_ip_address = properties.getProperty("ims_controller_ip_address");
+            imsControllerIPAddress = properties.getProperty("ims_controller_ip_address");
 
         if(properties.getProperty("ue_port") != null)
-            mme_port = Integer.parseInt(properties.getProperty("ue_port"));
+            uePort = Integer.parseInt(properties.getProperty("ue_port"));
 
         if(properties.getProperty("epdg_port") != null)
-            ue_port = Integer.parseInt(properties.getProperty("epdg_port"));
+            epdgPort = Integer.parseInt(properties.getProperty("epdg_port"));
 
         if(properties.getProperty("ims_port") != null)
-            enodeb_port = Integer.parseInt(properties.getProperty("ims_port"));
+            imsPort = Integer.parseInt(properties.getProperty("ims_port"));
 
         if(properties.getProperty("combine_query") != null)
-            combine_query = Boolean.parseBoolean(properties.getProperty("combine_query"));
+            combineQuery = Boolean.parseBoolean(properties.getProperty("combine_query"));
         else
-            combine_query = false;
+            combineQuery = false;
 
         if(properties.getProperty("delimiter_input") != null)
-            delimiter_input = properties.getProperty("delimiter_input");
+            delimiterInput = properties.getProperty("delimiter_input");
         else
-            delimiter_input = ";";
+            delimiterInput = ";";
 
         if(properties.getProperty("delimiter_output") != null)
-            delimiter_output = properties.getProperty("delimiter_output");
+            delimiterOutput = properties.getProperty("delimiter_output");
         else
-            delimiter_output = ";";
+            delimiterOutput = ";";
     }
 
     public boolean getCombineQuery() {
-        return combine_query;
+        return combineQuery;
     }
 }

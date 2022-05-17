@@ -947,7 +947,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
 	/* message complete, send it */
 	clear_packets(this->responding.packets);
-	result = generate_message(this, message, &this->responding.packets);
+	result = generete_message(this, message, &this->responding.packets);
 	message->destroy(message);
 	if (id)
 	{
@@ -1004,35 +1004,49 @@ static status_t process_request(private_task_manager_t *this,
 		{
 			case IKE_SA_INIT:
 			{
+        printf("===== report to LogExecuter: IKE_SA_INIT =====\n");
+        printf("ike_sa_init 1\n");
 				task = (task_t*)ike_vendor_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 2\n");
 				task = (task_t*)ike_init_create(this->ike_sa, FALSE, NULL);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 3\n");
 				task = (task_t*)ike_natd_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 4\n");
 				task = (task_t*)ike_cert_pre_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 5\n");
 #ifdef ME
 				task = (task_t*)ike_me_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
 #endif /* ME */
+        printf("ike_sa_init 6\n");
 				task = (task_t*)ike_auth_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 7\n");
 				task = (task_t*)ike_cert_post_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 8\n");
 				task = (task_t*)ike_config_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 9\n");
 				task = (task_t*)child_create_create(this->ike_sa, NULL, FALSE,
 													NULL, NULL);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 10\n");
 				task = (task_t*)ike_auth_lifetime_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 11\n");
 				task = (task_t*)ike_mobike_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
+        printf("ike_sa_init 12\n");
 				break;
 			}
 			case CREATE_CHILD_SA:
 			{	/* FIXME: we should prevent this on mediation connections */
+        printf("===== report to LogExecuter: CREATE_CHILD_SA =====\n");
 				bool notify_found = FALSE, ts_found = FALSE;
 
 				if (state == IKE_CREATED ||
@@ -1093,6 +1107,7 @@ static status_t process_request(private_task_manager_t *this,
 			}
 			case INFORMATIONAL:
 			{
+        printf("===== report to LogExecuter: INFORMATIONAL =====\n");
 				enumerator = message->create_payload_enumerator(message);
 				while (enumerator->enumerate(enumerator, &payload))
 				{
@@ -1192,6 +1207,7 @@ static status_t process_request(private_task_manager_t *this,
 		}
 	}
 
+  printf("before pre_process\n");
 	enumerator = array_create_enumerator(this->passive_tasks);
 	while (enumerator->enumerate(enumerator, &task))
 	{
@@ -1229,7 +1245,9 @@ static status_t process_request(private_task_manager_t *this,
 		}
 	}
 	enumerator->destroy(enumerator);
+  printf("after pre_process\n");
 
+  printf("before task->process\n");
 	/* let the tasks process the message */
 	enumerator = array_create_enumerator(this->passive_tasks);
 	while (enumerator->enumerate(enumerator, (void*)&task))
@@ -1242,7 +1260,7 @@ static status_t process_request(private_task_manager_t *this,
 				task->destroy(task);
 				break;
 			case NEED_MORE:
-				/* processed, but task needs at least another call to build() */
+				/* processed, but task needs at least another call to bild() */
 				break;
 			case FAILED:
 			default:
@@ -1257,7 +1275,9 @@ static status_t process_request(private_task_manager_t *this,
 		}
 	}
 	enumerator->destroy(enumerator);
+  printf("after task->process\n");
 
+  // TODO: Needs to check and understand build_response()
 	return build_response(this, message);
 }
 
@@ -1610,12 +1630,16 @@ METHOD(task_manager_t, process_message, status_t,
 	uint32_t mid;
 	bool schedule_delete_job = FALSE;
 
+  printf("ikev2 task manager >>>>> process_message() 1\n");
 	charon->bus->message(charon->bus, msg, TRUE, FALSE);
+  printf("ikev2 task manager >>>>> process_message() 2\n");
 	status = parse_message(this, msg);
+  printf("ikev2 task manager >>>>> process_message() 3\n");
 	if (status != SUCCESS)
 	{
 		return status;
 	}
+  printf("ikev2 task manager >>>>> process_message() 4\n");
 
 	me = msg->get_destination(msg);
 	other = msg->get_source(msg);
@@ -1642,22 +1666,29 @@ METHOD(task_manager_t, process_message, status_t,
 		schedule_delete_job = TRUE;
 	}
 
+  printf("ikev2 task manager >>>>> process_message() 5\n");
 	mid = msg->get_message_id(msg);
+  printf("ikev2 task manager >>>>> process_message() 6\n");
 	if (msg->get_request(msg))
 	{
+  printf("ikev2 task manager >>>>> process_message() 7\n");
 		if (mid == this->responding.mid || (mid == 0 && is_mid_sync(this, msg)))
 		{
+  printf("ikev2 task manager >>>>> process_message() 8\n");
 			if (reject_request(this, msg))
 			{
 				return FAILED;
 			}
+  printf("ikev2 task manager >>>>> process_message() 9\n");
 			if (!this->ike_sa->supports_extension(this->ike_sa, EXT_MOBIKE))
 			{	/* only do implicit updates without MOBIKE, and only force
 				 * updates for IKE_AUTH (ports might change due to NAT-T) */
 				this->ike_sa->update_hosts(this->ike_sa, me, other,
 										   mid == 1 ? UPDATE_HOSTS_FORCE_ADDRS : 0);
 			}
+  printf("ikev2 task manager >>>>> process_message() 10\n");
 			status = handle_fragment(this, &this->responding.defrag, msg);
+  printf("ikev2 task manager >>>>> process_message() 11\n");
 			if (status != SUCCESS)
 			{
 				if (status == NEED_MORE)
@@ -1667,11 +1698,14 @@ METHOD(task_manager_t, process_message, status_t,
 				}
 				return status;
 			}
+  printf("ikev2 task manager >>>>> process_message() 12\n");
 			charon->bus->message(charon->bus, msg, TRUE, TRUE);
+  printf("ikev2 task manager >>>>> process_message() 13\n");
 			if (msg->get_exchange_type(msg) == EXCHANGE_TYPE_UNDEFINED)
 			{	/* ignore messages altered to EXCHANGE_TYPE_UNDEFINED */
 				return SUCCESS;
 			}
+      ///// TODO: This point is very important!!!
 			switch (process_request(this, msg))
 			{
 				case SUCCESS:
@@ -1716,20 +1750,25 @@ METHOD(task_manager_t, process_message, status_t,
 	}
 	else
 	{
+  printf("ikev2 task manager >>>>> process_message() 14\n");
 		if (mid == this->initiating.mid)
 		{
+  printf("ikev2 task manager >>>>> process_message() 15\n");
 			if (this->ike_sa->get_state(this->ike_sa) == IKE_CREATED ||
 				this->ike_sa->get_state(this->ike_sa) == IKE_CONNECTING ||
 				msg->get_exchange_type(msg) != IKE_SA_INIT)
 			{	/* only do updates based on verified messages (or initial ones) */
+  printf("ikev2 task manager >>>>> process_message() 16\n");
 				if (!this->ike_sa->supports_extension(this->ike_sa, EXT_MOBIKE))
 				{	/* only do implicit updates without MOBIKE, we force an
 					 * update of the local address on IKE_SA_INIT as we might
 					 * not know it yet, but never for the remote address */
+  printf("ikev2 task manager >>>>> process_message() 17\n");
 					this->ike_sa->update_hosts(this->ike_sa, me, other,
 											   mid == 0 ? UPDATE_HOSTS_FORCE_LOCAL : 0);
 				}
 			}
+  printf("ikev2 task manager >>>>> process_message() 18\n");
 			status = handle_fragment(this, &this->initiating.defrag, msg);
 			if (status != SUCCESS)
 			{
@@ -1740,16 +1779,21 @@ METHOD(task_manager_t, process_message, status_t,
 				}
 				return status;
 			}
+  printf("ikev2 task manager >>>>> process_message() 19\n");
 			charon->bus->message(charon->bus, msg, TRUE, TRUE);
+  printf("ikev2 task manager >>>>> process_message() 20\n");
 			if (msg->get_exchange_type(msg) == EXCHANGE_TYPE_UNDEFINED)
 			{	/* ignore messages altered to EXCHANGE_TYPE_UNDEFINED */
 				return SUCCESS;
 			}
+  printf("ikev2 task manager >>>>> process_message() 21\n");
+  ///// TODO: check the process_response() function
 			if (process_response(this, msg) != SUCCESS)
 			{
 				flush(this);
 				return DESTROY_ME;
 			}
+  printf("ikev2 task manager >>>>> process_message() 22\n");
 			this->ike_sa->set_statistic(this->ike_sa, STAT_INBOUND,
 										time_monotonic(NULL));
 		}
@@ -1759,7 +1803,9 @@ METHOD(task_manager_t, process_message, status_t,
 				 mid, this->initiating.mid);
 			return SUCCESS;
 		}
+  printf("ikev2 task manager >>>>> process_message() 23\n");
 	}
+  printf("ikev2 task manager >>>>> process_message() 24\n");
 
 	if (schedule_delete_job)
 	{
@@ -1773,6 +1819,7 @@ METHOD(task_manager_t, process_message, status_t,
 						"%s.half_open_timeout", HALF_OPEN_IKE_SA_TIMEOUT,
 						lib->ns));
 	}
+  printf("ikev2 task manager >>>>> process_message() 25\n");
 	return SUCCESS;
 }
 

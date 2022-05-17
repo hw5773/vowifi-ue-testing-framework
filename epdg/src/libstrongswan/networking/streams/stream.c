@@ -198,6 +198,7 @@ static bool watch(private_stream_t *this, int fd, watcher_event_t event)
  */
 static void add_watcher(private_stream_t *this)
 {
+  printf("add_watcher()\n");
 	watcher_event_t events = 0;
 
 	if (this->read_cb)
