@@ -246,18 +246,20 @@ public class LogExecutor {
 
   public void initUEConnection() {
     logger.debug("START: initUEConnection()");
-    /*
+    String ueControllerIPAddress = config.getUEControllerIPAddress();
+    int uePort = config.getUEControllerPort();
+    
     try {
-      System.out.println("Connecting to UE...");
-      System.out.println("UE controller IP Address: " + config.ue_controller_ip_address);
-      ueSocket = new Socket(config.ue_controller_ip_address, config.ue_port);
+      logger.info("Connecting to UE...");
+      logger.info("UE controller Address: " + ueControllerIPAddress + ":" + uePort);
+      ueSocket = new Socket(ueControllerIPAddress, uePort);
       ueSocket.setTcpNoDelay(true);
-      System.out.println("Connected to UE");
+      logger.info("Connected to UE");
 
-      System.out.println("Initializing Buffers for UE...");
+      logger.debug("Initializing Buffers for UE...");
       ueOut = new BufferedWriter(new OutputStreamWriter(ueSocket.getOutputStream()));
       ueIn = new BufferedReader(new InputStreamReader(ueSocket.getInputStream()));
-      System.out.println("Initialized Buffers for UE");
+      logger.debug("Initialized Buffers for UE");
     } catch (UnknownHostException e) {
       e.printStackTrace();
     } catch (SocketException e) {
@@ -265,7 +267,7 @@ public class LogExecutor {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    */
+    
     logger.debug("FINISH: initUEConnection()");
   }
 

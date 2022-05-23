@@ -18,72 +18,96 @@
 import java.io.IOException;
 
 public class VoWiFiUEConfig extends LearningConfig {
-    String alphabet;
-    String hostname;
-    String ueControllerIPAddress;
-    String epdgControllerIPAddress;
-    String imsControllerIPAddress;
-    int uePort;
-    int epdgPort;
-    int imsPort;
+  String alphabet;
+  String hostname;
+  String ueControllerIPAddress;
+  String epdgControllerIPAddress;
+  String imsControllerIPAddress;
+  int uePort;
+  int epdgPort;
+  int imsPort;
 
-    boolean combineQuery;
-    String delimiterInput;
-    String delimiterOutput;
+  boolean combineQuery;
+  String delimiterInput;
+  String delimiterOutput;
 
-    public VoWiFiUEConfig(String filename) throws IOException {
-        super(filename);
-    }
+  public VoWiFiUEConfig(String filename) throws IOException {
+    super(filename);
+  }
 
-    public VoWiFiUEConfig(LearningConfig config) {
-        super(config);
-    }
+  public VoWiFiUEConfig(LearningConfig config) {
+    super(config);
+  }
 
-    @Override
-    public void loadProperties() {
-        super.loadProperties();
+  @Override
+  public void loadProperties() {
+    super.loadProperties();
 
-        if(properties.getProperty("alphabet") != null)
-            alphabet = properties.getProperty("alphabet");
+    if(properties.getProperty("alphabet") != null)
+      alphabet = properties.getProperty("alphabet");
 
-        if(properties.getProperty("hostname") != null)
-            hostname = properties.getProperty("hostname");
+    if(properties.getProperty("hostname") != null)
+      hostname = properties.getProperty("hostname");
 
-        if(properties.getProperty("ue_controller_ip_address") != null)
-            ueControllerIPAddress = properties.getProperty("ue_controller_ip_address");
+    if(properties.getProperty("ue_controller_ip_address") != null)
+      ueControllerIPAddress = properties.getProperty("ue_controller_ip_address");
 
-        if(properties.getProperty("epdg_controller_ip_address") != null)
-            epdgControllerIPAddress = properties.getProperty("epdg_controller_ip_address");
+    if(properties.getProperty("epdg_controller_ip_address") != null)
+      epdgControllerIPAddress = properties.getProperty("epdg_controller_ip_address");
 
-        if(properties.getProperty("ims_controller_ip_address") != null)
-            imsControllerIPAddress = properties.getProperty("ims_controller_ip_address");
+    if(properties.getProperty("ims_controller_ip_address") != null)
+      imsControllerIPAddress = properties.getProperty("ims_controller_ip_address");
 
-        if(properties.getProperty("ue_port") != null)
-            uePort = Integer.parseInt(properties.getProperty("ue_port"));
+    if(properties.getProperty("ue_port") != null)
+      uePort = Integer.parseInt(properties.getProperty("ue_port"));
 
-        if(properties.getProperty("epdg_port") != null)
-            epdgPort = Integer.parseInt(properties.getProperty("epdg_port"));
+    if(properties.getProperty("epdg_port") != null)
+      epdgPort = Integer.parseInt(properties.getProperty("epdg_port"));
 
-        if(properties.getProperty("ims_port") != null)
-            imsPort = Integer.parseInt(properties.getProperty("ims_port"));
+    if(properties.getProperty("ims_port") != null)
+      imsPort = Integer.parseInt(properties.getProperty("ims_port"));
 
-        if(properties.getProperty("combine_query") != null)
-            combineQuery = Boolean.parseBoolean(properties.getProperty("combine_query"));
-        else
-            combineQuery = false;
+    if(properties.getProperty("combine_query") != null)
+      combineQuery = Boolean.parseBoolean(properties.getProperty("combine_query"));
+    else
+      combineQuery = false;
 
-        if(properties.getProperty("delimiter_input") != null)
-            delimiterInput = properties.getProperty("delimiter_input");
-        else
-            delimiterInput = ";";
+    if(properties.getProperty("delimiter_input") != null)
+      delimiterInput = properties.getProperty("delimiter_input");
+    else
+      delimiterInput = ";";
 
-        if(properties.getProperty("delimiter_output") != null)
-            delimiterOutput = properties.getProperty("delimiter_output");
-        else
-            delimiterOutput = ";";
-    }
+    if(properties.getProperty("delimiter_output") != null)
+      delimiterOutput = properties.getProperty("delimiter_output");
+    else
+      delimiterOutput = ";";
+  }
 
-    public boolean getCombineQuery() {
-        return combineQuery;
-    }
+  public boolean getCombineQuery() {
+    return combineQuery;
+  }
+
+  public String getUEControllerIPAddress() {
+    return ueControllerIPAddress;
+  }
+
+  public String getEPDGControllerIPAddress() {
+    return epdgControllerIPAddress;
+  }
+
+  public String getIMSControllerIPAddress() {
+    return imsControllerIPAddress;
+  }
+
+  public int getUEControllerPort() {
+    return uePort;
+  }
+
+  public int getEPDGControllerPort() {
+    return epdgPort;
+  }
+
+  public int getIMSControllerPort() {
+    return imsPort;
+  }
 }
