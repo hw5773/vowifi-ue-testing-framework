@@ -9,10 +9,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.cli.*;
+
 import static java.lang.Thread.sleep;
 
 public class LogExecutor {
-  VoWiFiUEConfig config;
+  VoWiFiUEConfig config = null;
+
+  final static Log logger = LogFactory.getLog(LogExecutor.class);
 
   public Socket ueSocket, epdgSocket, imsSocket;
 
@@ -43,148 +49,138 @@ public class LogExecutor {
 
   public static void main(String[] args) {
     List<List<String>> queries = new ArrayList<>();
+    LogExecutor logExecutor = null;
+    VoWiFiUEConfig vowifiUEConfig = null;
 
-    if (args.length <= 1) {
-      System.out.println("Invalid command line arguments");
-      System.out.println("< -f / -q > <log file / query> -i <vowifi-ue.properties>");
-      return;
-    }
+    Options options = new Options();
 
-    if (args[0].contains("-f")) {
-      System.out.println("file");
+    Option argFile = new Option("f", "file", true, "File that contains queries");
+    options.addOption(argFile);
 
-      if(args.length > 0) {
-        String file_name = args[1];
-        try (BufferedReader br = new BufferedReader(new FileReader(file_name))) {
-          String line;
-          
-          while ((line = br.readLine()) != null) {
-            if (line.contains("INFO")) {
-              line = line.split("/")[0].split("\\[")[1].replaceAll("\\|", " ");
-              System.out.println(line);
-              List<String> splitLine = Arrays.asList(line.split("\\s+"));
-              for (int i=0; i<splitLine.size(); i++){
-                System.out.println(splitLine.get(i));
-              }
-              queries.add(splitLine);
-            }
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
+    Option argQuery = new Option("q", "query", true, "Query to be executed by LogExecutor");
+    options.addOption(argQuery);
 
-      System.out.println(queries.size());
+    Option argConfig = new Option("c", "config", true, "Configuration file");
+    options.addOption(argConfig);
 
-      VoWiFiUEConfig vowifiUEConfig = null;
-      LogExecutor logExecutor = null;
+    CommandLineParser parser = new DefaultParser();
+    HelpFormatter formatter = new HelpFormatter();
+    CommandLine cmd = null;
 
-      if(args.length >= 3  && args[2].contains("-i")){
-        String vowifiUEPropertiesFilename = args[3];
-
-        try {
-          vowifiUEConfig = new VoWiFiUEConfig(vowifiUEPropertiesFilename);
-        } catch (IOException e) {
-          e.printStackTrace();
-          return;
-        }
-      }
-      else{
-        try {
-          vowifiUEConfig = new VoWiFiUEConfig(DEFAULT_CONF_FILE);
-        } catch (IOException e) {
-          e.printStackTrace();
-          return;
-        }
-      }
-
-      try {
-        logExecutor = new LogExecutor(vowifiUEConfig);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return;
-      }
-
-      Boolean timeoutOccured = false;
-      Integer queryNum = 1;
-
-      for (List<String> query: queries) {
-        String msg = "Starting Query # " + Integer.toString(queryNum);
-        System.out.println("Starting Query # " + Integer.toString(queryNum));
-
-        Boolean exceptionOccured = executeQuery(logExecutor, query);
-
-        while (exceptionOccured) {
-          exceptionOccured = executeQuery(logExecutor, query);
-        }
-
-        msg = "Finished Query # " + Integer.toString(queryNum);
-        System.out.println("Finished Query # " + Integer.toString(queryNum));
-
-        queryNum ++;
-      }
-    } else if (args[0].contains("-q")) {
-      System.out.println("query");
-      System.out.println(args[1]);
-      String line = args[1];
-      System.out.println("query: " + line);
-      List<String> splitLine = Arrays.asList(line.split("\\s+"));
-
-      for(String word: splitLine) {
-        System.out.println(word);
-      }
-
-      VoWiFiUEConfig vowifiUEConfig = null;
-      LogExecutor logExecutor = null;
-
-      try {
-        vowifiUEConfig = new VoWiFiUEConfig("vowifi-ue.properties");
-      } catch (IOException e) {
-        e.printStackTrace();
-        return;
-      }
-
-      try {
-        logExecutor = new LogExecutor(vowifiUEConfig);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return;
-      }
-
-      Boolean timeoutOccured = false;
-
-      logExecutor.pre();
-      for (String command: splitLine) {
-        if (command.contains("ε"))
-          continue;
-
-        if (timeoutOccured) {
-          System.out.println("RESULT: NULL ACTION");
-          continue;
-        }
-
-        String result = logExecutor.step(command);
-
-        if (result.matches("timeout")){
-          timeoutOccured = true;
-          System.out.println("RESULT: NULL ACTION(TIMEOUT)");
-          continue;
-        }
-
-      System.out.println("RESULT: " + result);
-      }
-    } else {
-      System.out.println("Invalid command line arguments");
-    }
     try {
-      sleep(1000000);
+      cmd = parser.parse(options, args);
+    } catch (ParseException e) {
+      logger.error(e.getMessage());
+      formatter.printHelp("Options", options);
+
+      System.exit(1);
+    }
+
+    String queryFilePath = cmd.getOptionValue("file");
+    String queryString = cmd.getOptionValue("query");
+    String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
+
+    if (queryFilePath == null && queryString == null) {
+      logger.error("Query File or Query should be inserted");
+      formatter.printHelp("Options", options);
+
+      System.exit(1);
+    }
+
+    File ctest = new File(configFilePath);
+    if (!ctest.exists()) {
+      logger.error("Configuration File (" + configFilePath + ") does not exist");
+      formatter.printHelp("Options", options);
+
+      System.exit(1);
+    }
+
+    if (ctest.isDirectory()) {
+      logger.error(configFilePath + " must not be a directory");
+      formatter.printHelp("Options", options);
+
+      System.exit(1);
+    }
+
+    try {
+      vowifiUEConfig = new VoWiFiUEConfig(configFilePath);
+    } catch (Exception e) {
+      logger.error("Error happened while processing the configuration file");
+      e.printStackTrace();
+    }
+
+    try {
+      logExecutor = new LogExecutor(vowifiUEConfig);
+    } catch (Exception e) {
+      logger.error("Error happend while initializing the LogExecutor");
+      e.printStackTrace();
+    }
+
+    if (queryFilePath != null) {
+      logger.info("Query File Mode (File Path: " + queryFilePath + ")");
+      try (BufferedReader br = new BufferedReader(new FileReader(queryFilePath))) {
+        String line;
+          
+        while ((line = br.readLine()) != null) {
+          if (line.contains("INFO")) {
+            line = line.split("/")[0].split("\\[")[1].replaceAll("\\|", " ");
+            logger.debug(line);
+            List<String> splitLine = Arrays.asList(line.split("\\s+"));
+            for (int i=0; i<splitLine.size(); i++){
+              logger.debug(splitLine.get(i));
+            }
+            queries.add(splitLine);
+          }
+        }
+      } catch (Exception e) {
+        logger.error("Error happened while processing the query file");
+        e.printStackTrace();
+      }
+
+      logger.info("# of Queries: " + queries.size());
+    }
+    else if (queryString != null) {
+      logger.info("Query String Mode");
+      logger.info("Query: " + queryString);
+
+      try {
+        List<String> splitLine = Arrays.asList(queryString.split("\\s+"));
+        queries.add(splitLine);
+      } catch (Exception e) {
+        logger.error("Error happened while processing the query string");
+        e.printStackTrace();
+      }
+    }
+
+    Boolean timeoutOccured = false;
+    Integer queryNum = 1;
+
+    for (List<String> query: queries) {
+      String msg = "Starting Query # " + Integer.toString(queryNum);
+      logger.info("Starting Query # " + Integer.toString(queryNum));
+
+      Boolean exceptionOccured = executeQuery(logExecutor, query);
+
+      while (exceptionOccured) {
+        exceptionOccured = executeQuery(logExecutor, query);
+      }
+
+      msg = "Finished Query # " + Integer.toString(queryNum);
+      logger.info("Finished Query # " + Integer.toString(queryNum));
+
+      queryNum ++;
+    }
+
+    try {
+      //sleep(1000000);
+      sleep(3000);
     } catch (Exception e) {
 
     }
 
     killEPDG();
     try {
-      sleep(2000);
+      sleep(3000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -192,7 +188,7 @@ public class LogExecutor {
   }
 
   public void restartEPDG() {
-    System.out.println("START: restartEPDG()");
+    logger.debug("START: restartEPDG()");
     /*
     try {
       epdgOut.close();
@@ -218,17 +214,17 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: restartEPDG()");
+    logger.debug("FINISH: restartEPDG()");
   }
 
   public void restartIMS() {
-    System.out.println("START: restartIMS()");
+    logger.debug("START: restartIMS()");
 
-    System.out.println("FINISH: restartIMS()");
+    logger.debug("FINISH: restartIMS()");
   }
 
   public void sendMSGToEPDG(String msg) {
-    System.out.println("START: sendMSGToEPDG()");
+    logger.debug("START: sendMSGToEPDG()");
     /*
     String result = new String();
     try {
@@ -245,11 +241,11 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: sendMSGToEPDG()");
+    logger.debug("FINISH: sendMSGToEPDG()");
   }
 
   public void initUEConnection() {
-    System.out.println("START: initUEConnection()");
+    logger.debug("START: initUEConnection()");
     /*
     try {
       System.out.println("Connecting to UE...");
@@ -270,11 +266,11 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: initUEConnection()");
+    logger.debug("FINISH: initUEConnection()");
   }
 
   public void initEPDGConnection() {
-    System.out.println("START: initEPDGConnection()");
+    logger.debug("START: initEPDGConnection()");
     /*
     try {
       // Initialize test service
@@ -324,11 +320,11 @@ public class LogExecutor {
     }
     System.out.println("Initialize the connection with ePDG success");
     */
-    System.out.println("FINISH: initEPDGConnection()");
+    logger.debug("FINISH: initEPDGConnection()");
   }
 
   public void initIMSConnection() {
-    System.out.println("START: initIMSConnection()");
+    logger.debug("START: initIMSConnection()");
     /*
     try {
       // Initialize test service
@@ -378,11 +374,11 @@ public class LogExecutor {
     }
     System.out.println("Initialize the connection with IMS (S-CSCF) success");
     */
-    System.out.println("FINISH: initIMSConnection()");
+    logger.debug("FINISH: initIMSConnection()");
   }
 
 	public String getExpectedResult(String symbol, String result) {
-    System.out.println("START: getExpectedResult()");
+    logger.debug("START: getExpectedResult()");
 		String final_result = "null_action";
 
     /*
@@ -394,12 +390,12 @@ public class LogExecutor {
 		}
     */
 
-    System.out.println("FINISH: getExpectedResult()");
+    logger.debug("FINISH: getExpectedResult()");
 		return final_result;
 	}
 
   public static Boolean executeQuery(LogExecutor logExecutor, List<String> query) {
-    System.out.println("START: executeQuery()");
+    logger.debug("START: executeQuery()");
     logExecutor.pre();
 
     boolean timeoutOccured = false;
@@ -439,12 +435,12 @@ public class LogExecutor {
     }
     */
 
-    System.out.println("FINISH: executeQuery()");
+    logger.debug("FINISH: executeQuery()");
     return exceptionOccured;
   }
 
   public String resetEPDG() {
-    System.out.println("START: resetEPDG()");
+    logger.debug("START: resetEPDG()");
     String result = new String("");
     /*
     System.out.println("Sending symbol: RESET to MME controller");
@@ -463,12 +459,12 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: resetEPDG()");
+    logger.debug("FINISH: resetEPDG()");
     return result;
   }
 
   public String resetUE() {
-    System.out.println("START: resetUE()");
+    logger.debug("START: resetUE()");
     String result = new String("");
     /*
     System.out.println("Sending symbol: RESET to UE controller");
@@ -486,12 +482,12 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: resetUE()");
+    logger.debug("FINISH: resetUE()");
     return result;
   }
 
   public String rebootUE() {
-    System.out.println("START: rebootUE()");
+    logger.debug("START: rebootUE()");
     String result = new String("");
     /*
     try {
@@ -508,12 +504,12 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: rebootUE()");
+    logger.debug("FINISH: rebootUE()");
     return result;
   }
 
   public String restartUEAdbServer() {
-    System.out.println("START: restartUEAdbServer()");
+    logger.debug("START: restartUEAdbServer()");
     String result = new String("");
     /*
     try {
@@ -530,12 +526,12 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: restartUEAdbServer()");
+    logger.debug("FINISH: restartUEAdbServer()");
     return result;
   }
 
 	public String step(String symbol) {
-    System.out.println("START: step()");
+    logger.debug("START: step()");
     String result = "";
     /*
 		try {
@@ -621,12 +617,12 @@ public class LogExecutor {
 
 		System.out.println("####" + symbol +"/"+result + "####");
     */
-    System.out.println("FINISH: step()");
+    logger.debug("FINISH: step()");
 		return result;
 	}
 
   public void pre() {
-    System.out.println("START: pre()");
+    logger.debug("START: pre()");
     /*
 	  int flag = 0;
 		try {
@@ -771,11 +767,11 @@ public class LogExecutor {
 			throw new RuntimeException(e);
 		}
     */
-    System.out.println("FINISH: pre()");
+    logger.debug("FINISH: pre()");
 	}
 
   public void handleTimeout(){
-    System.out.println("START: handleTimeout()");
+    logger.debug("START: handleTimeout()");
     /*
     String result = new String("");
     if (enb_alive() == false || mme_alive() == false) {
@@ -795,11 +791,11 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    System.out.println("FINISH: handleTimeout()");
+    logger.debug("FINISH: handleTimeout()");
   }
 
   public void isAdbServerRestartRequired() {
-    System.out.println("START: isAdbServerRestartRequired()");
+    logger.debug("START: isAdbServerRestartRequired()");
     /*
     if(enable_s1_count >= 50){
       //ue_socket.setSoTimeout(30*1000);
@@ -809,7 +805,7 @@ public class LogExecutor {
   }
 
   public void handleEPDGIMSFailure() {
-    System.out.println("START: handleEPDGIMSFailure()");
+    logger.debug("START: handleEPDGIMSFailure()");
 
     try {
       rebootUE();
@@ -818,11 +814,11 @@ public class LogExecutor {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    System.out.println("FINISH: handleEPDGIMSFailure()");
+    logger.debug("FINISH: handleEPDGIMSFailure()");
   }
 
   public boolean isEPDGAlive() {
-    System.out.println("START: isEPDGAlive()");
+    logger.debug("START: isEPDGAlive()");
     /*
     try {
       enodeb_socket.setSoTimeout(5*1000);
@@ -847,12 +843,12 @@ public class LogExecutor {
       return false;
     }
     */
-    System.out.println("FINISH: isEPDGAlive()");
+    logger.debug("FINISH: isEPDGAlive()");
     return true;
   }
 
   public boolean isIMSAlive() {
-    System.out.println("START: isIMSAlive()");
+    logger.debug("START: isIMSAlive()");
 
     /*
     try {
@@ -879,32 +875,32 @@ public class LogExecutor {
       return false;
     }
     */
-    System.out.println("FINISH: isIMSAlive()");
+    logger.debug("FINISH: isIMSAlive()");
     return true;
   }
 
   public static void startEPDG() {
-    System.out.println("START: startEPDG()");
+    logger.debug("START: startEPDG()");
     //runProcess(false, "/home/rafiul/my-computer/research/lte/code/LTEUE-State-Fuzzing/logExecutor/src/start_enb.sh");
-    System.out.println("FINISH: startEPDG()");
+    logger.debug("FINISH: startEPDG()");
   }
 
   public static void startIMS() {
-    System.out.println("START: startIMS()");
-    System.out.println("TODO: Needs to implement startIMS()");
-    System.out.println("FINISH: startIMS()");
+    logger.debug("START: startIMS()");
+    logger.debug("TODO: Needs to implement startIMS()");
+    logger.debug("FINISH: startIMS()");
   }
 
   public static void killEPDG() {
-    System.out.println("START: killEPDG()");
+    logger.debug("START: killEPDG()");
     //runProcess(false, "/home/rafiul/my-computer/research/lte/code/LTEUE-State-Fuzzing/logExecutor/src/kill_enb.sh");
-    System.out.println("FINISH: killEPDG()");
+    logger.debug("FINISH: killEPDG()");
   }
 
   public static void killIMS() {
-    System.out.println("START: killIMS()");
-    System.out.println("TODO: Needs to implement killIMS()");
-    System.out.println("FINISH: killIMS()");
+    logger.debug("START: killIMS()");
+    logger.debug("TODO: Needs to implement killIMS()");
+    logger.debug("FINISH: killIMS()");
   }
 
   public static void runProcess(boolean isWin, String... command) {
@@ -923,8 +919,8 @@ public class LogExecutor {
 
       return;
     } catch (IOException e) {
-      System.out.println("ERROR: " + command + " is not running after invoking script");
-      System.out.println("Attempting again...");
+      logger.error("ERROR: " + command + " is not running after invoking script");
+      logger.error("Attempting again...");
       e.printStackTrace();
     } catch (Exception e) {
       e.printStackTrace();
