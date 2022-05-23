@@ -43,6 +43,12 @@
 /* the default number of segments (MUST be a power of 2) */
 #define DEFAULT_SEGMENT_COUNT 1
 
+///// Added for VoWiFi /////
+#include <pthread.h>
+#define DEFAULT_EPDG_PORT 7778
+#define MAX_CLNT_SIZE 10
+////////////////////////////
+
 typedef struct entry_t entry_t;
 
 /**
@@ -448,6 +454,13 @@ struct private_ike_sa_manager_t {
 	 * Configured IKE_SA limit, if any
 	 */
 	u_int ikesa_limit;
+
+  ///// Added for VoWiFi /////
+  int lsock; // listening socket
+  int asock; // accepted socket (when accepted, it is assigned)
+  pthread_t *listener; // listener
+  pthread_attr_t *attr; 
+  ////////////////////////////
 };
 
 /**
@@ -1266,6 +1279,7 @@ METHOD(ike_sa_manager_t, create_new, ike_sa_t*,
 	{
 		ike_sa_id = ike_sa_id_create(ike_version, 0, spi, FALSE);
 	}
+  printf("create(): before ike_sa_create()\n");
 	ike_sa = ike_sa_create(ike_sa_id, initiator, version);
 	ike_sa_id->destroy(ike_sa_id);
 
@@ -1391,6 +1405,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 						entry->checked_out = thread_current();
 						unlock_single_segment(this, segment);
 
+            printf("IKE_SA is created in checkout_by_message()\n");
 						DBG2(DBG_MGR, "created IKE_SA %s[%u]",
 							 ike_sa->get_name(ike_sa),
 							 ike_sa->get_unique_id(ike_sa));
@@ -1500,6 +1515,7 @@ METHOD(ike_sa_manager_t, checkout_by_config, ike_sa_t*,
 
 	if (!this->reuse_ikesa && peer_cfg->get_ike_version(peer_cfg) != IKEV1)
 	{	/* IKE_SA reuse disabled by config (not possible for IKEv1) */
+    printf("ike_sa_manager.c:1504: create_new()\n");
 		ike_sa = create_new(this, peer_cfg->get_ike_version(peer_cfg), TRUE);
 		if (ike_sa)
 		{
@@ -1575,6 +1591,7 @@ METHOD(ike_sa_manager_t, checkout_by_config, ike_sa_t*,
 
 	if (!ike_sa)
 	{
+    printf("ike_sa_manager.c:1580: create_new()\n");
 		ike_sa = create_new(this, peer_cfg->get_ike_version(peer_cfg), TRUE);
 		if (ike_sa)
 		{
@@ -2449,6 +2466,15 @@ METHOD(ike_sa_manager_t, destroy, void,
 	free(this);
 }
 
+///// Added for VoWiFi /////
+METHOD(ike_sa_manager_t, get_accepted_socket, int,
+    private_ike_sa_manager_t *this)
+{
+  printf("get_accepted_socket()\n");
+  return this->asock;
+}
+////////////////////////////
+
 /**
  * This function returns the next-highest power of two for the given number.
  * The algorithm works by setting all bits on the right-hand side of the most
@@ -2466,6 +2492,36 @@ static u_int get_nearest_powerof2(u_int n)
 	}
 	return ++n;
 }
+
+///// Added for VoWiFi /////
+void *listener_run(void *data)
+{
+  private_ike_sa_manager_t *this;
+  int lsock, asock;
+  struct sockaddr_in addr;
+  socklen_t len = sizeof(addr);
+
+  this = (private_ike_sa_manager_t *)data;
+  lsock = this->lsock;
+
+  printf("running the listener socket thread: this->lsock: %d\n", this->lsock);
+
+  while (1)
+  {
+    asock = accept(lsock, (struct sockaddr *)&addr, &len);
+
+    if (asock < 0)
+    {
+      perror("socket failure");
+    }
+
+    printf("accept the socket: asock: %d\n", asock);
+    this->asock = asock;
+  }
+
+  return NULL;
+}
+////////////////////////////
 
 /*
  * Described in header.
@@ -2497,6 +2553,9 @@ ike_sa_manager_t *ike_sa_manager_create()
 			.flush = _flush,
 			.set_spi_cb = _set_spi_cb,
 			.destroy = _destroy,
+      ///// Added for VoWiFi /////
+      .get_accepted_socket = _get_accepted_socket,
+      ////////////////////////////
 		},
 	);
 
@@ -2574,5 +2633,52 @@ ike_sa_manager_t *ike_sa_manager_create()
 
 	this->reuse_ikesa = lib->settings->get_bool(lib->settings,
 											"%s.reuse_ikesa", TRUE, lib->ns);
+
+  ///// Added for VoWiFi /////
+  printf("making the listening socket\n");
+  int rc, sock, flags;
+  struct sockaddr_in addr;
+  sock = socket(PF_INET, SOCK_STREAM, 0);
+  if (sock < 0)
+  {
+    perror("error in generating the listening socket");
+  }
+  memset(&addr, 0, sizeof(addr));
+  addr.sin_family = AF_INET;
+  addr.sin_port = htons(DEFAULT_EPDG_PORT);
+  addr.sin_addr.s_addr = INADDR_ANY;
+
+  if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags)) < 0)
+  {
+    perror("setsockopt(SO_REUSEADDR) failed");
+  }
+
+  if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
+  {
+    perror("can't bind port");
+  }
+
+  if (listen(sock, MAX_CLNT_SIZE) != 0)
+  {
+    perror("can't configure listening port");
+  }
+
+  this->lsock = sock;
+  printf("sock: %d, this->lsock: %d\n", sock, this->lsock);
+
+  printf("preparing to run the thread\n");
+  this->attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
+  pthread_attr_init(this->attr);
+  pthread_attr_setdetachstate(this->attr, PTHREAD_CREATE_JOINABLE);
+
+  this->listener = (pthread_t *)calloc(1, sizeof(pthread_t));
+  rc = pthread_create(this->listener, this->attr, listener_run, this);
+
+  if (rc < 0)
+  {
+    perror("error in pthread create");
+  }
+  //////////////////////////
+
 	return &this->public;
 }

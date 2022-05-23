@@ -289,6 +289,10 @@ struct ike_sa_manager_t {
 	 * A call to flush() is required before calling destroy.
 	 */
 	void (*destroy) (ike_sa_manager_t *this);
+
+  ///// Added for VoWiFi /////
+  int (*get_accepted_socket) (ike_sa_manager_t *this);
+  ////////////////////////////
 };
 
 /**

@@ -273,11 +273,14 @@ public class LogExecutor {
 
   public void initEPDGConnection() {
     logger.debug("START: initEPDGConnection()");
-    /*
+
+    String epdgControllerIPAddress = config.getEPDGControllerIPAddress();
+    int epdgPort = config.getEPDGControllerPort();
+
     try {
       // Initialize test service
-      System.out.println("Connecting to ePDG...");
-      epdgSocket = new Socket(config.epdg_controller_ip_address, config.epdg_port);
+      logger.info("Connecting to ePDG...");
+      epdgSocket = new Socket(epdgControllerIPAddress , epdgPort);
       epdgSocket.setTcpNoDelay(true);
       epdgOut = new BufferedWriter(new OutputStreamWriter(epdgSocket.getOutputStream()));
       epdgIn = new BufferedReader(new InputStreamReader(epdgSocket.getInputStream()));
@@ -321,7 +324,6 @@ public class LogExecutor {
       initEPDGConnection();
     }
     System.out.println("Initialize the connection with ePDG success");
-    */
     logger.debug("FINISH: initEPDGConnection()");
   }
 

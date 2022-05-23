@@ -947,7 +947,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
 	/* message complete, send it */
 	clear_packets(this->responding.packets);
-	result = generete_message(this, message, &this->responding.packets);
+	result = generate_message(this, message, &this->responding.packets);
 	message->destroy(message);
 	if (id)
 	{
