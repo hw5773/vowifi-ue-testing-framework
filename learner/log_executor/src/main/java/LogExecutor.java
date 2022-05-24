@@ -16,7 +16,7 @@ import org.apache.commons.cli.*;
 import static java.lang.Thread.sleep;
 
 public class LogExecutor {
-  VoWiFiUEConfig config = null;
+  private static VoWiFiUEConfig config = null;
 
   final static Log logger = LogFactory.getLog(LogExecutor.class);
 
@@ -26,7 +26,9 @@ public class LogExecutor {
   public BufferedReader ueIn, epdgIn, imsIn;
 
   int rebootCount = 0;
-  boolean sqnSynchronized = false;
+  int enableVoWiFiCount = 0;
+  int resetEPDGCount = 0;
+  int resetIMSCount = 0;
 
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
@@ -36,7 +38,11 @@ public class LogExecutor {
     "null_action",
     "DONE");
 
-  private static final int COOLING_TIME = 5*1000; // 5 seconds
+  private static final int COOLING_TIME = 5*1000;
+  private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 180*1000; 
+  private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
+  private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
 
   public LogExecutor(VoWiFiUEConfig config) throws Exception {
@@ -112,7 +118,7 @@ public class LogExecutor {
     try {
       logExecutor = new LogExecutor(vowifiUEConfig);
     } catch (Exception e) {
-      logger.error("Error happend while initializing the LogExecutor");
+      logger.error("Error happend while initializing LogExecutor");
       e.printStackTrace();
     }
 
@@ -187,45 +193,36 @@ public class LogExecutor {
     killIMS();
   }
 
-  public void restartEPDG() {
+  public void restartEPDG() throws InterruptedException {
     logger.debug("START: restartEPDG()");
-    /*
-    try {
-      epdgOut.close();
-      epdgIn.close();
-      epdgSocket.close();
-
-      sleep(1000);
-
-      killEPDG();
-      startEPDG();
-
-      epdgSocket = new Socket(config.epdg_controller_ip_address, config.epdg_port);
-      epdgSocket.setTcpNoDelay(true);
-      epdgOut = new BufferedWriter(new OutputStreamWriter(epdgSocket.getOutputStream()));
-      epdgIn = new BufferedReader(new InputStreamReader(mme_socket.getInputStream()));
-
-      sqnSynchronized = false;
-    } catch (UnknownHostException e){
-      e.printStackTrace();
-    } catch (SocketException e){
-      e.printStackTrace();
-    } catch (Exception e){
-      e.printStackTrace();
-    }
-    */
+    logger.debug("Invoke killEPDG()");
+    killEPDG();
+    sleep(COOLING_TIME);
+    logger.debug("Invoke startEPDG()");
+    startEPDG();
+    sleep(COOLING_TIME);
+    logger.debug("Invoke initEPDGConnection()");
+    initEPDGConnection();
     logger.debug("FINISH: restartEPDG()");
   }
 
-  public void restartIMS() {
+  public void restartIMS() throws InterruptedException {
     logger.debug("START: restartIMS()");
+    logger.debug("Invoke killIMS()");
+    killIMS();
+    sleep(COOLING_TIME);
+    logger.debug("Invoke startIMS()");
+    startIMS();
+    sleep(COOLING_TIME);
+    logger.debug("Invoke initIMSConnection()");
+    initEPDGConnection();
 
     logger.debug("FINISH: restartIMS()");
   }
 
   public void sendMSGToEPDG(String msg) {
     logger.debug("START: sendMSGToEPDG()");
-    /*
+
     String result = new String();
     try {
       msg = "----------------- " + msg + "------------------\n";
@@ -240,12 +237,13 @@ public class LogExecutor {
     } catch(Exception e) {
       e.printStackTrace();
     }
-    */
+
     logger.debug("FINISH: sendMSGToEPDG()");
   }
 
   public void initUEConnection() {
     logger.debug("START: initUEConnection()");
+
     String ueControllerIPAddress = config.getUEControllerIPAddress();
     int uePort = config.getUEControllerPort();
     
@@ -278,7 +276,6 @@ public class LogExecutor {
     int epdgPort = config.getEPDGControllerPort();
 
     try {
-      // Initialize test service
       logger.info("Connecting to ePDG...");
       epdgSocket = new Socket(epdgControllerIPAddress , epdgPort);
       epdgSocket.setTcpNoDelay(true);
@@ -291,6 +288,7 @@ public class LogExecutor {
         sleep(2*1000);
         epdgOut.write("Hello\n");
         epdgOut.flush();
+        System.out.println("Sent = Hello");
         result = epdgIn.readLine();
         System.out.println("Received = " + result);
       } catch(SocketException e) {
@@ -404,40 +402,40 @@ public class LogExecutor {
 
     boolean timeoutOccured = false;
     boolean exceptionOccured = false;
+    long startTime, endTime, duration;
+    double insec;
 
-    /*
     for (String command: query) {
       if (command.contains("ε"))
         continue;
-      System.out.println("COMMAND: " + command);
+      logger.info("COMMAND: " + command);
 
       if (timeoutOccured) {
-        System.out.println("RESULT: NULL ACTION");
+        logger.info("RESULT: NULL ACTION (TIMEOUT)");
         continue;
       }
 
       command = command.replaceAll("\\s+","");
-      long startTime = System.currentTimeMillis();
+      startTime = System.currentTimeMillis();
       String result = logExecutor.step(command);
-      long endTime = System.currentTimeMillis();
-      long duration = (endTime - startTime);
-      double insec = duration/1000.0;
-      System.out.println("time elapsed in prefix: " + duration + " " + insec);
+      endTime = System.currentTimeMillis();
+      duration = (endTime - startTime);
+      insec = duration/1000.0;
+      logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
 
       if (result.matches("EXCEPTION")) {
-        System.out.println("Exception occured, restarting query");
+        logger.info("Exception occured, restarting query");
         exceptionOccured = true;
       }
 
       if (result.matches("timeout")) {
         timeoutOccured = true;
-        System.out.println("RESULT: NULL ACTION(TIMEOUT)");
+        logger.info("RESULT: NULL ACTION (TIMEOUT)");
         continue;
       }
 
-      System.out.println("RESULT: " + result);
+      logger.info("RESULT: " + result);
     }
-    */
 
     logger.debug("FINISH: executeQuery()");
     return exceptionOccured;
@@ -446,14 +444,15 @@ public class LogExecutor {
   public String resetEPDG() {
     logger.debug("START: resetEPDG()");
     String result = new String("");
+
     /*
-    System.out.println("Sending symbol: RESET to MME controller");
+    logger.info("Sending symbol: RESET to ePDG");
     try {
-      sleep(1*1000);
-      ePDGOut.write("RESET " + resetEPDGCount + "\n");
-      ePDGOut.flush();
-      result = ePDGIn.readLine();
-      System.out.println("ACK for RESET_MME: " + result);
+      sleep(COOLING_TIME);
+      epdgOut.write("RESET " + resetEPDGCount + "\n");
+      epdgOut.flush();
+      result = epdgIn.readLine();
+      System.out.println("ACK for resetEPDG(): " + result);
       resetEPDGCount++;
     } catch(SocketException e) {
       e.printStackTrace();
@@ -463,21 +462,24 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
+
     logger.debug("FINISH: resetEPDG()");
     return result;
   }
 
-  public String resetUE() {
-    logger.debug("START: resetUE()");
-    String result = new String("");
+  public String resetIMS() {
+    logger.debug("START: resetIMS()");
+    String result = "";
+
     /*
-    System.out.println("Sending symbol: RESET to UE controller");
+    System.out.println("Sending symbol: RESET to IMS Server");
     try {
-      sleep(1 * 1000);
-      ueOut.write("RESET\n");
-      ueOut.flush();
-      result = ueIn.readLine();
-      System.out.println("ACK for RESET_UE: " + result);
+      sleep(1*1000);
+      imsOut.write("RESET " + resetIMSCount + "\n");
+      imsOut.flush();
+      result = imsIn.readLine();
+      logger.info("ACK for resetIMS(): " + result);
+      resetIMSCount++;
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -486,6 +488,29 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
+    logger.debug("FINISH: resetIMS()");
+    return result;
+  }
+
+  public String resetUE() {
+    logger.debug("START: resetUE()");
+    String result = new String("");
+    
+    logger.info("Sending symbol: RESET to UE controller");
+    try {
+      sleep(COOLING_TIME);
+      ueOut.write("RESET\n");
+      ueOut.flush();
+      result = ueIn.readLine();
+      logger.info("ACK for resetUE(): " + result);
+    } catch(SocketException e) {
+      e.printStackTrace();
+    } catch(IOException e) {
+      e.printStackTrace();
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+    
     logger.debug("FINISH: resetUE()");
     return result;
   }
@@ -493,13 +518,14 @@ public class LogExecutor {
   public String rebootUE() {
     logger.debug("START: rebootUE()");
     String result = new String("");
-    /*
+    
     try {
+      sleep(COOLING_TIME);
       ueOut.write("ue_reboot\n");
       ueOut.flush();
-      System.out.println("Waiting for the response from UE .... ");
+      logger.info("Waiting for the response from UE .... ");
       result = ueIn.readLine();
-      System.out.println("UE's ACK for REBOOT: " + result);
+      logger.info("UE's ACK for REBOOT: " + result);
     } catch (SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -507,7 +533,7 @@ public class LogExecutor {
     } catch(Exception e) {
       e.printStackTrace();
     }
-    */
+    
     logger.debug("FINISH: rebootUE()");
     return result;
   }
@@ -515,13 +541,13 @@ public class LogExecutor {
   public String restartUEAdbServer() {
     logger.debug("START: restartUEAdbServer()");
     String result = new String("");
-    /*
+    
     try {
-      //sleep(2000);
+      sleep(COOLING_TIME);
       ueOut.write("adb_server_restart\n");
       ueOut.flush();
       result = ueIn.readLine();
-      System.out.println("Result for adb_server_restart: " + result);
+      logger.info("Result for adb_server_restart: " + result);
     } catch (SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -529,80 +555,110 @@ public class LogExecutor {
     } catch(Exception e) {
       e.printStackTrace();
     }
-    */
+    
     logger.debug("FINISH: restartUEAdbServer()");
     return result;
+  }
+
+  public void sendEnableVoWiFi() {
+    String result;
+    int retry = 5;
+    boolean enabled = false;
+
+    try {
+      sleep(COOLING_TIME);
+
+      while (enabled == false && retry > 0) {
+        logger.info("Sending symbol: enable_vowifi to UE Controller");
+        enableVoWiFiCount++;
+        ueOut.write("enable_vowifi\n");
+        ueOut.flush();
+
+        result = ueIn.readLine();
+        logger.info("UE Controller's ACK for enable_vowifi: " + result);
+        if (!result.contains("DONE")) {
+          enabled = true;
+        }
+        retry--;
+      }
+
+      if (enabled == false)
+      {
+        logger.error("Failed to start the VoWiFi protocol");
+        System.exit(1);
+      }
+    } catch (SocketException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 	public String step(String symbol) {
     logger.debug("START: step()");
     String result = "";
-    /*
+    
 		try {
 			sleep(50); //50 milliseconds
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		String attachResult = "";
 		try {
 			if(symbol.startsWith("enable_vowifi")) {
 				while (!result.contains("ike_sa_init_request")) {
-					ePDGSocket.setSoTimeout(180*1000);
-					send_enable_s1();
-					result = ePDGIn.readLine();
+					epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
+					sendEnableVoWiFi();
+					result = epdgIn.readLine();
 					if (result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
 						result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
 					}
-					result = getClosests(result);
-  				ePDGSocket.setSoTimeout(5*1000);
-	  			System.out.println(symbol + "->" + result);
+  				epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+	  			logger.info(symbol + "->" + result);
 		  		return result;
 			  }
       }
 		} catch (SocketTimeoutException e) {
-			System.out.println("Timeout occured for " + symbol);
+			logger.info("Timeout occured for " + symbol);
 			handleTimeout();
 			return "timeout";
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Attempting to restart device and reset srsEPC. Also restarting query.");
-			handle_enb_epc_failure();
+			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting query.");
+			handleEPDGIMSFailure();
 			return "null_action";
 		}
 
 		try {
 			if (symbol.contains("reject")) {
-				ePDGSocket.setSoTimeout(5*1000);
-				ePDGOut.write(symbol + "\n");
-				ePDGOut.flush();
+				epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+				epdgOut.write(symbol + "\n");
+				epdgOut.flush();
 
-				result = ePDGIn.readLine();
+				result = epdgIn.readLine();
 				if(result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
 					result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
 				}
-				result = getClosests(result);
 
-				System.out.println(symbol + "->" + result);
+				logger.info(symbol + "->" + result);
 				return result;
 			}
 		} catch (SocketTimeoutException e){
-			System.out.println("Timeout occured for " + symbol);
-			System.out.println("Restarting UE and marking following command as null action");
+			logger.info("Timeout occured for " + symbol);
+			logger.info("Restarting UE and marking following command as null action");
 			handleTimeout();
 			return "timeout";
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Attempting to restart UE and reset ePDG and IMS. Also restarting query.");
-			handleEPDGFailure();
-			handleIMSFailure();
+			logger.info("Attempting to restart UE and reset ePDG and IMS. Also restarting query.");
+			handleEPDGIMSFailure();
 			return "null_action";
 		}
 
 		try {
 			if (result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
-				result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
-				result = getClosests(result);
 				if (result.toLowerCase().startsWith("null_action")) {
 					result = "null_action";
 				}
@@ -613,199 +669,79 @@ public class LogExecutor {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Attempting to restart UE and reset ePDG and IMS. Also restarting query.");
-			handleEPDGFailure();
-			handleIMSFailure();
+			handleEPDGIMSFailure();
 
 			return "null_action";
 		}
 
 		System.out.println("####" + symbol +"/"+result + "####");
-    */
+    
     logger.debug("FINISH: step()");
 		return result;
 	}
 
   public void pre() {
     logger.debug("START: pre()");
-    /*
+    
 	  int flag = 0;
+    boolean resetDone = false;
+		String result = "";
+		String resultForUE = "";
+		String resultForEPDG = "";
+		String resultForIMS = "";
+
 		try {
-			if (!config.combine_query) {
+			logger.info("---- Starting RESET ----");
 
-				String result = new String("");
-				String resultForUE = new String("");
-				String resultForEPDG = new String("");
-				String resultForIMS = new String("");
-				String attachResult = new String ("");
-				boolean resetDone = false;
+			do {
+				try {
+					resultForUE = resetUE();
+					resultForEPDG = resetEPDG();
+					resultForIMS = resetIMS();
+            
+          if (isEPDGAlive() && isIMSAlive())
+            resetDone = true;
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+			}while(resetDone == false);
 
-				timeoutCount = 0;
-				rebootCount = 0;
-
-				System.out.println("---- Starting RESET ----");
-
-				do {
-					try {
-						resultForUE = resetUE();
-						resultForEPDG = resetEPDG();
-						resultForIMS = resetIMS();
-						result = new String("");
-						attachResult = new String("");
-
-						ePDGSocket.setSoTimeout(180*1000);
-						if (flag == 0){
-							flag = 1;
-						}
-						sendEnableVoWiFi();
-
-						result = ePDGIn.readLine();
-						if (result == null || result.compareTo("")==0){
-							continue;
-						}
-						result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
-						result = getClosests(result);
-
-						if(result.contains("detach_request")){
-							mme_socket.setSoTimeout(20*1000);
-							attach_result = mme_in.readLine();
-							if (attach_result.compareTo("") != 0 && attach_result.toCharArray()[0] == ' ') {
-								attach_result = new String(Arrays.copyOfRange(attach_result.getBytes(), 1, attach_result.getBytes().length));
-							}
-							attach_result = getClosests(attach_result);
-							//result = result + ","+ attach_result;
-							result = attach_result;
-							//System.out.println("Done by IK!");
-							//mme_out.write("attach_reject\n");
-							//mme_out.flush();
-						}
-						System.out.println("Response of ENABLE_S1: " + result);
-						mme_socket.setSoTimeout(30*1000);
-						int attach_request_guti_counter = 3;
-
-						if (result.contains("attach_request_guti") 
-                || result.contains("service_request") 
-                || result.contains("tau_request")) {
-							attach_request_guti_count++;
-							flag = 1;
-
-							if(attach_request_guti_count < attach_request_guti_counter) {
-								System.out.println("Sending symbol: attach_reject to MME controller to delete the UE context in attach_request_guti");
-								mme_out.write("attach_reject\n");
-								mme_out.flush();
-							}
-
-							else if(attach_request_guti_count% attach_request_guti_counter == 0){
-								handle_enb_epc_failure();
-							}
-							else if(attach_request_guti_count > attach_request_guti_counter){
-								System.out.println("Sending symbol: auth_reject to MME controller to delete the UE context");
-								mme_out.write("auth_reject\n");
-								mme_out.flush();
-								TimeUnit.SECONDS.sleep(2);
-								reboot_ue();
-							}
-						}
-						else if (result.startsWith("attach_request") 
-                || result.startsWith("DONE")) {
-							if (flag == 0){
-								flag = 1;
-								continue;
-							}
-							attach_request_guti_count = 0;
-
-							if(sqn_synchronized == false){
-								//send_enable_s1();
-								//result = mme_in.readLine();
-								//result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
-								//result = getClosests(result);
-								System.out.println("Sending symbol: auth_request to MME controller");
-								mme_out.write("auth_request_plain\n");
-								mme_out.flush();
-
-								result = mme_in.readLine();
-								result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
-								result = getClosests(result);
-
-								System.out.println("RESULT FROM AUTH REQUEST: " + result);
-
-								if (result.contains("auth")) {
-									System.out.println("Received " + result + ". Synched the SQN value");
-									sqn_synchronized = true;
-									reset_done = true;
-									break;
-								}
-							}
-							else if(sqn_synchronized == true){
-								reset_done = true;
-								break;
-							}
-						}
-					} catch (SocketTimeoutException e) {
-						enable_s1_timeout_count++;
-						System.out.println("Timeout occured for enable_s1");
-						System.out.println("Sleeping for a while...");
-						sleep(10*1000);
-						//System.out.println("Rebooting ADB Server");
-						if(enable_s1_timeout_count ==3) {
-							//System.out.println("Rebooting UE");
-							handle_enb_epc_failure();
-						}
-
-					}
-				}while(reset_done == false);
-
-				result = reset_mme();
-				if (result.contains("attach_request_guti")){
-					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-				}
-				result = reset_ue();
-				//sleep(2000);
-				System.out.println("---- RESET DONE ----");
-
-			}
+			logger.info("---- RESET DONE ----");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-    */
+
     logger.debug("FINISH: pre()");
 	}
 
   public void handleTimeout(){
     logger.debug("START: handleTimeout()");
-    /*
+    
     String result = new String("");
-    if (enb_alive() == false || mme_alive() == false) {
-      handle_enb_epc_failure();
+    if (isEPDGAlive() == false || isIMSAlive() == false) {
+      handleEPDGIMSFailure();
       return;
     }
     try {
-      ueOut.write("ue_reboot\n"); // reboot the UE and turn cellular network ON with 4G LTE
+      ueOut.write("ue_reboot\n");
       ueOut.flush();
-      System.out.println("Sleeping while UE reboots");
-      TimeUnit.SECONDS.sleep(45);
-      result = ue_in.readLine();
+      logger.info("Sleeping while UE reboots");
+      sleep(UE_REBOOT_SLEEP_TIME);
+      result = ueIn.readLine();
       System.out.println("Result for reboot: " + result);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    */
+    
     logger.debug("FINISH: handleTimeout()");
   }
 
   public void isAdbServerRestartRequired() {
     logger.debug("START: isAdbServerRestartRequired()");
-    /*
-    if(enable_s1_count >= 50){
-      //ue_socket.setSoTimeout(30*1000);
-      enable_s1_count = 0;
-    }
-    */
+    logger.debug("FINISH: isAdbServerRestartRequired()");
   }
 
   public void handleEPDGIMSFailure() {
@@ -823,15 +759,19 @@ public class LogExecutor {
 
   public boolean isEPDGAlive() {
     logger.debug("START: isEPDGAlive()");
-    /*
+
+    String result;
+    
     try {
-      enodeb_socket.setSoTimeout(5*1000);
-      enodeb_out.write("Hello\n");
-      enodeb_out.flush();
-      result = enodeb_in.readLine();
-      System.out.println("Received from Hello message in enb alive = " + result);
-      enodeb_socket.setSoTimeout(30*1000);
+      epdgSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
+      epdgOut.write("Hello\n");
+      epdgOut.flush();
+      logger.info("Sent the Hello message to ePDG");
+      result = epdgIn.readLine();
+      logger.info("Received the Hello message from ePDG in isEPDGAlive() = " + result);
+      epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
     } catch(SocketTimeoutException e) {
+      logger.error("Timeout in Socket with ePDG");
       e.printStackTrace();
       return false;
     } catch (Exception e) {
@@ -846,24 +786,24 @@ public class LogExecutor {
       System.out.println("FAILED: Testing the connection between the statelearner and the srsENB");
       return false;
     }
-    */
-    logger.debug("FINISH: isEPDGAlive()");
-    return true;
   }
 
   public boolean isIMSAlive() {
     logger.debug("START: isIMSAlive()");
 
     /*
-    try {
-      mme_socket.setSoTimeout(5*1000);
-      mme_out.write("Hello\n");
-      mme_out.flush();
-      result = mme_in.readLine();
-      System.out.println("Received from Hello message in mme alive = " + result);
-      mme_socket.setSoTimeout(30*1000);
+    String result;
 
+    try {
+      imsSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
+      imsOut.write("Hello\n");
+      imsOut.flush();
+      logger.info("Sent the Hello message to IMS Server");
+      result = imsIn.readLine();
+      System.out.println("Received the Hello messge from IMS Server in isIMSAlive() = " + result);
+      imsSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
     } catch(SocketTimeoutException e) {
+      logger.error("Timeout in Socket with IMS Server");
       e.printStackTrace();
       return false;
     } catch (Exception e) {
@@ -885,29 +825,45 @@ public class LogExecutor {
 
   public static void startEPDG() {
     logger.debug("START: startEPDG()");
-    //runProcess(false, "/home/rafiul/my-computer/research/lte/code/LTEUE-State-Fuzzing/logExecutor/src/start_enb.sh");
+
+    String epdgStartCmd = config.getEPDGStartCmd();
+    logger.info("start ePDG by " + epdgStartCmd);
+    runProcess(epdgStartCmd);
+
     logger.debug("FINISH: startEPDG()");
   }
 
   public static void startIMS() {
     logger.debug("START: startIMS()");
-    logger.debug("TODO: Needs to implement startIMS()");
+
+    String imsStartCmd = config.getIMSStartCmd();
+    logger.info("start IMS Server by " + imsStartCmd);
+    runProcess(imsStartCmd);
+
     logger.debug("FINISH: startIMS()");
   }
 
   public static void killEPDG() {
     logger.debug("START: killEPDG()");
-    //runProcess(false, "/home/rafiul/my-computer/research/lte/code/LTEUE-State-Fuzzing/logExecutor/src/kill_enb.sh");
+
+    String epdgStopCmd = config.getEPDGStopCmd();
+    logger.info("kill ePDG by " + epdgStopCmd);
+    runProcess(epdgStopCmd);
+
     logger.debug("FINISH: killEPDG()");
   }
 
   public static void killIMS() {
     logger.debug("START: killIMS()");
-    logger.debug("TODO: Needs to implement killIMS()");
+
+    String imsStopCmd = config.getIMSStopCmd();
+    logger.info("kill IMS Server by " + imsStopCmd);
+    runProcess(imsStopCmd);
+
     logger.debug("FINISH: killIMS()");
   }
 
-  public static void runProcess(boolean isWin, String... command) {
+  public static void runProcess(String... command) {
     System.out.print("command to run: ");
     for (String s : command) {
       System.out.print(s);

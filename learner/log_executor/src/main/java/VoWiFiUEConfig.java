@@ -20,12 +20,19 @@ import java.io.IOException;
 public class VoWiFiUEConfig extends LearningConfig {
   String alphabet;
   String hostname;
+
   String ueControllerIPAddress;
   String epdgControllerIPAddress;
   String imsControllerIPAddress;
+
   int uePort;
   int epdgPort;
   int imsPort;
+
+  String epdgStartCmd;
+  String epdgStopCmd;
+  String imsStartCmd;
+  String imsStopCmd;
 
   boolean combineQuery;
   String delimiterInput;
@@ -66,6 +73,18 @@ public class VoWiFiUEConfig extends LearningConfig {
 
     if(properties.getProperty("ims_port") != null)
       imsPort = Integer.parseInt(properties.getProperty("ims_port"));
+
+    if(properties.getProperty("epdg_start_cmd") != null)
+      epdgStartCmd = properties.getProperty("epdg_start_cmd");
+
+    if(properties.getProperty("epdg_stop_cmd") != null)
+      epdgStopCmd = properties.getProperty("epdg_stop_cmd");
+
+    if(properties.getProperty("ims_start_cmd") != null)
+      imsStartCmd = properties.getProperty("ims_start_cmd");
+
+    if(properties.getProperty("ims_stop_cmd") != null)
+      imsStopCmd = properties.getProperty("ims_stop_cmd");
 
     if(properties.getProperty("combine_query") != null)
       combineQuery = Boolean.parseBoolean(properties.getProperty("combine_query"));
@@ -109,5 +128,21 @@ public class VoWiFiUEConfig extends LearningConfig {
 
   public int getIMSControllerPort() {
     return imsPort;
+  }
+
+  public String getEPDGStartCmd() {
+    return epdgStartCmd;
+  }
+
+  public String getEPDGStopCmd() {
+    return epdgStopCmd;
+  }
+
+  public String getIMSStartCmd() {
+    return imsStartCmd;
+  }
+
+  public String getIMSStopCmd() {
+    return imsStopCmd;
   }
 }

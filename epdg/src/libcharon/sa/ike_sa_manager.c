@@ -44,9 +44,15 @@
 #define DEFAULT_SEGMENT_COUNT 1
 
 ///// Added for VoWiFi /////
+#include <unistd.h>
+#include <fcntl.h>
 #include <pthread.h>
 #define DEFAULT_EPDG_PORT 7778
 #define MAX_CLNT_SIZE 10
+#define MAX_QUEUE_LEN 10
+#define MAX_MESSAGE_LEN 256
+#define HELLO_REQUEST "Hello\n"
+#define HELLO_RESPONSE  "ACK\n"
 ////////////////////////////
 
 typedef struct entry_t entry_t;
@@ -318,6 +324,140 @@ struct table_item_t {
 
 typedef struct private_ike_sa_manager_t private_ike_sa_manager_t;
 
+///// Added for VoWiFi /////
+typedef struct msg_st
+{
+  uint8_t msg[MAX_MESSAGE_LEN];
+  int len;
+} msg_t;
+
+typedef struct instance_st 
+{
+  int asock;
+
+  int slast;
+  msg_t *sendq[MAX_QUEUE_LEN];
+  int (*add_message_to_send_queue)(struct instance_st *instance, msg_t *msg);
+  msg_t *(*fetch_message_from_send_queue)(struct instance_st *instance);
+
+  int rlast;
+  msg_t *recvq[MAX_QUEUE_LEN];
+  int (*add_message_to_recv_queue)(struct instance_st *instance, msg_t *msg);
+  msg_t *(*fetch_message_from_recv_queue)(struct instance_st *instance);
+
+  int running;
+} instance_t;
+
+int _add_message_to_send_queue(instance_t *instance, msg_t *msg)
+{
+  int ret;
+  ret = -1;
+
+  if (instance->slast >= MAX_QUEUE_LEN)
+    return ret;
+
+  instance->sendq[instance->slast++] = msg;
+
+  ret = 1;
+  return ret;
+}
+
+msg_t *_fetch_message_from_send_queue(instance_t *instance)
+{
+  int i;
+  msg_t *ret;
+  ret = NULL;
+
+  if (instance->slast > 0)
+  {
+    ret = instance->sendq[0];
+    for (i=1; i<instance->slast; i++)
+      instance->sendq[i-1] = instance->sendq[i];
+    instance->slast--;
+  }
+
+  return ret;
+}
+
+int _add_message_to_recv_queue(instance_t *instance, msg_t *msg)
+{
+  int ret;
+  ret = -1;
+
+  if (instance->rlast >= MAX_QUEUE_LEN)
+    return ret;
+
+  instance->recvq[instance->rlast++] = msg;
+
+  ret = 1;
+  return ret;
+}
+
+msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
+{
+  int i;
+  msg_t *ret;
+  ret = NULL;
+
+  if (instance->rlast > 0)
+  {
+    ret = instance->recvq[0];
+    for (i=1; i<instance->rlast; i++)
+      instance->recvq[i-1] = instance->recvq[i];
+    instance->rlast--;
+  }
+
+  return ret;
+}
+
+msg_t *init_message(uint8_t *msg, int len)
+{
+  msg_t *ret;
+  ret = (msg_t *)calloc(1, sizeof(msg_t));
+  memcpy(ret->msg, msg, len);
+  ret->len = len;
+  return ret;
+}
+
+void free_message(msg_t *msg)
+{
+  free(msg);
+}
+
+instance_t *init_instance(int asock)
+{
+  instance_t *ret;
+  ret = (instance_t *)calloc(1, sizeof(instance_t));
+  ret->asock = asock;
+  ret->add_message_to_send_queue = _add_message_to_send_queue;
+  ret->fetch_message_from_send_queue = _fetch_message_from_send_queue;
+  ret->add_message_to_recv_queue = _add_message_to_recv_queue;
+  ret->fetch_message_from_recv_queue = _fetch_message_from_recv_queue;
+  ret->running = 1;
+
+  return ret;
+}
+
+void free_instance(instance_t *instance)
+{
+  int i;
+  if (instance)
+  {
+    for (i=0; i<instance->slast; i++)
+    {
+      free_message(instance->sendq[i]);
+    }
+    
+    for (i=0; i<instance->rlast; i++)
+    {
+      free_message(instance->recvq[i]);
+    }
+
+    free(instance);
+  }
+}
+////////////////////////////
+
 /**
  * Additional private members of ike_sa_manager_t.
  */
@@ -457,6 +597,7 @@ struct private_ike_sa_manager_t {
 
   ///// Added for VoWiFi /////
   int lsock; // listening socket
+  instance_t *instance;
   int asock; // accepted socket (when accepted, it is assigned)
   pthread_t *listener; // listener
   pthread_attr_t *attr; 
@@ -2497,28 +2638,79 @@ static u_int get_nearest_powerof2(u_int n)
 void *listener_run(void *data)
 {
   private_ike_sa_manager_t *this;
-  int lsock, asock;
+  size_t tbs;
+  int lsock, asock, flags, offset, sent, rcvd, reading;
   struct sockaddr_in addr;
   socklen_t len = sizeof(addr);
+  uint8_t buf[MAX_MESSAGE_LEN];
+  instance_t *instance;
 
   this = (private_ike_sa_manager_t *)data;
   lsock = this->lsock;
 
   printf("running the listener socket thread: this->lsock: %d\n", this->lsock);
 
-  while (1)
+  asock = accept(lsock, (struct sockaddr *)&addr, &len);
+
+  if (asock < 0)
   {
-    asock = accept(lsock, (struct sockaddr *)&addr, &len);
-
-    if (asock < 0)
-    {
-      perror("socket failure");
-    }
-
-    printf("accept the socket: asock: %d\n", asock);
-    this->asock = asock;
+    perror("socket failure");
   }
 
+  printf("accept the socket: asock: %d\n", asock);
+
+  flags = fcntl(asock, F_GETFL);
+  fcntl(asock, F_SETFL, flags | O_NONBLOCK);
+
+  instance = this->instance = init_instance(asock);
+  printf("socket with LogExecutor is set\n");
+
+  while (instance->running)
+  {
+    reading = 1;
+    offset = 0;
+    while (reading)
+    {
+      rcvd = read(asock, buf + offset, 1);
+      if (rcvd > 0)
+      {
+        if (buf[offset] == '\n')
+          reading = 0;
+        offset += rcvd;
+      }
+      else if (rcvd == 0)
+      {
+        printf("socket error happened()\n");
+        goto out;
+      }
+    }
+
+    printf("received message (%d bytes): %s\n", offset, buf);
+
+    if (offset == strlen(HELLO_REQUEST) 
+        && !strncmp(buf, HELLO_REQUEST, strlen(HELLO_REQUEST)))
+    {
+      printf("received Hello from LogExecutor!\n");
+
+      sleep(1);
+      tbs = strlen(HELLO_RESPONSE);
+      offset = 0;
+      memcpy(buf, HELLO_RESPONSE, tbs);
+
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      printf("sent ACK to LogExecutor\n");
+    }
+    else
+    {
+    }
+  }
+
+out:
   return NULL;
 }
 ////////////////////////////
