@@ -11,9 +11,9 @@ zone "ims.mnc210.mcc310.3gppnetwork.org" {
   file "/etc/bind/db.ims.mnc210.mcc310.3gppnetwork.org";
 };
 
-zone "epc.mnc210.mcc310.3gppnetwork.org" {
+zone "rcs.mnc210.mcc310.pub.3gppnetwork.org" {
   type master;
-  file "/etc/bind/db.epc.mnc210.mcc310.3gppnetwork.org";
+  file "/etc/bind/db.rcs.mnc210.mcc310.pub.3gppnetwork.org";
 };
 
 zone "mnc210.mcc310.3gppnetwork.org" {

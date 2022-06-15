@@ -410,7 +410,7 @@
     - Check if the followings are correct
       - List of Visitied Networks: ims.mnc210.mcc310.3gppnetwork.org
       - List IMPUs from Implicit-Set: sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org
-      - List of associated IMPIs: 310210123456781@msg.pc.t-mobile.com
+      - List of associated IMPIs: 310210123456781@msg.pc.t-mobile.com / 310210123456781@ims.mnc210.mcc310.3gppnetwork.org
 
   - UE2: IMSI 310210123456782
     - Click [Create] under [IMS Subscription]
@@ -450,7 +450,7 @@
     - Check if the followings are correct
       - List of Visitied Networks: ims.mnc210.mcc310.3gppnetwork.org
       - List IMPUs from Implicit-Set: sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org
-      - List of associated IMPIs: 310210123456782@msg.pc.t-mobile.com
+      - List of associated IMPIs: 310210123456782@msg.pc.t-mobile.com / 310210123456782@ims.mnc210.mcc310.3gppnetwork.org
 
 ## Turn on WiFi on UEs
 
