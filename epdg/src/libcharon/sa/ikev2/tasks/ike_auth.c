@@ -1000,6 +1000,9 @@ METHOD(task_t, build_r, status_t,
 			}
 		}
 
+    ///// Added for VoWiFi /////
+    //id = identification_create_from_string("fqdn:epdg.epc.mnc210.mcc310.pub.3gppnetwork.org");
+    ////////////////////////////
 		id_payload = id_payload_create_from_identification(PLV2_ID_RESPONDER, id);
 		get_reserved_id_bytes(this, id_payload);
 		message->add_payload(message, (payload_t*)id_payload);

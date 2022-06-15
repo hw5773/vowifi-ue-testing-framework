@@ -940,13 +940,18 @@ int ipsec_forward(struct sip_msg* m, udomain_t* d)
             // for Request get the dest proto from the saved contact
             dst_proto = pcontact->received_proto;
         } else {
-			if (strstr(m->dst_uri.s, ";transport=tcp") != NULL) {
-				dst_proto = PROTO_TCP;
-			} else if (strstr(m->dst_uri.s, ";transport=tls") != NULL) {
-				dst_proto = PROTO_TLS;
-			} else {
-				dst_proto = m->rcv.proto;
-			}
+          ///// Added for VoWiFi /////
+          dst_proto = PROTO_TCP;
+          /*
+		    	if (strstr(m->dst_uri.s, ";transport=tcp") != NULL) {
+				    dst_proto = PROTO_TCP;
+    			} else if (strstr(m->dst_uri.s, ";transport=tls") != NULL) {
+		    		dst_proto = PROTO_TLS;
+    			} else {
+		    		dst_proto = m->rcv.proto;
+    			}
+          */
+          ///////////////////////////
         }
 
         // for Request sends from P-CSCF client port

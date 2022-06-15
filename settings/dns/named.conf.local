@@ -6,19 +6,19 @@
 // organization
 //include "/etc/bind/zones.rfc1918";
 
-zone "ims.mnc260.mcc310.3gppnetwork.org" {
+zone "ims.mnc210.mcc310.3gppnetwork.org" {
   type master;
-  file "/etc/bind/db.ims.mnc260.mcc310.3gppnetwork.org";
+  file "/etc/bind/db.ims.mnc210.mcc310.3gppnetwork.org";
 };
 
-zone "epc.mnc260.mcc310.3gppnetwork.org" {
+zone "epc.mnc210.mcc310.3gppnetwork.org" {
   type master;
-  file "/etc/bind/db.epc.mnc260.mcc310.3gppnetwork.org";
+  file "/etc/bind/db.epc.mnc210.mcc310.3gppnetwork.org";
 };
 
-zone "mnc260.mcc310.3gppnetwork.org" {
+zone "mnc210.mcc310.3gppnetwork.org" {
   type master;
-  file "/etc/bind/db.mnc260.mcc310.3gppnetwork.org";
+  file "/etc/bind/db.mnc210.mcc310.3gppnetwork.org";
 };
 
 zone "msg.pc.t-mobile.com" {

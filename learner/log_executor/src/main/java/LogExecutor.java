@@ -44,6 +44,7 @@ public class LogExecutor {
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
+  private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
 
   public LogExecutor(VoWiFiUEConfig config) throws Exception {
     this.config = config;
@@ -441,9 +442,9 @@ public class LogExecutor {
     return exceptionOccured;
   }
 
-  public String resetEPDG() {
+  public boolean resetEPDG() {
     logger.debug("START: resetEPDG()");
-    String result = new String("");
+    String result = "";
 
     /*
     logger.info("Sending symbol: RESET to ePDG");
@@ -464,10 +465,10 @@ public class LogExecutor {
     */
 
     logger.debug("FINISH: resetEPDG()");
-    return result;
+    return true;
   }
 
-  public String resetIMS() {
+  public boolean resetIMS() {
     logger.debug("START: resetIMS()");
     String result = "";
 
@@ -489,12 +490,12 @@ public class LogExecutor {
     }
     */
     logger.debug("FINISH: resetIMS()");
-    return result;
+    return true;
   }
 
-  public String resetUE() {
+  public boolean resetUE() {
     logger.debug("START: resetUE()");
-    String result = new String("");
+    String result = "";
     
     logger.info("Sending symbol: RESET to UE controller");
     try {
@@ -511,13 +512,20 @@ public class LogExecutor {
       e.printStackTrace();
     }
     
-    logger.debug("FINISH: resetUE()");
-    return result;
+    if(result.contains("ACK\n")) {
+      System.out.println("PASSED: Testing the connection between the statelearner and UE");
+      logger.debug("FINISH: resetUE()");
+      return true;
+    } else {
+      System.out.println("FAILED: Testing the connection between the statelearner and UE");
+      logger.debug("FINISH: resetUE()");
+      return false;
+    }
   }
 
-  public String rebootUE() {
+  public boolean rebootUE() {
     logger.debug("START: rebootUE()");
-    String result = new String("");
+    String result = "";
     
     try {
       sleep(COOLING_TIME);
@@ -534,8 +542,15 @@ public class LogExecutor {
       e.printStackTrace();
     }
     
-    logger.debug("FINISH: rebootUE()");
-    return result;
+    if(result.contains("ACK\n")) {
+      System.out.println("PASSED: Testing the connection between the statelearner and UE");
+      logger.debug("FINISH: rebootUE()");
+      return true;
+    } else {
+      System.out.println("FAILED: Testing the connection between the statelearner and UE");
+      logger.debug("FINISH: rebootUE()");
+      return false;
+    }
   }
 
   public String restartUEAdbServer() {
@@ -683,7 +698,9 @@ public class LogExecutor {
   public void pre() {
     logger.debug("START: pre()");
     
-	  int flag = 0;
+	  int flag = 0; 
+    int trial = 0;
+    boolean ret;
     boolean resetDone = false;
 		String result = "";
 		String resultForUE = "";
@@ -695,9 +712,37 @@ public class LogExecutor {
 
 			do {
 				try {
-					resultForUE = resetUE();
-					resultForEPDG = resetEPDG();
-					resultForIMS = resetIMS();
+					do { 
+            trial++;
+            ret = resetUE();
+          } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
+
+          if (trial == DEFAULT_NUMBER_OF_TRIALS) {
+            logger.error("Resetting UE failed");
+            System.exit(1);
+          }
+
+          trial = 0;
+          do {
+            trial++;
+            ret = resetEPDG();
+          } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
+
+          if (trial == DEFAULT_NUMBER_OF_TRIALS) {
+            logger.error("Resetting ePDG failed");
+            System.exit(1);
+          }
+
+          trial = 0;
+          do {
+            trial++;
+            ret = resetIMS();
+          } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
+
+          if (trial == DEFAULT_NUMBER_OF_TRIALS) {
+            logger.error("Resetting IMS failed");
+            System.exit(1);
+          }
             
           if (isEPDGAlive() && isIMSAlive())
             resetDone = true;
@@ -729,7 +774,7 @@ public class LogExecutor {
       logger.info("Sleeping while UE reboots");
       sleep(UE_REBOOT_SLEEP_TIME);
       result = ueIn.readLine();
-      System.out.println("Result for reboot: " + result);
+      logger.info("Result for reboot: " + result);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (InterruptedException e) {
@@ -780,10 +825,10 @@ public class LogExecutor {
     }
 
     if(result.contains("ACK")) {
-      System.out.println("PASSED: Testing the connection between the statelearner and the srsENB");
+      System.out.println("PASSED: Testing the connection between the statelearner and ePDG");
       return true;
     } else {
-      System.out.println("FAILED: Testing the connection between the statelearner and the srsENB");
+      System.out.println("FAILED: Testing the connection between the statelearner and ePDG");
       return false;
     }
   }

@@ -85,6 +85,7 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 	char rand[AKA_RAND_LEN], char xres[AKA_RES_MAX], int *xres_len,
 	char ck[AKA_CK_LEN], char ik[AKA_IK_LEN], char autn[AKA_AUTN_LEN])
 {
+  printf("!!!!! eap_aka_3gpp2_provider.c get_quintuplet() !!!!!\n");
 	rng_t *rng;
 	char mac[AKA_MAC_LEN], ak[AKA_AK_LEN], k[AKA_K_LEN];
 

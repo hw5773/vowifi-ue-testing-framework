@@ -961,7 +961,7 @@ CREATE TABLE `visited_network` (
 
 LOCK TABLES `visited_network` WRITE;
 /*!40000 ALTER TABLE `visited_network` DISABLE KEYS */;
-INSERT INTO `visited_network` VALUES (2,'mnc001.mcc001.3gppnetwork.org'),(1,'mnc260.mcc310.3gppnetwork.org');
+INSERT INTO `visited_network` VALUES (2,'mnc001.mcc001.3gppnetwork.org'),(1,'mnc210.mcc310.3gppnetwork.org');
 /*!40000 ALTER TABLE `visited_network` ENABLE KEYS */;
 UNLOCK TABLES;
 

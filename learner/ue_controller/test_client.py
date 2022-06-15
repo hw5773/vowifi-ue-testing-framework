@@ -8,18 +8,11 @@ import logging
 import argparse
 import signal
 
-def get_opcodes():
-    ret = {}
-    ret[1] = "reset"
-    ret[2] = "ue reboot"
-    ret[3] = "adb server reboot"
-    return ret
-
 def command_line_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", "--addr", metavar="<connecting address>", help="connecting address", type=str, default="localhost")
     parser.add_argument("-p", "--port", metavar="<connecting port number>", help="connecting port number", type=int, default=7777)
-    parser.add_argument("-c", "--cmd", metavar="<command>", help="command", type=int, required=True)
+    parser.add_argument("-c", "--cmd", metavar="<command>", help="command", type=str, required=True)
     parser.add_argument("-l", "--log", metavar="<log level (DEBUG/INFO/WARNING/ERROR/CRITICAL>", help="Log level (DEBUG/INFO/WARNING/ERROR/CRITICAL)", type=str, default="INFO")
     args = parser.parse_args()
     return args
@@ -31,19 +24,19 @@ def main():
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((args.addr, args.port))
-    opcodes = get_opcodes()
     
-    if args.cmd not in opcodes:
-        logging.error("Invalid opcode: {}".format(args.cmd))
-        sys.exit(1)
-
     cmd = args.cmd
 
     try:
-        logging.info("Send opcode: {} ({})".format(cmd, opcodes[cmd]))
-        client.send(cmd.to_bytes(4, 'big', signed=True))
+        logging.info("Send opcode: {}".format(cmd))
+        cmd = cmd + "\n"
+        opcode = cmd.encode()
+        client.send(opcode)
 
-        response = client.recv(4)
+        response = ""
+        while not response.endswith('\n'):
+            rcvd = client.recv(1)
+            response += rcvd.decode()
         logging.info("Response: {}".format(response))
     except:
         logging.error("Error Occurred")

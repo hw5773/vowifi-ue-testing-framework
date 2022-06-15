@@ -1993,7 +1993,7 @@ update_binary_decoded '{"nai": "310260248416121@msg.pc.t-mobile.com"}'
 select MF
 select ADF.ISIM
 select EF.IMPU
-update_record_decoded 1 '{"impu": "sip:310260248416121@ims.mnc260.mcc310.3gppnetwork.org"}'
+update_record_decoded 1 '{"impu": "sip:310260248416121@ims.mnc210.mcc310.3gppnetwork.org"}'
 update_record_decoded 2 '{"impu": "sip:17657759216@msg.pc.t-mobile.com"}'
 update_record_decoded 3 '{"impu": null}'
 update_record_decoded 4 '{"impu": null}'

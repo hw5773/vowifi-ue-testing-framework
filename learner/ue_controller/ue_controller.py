@@ -8,24 +8,68 @@ import logging
 import argparse
 import signal
 
-def get_opcodes():
-    ret = {}
-    ret[1] = "reset"
-    ret[2] = "ue reboot"
-    ret[3] = "adb server reboot"
-    return ret
+ACK = "ACK\n".encode()
+FAIL = "Fail\n".encode()
+REBOOT_TIMEOUT = 120
+REBOOT_WAIT_TIME = 5
 
-def turn_off_wifi_interface():
-    cmd = ["adb", "shell", "svc", "wifi", "disable"]
-    subprocess.run(cmd)
+def turn_off_wifi_interface(device):
+    if device == "SM_G920T":
+        cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "disable"]
+        subprocess.run(cmd)
+    elif device == "moto_e5_plus":
+        cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+
+        if "enabled" in result.stdout:
+            logging.info("WiFi is enabled: need to toggle the WiFi button")
+            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
+            subprocess.run(cmd)
+            time.sleep(1)
+
+            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            subprocess.run(cmd)
+            time.sleep(1)
+
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            subprocess.run(cmd)
+            time.sleep(1)
+        else:
+            logging.info("WiFi is enabled: need not to toggle the WiFi button")
+    else:
+        cmd = ["adb", "shell", "svc", "wifi", "disable"]
+        subprocess.run(cmd)
     time.sleep(1)
 
-def turn_on_wifi_interface():
-    cmd = ["adb", "shell", "svc", "wifi", "enable"]
-    subprocess.run(cmd)
+def turn_on_wifi_interface(device):
+    if device == "SM_G920T":
+        cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "enable"]
+        subprocess.run(cmd)
+    elif device == "moto_e5_plus":
+        cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+
+        if "disabled" in result.stdout:
+            logging.info("WiFi is disabled: need to toggle the WiFi button")
+            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
+            subprocess.run(cmd)
+            time.sleep(1)
+
+            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            subprocess.run(cmd)
+            time.sleep(1)
+
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            subprocess.run(cmd)
+            time.sleep(1)
+        else:
+            logging.info("WiFi is enabled: need not to toggle the WiFi button")
+    else:
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        subprocess.run(cmd)
     time.sleep(1)
 
-def ue_reboot():
+def ue_reboot(device):
     cmd = ["adb", "reboot"]
     subprocess.run(cmd)
     time.sleep(1)
@@ -34,55 +78,66 @@ def check_ue_availability():
     pass
 
 def adb_server_restart():
+    logging.info("Kill the ADB server")
     cmd = ["adb", "kill-server"]
     subprocess.run(cmd)
+    time.sleep(1)
 
+    logging.info("Start the ADB server")
     cmd = ["adb", "start-server"]
     subprocess.run(cmd)
-
-def handle_reset(client):
-    turn_off_wifi_interface()
-    turn_on_wifi_interface()
     time.sleep(1)
-    ack = 1
-    client.send(ack.to_bytes(4, 'big', signed=True))
 
-def handle_ue_reboot(client):
-    ue_reboot()
-    time.sleep(30)
-    # TODO: Check Availability
-    ack = 1
-    client.send(ack.to_bytes(4, 'big', signed=True))
+def handle_reset(client, device):
+    turn_off_wifi_interface(device)
+    turn_on_wifi_interface(device)
+    time.sleep(1)
+    client.send(ACK)
+
+def handle_ue_reboot(client, device):
+    ue_reboot(device)
+    time.sleep(5)
+    start = int(time.time())
+    while True:
+        cmd = ["adb", "devices", "-l"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+        if device in result.stdout:
+            logging.info("UE reboot success")
+            client.send(ACK)
+            break
+        curr = int(time.time())
+        if curr - start >= REBOOT_TIMEOUT:
+            logging.info("UE reboot failure: timeout")
+            client.send(FAIL)
+            break
+        time.sleep(5)
+    time.sleep(REBOOT_WAIT_TIME)
 
 def handle_adb_server_restart(client):
     adb_server_restart()
     time.sleep(1)
-    ack = 1
-    client.send(ack.to_bytes(4, 'big', signed=True))
+    client.send(ACK)
 
-def handle_client_connection(client, server):
+def handle_client_connection(client, server, device):
     logging.info("Client Handler initiated")
-    opcodes = get_opcodes()
 
     try:
         while True:
-            rcvd = client.recv(4)
+            opcode = ""
+            while not opcode.endswith("\n"):
+                rcvd = client.recv(1)
+                opcode += rcvd.decode()
+            opcode = opcode.strip()
+            logging.info("Received opcode: {}".format(opcode))
 
-            if len(rcvd) > 0:
-                opcode = int.from_bytes(rcvd, 'big', signed=True)
-                if opcode in opcodes:
-                    logging.info("Received opcode: {} ({})".format(opcode, opcodes[opcode]))
-
-                    if opcode == 1:
-                        handle_reset(client)
-
-                    elif opcode == 2:
-                        handle_ue_reboot(client)
-
-                    elif opcode == 3:
-                        handle_adb_server_restart(client)
-                else:
-                    logging.info("Invalid opcode: {}".format(opcode))
+            if opcode == "reset":
+                handle_reset(client, device)
+            elif opcode == "ue_reboot":
+                handle_ue_reboot(client, device)
+            elif opcode == "adb_server_restart":
+                handle_adb_server_restart(client)
+            else:
+                logging.info("Invalid opcode: {}".format(opcode))
 
     except KeyboardInterrupt:
         logging.info("Keyboard Interrupt")
@@ -95,6 +150,31 @@ def handle_client_connection(client, server):
         logging.error("Closing the connecting socket ...")
         client.close()
         turn_off_wifi_interface()
+
+def check_device_model():
+    result = subprocess.run(['adb', 'devices', '-l'], stdout=subprocess.PIPE, text=True)
+    output = result.stdout
+
+    if "G920T" in output:
+        device = "SM_G920T"
+        logging.info("Device model: Samsung Galaxy S6 G920T")
+    elif "SM_A21" in output:
+        device = "SM_A21"
+        logging.info("Device model: Samsung Galaxy A21")
+    elif "5062W" in output:
+        device = "5062W"
+        logging.info("Device model: T-mobile Revvl4")
+    elif "moto_e5_plus" in output:
+        device = "moto_e5_plus"
+        logging.info("Device model: Motorola Moto E5 Plus")
+    elif "LM_G900TM" in output:
+        device = "LM_G900TM"
+        logging.info("Device model: LG Velvet 5G")
+    else:
+        device = "others"
+        logging.info("Device model: Others")
+
+    return device
 
 def command_line_args():
     parser = argparse.ArgumentParser()
@@ -114,7 +194,6 @@ def main():
         sys.exit(1)
 
     adb_server_restart()
-    time.sleep(5)
 
     logging.info("Open the listening socket to receive the message to control the VoWiFi UE from the learner")
 
@@ -123,12 +202,13 @@ def main():
     server.bind((args.addr, args.port))
 
     server.listen(5)
+    device = check_device_model()
 
     try:
         client, address = server.accept()
         logging.info("Accepted connection from {}:{}".format(address[0], address[1]))
         logging.info("Handling the connection with the client")
-        handle_client_connection(client, server)
+        handle_client_connection(client, server, device)
         logging.info("Closing the listening socket ...")
         server.close()
     except:

@@ -1261,7 +1261,7 @@ update_record_decoded 12 '{"sec_domain": 254, "key_set_version": 3, "key_type": 
 select MF
 select DF.SYSTEM
 select EF.SIM_AUTH_KEY
-update_binary_decoded '{"cfg": {"use_sres_deriv_func_2": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "641c852745bb17e808ded4930d9cfe40", "op": null, "opc": "32deb926a17ea5937298892c7e5eb467"}'
+update_binary_decoded '{"cfg": {"use_sres_deriv_func_2": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "5f6c5aded986c4674769723479083faa", "op": null, "opc": "85f8bd89c986a7abb2ea75cab69b6df0"}'
 #
 ################################################################################
 # MF/DF.SYSTEM/EF.0348_COUNT                                                   #
@@ -3180,7 +3180,7 @@ update_binary_decoded '{"raw": "ffffffff"}'
 select MF
 select ADF.USIM
 select EF.USIM_AUTH_KEY
-update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "641c852745bb17e808ded4930d9cfe40", "op": null, "opc": "32deb926a17ea5937298892c7e5eb467"}'
+update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "5f6c5aded986c4674769723479083faa", "op": null, "opc": "85f8bd89c986a7abb2ea75cab69b6df0"}'
 #
 ################################################################################
 # MF/ADF.USIM/EF.USIM_AUTH_KEY_2G                                              #
@@ -3193,7 +3193,7 @@ update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func
 select MF
 select ADF.USIM
 select EF.USIM_AUTH_KEY_2G
-update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "641c852745bb17e808ded4930d9cfe40", "op": null, "opc": "32deb926a17ea5937298892c7e5eb467"}'
+update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "5f6c5aded986c4674769723479083faa", "op": null, "opc": "85f8bd89c986a7abb2ea75cab69b6df0"}'
 #
 ################################################################################
 # MF/ADF.USIM/EF.GBA_SK                                                        #
@@ -3277,7 +3277,7 @@ update_binary_decoded '{"nai": "310260248416121@msg.pc.t-mobile.com"}'
 select MF
 select ADF.ISIM
 select EF.IMPU
-update_record_decoded 1 '{"impu": "sip:310260248416121@ims.mnc260.mcc310.3gppnetwork.org"}'
+update_record_decoded 1 '{"impu": "sip:310260248416121@ims.mnc210.mcc310.3gppnetwork.org"}'
 update_record_decoded 2 '{"impu": null}'
 update_record_decoded 3 '{"impu": null}'
 update_record_decoded 4 '{"impu": null}'
@@ -3493,7 +3493,7 @@ select EF.XCAPConfigData
 select MF
 select ADF.ISIM
 select EF.ISIM_AUTH_KEY
-update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "641c852745bb17e808ded4930d9cfe40", "op": null, "opc": "32deb926a17ea5937298892c7e5eb467"}'
+update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "5f6c5aded986c4674769723479083faa", "op": null, "opc": "85f8bd89c986a7abb2ea75cab69b6df0"}'
 #
 ################################################################################
 # MF/ADF.ISIM/EF.ISIM_AUTH_KEY_2G                                              #
@@ -3506,7 +3506,7 @@ update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func
 select MF
 select ADF.ISIM
 select EF.ISIM_AUTH_KEY_2G
-update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "641c852745bb17e808ded4930d9cfe40", "op": null, "opc": "32deb926a17ea5937298892c7e5eb467"}'
+update_binary_decoded '{"cfg": {"only_4bytes_res_in_3g": 0, "use_sres_deriv_func_2_in_3g": 0, "use_opc_instead_of_op": 1, "algorithm": "milenage"}, "key": "5f6c5aded986c4674769723479083faa", "op": null, "opc": "85f8bd89c986a7abb2ea75cab69b6df0"}'
 #
 ################################################################################
 # MF/ADF.ISIM/EF.ISIM_SQN                                                      #

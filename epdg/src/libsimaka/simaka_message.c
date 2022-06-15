@@ -826,6 +826,22 @@ METHOD(simaka_message_t, generate, bool,
 			break;
 	}
 
+  ///// Added for VoWiFi /////
+  printf("try to add AT_CHECKCODE to the EAP-AKA/AKA-Challenge message\n");
+  switch (this->hdr->subtype)
+  {
+    case AKA_CHALLENGE:
+      printf("this is the EAP-AKA/AKA-Challenge message\n");
+      hdr = (attr_hdr_t*)out.ptr;
+      hdr->type = AT_CHECKCODE;
+      hdr->length = 1;
+      memset(out.ptr + 2, 0, 2);
+      out = chunk_skip(out, 4);
+    default:
+      break;
+  }
+  ////////////////////////////
+
 	/* calculate message length */
 	out = chunk_create(out_buf, sizeof(out_buf) - out.len);
 	len = htons(out.len);
