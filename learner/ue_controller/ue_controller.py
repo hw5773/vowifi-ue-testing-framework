@@ -89,10 +89,16 @@ def adb_server_restart():
     time.sleep(1)
 
 def handle_reset(client, device):
+    logging.debug("Before turning off the wifi interface")
     turn_off_wifi_interface(device)
+    logging.debug("After turning off the wifi interface")
+    logging.debug("Before turning on the wifi interface")
     turn_on_wifi_interface(device)
+    logging.debug("After turning on the wifi interface")
     time.sleep(1)
+    logging.debug("Before sending ACK to the statelearner")
     client.send(ACK)
+    logging.debug("After sending ACK to the statelearner")
 
 def handle_ue_reboot(client, device):
     ue_reboot(device)

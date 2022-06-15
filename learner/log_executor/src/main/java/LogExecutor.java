@@ -500,7 +500,7 @@ public class LogExecutor {
     logger.info("Sending symbol: RESET to UE controller");
     try {
       sleep(COOLING_TIME);
-      ueOut.write("RESET\n");
+      ueOut.write("reset\n");
       ueOut.flush();
       result = ueIn.readLine();
       logger.info("ACK for resetUE(): " + result);
@@ -512,7 +512,7 @@ public class LogExecutor {
       e.printStackTrace();
     }
     
-    if(result.contains("ACK\n")) {
+    if(result.contains("ACK")) {
       System.out.println("PASSED: Testing the connection between the statelearner and UE");
       logger.debug("FINISH: resetUE()");
       return true;
@@ -825,10 +825,10 @@ public class LogExecutor {
     }
 
     if(result.contains("ACK")) {
-      System.out.println("PASSED: Testing the connection between the statelearner and ePDG");
+      logger.info("PASSED: Testing the connection between the statelearner and ePDG");
       return true;
     } else {
-      System.out.println("FAILED: Testing the connection between the statelearner and ePDG");
+      logger.error("FAILED: Testing the connection between the statelearner and ePDG");
       return false;
     }
   }

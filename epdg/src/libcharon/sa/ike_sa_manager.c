@@ -1542,6 +1542,11 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 						entry->processing = get_message_id_or_hash(message);
 						entry->init_hash = hash;
 
+            ///// Added for VoWiFi /////
+            ike_sa->instance = this->instance;
+            printf("asock number: %d\n", ike_sa->instance->asock);
+            ////////////////////////////
+
 						segment = put_entry(this, entry);
 						entry->checked_out = thread_current();
 						unlock_single_segment(this, segment);
@@ -2608,11 +2613,18 @@ METHOD(ike_sa_manager_t, destroy, void,
 }
 
 ///// Added for VoWiFi /////
+METHOD(ike_sa_manager_t, get_instance, instance_t *,
+    private_ike_sa_manager_t *this)
+{
+  printf("get_instance()\n");
+  return this->instance;
+}
+
 METHOD(ike_sa_manager_t, get_accepted_socket, int,
     private_ike_sa_manager_t *this)
 {
   printf("get_accepted_socket()\n");
-  return this->asock;
+  return this->instance->asock;
 }
 ////////////////////////////
 
@@ -2663,7 +2675,7 @@ void *listener_run(void *data)
   fcntl(asock, F_SETFL, flags | O_NONBLOCK);
 
   instance = this->instance = init_instance(asock);
-  printf("socket with LogExecutor is set\n");
+  printf("socket with LogExecutor is set: asock: %d\n", asock);
 
   while (instance->running)
   {
@@ -2746,6 +2758,7 @@ ike_sa_manager_t *ike_sa_manager_create()
 			.set_spi_cb = _set_spi_cb,
 			.destroy = _destroy,
       ///// Added for VoWiFi /////
+      .get_instance = _get_instance,
       .get_accepted_socket = _get_accepted_socket,
       ////////////////////////////
 		},
