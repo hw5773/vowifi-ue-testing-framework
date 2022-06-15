@@ -35,16 +35,16 @@
     - `git clone https://github.com/osmocom/pysim.git`
   
   - SIM writing and setting
-    - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=<IMSI> --msisdn=<Telephone Number> --ims-hdomain=msg.pc.t-mobile.com --impi=<IMSI>@msg.pc.t-mobile.com --impu=sip:<IMSI>@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k <key> -o <OPc>`
+    - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 210 --imsi=<IMSI> --msisdn=<Telephone Number> --ims-hdomain=msg.pc.t-mobile.com --impi=<IMSI>@msg.pc.t-mobile.com --impu=sip:<IMSI>@ims.mnc210.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k <key> -o <OPc>`
     - `sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/simcard/scripts/vowifi-setting.script`
   
   ### Commands with an example value (you can just copy & paste the following command for the two SIM cards and only revise the ADM values)
     - SIM 1
-      - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=310260123456781 --msisdn=17657751234 --ims-hdomain=msg.pc.t-mobile.com --impi=310260123456781@msg.pc.t-mobile.com --impu=sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 11111111111111111111111111111111 -o 99999999999999999999999999999999`
+      - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 210 --imsi=310210123456781 --msisdn=17657751234 --ims-hdomain=msg.pc.t-mobile.com --impi=310210123456781@msg.pc.t-mobile.com --impu=sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 11111111111111111111111111111111 -o 99999999999999999999999999999999`
       - `sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/simcard/scripts/vowifi-setting.script`
   
     - SIM 2
-      - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 260 --imsi=310260123456782 --msisdn=17657751235 --ims-hdomain=msg.pc.t-mobile.com --impi=310260123456782@msg.pc.t-mobile.com --impu=sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 22222222222222222222222222222222 -o 99999999999999999999999999999999`
+      - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 210 --imsi=310210123456782 --msisdn=17657751235 --ims-hdomain=msg.pc.t-mobile.com --impi=310210123456782@msg.pc.t-mobile.com --impu=sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 22222222222222222222222222222222 -o 99999999999999999999999999999999`
       - `sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script`
   
 ## WiFi AP
@@ -63,10 +63,10 @@
 ## ePDG address setting
   - sudo vi /etc/hosts (on the WiFi AP machine)
   - add the following record
-  `<ePDG's IP address> epdg.epc.mnc260.mcc310.pub.3gppnetwork.org`
+  `<ePDG's IP address> epdg.epc.mnc210.mcc310.pub.3gppnetwork.org`
 
   ### With one laptop
-  Add the record `10.0.60.1 epdg.epc.mnc260.mcc310.pub.3gppnetwork.org` to /etc/hosts
+  Add the record `10.0.60.1 epdg.epc.mnc210.mcc310.pub.3gppnetwork.org` to /etc/hosts
  
 ## ePDG installation and configuration
   - Installation
@@ -103,8 +103,8 @@
     - `<ID> : EAP <K> <OPc>` (The key value and the OPc value are concatenated without any space in-between them)
 
   ### Settings with an example value
-    - `310260123456781@nai.epc.mnc260.mcc310.3gppnetwork.org : EAP 0x1111111111111111111111111111111199999999999999999999999999999999`
-    - `310260123456782@nai.epc.mnc260.mcc310.3gppnetwork.org : EAP 0x2222222222222222222222222222222299999999999999999999999999999999`
+    - `310210123456781@nai.epc.mnc210.mcc310.3gppnetwork.org : EAP 0x1111111111111111111111111111111199999999999999999999999999999999`
+    - `310210123456782@nai.epc.mnc210.mcc310.3gppnetwork.org : EAP 0x2222222222222222222222222222222299999999999999999999999999999999`
  
 ## IMS server installation and configuration
 
@@ -145,7 +145,7 @@
   - [Guest] Kamailio mysql Configuration
     - `sudo vi /usr/local/etc/kamailio/kamctlrc`
     - uncomment DBENGINE=MYSQL
-    - uncommant and revise SIP_DOMAIN=ims.mnc260.mcc310.3gppnetwork.org
+    - uncommant and revise SIP_DOMAIN=ims.mnc210.mcc310.3gppnetwork.org
     - `kamdbctl create`
 
   - [Guest] Database for P-CSCF, I-CSCF, and S-CSCF
@@ -181,8 +181,8 @@
     - `flush privileges;`
 
     - `use icscf;`
-    - `insert into `nds_trusted_domains` values (1, 'ims.mnc260.mcc310.3gppnetwork.org');`
-    - `insert into `s_cscf` values (1, 'First and only S-CSCF', 'sip:scscf.ims.mnc260.mcc310.3gppnetwork.org:6060');`
+    - `insert into `nds_trusted_domains` values (1, 'ims.mnc210.mcc310.3gppnetwork.org');`
+    - `insert into `s_cscf` values (1, 'First and only S-CSCF', 'sip:scscf.ims.mnc210.mcc310.3gppnetwork.org:6060');`
     - `insert into `s_cscf_capabilities` values (1,1,0),(2,1,1);`
 
 ## DNS Setting
@@ -304,25 +304,25 @@
   - [Guest] Change the domain names
     - `chmod +x configurator.sh`
     - `vi webapps/hss.web.console/WEB-INF/web.xml`
-    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+    - Change all the "open-ims" to "ims.mnc210.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
 
     - `cp configurator.sh VOWIFI_ROOT/settings/hss`
     - `cd VOWIFI_ROOT/settings/hss`
     - `./configurator.sh`
-    - Domain Name: ims.mnc260.mcc310.3gppnetwork.org
+    - Domain Name: ims.mnc210.mcc310.3gppnetwork.org
     - IP Address: 127.0.0.1
-    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+    - Change all the "open-ims" to "ims.mnc210.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
 
     - `cp configurator.sh ~/FHoSS/config/`
     - `cd ~/FHoSS/config`
     - `./configurator.sh`
-    - Domain Name: ims.mnc260.mcc310.3gppnetwork.org
+    - Domain Name: ims.mnc210.mcc310.3gppnetwork.org
     - IP Address: 127.0.0.1
-    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+    - Change all the "open-ims" to "ims.mnc210.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
 
     - `cd ../src-web`
     - `vi WEB-INF/web.xml`
-    - Change "open-ims.test" to "ims.mnc260.mcc310.3gppnetwork.org"
+    - Change "open-ims.test" to "ims.mnc210.mcc310.3gppnetwork.org"
 
   - [Guest] Prepare the database for HSS
     - `mysql -u root -p`
@@ -372,15 +372,15 @@
   - Login with ID: hssAdmin / Password: hss
   
   ### Subscription with an example value
-  - UE1: IMSI 310260123456781
+  - UE1: IMSI 310210123456781
     - Click [Create] under [IMS Subscription]
-    - Name: `310260123456781`
+    - Name: `310210123456781`
     - Capabilities Set: cap_set1
     - Preferred S-CSCF: scscf1
     - Click [Save]
 
     - Click [Create & Bind new IMPI]
-    - Identity: `310260123456781@msg.pc.t-mobile.com`
+    - Identity: `310210123456781@msg.pc.t-mobile.com`
     - Secret Key: 11111111111111111111111111111111
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
@@ -388,39 +388,39 @@
     - Click [Save]
 
     - Click [Create & Bind new IMPU]
-    - Identity: `sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
+    - Identity: `sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org`
     - Service Profile: default_sp
     - Charging-Info Set: default_charging_set
     - Check "Can Register"
     - Click [Save]
 
     - Click [Search] under [IMS Subscription]
-    - Name: 310260123456781
+    - Name: 310210123456781
     - Click [Create & Bind new IMPI]
-    - Identity: `310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
+    - Identity: `310210123456781@ims.mnc210.mcc310.3gppnetwork.org`
     - Secret Key: 11111111111111111111111111111111
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
     - OPc: 99999999999999999999999999999999
-    - Associate IMPU: `sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
+    - Associate IMPU: `sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org`
     - Click [Add]
     - Click [Save]
    
-    - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
+    - Select "ims.mnc210.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
     - Check if the followings are correct
-      - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
-      - List IMPUs from Implicit-Set: sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org
-      - List of associated IMPIs: 310260123456781@msg.pc.t-mobile.com
+      - List of Visitied Networks: ims.mnc210.mcc310.3gppnetwork.org
+      - List IMPUs from Implicit-Set: sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org
+      - List of associated IMPIs: 310210123456781@msg.pc.t-mobile.com
 
-  - UE2: IMSI 310260123456782
+  - UE2: IMSI 310210123456782
     - Click [Create] under [IMS Subscription]
-    - Name: 310260123456782
+    - Name: 310210123456782
     - Capabilities Set: cap_set1
     - Preferred S-CSCF: scscf1
     - Click [Save]
 
     - Click [Create & Bind new IMPI]
-    - Identity: 310260123456782@msg.pc.t-mobile.com
+    - Identity: 310210123456782@msg.pc.t-mobile.com
     - Secret Key: 22222222222222222222222222222222
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
@@ -428,29 +428,29 @@
     - Click [Save]
 
     - Click [Create & Bind new IMPU]
-    - Identity: `sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
+    - Identity: `sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org`
     - Service Profile: default_sp
     - Charging-Info Set: default_charging_set
     - Check "Can Register"
     - Click [Save]
 
     - Click [Search] under [IMS Subscription]
-    - Name: 310260123456782
+    - Name: 310210123456782
     - Click [Create & Bind new IMPI]
-    - Identity: `310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
+    - Identity: `310210123456782@ims.mnc210.mcc310.3gppnetwork.org`
     - Secret Key: 11111111111111111111111111111111
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
     - OPc: 99999999999999999999999999999999
-    - Associate IMPU: `sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
+    - Associate IMPU: `sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org`
     - Click [Add]
     - Click [Save]
 
-    - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
+    - Select "ims.mnc210.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
     - Check if the followings are correct
-      - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
-      - List IMPUs from Implicit-Set: sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org
-      - List of associated IMPIs: 310260123456782@msg.pc.t-mobile.com
+      - List of Visitied Networks: ims.mnc210.mcc310.3gppnetwork.org
+      - List IMPUs from Implicit-Set: sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org
+      - List of associated IMPIs: 310210123456782@msg.pc.t-mobile.com
 
 ## Turn on WiFi on UEs
 
