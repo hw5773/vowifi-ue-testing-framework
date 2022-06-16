@@ -231,7 +231,8 @@ vici_attribute.lo: vici_attribute.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/attributes/attributes.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
- ../../../../src/libcharon/sa/task_manager.h vici_builder.h \
+ ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h vici_builder.h \
  ../../../../src/libcharon/daemon.h \
  ../../../../src/libcharon/attributes/attribute_manager.h \
  ../../../../src/libcharon/attributes/attribute_provider.h \
@@ -769,6 +770,8 @@ vici_message.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 vici_builder.h:
 

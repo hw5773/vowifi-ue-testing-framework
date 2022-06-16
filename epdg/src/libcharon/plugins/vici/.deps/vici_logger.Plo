@@ -233,6 +233,7 @@ vici_logger.lo: vici_logger.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/bus/listeners/listener.h vici_builder.h \
  ../../../../src/libcharon/daemon.h \
  ../../../../src/libcharon/attributes/attribute_manager.h \
@@ -768,6 +769,8 @@ vici_message.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/bus/listeners/listener.h:
 

@@ -242,6 +242,7 @@ updown_listener.lo: updown_listener.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/bus/listeners/logger.h \
  ../../../../src/libcharon/bus/listeners/listener.h updown_handler.h \
  ../../../../src/libstrongswan/utils/process.h \
@@ -795,6 +796,8 @@ updown_listener.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/bus/listeners/logger.h:
 

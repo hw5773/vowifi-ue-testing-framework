@@ -238,6 +238,7 @@ stroke_ca.lo: stroke_ca.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/attributes/attribute_handler.h \
  ../../../../src/libcharon/network/sender.h \
  ../../../../src/libcharon/network/receiver.h \
@@ -778,6 +779,8 @@ stroke_cred.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/attributes/attribute_handler.h:
 

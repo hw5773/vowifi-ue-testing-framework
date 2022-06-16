@@ -233,6 +233,7 @@ counters_listener.lo: counters_listener.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/bus/listeners/logger.h counters_query.h \
  ../../../../src/libstrongswan/threading/spinlock.h \
  ../../../../src/libstrongswan/collections/hashtable.h \
@@ -741,6 +742,8 @@ counters_listener.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/bus/listeners/logger.h:
 

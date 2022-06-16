@@ -234,6 +234,7 @@ vici_plugin.lo: vici_plugin.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/bus/listeners/logger.h vici_control.h \
  vici_cred.h vici_authority.h vici_config.h \
  ../../../../src/libcharon/config/backend.h vici_attribute.h \
@@ -771,6 +772,8 @@ vici_query.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/bus/listeners/logger.h:
 

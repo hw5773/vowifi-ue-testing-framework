@@ -661,7 +661,7 @@ am_libcharon_la_OBJECTS = attributes/attributes.lo \
 	processing/jobs/initiate_tasks_job.lo sa/eap/eap_method.lo \
 	sa/eap/eap_manager.lo sa/xauth/xauth_method.lo \
 	sa/xauth/xauth_manager.lo sa/authenticator.lo sa/child_sa.lo \
-	sa/ike_sa.lo sa/ike_sa_id.lo sa/keymat.lo sa/ike_sa_manager.lo \
+	sa/ike_sa.lo sa/ike_sa_id.lo sa/keymat.lo sa/ike_sa_manager.lo sa/ike_sa_instance.lo \
 	sa/child_sa_manager.lo sa/task_manager.lo sa/shunt_manager.lo \
 	sa/trap_manager.lo sa/redirect_manager.lo sa/task.lo \
 	$(am__objects_1) $(am__objects_2) $(am__objects_3) \
@@ -753,6 +753,7 @@ am__depfiles_remade = ./$(DEPDIR)/daemon.Plo \
 	sa/$(DEPDIR)/authenticator.Plo sa/$(DEPDIR)/child_sa.Plo \
 	sa/$(DEPDIR)/child_sa_manager.Plo sa/$(DEPDIR)/ike_sa.Plo \
 	sa/$(DEPDIR)/ike_sa_id.Plo sa/$(DEPDIR)/ike_sa_manager.Plo \
+	sa/$(DEPDIR)/ike_sa_instance.Plo \
 	sa/$(DEPDIR)/keymat.Plo sa/$(DEPDIR)/redirect_manager.Plo \
 	sa/$(DEPDIR)/shunt_manager.Plo sa/$(DEPDIR)/task.Plo \
 	sa/$(DEPDIR)/task_manager.Plo sa/$(DEPDIR)/trap_manager.Plo \
@@ -1265,7 +1266,7 @@ libcharon_la_SOURCES = attributes/attributes.c attributes/attributes.h \
 	sa/authenticator.c sa/authenticator.h sa/child_sa.c \
 	sa/child_sa.h sa/ike_sa.c sa/ike_sa.h sa/ike_sa_id.c \
 	sa/ike_sa_id.h sa/keymat.h sa/keymat.c sa/ike_sa_manager.c \
-	sa/ike_sa_manager.h sa/child_sa_manager.c \
+	sa/ike_sa_manager.h sa/ike_sa_instance.c sa/ike_sa_instance.h sa/child_sa_manager.c \
 	sa/child_sa_manager.h sa/task_manager.h sa/task_manager.c \
 	sa/shunt_manager.c sa/shunt_manager.h sa/trap_manager.c \
 	sa/trap_manager.h sa/redirect_provider.h sa/redirect_manager.c \

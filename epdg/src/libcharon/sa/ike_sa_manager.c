@@ -47,10 +47,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <sa/ike_sa_instance.h>
 #define DEFAULT_EPDG_PORT 7778
 #define MAX_CLNT_SIZE 10
-#define MAX_QUEUE_LEN 10
-#define MAX_MESSAGE_LEN 256
 #define HELLO_REQUEST "Hello\n"
 #define HELLO_RESPONSE  "ACK\n"
 ////////////////////////////
@@ -323,140 +322,6 @@ struct table_item_t {
 };
 
 typedef struct private_ike_sa_manager_t private_ike_sa_manager_t;
-
-///// Added for VoWiFi /////
-typedef struct msg_st
-{
-  uint8_t msg[MAX_MESSAGE_LEN];
-  int len;
-} msg_t;
-
-typedef struct instance_st 
-{
-  int asock;
-
-  int slast;
-  msg_t *sendq[MAX_QUEUE_LEN];
-  int (*add_message_to_send_queue)(struct instance_st *instance, msg_t *msg);
-  msg_t *(*fetch_message_from_send_queue)(struct instance_st *instance);
-
-  int rlast;
-  msg_t *recvq[MAX_QUEUE_LEN];
-  int (*add_message_to_recv_queue)(struct instance_st *instance, msg_t *msg);
-  msg_t *(*fetch_message_from_recv_queue)(struct instance_st *instance);
-
-  int running;
-} instance_t;
-
-int _add_message_to_send_queue(instance_t *instance, msg_t *msg)
-{
-  int ret;
-  ret = -1;
-
-  if (instance->slast >= MAX_QUEUE_LEN)
-    return ret;
-
-  instance->sendq[instance->slast++] = msg;
-
-  ret = 1;
-  return ret;
-}
-
-msg_t *_fetch_message_from_send_queue(instance_t *instance)
-{
-  int i;
-  msg_t *ret;
-  ret = NULL;
-
-  if (instance->slast > 0)
-  {
-    ret = instance->sendq[0];
-    for (i=1; i<instance->slast; i++)
-      instance->sendq[i-1] = instance->sendq[i];
-    instance->slast--;
-  }
-
-  return ret;
-}
-
-int _add_message_to_recv_queue(instance_t *instance, msg_t *msg)
-{
-  int ret;
-  ret = -1;
-
-  if (instance->rlast >= MAX_QUEUE_LEN)
-    return ret;
-
-  instance->recvq[instance->rlast++] = msg;
-
-  ret = 1;
-  return ret;
-}
-
-msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
-{
-  int i;
-  msg_t *ret;
-  ret = NULL;
-
-  if (instance->rlast > 0)
-  {
-    ret = instance->recvq[0];
-    for (i=1; i<instance->rlast; i++)
-      instance->recvq[i-1] = instance->recvq[i];
-    instance->rlast--;
-  }
-
-  return ret;
-}
-
-msg_t *init_message(uint8_t *msg, int len)
-{
-  msg_t *ret;
-  ret = (msg_t *)calloc(1, sizeof(msg_t));
-  memcpy(ret->msg, msg, len);
-  ret->len = len;
-  return ret;
-}
-
-void free_message(msg_t *msg)
-{
-  free(msg);
-}
-
-instance_t *init_instance(int asock)
-{
-  instance_t *ret;
-  ret = (instance_t *)calloc(1, sizeof(instance_t));
-  ret->asock = asock;
-  ret->add_message_to_send_queue = _add_message_to_send_queue;
-  ret->fetch_message_from_send_queue = _fetch_message_from_send_queue;
-  ret->add_message_to_recv_queue = _add_message_to_recv_queue;
-  ret->fetch_message_from_recv_queue = _fetch_message_from_recv_queue;
-  ret->running = 1;
-
-  return ret;
-}
-
-void free_instance(instance_t *instance)
-{
-  int i;
-  if (instance)
-  {
-    for (i=0; i<instance->slast; i++)
-    {
-      free_message(instance->sendq[i]);
-    }
-    
-    for (i=0; i<instance->rlast; i++)
-    {
-      free_message(instance->recvq[i]);
-    }
-
-    free(instance);
-  }
-}
-////////////////////////////
 
 /**
  * Additional private members of ike_sa_manager_t.
@@ -1471,6 +1336,11 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	ike_version_t ike_version;
 	bool is_init = FALSE;
 
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  int asock;
+  ////////////////////////////
+
 	id = message->get_ike_sa_id(message);
 	/* clone the IKE_SA ID so we can modify the initiator flag */
 	id = id->clone(id);
@@ -1543,8 +1413,16 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 						entry->init_hash = hash;
 
             ///// Added for VoWiFi /////
-            ike_sa->instance = this->instance;
-            printf("asock number: %d\n", ike_sa->instance->asock);
+            printf("ike_sa: %p\n", ike_sa);
+            printf("ike_sa->set_instance: %p\n", ike_sa->set_instance);
+            printf("ike_sa->get_instance: %p\n", ike_sa->get_instance);
+            ike_sa->set_instance(ike_sa, this->instance);
+            instance = ike_sa->get_instance(ike_sa);
+            asock = -1;
+            printf("this->instance: %p, instance: %p\n", this->instance, instance);
+            if (instance)
+              asock = instance->asock;
+            printf("asock number: %d\n", asock);
             ////////////////////////////
 
 						segment = put_entry(this, entry);

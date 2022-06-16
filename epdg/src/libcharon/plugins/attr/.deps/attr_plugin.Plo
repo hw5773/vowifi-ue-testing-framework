@@ -233,6 +233,7 @@ attr_plugin.lo: attr_plugin.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/daemon.h \
  ../../../../src/libcharon/attributes/attribute_manager.h \
  ../../../../src/libcharon/attributes/attribute_provider.h \
@@ -764,6 +765,8 @@ attr_provider.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/daemon.h:
 

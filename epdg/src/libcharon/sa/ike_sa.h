@@ -46,6 +46,10 @@ typedef struct ike_sa_t ike_sa_t;
 #include <credentials/auth_cfg.h>
 #include <networking/packet.h>
 
+///// Added for VoWiFi /////
+#include <sa/ike_sa_instance.h>
+////////////////////////////
+
 /**
  * Timeout in seconds after that a half open IKE_SA gets deleted.
  */
@@ -1230,6 +1234,11 @@ struct ike_sa_t {
 	 * Destroys a ike_sa_t object.
 	 */
 	void (*destroy) (ike_sa_t *this);
+
+  ///// Added for VoWiFi /////
+  void (*set_instance) (ike_sa_t *this, instance_t *instance);
+  instance_t *(*get_instance) (ike_sa_t *this);
+  ////////////////////////////
 };
 
 /**

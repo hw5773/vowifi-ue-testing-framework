@@ -214,7 +214,7 @@ encoding/message.lo: encoding/message.c /usr/include/stdc-predef.h \
  attributes/attributes.h sa/ike_sa_id.h sa/child_sa.h config/child_cfg.h \
  sa/task.h sa/task_manager.h sa/keymat.h config/peer_cfg.h \
  config/ike_cfg.h ../../src/libstrongswan/networking/packet.h \
- ../../src/libstrongswan/bio/bio_writer.h \
+ sa/ike_sa_instance.h ../../src/libstrongswan/bio/bio_writer.h \
  ../../src/libstrongswan/collections/array.h daemon.h \
  attributes/attribute_manager.h attributes/attribute_provider.h \
  attributes/attribute_handler.h network/sender.h network/receiver.h \
@@ -730,6 +730,8 @@ config/peer_cfg.h:
 config/ike_cfg.h:
 
 ../../src/libstrongswan/networking/packet.h:
+
+sa/ike_sa_instance.h:
 
 ../../src/libstrongswan/bio/bio_writer.h:
 

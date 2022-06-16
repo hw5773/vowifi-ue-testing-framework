@@ -307,7 +307,7 @@ public class LogExecutor {
       }
 
       if (result.startsWith("ACK")) {
-        System.out.println("PASSED: Testing the connection between the statelearner and the ePDG");
+        logger.info("PASSED: Testing the connection between the statelearner and the ePDG");
       }
     } catch (UnknownHostException e) {
       e.printStackTrace();
@@ -360,7 +360,7 @@ public class LogExecutor {
       }
 
       if(result.startsWith("ACK")) {
-        System.out.println("PASSED: Testing the connection between the statelearner and the ePDG");
+        logger.info("PASSED: Testing the connection between the statelearner and the ePDG");
       }
     } catch (UnknownHostException e) {
       e.printStackTrace();
@@ -513,11 +513,11 @@ public class LogExecutor {
     }
     
     if(result.contains("ACK")) {
-      System.out.println("PASSED: Testing the connection between the statelearner and UE");
+      logger.info("PASSED: Testing the connection between the statelearner and UE");
       logger.debug("FINISH: resetUE()");
       return true;
     } else {
-      System.out.println("FAILED: Testing the connection between the statelearner and UE");
+      logger.error("FAILED: Testing the connection between the statelearner and UE");
       logger.debug("FINISH: resetUE()");
       return false;
     }
@@ -542,8 +542,8 @@ public class LogExecutor {
       e.printStackTrace();
     }
     
-    if(result.contains("ACK\n")) {
-      System.out.println("PASSED: Testing the connection between the statelearner and UE");
+    if(result.contains("ACK")) {
+      logger.info("PASSED: Testing the connection between the statelearner and UE");
       logger.debug("FINISH: rebootUE()");
       return true;
     } else {
@@ -577,31 +577,48 @@ public class LogExecutor {
 
   public void sendEnableVoWiFi() {
     String result;
-    int retry = 5;
+    int retry = 3;
     boolean enabled = false;
+    boolean rebooted = false;
 
     try {
       sleep(COOLING_TIME);
 
+			ueSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
       while (enabled == false && retry > 0) {
-        logger.info("Sending symbol: enable_vowifi to UE Controller");
+        logger.info("Sending symbol: reset to UE Controller to enable VoWiFi");
         enableVoWiFiCount++;
-        ueOut.write("enable_vowifi\n");
+        ueOut.write("reset\n");
         ueOut.flush();
 
         result = ueIn.readLine();
-        logger.info("UE Controller's ACK for enable_vowifi: " + result);
-        if (!result.contains("DONE")) {
+        logger.info("UE Controller's ACK for reset: " + result);
+        if (result.contains("ACK")) {
           enabled = true;
         }
         retry--;
       }
 
-      if (enabled == false)
-      {
+			ueSocket.setSoTimeout(UE_REBOOT_SLEEP_TIME);
+      while (enabled == false && rebooted == false) {
+        logger.info("Sending symbol: ue_reboot to UE Controller to enable VoWiFi");
+        ueOut.write("ue_reboot\n");
+        ueOut.flush();
+
+        result = ueIn.readLine();
+        logger.info("UE Controller's ACK for ue_reboot: " + result);
+        if (result.contains("ACK")) {
+          enabled = true;
+        }
+        rebooted = true;
+      }
+
+      if (enabled == false) {
         logger.error("Failed to start the VoWiFi protocol");
         System.exit(1);
       }
+
+      ueSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
     } catch (SocketException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -616,14 +633,14 @@ public class LogExecutor {
     String result = "";
     
 		try {
-			sleep(50); //50 milliseconds
+			sleep(5000); //50 milliseconds
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
 			if(symbol.startsWith("enable_vowifi")) {
-				while (!result.contains("ike_sa_init_request")) {
+				while (true) {
 					epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
 					sendEnableVoWiFi();
 					result = epdgIn.readLine();
@@ -643,49 +660,6 @@ public class LogExecutor {
 			e.printStackTrace();
 			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting query.");
 			handleEPDGIMSFailure();
-			return "null_action";
-		}
-
-		try {
-			if (symbol.contains("reject")) {
-				epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
-				epdgOut.write(symbol + "\n");
-				epdgOut.flush();
-
-				result = epdgIn.readLine();
-				if(result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
-					result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
-				}
-
-				logger.info(symbol + "->" + result);
-				return result;
-			}
-		} catch (SocketTimeoutException e){
-			logger.info("Timeout occured for " + symbol);
-			logger.info("Restarting UE and marking following command as null action");
-			handleTimeout();
-			return "timeout";
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.info("Attempting to restart UE and reset ePDG and IMS. Also restarting query.");
-			handleEPDGIMSFailure();
-			return "null_action";
-		}
-
-		try {
-			if (result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
-				if (result.toLowerCase().startsWith("null_action")) {
-					result = "null_action";
-				}
-				if (result.toLowerCase().startsWith("detach_request")) {
-					result = "null_action";
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Attempting to restart UE and reset ePDG and IMS. Also restarting query.");
-			handleEPDGIMSFailure();
-
 			return "null_action";
 		}
 
@@ -857,10 +831,10 @@ public class LogExecutor {
     }
 
     if(result.contains("ACK")) {
-      System.out.println("PASSED: Testing the connection between the statelearner and the srsEPC");
+      logger.info("PASSED: Testing the connection between the statelearner and the srsEPC");
       return true;
     } else {
-      System.out.println("FAILED: Testing the connection between the statelearner and the srsEPC");
+      logger.error("FAILED: Testing the connection between the statelearner and the srsEPC");
       return false;
     }
     */

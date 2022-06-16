@@ -231,7 +231,8 @@ attr_provider.lo: attr_provider.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/attributes/attributes.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
- ../../../../src/libcharon/sa/task_manager.h /usr/include/time.h \
+ ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
@@ -765,6 +766,8 @@ attr_provider.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 /usr/include/time.h:
 

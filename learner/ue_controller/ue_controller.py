@@ -126,6 +126,7 @@ def handle_adb_server_restart(client):
 
 def handle_client_connection(client, server, device):
     logging.info("Client Handler initiated")
+    count_enable_vowifi = 0
 
     try:
         while True:

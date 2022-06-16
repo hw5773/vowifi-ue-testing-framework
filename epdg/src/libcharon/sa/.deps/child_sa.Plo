@@ -218,8 +218,8 @@ sa/child_sa.lo: sa/child_sa.c /usr/include/stdc-predef.h \
  sa/keymat.h config/peer_cfg.h config/ike_cfg.h config/child_cfg.h \
  sa/ike_sa_id.h ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/timex.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h daemon.h \
@@ -742,6 +742,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 /usr/include/time.h:
 

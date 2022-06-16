@@ -215,8 +215,8 @@ control/controller.lo: control/controller.c /usr/include/stdc-predef.h \
  config/ike_cfg.h config/child_cfg.h sa/ike_sa_id.h \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h bus/listeners/logger.h \
- bus/listeners/listener.h /usr/include/dirent.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
+ bus/listeners/logger.h bus/listeners/listener.h /usr/include/dirent.h \
  /usr/include/x86_64-linux-gnu/bits/dirent.h \
  /usr/include/x86_64-linux-gnu/bits/dirent_ext.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
@@ -735,6 +735,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 bus/listeners/logger.h:
 

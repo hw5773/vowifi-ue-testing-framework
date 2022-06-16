@@ -215,7 +215,7 @@ sa/ikev1/keymat_v1.lo: sa/ikev1/keymat_v1.c /usr/include/stdc-predef.h \
  encoding/payloads/transform_attribute.h \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h daemon.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h daemon.h \
  attributes/attribute_manager.h attributes/attribute_provider.h \
  attributes/attribute_handler.h network/sender.h network/receiver.h \
  network/socket_manager.h network/socket.h control/controller.h bus/bus.h \
@@ -727,6 +727,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 daemon.h:
 

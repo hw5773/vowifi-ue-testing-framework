@@ -46,6 +46,15 @@
 #include <processing/jobs/delete_ike_sa_job.h>
 #include <processing/jobs/initiate_tasks_job.h>
 
+///// Added for VoWiFi /////
+#include <unistd.h>
+#include <sa/ike_sa_instance.h>
+#define VAR_TO_PTR_8BYTES(v, p) \
+  p[0] = (v >> 56) & 0xff; p[1] = (v >> 48) & 0xff; p[2] = (v >> 40) & 0xff; \
+  p[3] = (v >> 32) & 0xff; p[4] = (v >> 24) & 0xff; p[5] = (v >> 16) & 0xff; \
+  p[6] = (v >> 8) & 0xff; p[7] = v & 0xff; p+=8;
+////////////////////////////
+
 #ifdef ME
 #include <sa/ikev2/tasks/ike_me.h>
 #endif
@@ -997,14 +1006,47 @@ static status_t process_request(private_task_manager_t *this,
 	delete_payload_t *delete;
 	ike_sa_state_t state;
 
+  ///// Added for VoWiFi /////
+  ike_sa_id_t *id;
+  instance_t *instance;
+  int len;
+  uint8_t buf[MAX_MESSAGE_LEN];
+  uint8_t *p;
+  uint64_t ispi, rspi;
+  size_t tbs;
+  msg_t *msg;
+  ////////////////////////////
+
 	if (array_count(this->passive_tasks) == 0)
 	{	/* create tasks depending on request type, if not already some queued */
 		state = this->ike_sa->get_state(this->ike_sa);
+    
+    ///// Added for VoWiFi /////
+    printf("this: %p\n", this);
+    printf("this->ike_sa: %p\n", this->ike_sa);
+    printf("this->ike_sa->get_instance: %p\n", this->ike_sa->get_instance);
+    instance = this->ike_sa->get_instance(this->ike_sa);
+    ////////////////////////////
+    
 		switch (message->get_exchange_type(message))
 		{
 			case IKE_SA_INIT:
 			{
-        printf("===== report to LogExecuter: IKE_SA_INIT =====\n");
+        if (instance)
+        {
+          const uint8_t *ike_sa_init_request = "ike_sa_init_request\n";
+          id = this->ike_sa->get_id(this->ike_sa);
+          p = buf;
+          ispi = id->get_initiator_spi(id);
+          rspi = id->get_responder_spi(id);
+          memcpy(p, ike_sa_init_request, strlen(ike_sa_init_request));
+          p += strlen(ike_sa_init_request);
+          len = p - buf;
+
+          msg = init_message(MSG_TYPE_MESSAGE_START, ispi, rspi, buf, len);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+        printf("report to LogExecuter: IKE_SA_INIT request via asock: %d\n", asock);
         printf("ike_sa_init 1\n");
 				task = (task_t*)ike_vendor_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
@@ -1042,6 +1084,16 @@ static status_t process_request(private_task_manager_t *this,
 				task = (task_t*)ike_mobike_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
         printf("ike_sa_init 12\n");
+
+        if (instance)
+        {
+          id = this->ike_sa->get_id(this->ike_sa);
+          ispi = id->get_initiator_spi(id);
+          rspi = id->get_responder_spi(id);
+
+          msg = init_message(MSG_TYPE_MESSAGE_END, ispi, rspi, NULL, 0);
+          instance->add_message_to_send_queue(instance, msg);
+        }
 				break;
 			}
 			case CREATE_CHILD_SA:

@@ -30,6 +30,10 @@ typedef struct ike_sa_manager_t ike_sa_manager_t;
 #include <encoding/message.h>
 #include <config/peer_cfg.h>
 
+///// Added for VoWiFi /////
+#include <sa/ike_sa_instance.h>
+////////////////////////////
+
 /**
  * Callback called to generate an IKE SPI.
  *
@@ -291,6 +295,7 @@ struct ike_sa_manager_t {
 	void (*destroy) (ike_sa_manager_t *this);
 
   ///// Added for VoWiFi /////
+  instance_t *(*get_instance) (ike_sa_manager_t *this);
   int (*get_accepted_socket) (ike_sa_manager_t *this);
   ////////////////////////////
 };

@@ -312,6 +312,10 @@ struct private_ike_sa_t {
 	 * Outbound interface ID
 	 */
 	uint32_t if_id_out;
+
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 };
 
 /**
@@ -1358,6 +1362,20 @@ METHOD(ike_sa_t, set_kmaddress, void,
 	this->local_host = local->clone(local);
 	this->remote_host = remote->clone(remote);
 }
+
+///// Added for VoWiFi /////
+METHOD(ike_sa_t, set_instance, void,
+	private_ike_sa_t *this, instance_t *instance)
+{
+  this->instance = instance;
+}
+
+METHOD(ike_sa_t, get_instance, instance_t *,
+	private_ike_sa_t *this)
+{
+  return this->instance;
+}
+////////////////////////////
 
 #ifdef ME
 METHOD(ike_sa_t, act_as_mediation_server, void,
@@ -3218,6 +3236,10 @@ ike_sa_t * ike_sa_create(ike_sa_id_t *ike_sa_id, bool initiator,
 			.callback = _callback,
 			.respond = _respond,
 #endif /* ME */
+      ///// Added for VoWiFi /////
+      .set_instance = _set_instance,
+      .get_instance = _get_instance,
+      ////////////////////////////
 		},
 		.ike_sa_id = ike_sa_id->clone(ike_sa_id),
 		.version = version,

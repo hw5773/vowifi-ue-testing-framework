@@ -233,6 +233,7 @@ stroke_attribute.lo: stroke_attribute.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/attributes/mem_pool.h \
  ../../../../src/libcharon/daemon.h \
  ../../../../src/libcharon/attributes/attribute_manager.h \
@@ -766,6 +767,8 @@ stroke_attribute.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/attributes/mem_pool.h:
 

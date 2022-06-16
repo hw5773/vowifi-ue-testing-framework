@@ -279,6 +279,7 @@ kernel_netlink_ipsec.lo: kernel_netlink_ipsec.c \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/attributes/attribute_handler.h \
  ../../../../src/libcharon/network/sender.h \
  ../../../../src/libcharon/network/receiver.h \
@@ -942,6 +943,8 @@ kernel_netlink_shared.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/attributes/attribute_handler.h:
 

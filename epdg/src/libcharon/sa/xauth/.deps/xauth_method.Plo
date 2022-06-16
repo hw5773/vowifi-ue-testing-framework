@@ -217,9 +217,9 @@ sa/xauth/xauth_method.lo: sa/xauth/xauth_method.c \
  kernel/kernel_net.h sa/authenticator.h sa/keymat.h config/peer_cfg.h \
  config/ike_cfg.h config/child_cfg.h sa/ike_sa_id.h \
  ../../src/libstrongswan/networking/packet.h sa/child_sa.h sa/task.h \
- sa/task_manager.h attributes/attribute_handler.h network/sender.h \
- network/receiver.h network/socket_manager.h network/socket.h \
- control/controller.h bus/bus.h bus/listeners/logger.h \
+ sa/task_manager.h sa/ike_sa_instance.h attributes/attribute_handler.h \
+ network/sender.h network/receiver.h network/socket_manager.h \
+ network/socket.h control/controller.h bus/bus.h bus/listeners/logger.h \
  bus/listeners/listener.h bus/listeners/custom_logger.h \
  sa/ike_sa_manager.h sa/child_sa_manager.h sa/trap_manager.h \
  sa/shunt_manager.h sa/redirect_manager.h sa/redirect_provider.h \
@@ -734,6 +734,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 attributes/attribute_handler.h:
 

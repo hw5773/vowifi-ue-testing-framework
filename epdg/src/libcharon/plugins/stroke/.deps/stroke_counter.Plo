@@ -233,6 +233,7 @@ stroke_counter.lo: stroke_counter.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/bus/listeners/logger.h
 
 /usr/include/stdc-predef.h:
@@ -742,5 +743,7 @@ stroke_counter.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/bus/listeners/logger.h:

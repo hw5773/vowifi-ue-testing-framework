@@ -214,8 +214,8 @@ sa/task_manager.lo: sa/task_manager.c /usr/include/stdc-predef.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
  sa/ike_sa_id.h sa/child_sa.h config/child_cfg.h sa/task.h \
  sa/task_manager.h sa/keymat.h config/peer_cfg.h config/ike_cfg.h \
- ../../src/libstrongswan/networking/packet.h /usr/include/math.h \
- /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ ../../src/libstrongswan/networking/packet.h sa/ike_sa_instance.h \
+ /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
@@ -724,6 +724,8 @@ config/peer_cfg.h:
 config/ike_cfg.h:
 
 ../../src/libstrongswan/networking/packet.h:
+
+sa/ike_sa_instance.h:
 
 /usr/include/math.h:
 

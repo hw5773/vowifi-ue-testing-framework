@@ -245,6 +245,7 @@ eap_aka_3gpp2_functions.lo: eap_aka_3gpp2_functions.c \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/attributes/attribute_handler.h \
  ../../../../src/libcharon/network/sender.h \
  ../../../../src/libcharon/network/receiver.h \
@@ -799,6 +800,8 @@ eap_aka_3gpp2_functions.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/attributes/attribute_handler.h:
 

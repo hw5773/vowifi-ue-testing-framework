@@ -215,8 +215,8 @@ bus/bus.lo: bus/bus.c /usr/include/stdc-predef.h \
  config/ike_cfg.h config/child_cfg.h sa/ike_sa_id.h \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h bus/listeners/logger.h \
- bus/bus.h bus/listeners/listener.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
+ bus/listeners/logger.h bus/bus.h bus/listeners/listener.h \
  ../../src/libstrongswan/threading/thread.h \
  ../../src/libstrongswan/threading/thread_value.h \
  ../../src/libstrongswan/threading/mutex.h \
@@ -721,6 +721,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 bus/listeners/logger.h:
 

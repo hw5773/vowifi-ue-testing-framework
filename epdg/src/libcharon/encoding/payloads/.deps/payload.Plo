@@ -215,7 +215,7 @@ encoding/payloads/payload.lo: encoding/payloads/payload.c \
  config/peer_cfg.h config/ike_cfg.h config/child_cfg.h sa/ike_sa_id.h \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
  encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
  encoding/payloads/ke_payload.h encoding/payloads/auth_payload.h \
  encoding/payloads/cert_payload.h encoding/payloads/certreq_payload.h \
@@ -729,6 +729,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 encoding/payloads/nonce_payload.h:
 

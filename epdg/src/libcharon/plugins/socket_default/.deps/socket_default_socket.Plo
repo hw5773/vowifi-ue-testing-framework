@@ -264,6 +264,7 @@ socket_default_socket.lo: socket_default_socket.c \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h \
  ../../../../src/libcharon/attributes/attribute_handler.h \
  ../../../../src/libcharon/network/sender.h \
  ../../../../src/libcharon/network/receiver.h \
@@ -872,6 +873,8 @@ socket_default_socket.h:
 ../../../../src/libcharon/sa/task.h:
 
 ../../../../src/libcharon/sa/task_manager.h:
+
+../../../../src/libcharon/sa/ike_sa_instance.h:
 
 ../../../../src/libcharon/attributes/attribute_handler.h:
 

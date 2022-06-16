@@ -214,7 +214,7 @@ sa/authenticator.lo: sa/authenticator.c /usr/include/stdc-predef.h \
  config/ike_cfg.h config/child_cfg.h sa/ike_sa_id.h \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
  sa/ikev2/authenticators/pubkey_authenticator.h \
  sa/ikev2/authenticators/psk_authenticator.h \
  sa/ikev2/authenticators/eap_authenticator.h \
@@ -722,6 +722,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 sa/ikev2/authenticators/pubkey_authenticator.h:
 

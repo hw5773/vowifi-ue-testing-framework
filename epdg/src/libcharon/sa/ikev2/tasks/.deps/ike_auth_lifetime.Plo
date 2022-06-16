@@ -215,8 +215,8 @@ sa/ikev2/tasks/ike_auth_lifetime.lo: sa/ikev2/tasks/ike_auth_lifetime.c \
  config/ike_cfg.h config/child_cfg.h sa/ike_sa_id.h \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h daemon.h \
  attributes/attribute_manager.h attributes/attribute_provider.h \
@@ -729,6 +729,8 @@ sa/child_sa.h:
 sa/task.h:
 
 sa/task_manager.h:
+
+sa/ike_sa_instance.h:
 
 /usr/include/time.h:
 
