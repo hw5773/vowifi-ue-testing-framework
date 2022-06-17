@@ -10,11 +10,9 @@
 #define MAX_QUEUE_LEN 10
 #endif /* MAX_QUEUE_LEN */
 
-#define MSG_TYPE_ATTRIBUTE 0
-#define MSG_TYPE_IKE_MESSAGE_START 1
-#define MSG_TYPE_IKE_MESSAGE_END 2
-#define MSG_TYPE_IKE_PAYLOAD_START 3
-#define MSG_TYPE_IKE_PAYLOAD_END 4
+#define MSG_TYPE_ATTRIBUTE 1
+#define MSG_TYPE_BLOCK_START 2
+#define MSG_TYPE_BLOCK_END 3
 
 #include <stdint.h>
 #include <stddef.h>

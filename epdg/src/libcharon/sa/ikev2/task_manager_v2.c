@@ -1043,10 +1043,10 @@ static status_t process_request(private_task_manager_t *this,
           p += strlen(ike_sa_init_request);
           len = p - buf;
 
-          msg = init_message(MSG_TYPE_MESSAGE_START, ispi, rspi, buf, len);
+          msg = init_message(MSG_TYPE_BLOCK_START, ispi, rspi, buf, len);
           instance->add_message_to_send_queue(instance, msg);
         }
-        printf("report to LogExecuter: IKE_SA_INIT request via asock: %d\n", asock);
+        printf("report to LogExecuter: IKE_SA_INIT request\n");
         printf("ike_sa_init 1\n");
 				task = (task_t*)ike_vendor_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
@@ -1091,7 +1091,7 @@ static status_t process_request(private_task_manager_t *this,
           ispi = id->get_initiator_spi(id);
           rspi = id->get_responder_spi(id);
 
-          msg = init_message(MSG_TYPE_MESSAGE_END, ispi, rspi, NULL, 0);
+          msg = init_message(MSG_TYPE_BLOCK_END, ispi, rspi, NULL, 0);
           instance->add_message_to_send_queue(instance, msg);
         }
 				break;
