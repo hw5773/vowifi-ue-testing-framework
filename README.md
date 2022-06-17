@@ -72,7 +72,7 @@
   - Installation
     - S/W: Strongswan
     - `cd VOWIFI_ROOT/epdg`
-    - `autoreconf -f -i`
+    - `autoreconf -f -i` (or `autoreconf --install`)
     - `./configure --prefix=/usr/local --enable-eap-aka --enable-eap-aka-3gpp --enable-eap-aka-3gpp2`
     - (Please check if eap-aka, eap-aka-3gpp, and eap-aka-3gpp2 modules are all enabled.)
     - `make && sudo make install`
