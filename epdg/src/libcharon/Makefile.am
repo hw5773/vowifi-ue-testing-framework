@@ -79,6 +79,7 @@ sa/ike_sa.c sa/ike_sa.h \
 sa/ike_sa_id.c sa/ike_sa_id.h \
 sa/keymat.h sa/keymat.c \
 sa/ike_sa_manager.c sa/ike_sa_manager.h \
+sa/ike_sa_instance.c sa/ike_sa_instance.h \
 sa/child_sa_manager.c sa/child_sa_manager.h \
 sa/task_manager.h sa/task_manager.c \
 sa/shunt_manager.c sa/shunt_manager.h \

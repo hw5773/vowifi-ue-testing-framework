@@ -22,13 +22,19 @@
 /* defined if config.h included */
 #define CONFIG_H_INCLUDED /**/
 
-/* Define to 1 if using 'alloca.c'. */
+/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
+   systems. This function is required for `alloca.c' support on those systems.
+   */
+/* #undef CRAY_STACKSEG_END */
+
+/* Define to 1 if using `alloca.c'. */
 /* #undef C_ALLOCA */
 
-/* Define to 1 if you have 'alloca', as a function or macro. */
+/* Define to 1 if you have `alloca', as a function or macro. */
 #define HAVE_ALLOCA 1
 
-/* Define to 1 if <alloca.h> works. */
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+   */
 #define HAVE_ALLOCA_H 1
 
 /* Define to 1 if you have the `backtrace' function. */
@@ -47,7 +53,7 @@
 #define HAVE_CLOCK_GETTIME 1
 
 /* Define to 1 if you have the `closefrom' function. */
-#define HAVE_CLOSEFROM 1
+/* #undef HAVE_CLOSEFROM */
 
 /* pthread_condattr_setclock supports CLOCK_MONOTONIC */
 #define HAVE_CONDATTR_CLOCK_MONOTONIC /**/
@@ -155,6 +161,9 @@
 /* Define to 1 if you have the `mallinfo' function. */
 #define HAVE_MALLINFO 1
 
+/* Define to 1 if you have the <memory.h> header file. */
+#define HAVE_MEMORY_H 1
+
 /* Define to 1 if you have the `memrchr' function. */
 #define HAVE_MEMRCHR 1
 
@@ -242,13 +251,10 @@
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
 
-/* Define to 1 if you have the <stdio.h> header file. */
-#define HAVE_STDIO_H 1
-
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
 
-/* Define if you have `strerror_r'. */
+/* Define to 1 if you have the `strerror_r' function. */
 #define HAVE_STRERROR_R 1
 
 /* Define to 1 if you have the <strings.h> header file. */
@@ -344,9 +350,7 @@
 /* static plugin constructors */
 /* #undef STATIC_PLUGIN_CONSTRUCTORS */
 
-/* Define to 1 if all of the C90 standard headers exist (not just the ones
-   required in a freestanding environment). This macro is provided for
-   backward compatibility; new code need not use it. */
+/* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
 /* Define to 1 if strerror_r returns char *. */
@@ -411,7 +415,7 @@
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
-/* #undef YYTEXT_POINTER */
+#define YYTEXT_POINTER 1
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 /* #undef size_t */
