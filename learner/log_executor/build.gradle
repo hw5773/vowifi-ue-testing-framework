@@ -7,6 +7,7 @@ dependencies {
   compile 'log4j:log4j:1.2.17'
   compile 'commons-logging:commons-logging:1.2'
   compile 'commons-cli:commons-cli:1.5.0'
+  compile 'com.googlecode.json-simple:json-simple:1.1.1'
   implementation 'net.sourceforge.argparse4j:argparse4j:0.9.0'
 }
 

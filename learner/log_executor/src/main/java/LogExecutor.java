@@ -8,10 +8,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.cli.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import static java.lang.Thread.sleep;
 
@@ -24,6 +30,8 @@ public class LogExecutor {
 
   public BufferedWriter ueOut, epdgOut, imsOut;
   public BufferedReader ueIn, epdgIn, imsIn;
+
+  static JSONParser jsonParser;
 
   int rebootCount = 0;
   int enableVoWiFiCount = 0;
@@ -49,13 +57,13 @@ public class LogExecutor {
   public LogExecutor(VoWiFiUEConfig config) throws Exception {
     this.config = config;
 
-    initUEConnection();
-    initEPDGConnection();
-    initIMSConnection();
+    //initUEConnection();
+    //initEPDGConnection();
+    //initIMSConnection();
   }
 
-  public static void main(String[] args) {
-    List<List<String>> queries = new ArrayList<>();
+  public static void main(String[] args) throws Exception {
+    List<QueryString> queries = new ArrayList<>();
     LogExecutor logExecutor = null;
     VoWiFiUEConfig vowifiUEConfig = null;
 
@@ -63,9 +71,6 @@ public class LogExecutor {
 
     Option argFile = new Option("f", "file", true, "File that contains queries");
     options.addOption(argFile);
-
-    Option argQuery = new Option("q", "query", true, "Query to be executed by LogExecutor");
-    options.addOption(argQuery);
 
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
@@ -76,7 +81,7 @@ public class LogExecutor {
 
     try {
       cmd = parser.parse(options, args);
-    } catch (ParseException e) {
+    } catch (org.apache.commons.cli.ParseException e) {
       logger.error(e.getMessage());
       formatter.printHelp("Options", options);
 
@@ -84,11 +89,10 @@ public class LogExecutor {
     }
 
     String queryFilePath = cmd.getOptionValue("file");
-    String queryString = cmd.getOptionValue("query");
     String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
 
-    if (queryFilePath == null && queryString == null) {
-      logger.error("Query File or Query should be inserted");
+    if (queryFilePath == null) {
+      logger.error("Query File should be inserted");
       formatter.printHelp("Options", options);
 
       System.exit(1);
@@ -123,48 +127,32 @@ public class LogExecutor {
       e.printStackTrace();
     }
 
-    if (queryFilePath != null) {
-      logger.info("Query File Mode (File Path: " + queryFilePath + ")");
-      try (BufferedReader br = new BufferedReader(new FileReader(queryFilePath))) {
-        String line;
-          
-        while ((line = br.readLine()) != null) {
-          if (line.contains("INFO")) {
-            line = line.split("/")[0].split("\\[")[1].replaceAll("\\|", " ");
-            logger.debug(line);
-            List<String> splitLine = Arrays.asList(line.split("\\s+"));
-            for (int i=0; i<splitLine.size(); i++){
-              logger.debug(splitLine.get(i));
-            }
-            queries.add(splitLine);
-          }
-        }
-      } catch (Exception e) {
-        logger.error("Error happened while processing the query file");
-        e.printStackTrace();
-      }
+    jsonParser = new JSONParser();
 
-      logger.info("# of Queries: " + queries.size());
-    }
-    else if (queryString != null) {
-      logger.info("Query String Mode");
-      logger.info("Query: " + queryString);
+    logger.info("Query File Mode (File Path: " + queryFilePath + ")");
+    try (FileReader reader = new FileReader(queryFilePath)) {
+      JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+      JSONArray queryArray = (JSONArray) jsonObject.get("queries");
+      Iterator i = queryArray.iterator();
 
-      try {
-        List<String> splitLine = Arrays.asList(queryString.split("\\s+"));
-        queries.add(splitLine);
-      } catch (Exception e) {
-        logger.error("Error happened while processing the query string");
-        e.printStackTrace();
+      while (i.hasNext()) {
+        JSONObject q = (JSONObject) i.next();
+        QueryString qs = new QueryString(q, logger);
+        queries.add(qs);
       }
+    } catch (Exception e) {
+      logger.error("Error happened while processing the query file");
+      e.printStackTrace();
     }
+
+    logger.info("# of Querie Strings: " + queries.size());
 
     Boolean timeoutOccured = false;
-    Integer queryNum = 1;
+    int queryNum = 1;
 
-    for (List<String> query: queries) {
-      String msg = "Starting Query # " + Integer.toString(queryNum);
-      logger.info("Starting Query # " + Integer.toString(queryNum));
+    /*
+    for (QueryString query: queries) {
+      logger.info("Starting Query #" + queryNum);
 
       Boolean exceptionOccured = executeQuery(logExecutor, query);
 
@@ -172,12 +160,11 @@ public class LogExecutor {
         exceptionOccured = executeQuery(logExecutor, query);
       }
 
-      msg = "Finished Query # " + Integer.toString(queryNum);
-      logger.info("Finished Query # " + Integer.toString(queryNum));
+      logger.info("Finished Query #" + queryNum);
 
       queryNum ++;
     }
-
+    
     try {
       //sleep(1000000);
       sleep(3000);
@@ -192,6 +179,7 @@ public class LogExecutor {
       e.printStackTrace();
     }
     killIMS();
+    */
   }
 
   public void restartEPDG() throws InterruptedException {

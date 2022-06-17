@@ -1,0 +1,36 @@
+{
+  "queries": [
+    {
+      "query": [
+        { 
+          "sendto": "ue", 
+          "name": "enable_vowifi"
+        }
+      ]
+    },
+    {
+      "query": [
+        { 
+          "sendto": "ue", 
+          "name": "enable_vowifi"
+        },
+        { 
+          "sendto": "epdg", 
+          "name": "ike_sa_init_response",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "type": "encryption",
+                  "value": 13
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
