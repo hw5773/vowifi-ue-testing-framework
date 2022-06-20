@@ -2553,31 +2553,31 @@ void *sender_run(void *data)
     msg = instance->fetch_message_from_send_queue(instance);
     if (msg)
     {
-      printf("send message 1\n"); sleep(1);
+      printf("send message 1\n");
       // type (1 byte) || ispi (8 bytes) || rspi (8 bytes) || msg (until \n)
       p = buf;
-      printf("send message 2\n"); sleep(1);
+      printf("send message 2\n");
       *(p++) = msg->type;
-      printf("send message 3\n"); sleep(1);
+      printf("send message 3\n");
       VAR_TO_PTR_8BYTES((msg->ispi), p);
-      printf("send message 4\n"); sleep(1);
+      printf("send message 4\n");
       VAR_TO_PTR_8BYTES((msg->rspi), p);
-      printf("send message 5\n"); sleep(1);
+      printf("send message 5\n");
 
       if (msg->len > 0)
       {
         memcpy(p, msg->msg, msg->len);
         p += msg->len;
       }
-      printf("send message 6\n"); sleep(1);
+      printf("send message 6\n");
       memcpy(p, "\n", 1);
-      printf("send message 7\n"); sleep(1);
+      printf("send message 7\n");
       p += 1;
 
       tbs = p - buf;
-      printf("send message 8\n"); sleep(1);
+      printf("send message 8\n");
       offset = 0;
-      printf("send message 9\n"); sleep(1);
+      printf("send message 9\n");
 
       while (offset < tbs)
       {
