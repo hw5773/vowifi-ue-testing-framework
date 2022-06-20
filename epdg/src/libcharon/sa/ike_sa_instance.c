@@ -70,7 +70,7 @@ msg_t *init_message(int type, uint64_t ispi, uint64_t rspi, uint8_t *msg, int le
   ret->type = type;
   ret->ispi = ispi;
   ret->rspi = rspi;
-  if (msg)
+  if (msg && len > 0)
     memcpy(ret->msg, msg, len);
   ret->len = len;
   return ret;
@@ -80,8 +80,8 @@ void free_message(msg_t *msg)
 {
   if (msg)
   {
-    if (msg->msg)
-      free(msg->msg);
+    printf("msg: %p\n", msg);
+    printf("msg->msg (msg->len: %d bytes): %s\n", msg->len, msg->msg);
 
     free(msg);
   }

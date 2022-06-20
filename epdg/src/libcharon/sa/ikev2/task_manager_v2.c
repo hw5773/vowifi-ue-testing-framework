@@ -49,10 +49,6 @@
 ///// Added for VoWiFi /////
 #include <unistd.h>
 #include <sa/ike_sa_instance.h>
-#define VAR_TO_PTR_8BYTES(v, p) \
-  p[0] = (v >> 56) & 0xff; p[1] = (v >> 48) & 0xff; p[2] = (v >> 40) & 0xff; \
-  p[3] = (v >> 32) & 0xff; p[4] = (v >> 24) & 0xff; p[5] = (v >> 16) & 0xff; \
-  p[6] = (v >> 8) & 0xff; p[7] = v & 0xff; p+=8;
 ////////////////////////////
 
 #ifdef ME
@@ -1034,7 +1030,7 @@ static status_t process_request(private_task_manager_t *this,
 			{
         if (instance)
         {
-          const uint8_t *ike_sa_init_request = "ike_sa_init_request\n";
+          const uint8_t *ike_sa_init_request = "ike_sa_init_request";
           id = this->ike_sa->get_id(this->ike_sa);
           p = buf;
           ispi = id->get_initiator_spi(id);
@@ -1093,7 +1089,9 @@ static status_t process_request(private_task_manager_t *this,
 
           msg = init_message(MSG_TYPE_BLOCK_END, ispi, rspi, NULL, 0);
           instance->add_message_to_send_queue(instance, msg);
+          printf("have added the message to the send queue\n");
         }
+        printf("ike_sa_init 13\n");
 				break;
 			}
 			case CREATE_CHILD_SA:

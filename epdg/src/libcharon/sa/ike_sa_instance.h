@@ -17,6 +17,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 typedef struct msg_st
 {

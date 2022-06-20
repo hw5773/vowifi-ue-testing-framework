@@ -57,9 +57,9 @@ public class LogExecutor {
   public LogExecutor(VoWiFiUEConfig config) throws Exception {
     this.config = config;
 
-    //initUEConnection();
-    //initEPDGConnection();
-    //initIMSConnection();
+    initUEConnection();
+    initEPDGConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -133,10 +133,12 @@ public class LogExecutor {
     try (FileReader reader = new FileReader(queryFilePath)) {
       JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
       JSONArray queryArray = (JSONArray) jsonObject.get("queries");
+      logger.info("queries: " + queryArray);
       Iterator i = queryArray.iterator();
 
       while (i.hasNext()) {
         JSONObject q = (JSONObject) i.next();
+        logger.info("Next Message: " + q);
         QueryString qs = new QueryString(q, logger);
         queries.add(qs);
       }
@@ -150,7 +152,6 @@ public class LogExecutor {
     Boolean timeoutOccured = false;
     int queryNum = 1;
 
-    /*
     for (QueryString query: queries) {
       logger.info("Starting Query #" + queryNum);
 
@@ -172,14 +173,13 @@ public class LogExecutor {
 
     }
 
-    killEPDG();
+    //killEPDG();
     try {
       sleep(3000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    killIMS();
-    */
+    //killIMS();
   }
 
   public void restartEPDG() throws InterruptedException {
@@ -385,7 +385,7 @@ public class LogExecutor {
 		return final_result;
 	}
 
-  public static Boolean executeQuery(LogExecutor logExecutor, List<String> query) {
+  public static Boolean executeQuery(LogExecutor logExecutor, QueryString query) {
     logger.debug("START: executeQuery()");
     logExecutor.pre();
 
@@ -394,19 +394,22 @@ public class LogExecutor {
     long startTime, endTime, duration;
     double insec;
 
-    for (String command: query) {
-      if (command.contains("ε"))
+    while (query.hasNextMessage()) {
+      Query message = query.getNextMessage();
+      String name = message.getName();
+
+      if (name.contains("ε"))
         continue;
-      logger.info("COMMAND: " + command);
+
+      logger.info("COMMAND: " + name);
 
       if (timeoutOccured) {
         logger.info("RESULT: NULL ACTION (TIMEOUT)");
         continue;
       }
 
-      command = command.replaceAll("\\s+","");
       startTime = System.currentTimeMillis();
-      String result = logExecutor.step(command);
+      String result = logExecutor.step(message);
       endTime = System.currentTimeMillis();
       duration = (endTime - startTime);
       insec = duration/1000.0;
@@ -616,9 +619,11 @@ public class LogExecutor {
     }
   }
 
-	public String step(String symbol) {
+	public String step(Query query) {
     logger.debug("START: step()");
     String result = "";
+    String name = query.getName();
+    Reply reply;
     
 		try {
 			sleep(5000); //50 milliseconds
@@ -627,21 +632,24 @@ public class LogExecutor {
 		}
 
 		try {
-			if(symbol.startsWith("enable_vowifi")) {
-				while (true) {
-					epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
-					sendEnableVoWiFi();
-					result = epdgIn.readLine();
-					if (result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
-						result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
-					}
-  				epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
-	  			logger.info(symbol + "->" + result);
-		  		return result;
-			  }
+			if(name.startsWith("enable_vowifi")) {
+				epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
+
+        while (!result.contains("ike_sa_init_request")) {
+          logger.info("sendEnableVoWiFi()");
+  				sendEnableVoWiFi();
+	  			result = epdgIn.readLine();
+          reply = new Reply(query, result, logger);
+		  		if (result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
+			  		result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
+				  }
+        }
+  			epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+	  		logger.info(name + "->" + result);
+		  	return result;
       }
 		} catch (SocketTimeoutException e) {
-			logger.info("Timeout occured for " + symbol);
+			logger.info("Timeout occured for " + name);
 			handleTimeout();
 			return "timeout";
 		} catch (Exception e) {
@@ -651,7 +659,7 @@ public class LogExecutor {
 			return "null_action";
 		}
 
-		System.out.println("####" + symbol +"/"+result + "####");
+		System.out.println("####" + name +"/"+result + "####");
     
     logger.debug("FINISH: step()");
 		return result;
@@ -674,10 +682,12 @@ public class LogExecutor {
 
 			do {
 				try {
+          /*
 					do { 
             trial++;
             ret = resetUE();
           } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
+          */
 
           if (trial == DEFAULT_NUMBER_OF_TRIALS) {
             logger.error("Resetting UE failed");

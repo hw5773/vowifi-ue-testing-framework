@@ -52,6 +52,15 @@
 #define MAX_CLNT_SIZE 10
 #define HELLO_REQUEST "Hello\n"
 #define HELLO_RESPONSE  "ACK\n"
+#define VAR_TO_PTR_8BYTES(v, p) \
+  p[0] = (v >> 56) & 0xff; p[1] = (v >> 48) & 0xff; p[2] = (v >> 40) & 0xff; \
+  p[3] = (v >> 32) & 0xff; p[4] = (v >> 24) & 0xff; p[5] = (v >> 16) & 0xff; \
+  p[6] = (v >> 8) & 0xff; p[7] = v & 0xff; p+=8;
+#define PTR_TO_VAR_8BYTES(p, v) \
+  v = 0; v |= ((p[0] & 0xff) << 56); v |= ((p[1] & 0xff) << 48); \
+  v |= ((p[2] & 0xff) << 40); v |= ((p[3] & 0xff) << 32); \
+  v |= ((p[4] & 0xff) << 24); v |= ((p[5] & 0xff) << 16); \
+  v |= ((p[6] & 0xff) << 8); v |= (p[7] & 0xff);
 ////////////////////////////
 
 typedef struct entry_t entry_t;
@@ -2525,15 +2534,82 @@ static u_int get_nearest_powerof2(u_int n)
 }
 
 ///// Added for VoWiFi /////
+void *sender_run(void *data)
+{
+  instance_t *instance;
+  msg_t *msg;
+  size_t tbs;
+  int asock, offset, sent;
+  uint8_t buf[MAX_MESSAGE_LEN];
+  uint8_t *p;
+
+  instance = (instance_t *)data;
+  msg = NULL;
+
+  asock = instance->asock;
+
+  while (instance->running)
+  {
+    msg = instance->fetch_message_from_send_queue(instance);
+    if (msg)
+    {
+      printf("send message 1\n"); sleep(1);
+      // type (1 byte) || ispi (8 bytes) || rspi (8 bytes) || msg (until \n)
+      p = buf;
+      printf("send message 2\n"); sleep(1);
+      *(p++) = msg->type;
+      printf("send message 3\n"); sleep(1);
+      VAR_TO_PTR_8BYTES((msg->ispi), p);
+      printf("send message 4\n"); sleep(1);
+      VAR_TO_PTR_8BYTES((msg->rspi), p);
+      printf("send message 5\n"); sleep(1);
+
+      if (msg->len > 0)
+      {
+        memcpy(p, msg->msg, msg->len);
+        p += msg->len;
+      }
+      printf("send message 6\n"); sleep(1);
+      memcpy(p, "\n", 1);
+      printf("send message 7\n"); sleep(1);
+      p += 1;
+
+      tbs = p - buf;
+      printf("send message 8\n"); sleep(1);
+      offset = 0;
+      printf("send message 9\n"); sleep(1);
+
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      printf("send message 10: tbs: %lu, offset: %d, msg: %p\n", tbs, offset, msg); 
+      free_message(msg);
+      msg = NULL;
+      printf ("send message 11: sent the message to LogExecutor\n");
+    }
+  }
+
+out:
+  return NULL;
+}
+
 void *listener_run(void *data)
 {
   private_ike_sa_manager_t *this;
   size_t tbs;
-  int lsock, asock, flags, offset, sent, rcvd, reading;
+  int lsock, asock, flags, offset, sent, rcvd, reading, rc;
   struct sockaddr_in addr;
   socklen_t len = sizeof(addr);
   uint8_t buf[MAX_MESSAGE_LEN];
+  uint8_t *p;
+  uint8_t type;
+  uint64_t ispi;
+  uint64_t rspi;
   instance_t *instance;
+  msg_t *msg;
 
   this = (private_ike_sa_manager_t *)data;
   lsock = this->lsock;
@@ -2554,6 +2630,8 @@ void *listener_run(void *data)
 
   instance = this->instance = init_instance(asock);
   printf("socket with LogExecutor is set: asock: %d\n", asock);
+
+  rc = pthread_create(this->listener, this->attr, sender_run, instance);
 
   while (instance->running)
   {
@@ -2595,8 +2673,16 @@ void *listener_run(void *data)
       }
       printf("sent ACK to LogExecutor\n");
     }
-    else
+    else if (offset > 0)
     {
+      p = buf;
+      type = *(p++);
+      PTR_TO_VAR_8BYTES(p, ispi);
+      PTR_TO_VAR_8BYTES(p, rspi);
+      len = offset - 18;
+      msg = init_message(type, ispi, rspi, p, len);
+      instance->add_message_to_recv_queue(instance, msg);
+      msg = NULL;
     }
   }
 

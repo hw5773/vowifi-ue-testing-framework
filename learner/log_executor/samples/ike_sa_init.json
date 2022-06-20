@@ -3,7 +3,7 @@
     {
       "query": [
         { 
-          "sendto": "ue", 
+          "receiver": "ue", 
           "name": "enable_vowifi"
         }
       ]
@@ -11,11 +11,11 @@
     {
       "query": [
         { 
-          "sendto": "ue", 
+          "receiver": "ue", 
           "name": "enable_vowifi"
         },
         { 
-          "sendto": "epdg", 
+          "receiver": "epdg", 
           "name": "ike_sa_init_response",
           "sub": [
             {
