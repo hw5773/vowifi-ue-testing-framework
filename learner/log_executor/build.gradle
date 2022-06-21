@@ -9,6 +9,7 @@ dependencies {
   compile 'commons-cli:commons-cli:1.5.0'
   compile 'com.googlecode.json-simple:json-simple:1.1.1'
   implementation 'net.sourceforge.argparse4j:argparse4j:0.9.0'
+  implementation 'commons-codec:commons-codec:1.9'
 }
 
 jar {

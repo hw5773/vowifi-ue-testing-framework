@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.codec.binary.Hex;
 
 class QueryReplyLogger {
 
@@ -16,29 +17,21 @@ class QueryReplyLogger {
 
 class Reply {
   private Query query;
-  private String orig;
   private ReplyType type;
   private List<Reply> sub = null;
   private Iterator iter = null;
+  private String ispi = null;
+  private String rspi = null;
+  private String name = null;
   static Log logger = null;
 
-  Reply(Query query, String result, Log logger) {
+  Reply(Query query, Log logger) {
     setLogger(logger);
     this.query = query;
-    this.orig = result;
-
-    parseResult(result);
-
-    if (this.sub != null)
-      this.iter = this.sub.iterator();
   }
 
-  Reply(Query query, String result) {
-    this(query, result, null);
-  }
-
-  public String getOriginalResult() {
-    return this.orig;
+  Reply(Query query) {
+    this(query, null);
   }
 
   void setLogger(Log logger)
@@ -46,41 +39,32 @@ class Reply {
     this.logger = logger;
   }
 
-  void parseResult(String result) {
-    logger.debug("Received result message: " + result);
-    int idx, type, len;
-    long ispi, rspi;
-    byte rcvd[] = result.getBytes();
-    
-    idx = 0;
-    len = result.length();
-
-    type = (int) rcvd[idx++];
-    len -= 1;
-    logger.debug("Type: " + type);
-
-    ispi = parseSPI(rcvd, idx);
-    idx += 8; len -= 8;
-    rspi = parseSPI(rcvd, idx);
-    idx += 8; len -= 8;
-
-    logger.debug("Initiator SPI: " + Long.toUnsignedString(ispi));
-    logger.debug("Responder SPI: " + Long.toUnsignedString(rspi));
-
-    if (len > 0)
-      logger.debug("Name: " + result.substring(idx));
+  ReplyType getType() {
+    return this.type;
   }
 
-  long parseSPI(byte spi[], int idx) {
-    long ret;
+  String getIspi() {
+    return this.ispi;
+  }
 
-    ret = 0;
+  void setIspi(String ispi) {
+    this.ispi = ispi;
+  }
 
-    for (int i=idx; i<idx+8; i++) {
-      ret = (ret << 8) + (spi[i] & 0xff);
-    }
+  String getRspi() {
+    return this.rspi;
+  }
 
-    return ret;
+  void setRspi(String rspi) {
+    this.rspi = rspi;
+  }
+
+  String getName() {
+    return this.name;
+  }
+
+  void setName(String name) {
+    this.name = name;
   }
 }
 

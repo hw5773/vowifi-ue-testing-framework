@@ -52,10 +52,16 @@
 #define MAX_CLNT_SIZE 10
 #define HELLO_REQUEST "Hello\n"
 #define HELLO_RESPONSE  "ACK\n"
+#define VAR_TO_PTR_4BYTES(v, p) \
+  p[0] = (v >> 24) & 0xff; p[1] = (v >> 16) & 0xff; p[2] = (v >> 8) & 0xff; \
+  p[3] = v & 0xff; p+=4;
 #define VAR_TO_PTR_8BYTES(v, p) \
   p[0] = (v >> 56) & 0xff; p[1] = (v >> 48) & 0xff; p[2] = (v >> 40) & 0xff; \
   p[3] = (v >> 32) & 0xff; p[4] = (v >> 24) & 0xff; p[5] = (v >> 16) & 0xff; \
   p[6] = (v >> 8) & 0xff; p[7] = v & 0xff; p+=8;
+#define PTR_TO_VAR_4BYTES(p, v) \
+  v = 0; v |= ((p[0] & 0xff) << 24); v |= ((p[1] & 0xff) << 16); \
+  v |= ((p[2] & 0xff) << 8); v |= (p[3] & 0xff);
 #define PTR_TO_VAR_8BYTES(p, v) \
   v = 0; v |= ((p[0] & 0xff) << 56); v |= ((p[1] & 0xff) << 48); \
   v |= ((p[2] & 0xff) << 40); v |= ((p[3] & 0xff) << 32); \
@@ -2554,15 +2560,22 @@ void *sender_run(void *data)
     if (msg)
     {
       printf("send message 1\n");
-      // type (1 byte) || ispi (8 bytes) || rspi (8 bytes) || msg (until \n)
+      // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) || msg (until \n)
       p = buf;
+
       printf("send message 2\n");
       *(p++) = msg->type;
       printf("send message 3\n");
-      VAR_TO_PTR_8BYTES((msg->ispi), p);
+
+	    printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
+	    printf(">>>>> Responder SPI: 0x%.16"PRIx64"\n", msg->rspi);
+
       printf("send message 4\n");
-      VAR_TO_PTR_8BYTES((msg->rspi), p);
+      snprintf(p, 17, "%.16"PRIx64, msg->ispi); 
+      p += 16;
       printf("send message 5\n");
+      snprintf(p, 17, "%.16"PRIx64, msg->rspi); 
+      p += 16;
 
       if (msg->len > 0)
       {
@@ -2570,14 +2583,17 @@ void *sender_run(void *data)
         p += msg->len;
       }
       printf("send message 6\n");
+
       memcpy(p, "\n", 1);
-      printf("send message 7\n");
       p += 1;
 
       tbs = p - buf;
-      printf("send message 8\n");
+      printf("send message 7\n");
       offset = 0;
-      printf("send message 9\n");
+      printf("send message 8\n");
+
+      ///// for the debug purpose
+      printf("Type: %d > %s", buf[0], buf + 1);
 
       while (offset < tbs)
       {
@@ -2585,10 +2601,10 @@ void *sender_run(void *data)
         if (sent > 0)
           offset += sent;
       }
-      printf("send message 10: tbs: %lu, offset: %d, msg: %p\n", tbs, offset, msg); 
+      printf("send message 9: tbs: %lu, offset: %d, msg: %p\n", tbs, offset, msg); 
       free_message(msg);
       msg = NULL;
-      printf ("send message 11: sent the message to LogExecutor\n");
+      printf ("send message 10: sent the message to LogExecutor\n");
     }
   }
 
@@ -2660,7 +2676,6 @@ void *listener_run(void *data)
     {
       printf("received Hello from LogExecutor!\n");
 
-      sleep(1);
       tbs = strlen(HELLO_RESPONSE);
       offset = 0;
       memcpy(buf, HELLO_RESPONSE, tbs);

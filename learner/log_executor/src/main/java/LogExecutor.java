@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.Iterator;
+import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -396,6 +397,7 @@ public class LogExecutor {
 
     while (query.hasNextMessage()) {
       Query message = query.getNextMessage();
+      Reply reply;
       String name = message.getName();
 
       if (name.contains("ε"))
@@ -409,24 +411,24 @@ public class LogExecutor {
       }
 
       startTime = System.currentTimeMillis();
-      String result = logExecutor.step(message);
+      reply = logExecutor.step(message);
       endTime = System.currentTimeMillis();
       duration = (endTime - startTime);
       insec = duration/1000.0;
       logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
 
-      if (result.matches("EXCEPTION")) {
+      if (reply.getName().matches("EXCEPTION")) {
         logger.info("Exception occured, restarting query");
         exceptionOccured = true;
       }
 
-      if (result.matches("timeout")) {
+      if (reply.getName().matches("timeout")) {
         timeoutOccured = true;
         logger.info("RESULT: NULL ACTION (TIMEOUT)");
         continue;
       }
 
-      logger.info("RESULT: " + result);
+      logger.info("RESULT: " + reply.getName());
     }
 
     logger.debug("FINISH: executeQuery()");
@@ -619,50 +621,144 @@ public class LogExecutor {
     }
   }
 
-	public String step(Query query) {
+	public Reply step(Query query) {
     logger.debug("START: step()");
     String result = "";
-    String name = query.getName();
-    Reply reply;
+    String qname = query.getName();
+    String rname;
+    String spi, ispi, rspi;
+    byte rcvd[];
+    Reply reply = new Reply(query, logger);
+    Stack<Integer> stack = new Stack<Integer>();
+    int idx, type, len;
     
 		try {
-			sleep(5000); //50 milliseconds
+			sleep(50); //50 milliseconds
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
 		try {
-			if(name.startsWith("enable_vowifi")) {
-				epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
-
-        while (!result.contains("ike_sa_init_request")) {
+			if(qname.startsWith("enable_vowifi")) {
+        do {
           logger.info("sendEnableVoWiFi()");
   				sendEnableVoWiFi();
 	  			result = epdgIn.readLine();
-          reply = new Reply(query, result, logger);
-		  		if (result.compareTo("") != 0 && result.toCharArray()[0] == ' ') {
-			  		result = new String(Arrays.copyOfRange(result.getBytes(), 1, result.getBytes().length));
-				  }
-        }
-  			epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
-	  		logger.info(name + "->" + result);
-		  	return result;
+          len = result.length();
+          idx = 0;
+          rcvd = result.getBytes();
+          type = (char) rcvd[idx++];
+
+          switch (type) {
+            case 2:
+              stack.push(1);
+              break;
+
+            case 3:
+              stack.pop();
+              break;
+          }
+
+          len -= 1;
+          ispi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = reply.getIspi();
+          if (spi == null) {
+            reply.setIspi(ispi);
+          } else {
+            if (!spi.equals(ispi)) {
+              logger.error("Initiator's SPIs are different");
+            }
+          }
+
+          rspi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = reply.getRspi();
+          if (spi == null) {
+            reply.setRspi(rspi);
+          } else {
+            if (!spi.equals(rspi)) {
+              logger.error("Responder's SPIs are different");
+            }
+          }
+
+          if (len > 0)
+          {
+            rname = result.substring(idx);
+            reply.setName(rname);
+          }
+        } while (stack.size() != 0);
+      } else if(qname.startsWith("ike_sa_init_response")) {
+        do {
+          logger.info("sendEnableVoWiFi()");
+  				sendEnableVoWiFi();
+	  			result = epdgIn.readLine();
+          len = result.length();
+          idx = 0;
+          rcvd = result.getBytes();
+          type = (char) rcvd[idx++];
+
+          switch (type) {
+            case 2:
+              stack.push(1);
+              break;
+
+            case 3:
+              stack.pop();
+              break;
+          }
+
+          len -= 1;
+          ispi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = reply.getIspi();
+          if (spi == null) {
+            reply.setIspi(ispi);
+          } else {
+            if (!spi.equals(ispi)) {
+              logger.error("Initiator's SPIs are different");
+            }
+          }
+
+          rspi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = reply.getRspi();
+          if (spi == null) {
+            reply.setRspi(rspi);
+          } else {
+            if (!spi.equals(rspi)) {
+              logger.error("Responder's SPIs are different");
+            }
+          }
+
+          if (len > 0)
+          {
+            rname = result.substring(idx);
+            reply.setName(rname);
+          }
+        } while (stack.size() != 0);
       }
 		} catch (SocketTimeoutException e) {
-			logger.info("Timeout occured for " + name);
+			logger.info("Timeout occured for " + qname);
 			handleTimeout();
-			return "timeout";
+			reply = new Reply(query, logger);
+      reply.setName("timeout");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting query.");
 			handleEPDGIMSFailure();
-			return "null_action";
+			reply = new Reply(query, logger);
+      reply.setName("null_action");
 		}
 
-		System.out.println("####" + name +"/"+result + "####");
+  	epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+		} catch (SocketTimeoutException e) {
+	  logger.info(qname + "->" + reply.getName());
+  	System.out.println("####" + qname + "/" + reply.getName() + "####");
     
     logger.debug("FINISH: step()");
-		return result;
+		return reply;
 	}
 
   public void pre() {
