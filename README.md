@@ -147,7 +147,7 @@
     - `sudo vi /usr/local/etc/kamailio/kamctlrc`
     - uncomment DBENGINE=MYSQL
     - uncommant and revise SIP_DOMAIN=ims.mnc210.mcc310.3gppnetwork.org
-    - `kamdbctl create`
+    - `kamdbctl create` (Enter 'ascii' for the charater set name if you are asked)
 
   - [Guest] Database for P-CSCF, I-CSCF, and S-CSCF
     - `mysql -u root -p`
