@@ -161,38 +161,6 @@ static status_t entry_destroy(entry_t *this)
 	return SUCCESS;
 }
 
-///// Added for VoWiFi /////
-int int_to_char(int num, uint8_t *str, int base)
-{
-  int i, tmp, rem, ret;
-
-  ret = 0;
-  tmp = num;
-  while (tmp > 0)
-  {
-    rem = tmp % base;
-    if (rem > 0)
-      ret = i;
-    tmp /= base;
-  }
-
-  ret++;
-
-  tmp = num;
-  for (i=0; i<ret; i++)
-  {
-    rem = tmp % base;
-    if (rem >= 0 && rem <= 9)
-      str[ret - i - 1] = rem + 48;
-    if (rem >= 10)
-      str[ret - i - 1] = rem + 87;
-    tmp /= base;
-  }
-
-  return ret;
-}
-////////////////////////////
-
 /**
  * Creates a new entry for the ike_sa_t list.
  */
@@ -2593,7 +2561,8 @@ void *sender_run(void *data)
     if (msg)
     {
       printf("send message 1\n");
-      // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) || msg (until \n)
+      // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) 
+      // || key || ":" (if there is a value) || value type || ":" || value (until \n)
       p = buf;
 
       printf("send message 2\n");
@@ -2632,6 +2601,13 @@ void *sender_run(void *data)
         if (msg->vtype == VAL_TYPE_INTEGER)
         {
           tint = *((int *)(msg->val));
+          tlen = int_to_char(tint, tmp, 10);
+          memcpy(p, tmp, tlen);
+          p += tlen;
+        }
+        else if (msg->vtype == VAL_TYPE_UINT16)
+        {
+          tint = *((uint16_t *)(msg->val));
           tlen = int_to_char(tint, tmp, 10);
           memcpy(p, tmp, tlen);
           p += tlen;

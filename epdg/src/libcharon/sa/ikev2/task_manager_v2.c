@@ -1074,21 +1074,6 @@ static status_t process_request(private_task_manager_t *this,
 				task = (task_t*)ike_mobike_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
         printf("ike_sa_init 12\n");
-
-        ///// Added for VoWiFi /////
-        if (instance)
-        {
-          //id = this->ike_sa->get_id(this->ike_sa);
-          //ispi = id->get_initiator_spi(id);
-          //rspi = id->get_responder_spi(id);
-
-          msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-              NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-          instance->add_message_to_send_queue(instance, msg);
-          printf("have added the message to the send queue\n");
-        }
-        ////////////////////////////
-        printf("ike_sa_init 13\n");
 				break;
 			}
 			case CREATE_CHILD_SA:
@@ -1319,6 +1304,16 @@ static status_t process_request(private_task_manager_t *this,
 		}
 	}
 	enumerator->destroy(enumerator);
+
+  ///// Added for VoWiFi /////
+  if (instance)
+  {
+    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
+    printf("have added the message to the send queue\n");
+  }
+  ////////////////////////////
 
   // TODO: Needs to check and understand build_response()
 	return build_response(this, message);

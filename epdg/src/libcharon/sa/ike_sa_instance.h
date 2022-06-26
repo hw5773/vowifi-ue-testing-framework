@@ -16,10 +16,12 @@
 
 #define VAL_TYPE_NONE 1
 #define VAL_TYPE_INTEGER  2
-#define VAL_TYPE_STRING 3
+#define VAL_TYPE_UINT16 3
+#define VAL_TYPE_STRING 4
 
 #define VAL_LENGTH_NONE 0
 #define VAL_LENGTH_INTEGER 4
+#define VAL_LENGTH_UINT16 2
 
 #include <stdint.h>
 #include <stddef.h>
@@ -49,11 +51,13 @@ typedef struct instance_st
   msg_t *sendq[MAX_QUEUE_LEN];
   int (*add_message_to_send_queue)(struct instance_st *instance, msg_t *msg);
   msg_t *(*fetch_message_from_send_queue)(struct instance_st *instance);
+  // TODO: add a lock for the send queue
 
   int rlast;
   msg_t *recvq[MAX_QUEUE_LEN];
   int (*add_message_to_recv_queue)(struct instance_st *instance, msg_t *msg);
   msg_t *(*fetch_message_from_recv_queue)(struct instance_st *instance);
+  // TODO: add a lock for the receive queue
 
   int running;
 } instance_t;
@@ -67,5 +71,6 @@ msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key,
 void free_message(msg_t *msg);
 instance_t *init_instance(int asock);
 void free_instance(instance_t *instance);
+int int_to_char(int num, uint8_t *str, int base);
 #endif /* IKE_SA_INSTANCE_H__ */
 ///////////////////////

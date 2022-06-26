@@ -6,10 +6,12 @@ int _add_message_to_send_queue(instance_t *instance, msg_t *msg)
   int ret;
   ret = -1;
 
+  // TODO: add a lock for the send queue
   if (instance->slast >= MAX_QUEUE_LEN)
     return ret;
 
   instance->sendq[instance->slast++] = msg;
+  // until here
 
   ret = 1;
   return ret;
@@ -21,6 +23,7 @@ msg_t *_fetch_message_from_send_queue(instance_t *instance)
   msg_t *ret;
   ret = NULL;
 
+  // TODO: add a lock for the send queue
   if (instance->slast > 0)
   {
     ret = instance->sendq[0];
@@ -28,6 +31,7 @@ msg_t *_fetch_message_from_send_queue(instance_t *instance)
       instance->sendq[i-1] = instance->sendq[i];
     instance->slast--;
   }
+  // until here
 
   return ret;
 }
@@ -37,10 +41,12 @@ int _add_message_to_recv_queue(instance_t *instance, msg_t *msg)
   int ret;
   ret = -1;
 
+  // TODO: add a lock for the receive queue
   if (instance->rlast >= MAX_QUEUE_LEN)
     return ret;
 
   instance->recvq[instance->rlast++] = msg;
+  // until here
 
   ret = 1;
   return ret;
@@ -52,6 +58,7 @@ msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
   msg_t *ret;
   ret = NULL;
 
+  // TODO: add a lock for the receive queue
   if (instance->rlast > 0)
   {
     ret = instance->recvq[0];
@@ -59,6 +66,7 @@ msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
       instance->recvq[i-1] = instance->recvq[i];
     instance->rlast--;
   }
+  // until here
 
   return ret;
 }
@@ -132,5 +140,35 @@ void free_instance(instance_t *instance)
 
     free(instance);
   }
+}
+
+int int_to_char(int num, uint8_t *str, int base)
+{
+  int i, tmp, rem, ret;
+
+  ret = 0;
+  tmp = num;
+  while (tmp > 0)
+  {
+    rem = tmp % base;
+    if (rem > 0)
+      ret = i;
+    tmp /= base;
+  }
+
+  ret++;
+
+  tmp = num;
+  for (i=0; i<ret; i++)
+  {
+    rem = tmp % base;
+    if (rem >= 0 && rem <= 9)
+      str[ret - i - 1] = rem + 48;
+    if (rem >= 10)
+      str[ret - i - 1] = rem + 87;
+    tmp /= base;
+  }
+
+  return ret;
 }
 /////////////////////////

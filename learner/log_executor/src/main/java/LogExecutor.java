@@ -41,12 +41,6 @@ public class LogExecutor {
 
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
-  private static final List<String> expectedResults = Arrays.asList(
-    "ike_sa_init_request",
-    "ike_sa_init_response",
-    "null_action",
-    "DONE");
-
   private static final int COOLING_TIME = 5*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 30*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 180*1000; 
@@ -210,9 +204,10 @@ public class LogExecutor {
     logger.debug("FINISH: restartIMS()");
   }
 
-  public void sendMSGToEPDG(String msg) {
+  public void sendMSGToEPDG(Query query) {
     logger.debug("START: sendMSGToEPDG()");
 
+    /*
     String result = new String();
     try {
       msg = "----------------- " + msg + "------------------\n";
@@ -227,6 +222,7 @@ public class LogExecutor {
     } catch(Exception e) {
       e.printStackTrace();
     }
+    */
 
     logger.debug("FINISH: sendMSGToEPDG()");
   }
@@ -621,16 +617,126 @@ public class LogExecutor {
     }
   }
 
-	public Reply step(Query query) {
-    logger.debug("START: step()");
-    String result = "";
-    String qname = query.getName();
-    String rname;
+  private Reply processResult(Query query) {
+    String result = null;
+    String rstr;
+    String print;
     String spi, ispi, rspi;
     byte rcvd[];
-    Reply reply = new Reply(query, logger);
+    Reply reply = null;
     Stack<Integer> stack = new Stack<Integer>();
-    int idx, type, len;
+    int idx, type, len, depth;
+
+    depth = 0;
+    try {
+		  epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
+      do {
+        print = "";
+        for (int i=0; i<depth; i++)
+        {
+          print += "  ";
+        }
+      	result = epdgIn.readLine();
+        len = result.length();
+        idx = 0;
+        rcvd = result.getBytes();
+        type = (char) rcvd[idx++];
+
+        logger.info("Message type: " + type);
+        switch (type) {
+          case 1:
+            if (reply == null) {
+              logger.error("The attribute should be within the block");
+            } else {
+              reply = reply.addSubmessage(ReplyType.ATTRIBUTE);
+            }
+            break;
+
+          case 2:
+            if (reply == null) {
+              reply = new Reply(query, ReplyType.MESSAGE, logger);
+            } else {
+              reply = reply.addSubmessage(ReplyType.PAYLOAD);
+            }
+            depth++;
+            stack.push(1);
+            break;
+
+          case 3:
+            if (reply.hasParent()) {
+              reply = reply.getParent();
+            }
+            depth--;
+            stack.pop();
+            break;
+        }
+
+        len -= 1;
+        ispi = result.substring(idx, idx + 16);
+        idx += 16; len -= 16;
+        spi = reply.getIspi();
+        if (spi == null) {
+          reply.setIspi(ispi);
+        } else {
+          if (!spi.equals(ispi)) {
+            logger.error("Initiator's SPIs are different");
+          }
+        }
+
+        rspi = result.substring(idx, idx + 16);
+        idx += 16; len -= 16;
+        spi = reply.getRspi();
+        if (spi == null) {
+          reply.setRspi(rspi);
+        } else {
+          if (!spi.equals(rspi)) {
+            logger.error("Responder's SPIs are different");
+          }
+        }
+
+        if (len > 0)
+        {
+          String[] arr;
+          rstr = result.substring(idx);
+          print += rstr;
+          arr = rstr.split(":", 0);
+
+          reply.setName(arr[0]);
+
+          if (arr.length > 1) {
+            if (arr.length != 3) {
+              logger.error("The array length should be 3");
+            }
+            else {
+              reply.setValueType(arr[1]);
+              reply.setValue(arr[2]);
+            }
+          }
+          logger.info(print);
+        }
+      } while (stack.size() != 0);
+  	  epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+		} catch (SocketTimeoutException e) {
+			logger.info("Timeout occured for " + query.getName());
+			handleTimeout();
+			reply = new Reply(query, ReplyType.MESSAGE, logger);
+      reply.setName("timeout");
+    } catch (Exception e) {
+			e.printStackTrace();
+			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting query.");
+			handleEPDGIMSFailure();
+			reply = new Reply(query, ReplyType.MESSAGE, logger);
+      reply.setName("null_action");
+		}
+
+    return reply;
+  }
+
+	public Reply step(Query query) {
+    logger.debug("START: step()");
+    Reply reply;
+    String qname = query.getName();
+    String rname;
     
 		try {
 			sleep(50); //50 milliseconds
@@ -638,124 +744,17 @@ public class LogExecutor {
 			e.printStackTrace();
 		}
 
-		epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
-		try {
-			if(qname.startsWith("enable_vowifi")) {
-        do {
-          logger.info("sendEnableVoWiFi()");
-  				sendEnableVoWiFi();
-	  			result = epdgIn.readLine();
-          len = result.length();
-          idx = 0;
-          rcvd = result.getBytes();
-          type = (char) rcvd[idx++];
+		if(qname.startsWith("enable_vowifi")) {
+      logger.info("sendEnableVoWiFi()");
+  		sendEnableVoWiFi();
+    } else if(qname.startsWith("ike_sa_init_response")) {
+      logger.info("sendEnableVoWiFi()");
+  		sendMSGToEPDG(query);
+    }
+    reply = processResult(query);
+    rname = reply.getName();
 
-          switch (type) {
-            case 2:
-              stack.push(1);
-              break;
-
-            case 3:
-              stack.pop();
-              break;
-          }
-
-          len -= 1;
-          ispi = result.substring(idx, idx + 16);
-          idx += 16; len -= 16;
-          spi = reply.getIspi();
-          if (spi == null) {
-            reply.setIspi(ispi);
-          } else {
-            if (!spi.equals(ispi)) {
-              logger.error("Initiator's SPIs are different");
-            }
-          }
-
-          rspi = result.substring(idx, idx + 16);
-          idx += 16; len -= 16;
-          spi = reply.getRspi();
-          if (spi == null) {
-            reply.setRspi(rspi);
-          } else {
-            if (!spi.equals(rspi)) {
-              logger.error("Responder's SPIs are different");
-            }
-          }
-
-          if (len > 0)
-          {
-            rname = result.substring(idx);
-            reply.setName(rname);
-          }
-        } while (stack.size() != 0);
-      } else if(qname.startsWith("ike_sa_init_response")) {
-        do {
-          logger.info("sendEnableVoWiFi()");
-  				sendEnableVoWiFi();
-	  			result = epdgIn.readLine();
-          len = result.length();
-          idx = 0;
-          rcvd = result.getBytes();
-          type = (char) rcvd[idx++];
-
-          switch (type) {
-            case 2:
-              stack.push(1);
-              break;
-
-            case 3:
-              stack.pop();
-              break;
-          }
-
-          len -= 1;
-          ispi = result.substring(idx, idx + 16);
-          idx += 16; len -= 16;
-          spi = reply.getIspi();
-          if (spi == null) {
-            reply.setIspi(ispi);
-          } else {
-            if (!spi.equals(ispi)) {
-              logger.error("Initiator's SPIs are different");
-            }
-          }
-
-          rspi = result.substring(idx, idx + 16);
-          idx += 16; len -= 16;
-          spi = reply.getRspi();
-          if (spi == null) {
-            reply.setRspi(rspi);
-          } else {
-            if (!spi.equals(rspi)) {
-              logger.error("Responder's SPIs are different");
-            }
-          }
-
-          if (len > 0)
-          {
-            rname = result.substring(idx);
-            reply.setName(rname);
-          }
-        } while (stack.size() != 0);
-      }
-		} catch (SocketTimeoutException e) {
-			logger.info("Timeout occured for " + qname);
-			handleTimeout();
-			reply = new Reply(query, logger);
-      reply.setName("timeout");
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting query.");
-			handleEPDGIMSFailure();
-			reply = new Reply(query, logger);
-      reply.setName("null_action");
-		}
-
-  	epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
-		} catch (SocketTimeoutException e) {
-	  logger.info(qname + "->" + reply.getName());
-  	System.out.println("####" + qname + "/" + reply.getName() + "####");
+	  logger.info("##### " + qname + " -> " + rname + " #####");
     
     logger.debug("FINISH: step()");
 		return reply;
