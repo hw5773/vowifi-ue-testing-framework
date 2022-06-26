@@ -1005,11 +1005,10 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   ike_sa_id_t *id;
   instance_t *instance;
-  int len;
-  uint8_t buf[MAX_MESSAGE_LEN];
-  uint8_t *p;
-  uint64_t ispi, rspi;
-  size_t tbs;
+  //int len;
+  //uint8_t buf[MAX_MESSAGE_LEN];
+  //uint8_t *p;
+  //uint64_t ispi, rspi;
   msg_t *msg;
   ////////////////////////////
 
@@ -1018,9 +1017,6 @@ static status_t process_request(private_task_manager_t *this,
 		state = this->ike_sa->get_state(this->ike_sa);
     
     ///// Added for VoWiFi /////
-    printf("this: %p\n", this);
-    printf("this->ike_sa: %p\n", this->ike_sa);
-    printf("this->ike_sa->get_instance: %p\n", this->ike_sa->get_instance);
     instance = this->ike_sa->get_instance(this->ike_sa);
     ////////////////////////////
     
@@ -1028,20 +1024,18 @@ static status_t process_request(private_task_manager_t *this,
 		{
 			case IKE_SA_INIT:
 			{
+        ///// Added for VoWiFi /////
         if (instance)
         {
-          const uint8_t *ike_sa_init_request = "ike_sa_init_request";
           id = this->ike_sa->get_id(this->ike_sa);
-          p = buf;
-          ispi = id->get_initiator_spi(id);
-          rspi = id->get_responder_spi(id);
-          memcpy(p, ike_sa_init_request, strlen(ike_sa_init_request));
-          p += strlen(ike_sa_init_request);
-          len = p - buf;
+          instance->ispi = id->get_initiator_spi(id);
+          instance->rspi = id->get_responder_spi(id);
 
-          msg = init_message(MSG_TYPE_BLOCK_START, ispi, rspi, buf, len);
+          msg = init_message(instance, MSG_TYPE_BLOCK_START, 
+              "ike_sa_init_request", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
           instance->add_message_to_send_queue(instance, msg);
         }
+        ///////////////////////////
         printf("report to LogExecuter: IKE_SA_INIT request\n");
         printf("ike_sa_init 1\n");
 				task = (task_t*)ike_vendor_create(this->ike_sa, FALSE);
@@ -1081,16 +1075,19 @@ static status_t process_request(private_task_manager_t *this,
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
         printf("ike_sa_init 12\n");
 
+        ///// Added for VoWiFi /////
         if (instance)
         {
-          id = this->ike_sa->get_id(this->ike_sa);
-          ispi = id->get_initiator_spi(id);
-          rspi = id->get_responder_spi(id);
+          //id = this->ike_sa->get_id(this->ike_sa);
+          //ispi = id->get_initiator_spi(id);
+          //rspi = id->get_responder_spi(id);
 
-          msg = init_message(MSG_TYPE_BLOCK_END, ispi, rspi, NULL, 0);
+          msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+              NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
           instance->add_message_to_send_queue(instance, msg);
           printf("have added the message to the send queue\n");
         }
+        ////////////////////////////
         printf("ike_sa_init 13\n");
 				break;
 			}

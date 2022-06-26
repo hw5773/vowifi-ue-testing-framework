@@ -63,16 +63,31 @@ msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
   return ret;
 }
 
-msg_t *init_message(int type, uint64_t ispi, uint64_t rspi, uint8_t *msg, int len)
+msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
+    int vtype, void *val, int vlen)
 {
   msg_t *ret;
+  uint8_t *p;
+  uint64_t ispi, rspi;
+
+  ispi = instance->ispi;
+  rspi = instance->rspi;
+
   ret = (msg_t *)calloc(1, sizeof(msg_t));
-  ret->type = type;
+  ret->mtype = mtype;
   ret->ispi = ispi;
   ret->rspi = rspi;
-  if (msg && len > 0)
-    memcpy(ret->msg, msg, len);
-  ret->len = len;
+
+  if (key)
+  {
+    memcpy(ret->key, key, strlen(key));
+    ret->klen = strlen(key);
+  }
+
+  ret->vtype = vtype;
+  ret->val = val;
+  ret->vlen = vlen;
+
   return ret;
 }
 
@@ -81,7 +96,6 @@ void free_message(msg_t *msg)
   if (msg)
   {
     printf("msg: %p\n", msg);
-    printf("msg->msg (msg->len: %d bytes): %s\n", msg->len, msg->msg);
 
     free(msg);
   }

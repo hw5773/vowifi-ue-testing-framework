@@ -161,6 +161,38 @@ static status_t entry_destroy(entry_t *this)
 	return SUCCESS;
 }
 
+///// Added for VoWiFi /////
+int int_to_char(int num, uint8_t *str, int base)
+{
+  int i, tmp, rem, ret;
+
+  ret = 0;
+  tmp = num;
+  while (tmp > 0)
+  {
+    rem = tmp % base;
+    if (rem > 0)
+      ret = i;
+    tmp /= base;
+  }
+
+  ret++;
+
+  tmp = num;
+  for (i=0; i<ret; i++)
+  {
+    rem = tmp % base;
+    if (rem >= 0 && rem <= 9)
+      str[ret - i - 1] = rem + 48;
+    if (rem >= 10)
+      str[ret - i - 1] = rem + 87;
+    tmp /= base;
+  }
+
+  return ret;
+}
+////////////////////////////
+
 /**
  * Creates a new entry for the ike_sa_t list.
  */
@@ -2545,8 +2577,9 @@ void *sender_run(void *data)
   instance_t *instance;
   msg_t *msg;
   size_t tbs;
-  int asock, offset, sent;
-  uint8_t buf[MAX_MESSAGE_LEN];
+  int asock, offset, sent, tint, tlen;
+  uint8_t buf[MAX_MESSAGE_LEN] = {0, };
+  uint8_t tmp[MAX_MESSAGE_LEN] = {0, };
   uint8_t *p;
 
   instance = (instance_t *)data;
@@ -2564,7 +2597,7 @@ void *sender_run(void *data)
       p = buf;
 
       printf("send message 2\n");
-      *(p++) = msg->type;
+      *(p++) = msg->mtype;
       printf("send message 3\n");
 
 	    printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
@@ -2577,12 +2610,38 @@ void *sender_run(void *data)
       snprintf(p, 17, "%.16"PRIx64, msg->rspi); 
       p += 16;
 
-      if (msg->len > 0)
+      if (msg->klen > 0)
       {
-        memcpy(p, msg->msg, msg->len);
-        p += msg->len;
+        memcpy(p, msg->key, msg->klen);
+        p += msg->klen;
       }
       printf("send message 6\n");
+
+      if (msg->vlen > 0)
+      {
+        memcpy(p, ":", 1);
+        p += 1;
+
+        tlen = int_to_char(msg->vtype, tmp, 10);
+        memcpy(p, tmp, tlen);
+        p += tlen;
+
+        memcpy(p, ":", 1);
+        p += 1;
+
+        if (msg->vtype == VAL_TYPE_INTEGER)
+        {
+          tint = *((int *)(msg->val));
+          tlen = int_to_char(tint, tmp, 10);
+          memcpy(p, tmp, tlen);
+          p += tlen;
+        }
+        else if (msg->vtype == VAL_TYPE_STRING)
+        {
+          memcpy(p, msg->val, msg->vlen);
+          p += msg->vlen;
+        }
+      }
 
       memcpy(p, "\n", 1);
       p += 1;
@@ -2621,7 +2680,7 @@ void *listener_run(void *data)
   socklen_t len = sizeof(addr);
   uint8_t buf[MAX_MESSAGE_LEN];
   uint8_t *p;
-  uint8_t type;
+  uint8_t mtype;
   uint64_t ispi;
   uint64_t rspi;
   instance_t *instance;
@@ -2690,14 +2749,16 @@ void *listener_run(void *data)
     }
     else if (offset > 0)
     {
+      /*
       p = buf;
-      type = *(p++);
+      mtype = *(p++);
       PTR_TO_VAR_8BYTES(p, ispi);
       PTR_TO_VAR_8BYTES(p, rspi);
       len = offset - 18;
       msg = init_message(type, ispi, rspi, p, len);
       instance->add_message_to_recv_queue(instance, msg);
       msg = NULL;
+      */
     }
   }
 

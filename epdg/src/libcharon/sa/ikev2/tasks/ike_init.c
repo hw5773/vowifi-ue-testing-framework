@@ -29,6 +29,10 @@
 #include <encoding/payloads/ke_payload.h>
 #include <encoding/payloads/nonce_payload.h>
 
+///// Added for VoWiFi /////
+#include <sa/ike_sa_instance.h>
+////////////////////////////
+
 /** maximum retries to do with cookies/other dh groups */
 #define MAX_RETRIES 5
 
@@ -454,8 +458,14 @@ static void process_sa_payload(private_ike_init_t *this, message_t *message,
 	linked_list_t *proposal_list;
 	host_t *me, *other;
 	proposal_selection_flag_t flags = 0;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 
 	ike_cfg = this->ike_sa->get_ike_cfg(this->ike_sa);
+  ///// Added for VoWiFi /////
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  ////////////////////////////
 
 	proposal_list = sa_payload->get_proposals(sa_payload);
 	if (!this->ike_sa->supports_extension(this->ike_sa, EXT_STRONGSWAN) &&
@@ -519,8 +529,15 @@ static void process_payloads(private_ike_init_t *this, message_t *message)
 	enumerator_t *enumerator;
 	payload_t *payload;
 	ke_payload_t *ke_payload = NULL;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 
 	enumerator = message->create_payload_enumerator(message);
+  ///// Added for VoWiFi /////
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  ////////////////////////////
+
 	while (enumerator->enumerate(enumerator, &payload))
 	{
 		switch (payload->get_type(payload))
