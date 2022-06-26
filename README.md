@@ -125,6 +125,7 @@
     - `vagrant ssh` (to get the shell of VM)
  
   - [Guest] Network setting in the VM
+    - `sudo apt-get install net-tools`
     - `sudo route -A inet6 add default gw fdad:dabb:ed::1 dev eth1` (the interface name might be different)
 
   - [Guest] Downlod the Setting files for the IMS Server
