@@ -2609,6 +2609,8 @@ void *sender_run(void *data)
         {
           tint = *((uint16_t *)(msg->val));
           tlen = int_to_char(tint, tmp, 10);
+          printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
+              *((uint16_t *)(msg->val)), tint, tlen);
           memcpy(p, tmp, tlen);
           p += tlen;
         }

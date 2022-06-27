@@ -462,7 +462,7 @@ static void process_sa_payload(private_ike_init_t *this, message_t *message,
   instance_t *instance;
   msg_t *msg;
   proposal_t *proposal;
-  uint16_t algo, klen;
+  uint16_t *algo, *klen;
   bool found;
   ////////////////////////////
 
@@ -489,170 +489,247 @@ static void process_sa_payload(private_ike_init_t *this, message_t *message,
           "transform", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, msg);
 
-      found = proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, &algo, &klen);
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
       if (found)
       {
-        printf(">>>>> Encryption algorithm: %u (size: %u)\n", algo, klen);
+        printf(">>>>> Encryption algorithm: %u (size: %u)\n", *algo, *klen);
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "encryption algorithm", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
+            "encryption algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "encryption key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
+      if (found)
+      {
+        printf(">>>>> Pseudo random function: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "pseudo random function", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "pseudo random function key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, INTEGRITY_ALGORITHM, algo, klen);
+      if (found)
+      {
+        printf(">>>>> Integrity algorithm: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "integrity algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "integrity key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
+      if (found)
+      {
+        printf(">>>>> Diffie-Hellman group: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "diffie-hellman group", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "diffie-hellman group key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, EXTENDED_SEQUENCE_NUMBERS, algo, klen);
+      if (found)
+      {
+        printf(">>>>> extended sequence numbers: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "extended sequence numbers", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "extended sequence number key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, HASH_ALGORITHM, algo, klen);
+      if (found)
+      {
+        printf(">>>>> hash algorithm: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "hash algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "hash key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, RANDOM_NUMBER_GENERATOR, algo, klen);
+      if (found)
+      {
+        printf(">>>>> random number generator: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "random number generator", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "random number generator key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, AEAD_ALGORITHM, algo, klen);
+      if (found)
+      {
+        printf(">>>>> aead algorithm: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "aead algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
         if (klen)
         {
           msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "encryption key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
+              "aead algorithm key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
           instance->add_message_to_send_queue(instance, msg);
         }
       }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
 
-      found = proposal->get_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, &algo, &klen);
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, COMPRESSION_ALGORITHM, algo, klen);
       if (found)
       {
-        printf(">>>>> Pseudo random function: %u (size: %u)\n", algo, klen);
+        printf(">>>>> compression algorithm: %u (size: %u)\n", *algo, *klen);
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "pseudo random function", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
+            "compression algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
+        instance->add_message_to_send_queue(instance, msg);
+        if (*klen)
+        {
+          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
+              "compression algorithm key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
+      }
+
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, EXTENDED_OUTPUT_FUNCTION, algo, klen);
+      if (found)
+      {
+        printf(">>>>> extended output function: %u (size: %u)\n", *algo, *klen);
+        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
+            "extended output function", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
         if (klen)
         {
           msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "pseudo random function key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
+              "extended output function key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
           instance->add_message_to_send_queue(instance, msg);
         }
       }
-
-      found = proposal->get_algorithm(proposal, INTEGRITY_ALGORITHM, &algo, &klen);
-      if (found)
+      else
       {
-        printf(">>>>> Integrity algorithm: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "integrity algorithm", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "integrity key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
+        free(algo);
+        free(klen);
       }
 
-      found = proposal->get_algorithm(proposal, DIFFIE_HELLMAN_GROUP, &algo, &klen);
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      found = proposal->get_algorithm(proposal, DETERMINISTIC_RANDOM_BIT_GENERATOR, algo, klen);
       if (found)
       {
-        printf(">>>>> Diffie-Hellman group: %u (size: %u)\n", algo, klen);
+        printf(">>>>> deterministic random bit generator: %u (size: %u)\n", *algo, *klen);
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "diffie-hellman group", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "diffie-hellman group key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-      }
-
-      found = proposal->get_algorithm(proposal, EXTENDED_SEQUENCE_NUMBERS, &algo, &klen);
-      if (found)
-      {
-        printf(">>>>> extended sequence numbers: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "extended sequence numbers", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "extended sequence number key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-      }
-
-      found = proposal->get_algorithm(proposal, HASH_ALGORITHM, &algo, &klen);
-      if (found)
-      {
-        printf(">>>>> hash algorithm: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "hash algorithm", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "hash key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-      }
-
-      found = proposal->get_algorithm(proposal, RANDOM_NUMBER_GENERATOR, &algo, &klen);
-      if (found)
-      {
-        printf(">>>>> random number generator: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "random number generator", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "random number generator key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-      }
-
-      found = proposal->get_algorithm(proposal, AEAD_ALGORITHM, &algo, &klen);
-      if (found)
-      {
-        printf(">>>>> aead algorithm: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "aead algorithm", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "aead algorithm key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-      }
-
-      found = proposal->get_algorithm(proposal, COMPRESSION_ALGORITHM, &algo, &klen);
-      if (found)
-      {
-        printf(">>>>> compression algorithm: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "compression algorithm", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "compression algorithm key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-      }
-
-      found = proposal->get_algorithm(proposal, EXTENDED_OUTPUT_FUNCTION, &algo, &klen);
-      if (found)
-      {
-        printf(">>>>> extended output function: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "extended output function", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
-        instance->add_message_to_send_queue(instance, msg);
-        if (klen)
-        {
-          msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
-              "extended output function key length", VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-      }
-
-      found = proposal->get_algorithm(proposal, DETERMINISTIC_RANDOM_BIT_GENERATOR, &algo, &klen);
-      if (found)
-      {
-        printf(">>>>> deterministic random bit generator: %u (size: %u)\n", algo, klen);
-        msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
-            "deterministic random bit generator", VAL_TYPE_UINT16, &algo, VAL_LENGTH_UINT16);
+            "deterministic random bit generator", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
         if (klen)
         {
           msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
               "deterministic random bit generator key length", 
-              VAL_TYPE_UINT16, &klen, VAL_LENGTH_UINT16);
+              VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
           instance->add_message_to_send_queue(instance, msg);
         }
+      }
+      else
+      {
+        free(algo);
+        free(klen);
       }
 
       msg = init_message(instance, MSG_TYPE_BLOCK_END,

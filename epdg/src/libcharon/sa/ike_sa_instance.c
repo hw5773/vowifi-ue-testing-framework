@@ -105,6 +105,12 @@ void free_message(msg_t *msg)
   {
     printf("msg: %p\n", msg);
 
+    if (msg->val)
+    {
+      free(msg->val);
+      msg->val = NULL;
+    }
+
     free(msg);
   }
 }
@@ -165,11 +171,9 @@ int int_to_char(int num, uint8_t *str, int base)
   {
     rem = tmp % base;
     if (rem > 0)
-      ret = i;
+      ret++;
     tmp /= base;
   }
-
-  ret++;
 
   tmp = num;
   for (i=0; i<ret; i++)

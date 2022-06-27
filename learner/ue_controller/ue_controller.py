@@ -72,6 +72,8 @@ def turn_on_wifi_interface(device):
 def ue_wakeup(device):
     cmd = ["adb", "shell", "input", "keyevent", "224"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+    cmd = ["adb", "shell", "input", "keyevent", "82"]
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
 
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
@@ -85,12 +87,12 @@ def adb_server_restart():
     logging.info("Kill the ADB server")
     cmd = ["adb", "kill-server"]
     subprocess.run(cmd)
-    time.sleep(1)
+    #time.sleep(1)
 
     logging.info("Start the ADB server")
     cmd = ["adb", "start-server"]
     subprocess.run(cmd)
-    time.sleep(1)
+    #time.sleep(1)
 
 def handle_reset(client, device):
     logging.debug("Before turning off the wifi interface")
@@ -102,7 +104,7 @@ def handle_reset(client, device):
     logging.debug("Before waking up the device")
     ue_wakeup(device)
     logging.debug("After waking up the device")
-    time.sleep(1)
+    #time.sleep(1)
     logging.debug("Before sending ACK to the statelearner")
     client.send(ACK)
     logging.debug("After sending ACK to the statelearner")
