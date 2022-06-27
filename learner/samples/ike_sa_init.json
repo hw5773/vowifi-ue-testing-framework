@@ -23,8 +23,10 @@
               "sub": [
                 {
                   "name": "transform",
-                  "type": "encryption",
-                  "value": 13
+                  "sub": [
+                    "name": "encryption",
+                    "value": 13
+                  ]
                 }
               ]
             }
