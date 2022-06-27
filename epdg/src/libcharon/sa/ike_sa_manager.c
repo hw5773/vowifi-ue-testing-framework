@@ -597,16 +597,19 @@ void *listener_run(void *data)
 {
   private_ike_sa_manager_t *this;
   size_t tbs;
-  int lsock, asock, flags, offset, sent, rcvd, reading, rc;
+  int lsock, asock, flags, offset, sent, rcvd, reading, rc, idx;
   struct sockaddr_in addr;
   socklen_t len = sizeof(addr);
   uint8_t buf[MAX_MESSAGE_LEN];
-  uint8_t *p;
+  uint8_t *p, *token;
   uint8_t mtype;
-  uint64_t ispi;
-  uint64_t rspi;
+  uint8_t ispi[16];
+  uint8_t rspi[16];
+  uint8_t spi[17];
+  int depth;
   instance_t *instance;
   msg_t *msg;
+  query_t *query;
 
   this = (private_ike_sa_manager_t *)data;
   lsock = this->lsock;
@@ -634,6 +637,7 @@ void *listener_run(void *data)
   {
     reading = 1;
     offset = 0;
+    memset(buf, 0, MAX_MESSAGE_LEN);
     while (reading)
     {
       rcvd = read(asock, buf + offset, 1);
@@ -671,19 +675,84 @@ void *listener_run(void *data)
     }
     else if (offset > 0)
     {
-      /*
-      p = buf;
-      mtype = *(p++);
-      PTR_TO_VAR_8BYTES(p, ispi);
-      PTR_TO_VAR_8BYTES(p, rspi);
-      len = offset - 18;
-      msg = init_message(type, ispi, rspi, p, len);
-      instance->add_message_to_recv_queue(instance, msg);
-      msg = NULL;
-      */
-      printf("received the control message from LogExecutor (%d bytes): %s\n", offset, buf);
+      depth = 0;
+      query = NULL;
+      do {
+        p = buf;
+        mtype = *(p++);
 
-      /*
+        switch (mtype)
+        {
+          case MSG_TYPE_ATTRIBUTE:
+            break;
+
+          case MSG_TYPE_BLOCK_START:
+            if (!query)
+              query = init_query();
+            else
+              query = add_query_sub_message(query, mtype);
+            depth++;
+            break;
+
+          case MSG_TYPE_BLOCK_END:
+            if (has_query_parent(query))
+              query = get_query_parent(query);
+            depth--;
+          default:
+            break;
+        }
+        
+        offset -= 1;
+        memcpy(ispi, p, 16);
+        p += 16; offset -= 16;
+        snprintf(spi, 17, "%.16"PRIx64, instance->ispi); 
+        if (!strncmp(ispi, spi, 16))
+        {
+          printf("ERROR: Initiator's SPIs are different\n");
+        }
+
+        memcpy(rspi, p, 16);
+        p += 16; offset -= 16;
+        snprintf(spi, 17, "%.16"PRIx64, instance->rspi); 
+        if (!strncmp(rspi, spi, 16))
+        {
+          printf("ERROR: Responder's SPIs are different\n");
+        }
+
+        if (offset > 0)
+        {
+          token = strtok(p, ":");
+          idx = 0;
+          while (token)
+          {
+            switch (idx)
+            {
+              case 0:
+                printf("name: %s\n", token);
+                set_query_name(query, token);
+                break;
+
+              case 1:
+                printf("value type: %s\n", token);
+                set_query_value_type(query, token);
+                break;
+
+              case 2:
+                printf("value: %s\n", token);
+                set_query_value(query, token);
+                break;
+
+              default:
+                break;
+            }
+
+            token = strtok(NULL, ":");
+            idx++;
+          }
+        }
+      } while (depth > 0);
+      print_query(query);
+
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
       memcpy(buf, ACK_RESPONSE, tbs);
@@ -695,7 +764,6 @@ void *listener_run(void *data)
           offset += sent;
       }
       printf("sent ACK to LogExecutor\n");
-      */
     }
   }
 

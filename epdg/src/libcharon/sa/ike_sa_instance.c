@@ -36,41 +36,6 @@ msg_t *_fetch_message_from_send_queue(instance_t *instance)
   return ret;
 }
 
-int _add_message_to_recv_queue(instance_t *instance, msg_t *msg)
-{
-  int ret;
-  ret = -1;
-
-  pthread_mutex_lock(&(instance->rlock));
-  if (instance->rlast < MAX_QUEUE_LEN)
-  {
-    instance->recvq[instance->rlast++] = msg;
-    ret = 1;
-  }
-  pthread_mutex_unlock(&(instance->rlock));
-
-  return ret;
-}
-
-msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
-{
-  int i;
-  msg_t *ret;
-  ret = NULL;
-
-  pthread_mutex_lock(&(instance->rlock));
-  if (instance->rlast > 0)
-  {
-    ret = instance->recvq[0];
-    for (i=1; i<instance->rlast; i++)
-      instance->recvq[i-1] = instance->recvq[i];
-    instance->rlast--;
-  }
-  pthread_mutex_unlock(&(instance->rlock));
-
-  return ret;
-}
-
 msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
     int vtype, void *val, int vlen)
 {
@@ -128,12 +93,8 @@ instance_t *init_instance(int asock)
     printf("initializing a mutex for the send queue failed\n");
   }
 
-  ret->add_message_to_recv_queue = _add_message_to_recv_queue;
-  ret->fetch_message_from_recv_queue = _fetch_message_from_recv_queue;
-  if (pthread_mutex_init(&(ret->slock), NULL) != 0)
-  {
-    printf("initializing a mutex for the receive queue failed\n");
-  }
+  //ret->set_query = _set_query;
+  //ret->get_current_query = _get_current_queue;
 
   ret->running = 1;
 
@@ -150,15 +111,96 @@ void free_instance(instance_t *instance)
       free_message(instance->sendq[i]);
     }
     
-    for (i=0; i<instance->rlast; i++)
-    {
-      free_message(instance->recvq[i]);
-    }
-
     pthread_mutex_destroy(&(instance->slock));
-    pthread_mutex_destroy(&(instance->rlock));
     free(instance);
   }
+}
+
+query_t *init_query(void)
+{
+  query_t *ret;
+  ret = (query_t *) calloc(1, sizeof(query_t));
+  return ret;
+}
+
+void free_query(query_t *query)
+{
+}
+
+void print_query(query_t *query)
+{
+}
+
+query_t *add_query_sub_message(query_t *query, int mtype)
+{
+  query_t *sub;
+  sub = init_query();
+  set_query_parent(sub, query);
+  
+  if (query->sub)
+    sub->next = query->sub;
+  query->sub = sub;
+
+  return sub;
+}
+
+int has_query_parent(query_t *query)
+{
+  int ret;
+  ret = 0;
+
+  if (query->parent)
+    ret = 1;
+  
+  return ret;
+}
+
+query_t *get_query_parent(query_t *query)
+{
+  return query->parent;
+}
+
+void set_query_parent(query_t *query, query_t *parent)
+{
+  query->parent = parent;
+}
+
+uint8_t *get_query_name(query_t *query, int *nlen)
+{
+  (*nlen) = query->nlen;
+  return query->name;
+}
+
+void set_query_name(query_t *query, uint8_t *name)
+{
+  int nlen = (int) strlen(name);
+  query->name = (uint8_t *)calloc(nlen, sizeof(uint8_t));
+  memcpy(query->name, name, nlen);
+  query->nlen = nlen;
+}
+
+int get_query_value_type(query_t *query)
+{
+  return query->vtype;
+}
+
+void set_query_value_type(query_t *query, uint8_t *vtstr)
+{
+  int vtlen = (int) strlen(vtstr);
+  query->vtype = char_to_int(vtstr, vtlen, 10);
+}
+
+uint8_t *get_query_value(query_t *query, int *vlen)
+{
+  (*vlen) = query->vlen;
+  return query->value;
+}
+
+void set_query_value(query_t *query, uint8_t *value)
+{
+  int vlen = (int) strlen(value);
+  query->value = (uint8_t *)calloc(vlen, sizeof(uint8_t));
+  memcpy(query->value, value, vlen);
 }
 
 int int_to_char(int num, uint8_t *str, int base)
@@ -186,6 +228,27 @@ int int_to_char(int num, uint8_t *str, int base)
     tmp /= base;
   }
 
+  return ret;
+}
+
+int char_to_int(char *str, int slen, int base)
+{
+  int i;
+  int ret = 0;
+  char ch;
+
+  if (!slen) goto out;
+
+  for (i=0; i<slen; i++)
+  {
+    ch = str[i];
+    if (ch == ' ')
+      break;
+
+    ret = ret * base + (ch - 48);
+  }
+
+out:
   return ret;
 }
 /////////////////////////
