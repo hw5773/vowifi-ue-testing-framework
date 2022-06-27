@@ -219,6 +219,11 @@ encoding/payloads/encrypted_payload.lo: \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
  sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
+ /usr/include/pthread.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  attributes/attribute_handler.h network/sender.h network/receiver.h \
  network/socket_manager.h network/socket.h control/controller.h bus/bus.h \
  bus/listeners/logger.h bus/listeners/listener.h \
@@ -742,6 +747,18 @@ sa/task.h:
 sa/task_manager.h:
 
 sa/ike_sa_instance.h:
+
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 attributes/attribute_handler.h:
 

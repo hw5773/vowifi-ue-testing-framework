@@ -231,7 +231,11 @@ kernel_netlink_plugin.lo: kernel_netlink_plugin.c \
  ../../../../src/libcharon/config/peer_cfg.h \
  ../../../../src/libcharon/config/ike_cfg.h \
  ../../../../src/libstrongswan/networking/packet.h \
- ../../../../src/libcharon/sa/ike_sa_instance.h
+ ../../../../src/libcharon/sa/ike_sa_instance.h /usr/include/pthread.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h
 
 /usr/include/stdc-predef.h:
 
@@ -738,3 +742,15 @@ kernel_netlink_net.h:
 ../../../../src/libstrongswan/networking/packet.h:
 
 ../../../../src/libcharon/sa/ike_sa_instance.h:
+
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:

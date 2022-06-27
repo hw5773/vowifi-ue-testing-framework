@@ -215,7 +215,12 @@ sa/ikev2/tasks/ike_auth.lo: sa/ikev2/tasks/ike_auth.c \
  config/ike_cfg.h config/child_cfg.h sa/ike_sa_id.h \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
- sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h daemon.h \
+ sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
+ /usr/include/pthread.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h daemon.h \
  attributes/attribute_manager.h attributes/attribute_provider.h \
  attributes/attribute_handler.h network/sender.h network/receiver.h \
  network/socket_manager.h network/socket.h control/controller.h bus/bus.h \
@@ -732,6 +737,18 @@ sa/task.h:
 sa/task_manager.h:
 
 sa/ike_sa_instance.h:
+
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 daemon.h:
 

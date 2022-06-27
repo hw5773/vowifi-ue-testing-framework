@@ -216,6 +216,11 @@ encoding/payloads/payload.lo: encoding/payloads/payload.c \
  ../../src/libstrongswan/networking/packet.h \
  encoding/payloads/configuration_attribute.h attributes/attributes.h \
  sa/child_sa.h sa/task.h sa/task_manager.h sa/ike_sa_instance.h \
+ /usr/include/pthread.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
  encoding/payloads/ke_payload.h encoding/payloads/auth_payload.h \
  encoding/payloads/cert_payload.h encoding/payloads/certreq_payload.h \
@@ -731,6 +736,18 @@ sa/task.h:
 sa/task_manager.h:
 
 sa/ike_sa_instance.h:
+
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 encoding/payloads/nonce_payload.h:
 

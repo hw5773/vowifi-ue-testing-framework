@@ -642,7 +642,7 @@ public class LogExecutor {
         rcvd = result.getBytes();
         type = (char) rcvd[idx++];
 
-        logger.info("Message type: " + type);
+        logger.debug("Message type: " + type);
         switch (type) {
           case 1:
             if (reply == null) {

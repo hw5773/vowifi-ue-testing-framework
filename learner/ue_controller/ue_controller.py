@@ -69,6 +69,10 @@ def turn_on_wifi_interface(device):
         subprocess.run(cmd)
     time.sleep(1)
 
+def ue_wakeup(device):
+    cmd = ["adb", "shell", "input", "keyevent", "224"]
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
     subprocess.run(cmd)
@@ -95,6 +99,9 @@ def handle_reset(client, device):
     logging.debug("Before turning on the wifi interface")
     turn_on_wifi_interface(device)
     logging.debug("After turning on the wifi interface")
+    logging.debug("Before waking up the device")
+    ue_wakeup(device)
+    logging.debug("After waking up the device")
     time.sleep(1)
     logging.debug("Before sending ACK to the statelearner")
     client.send(ACK)
@@ -210,6 +217,7 @@ def main():
 
     server.listen(5)
     device = check_device_model()
+    turn_off_wifi_interface(device)
 
     try:
         client, address = server.accept()

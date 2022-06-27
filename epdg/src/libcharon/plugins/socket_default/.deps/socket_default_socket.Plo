@@ -264,7 +264,12 @@ socket_default_socket.lo: socket_default_socket.c \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
- ../../../../src/libcharon/sa/ike_sa_instance.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h /usr/include/pthread.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/timex.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  ../../../../src/libcharon/attributes/attribute_handler.h \
  ../../../../src/libcharon/network/sender.h \
  ../../../../src/libcharon/network/receiver.h \
@@ -875,6 +880,20 @@ socket_default_socket.h:
 ../../../../src/libcharon/sa/task_manager.h:
 
 ../../../../src/libcharon/sa/ike_sa_instance.h:
+
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 ../../../../src/libcharon/attributes/attribute_handler.h:
 

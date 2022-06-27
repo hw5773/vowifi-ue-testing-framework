@@ -234,7 +234,11 @@ vici_plugin.lo: vici_plugin.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
- ../../../../src/libcharon/sa/ike_sa_instance.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h /usr/include/pthread.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  ../../../../src/libcharon/bus/listeners/logger.h vici_control.h \
  vici_cred.h vici_authority.h vici_config.h \
  ../../../../src/libcharon/config/backend.h vici_attribute.h \
@@ -774,6 +778,18 @@ vici_query.h:
 ../../../../src/libcharon/sa/task_manager.h:
 
 ../../../../src/libcharon/sa/ike_sa_instance.h:
+
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 ../../../../src/libcharon/bus/listeners/logger.h:
 

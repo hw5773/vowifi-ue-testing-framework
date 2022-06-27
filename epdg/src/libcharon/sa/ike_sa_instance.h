@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <pthread.h>
 
 typedef struct msg_st
 {
@@ -51,13 +52,13 @@ typedef struct instance_st
   msg_t *sendq[MAX_QUEUE_LEN];
   int (*add_message_to_send_queue)(struct instance_st *instance, msg_t *msg);
   msg_t *(*fetch_message_from_send_queue)(struct instance_st *instance);
-  // TODO: add a lock for the send queue
+  pthread_mutex_t slock;
 
   int rlast;
   msg_t *recvq[MAX_QUEUE_LEN];
   int (*add_message_to_recv_queue)(struct instance_st *instance, msg_t *msg);
   msg_t *(*fetch_message_from_recv_queue)(struct instance_st *instance);
-  // TODO: add a lock for the receive queue
+  pthread_mutex_t rlock;
 
   int running;
 } instance_t;

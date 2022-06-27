@@ -1010,15 +1010,12 @@ static status_t process_request(private_task_manager_t *this,
   //uint8_t *p;
   //uint64_t ispi, rspi;
   msg_t *msg;
+  instance = this->ike_sa->get_instance(this->ike_sa);
   ////////////////////////////
 
 	if (array_count(this->passive_tasks) == 0)
 	{	/* create tasks depending on request type, if not already some queued */
 		state = this->ike_sa->get_state(this->ike_sa);
-    
-    ///// Added for VoWiFi /////
-    instance = this->ike_sa->get_instance(this->ike_sa);
-    ////////////////////////////
     
 		switch (message->get_exchange_type(message))
 		{
@@ -1308,10 +1305,17 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   if (instance)
   {
-    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(instance, msg);
-    printf("have added the message to the send queue\n");
+		switch (message->get_exchange_type(message))
+    {
+      case IKE_SA_INIT:
+        msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+            NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+        printf("have added the message to the send queue\n");
+        break;
+      default:
+        break;
+    }
   }
   ////////////////////////////
 

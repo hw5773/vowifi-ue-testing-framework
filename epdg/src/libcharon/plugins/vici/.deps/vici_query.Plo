@@ -233,15 +233,15 @@ vici_query.lo: vici_query.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/sa/child_sa.h \
  ../../../../src/libcharon/sa/task.h \
  ../../../../src/libcharon/sa/task_manager.h \
- ../../../../src/libcharon/sa/ike_sa_instance.h \
+ ../../../../src/libcharon/sa/ike_sa_instance.h /usr/include/pthread.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  ../../../../src/libcharon/bus/listeners/logger.h vici_dispatcher.h \
  vici_message.h vici_builder.h vici_cert_info.h \
  ../../../../src/libstrongswan/credentials/certificates/x509.h \
- /usr/include/inttypes.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/x86_64-linux-gnu/sys/utsname.h \
+ /usr/include/inttypes.h /usr/include/x86_64-linux-gnu/sys/utsname.h \
  /usr/include/x86_64-linux-gnu/bits/utsname.h /usr/include/malloc.h \
  ../../../../src/libcharon/daemon.h \
  ../../../../src/libcharon/attributes/attribute_manager.h \
@@ -776,6 +776,18 @@ vici_query.h:
 
 ../../../../src/libcharon/sa/ike_sa_instance.h:
 
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
 ../../../../src/libcharon/bus/listeners/logger.h:
 
 vici_dispatcher.h:
@@ -789,14 +801,6 @@ vici_cert_info.h:
 ../../../../src/libstrongswan/credentials/certificates/x509.h:
 
 /usr/include/inttypes.h:
-
-/usr/include/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/sys/utsname.h:
 

@@ -6,14 +6,14 @@ int _add_message_to_send_queue(instance_t *instance, msg_t *msg)
   int ret;
   ret = -1;
 
-  // TODO: add a lock for the send queue
-  if (instance->slast >= MAX_QUEUE_LEN)
-    return ret;
+  pthread_mutex_lock(&(instance->slock));
+  if (instance->slast < MAX_QUEUE_LEN)
+  {
+    instance->sendq[instance->slast++] = msg;
+    ret = 1;
+  }
+  pthread_mutex_unlock(&(instance->slock));
 
-  instance->sendq[instance->slast++] = msg;
-  // until here
-
-  ret = 1;
   return ret;
 }
 
@@ -23,7 +23,7 @@ msg_t *_fetch_message_from_send_queue(instance_t *instance)
   msg_t *ret;
   ret = NULL;
 
-  // TODO: add a lock for the send queue
+  pthread_mutex_lock(&(instance->slock));
   if (instance->slast > 0)
   {
     ret = instance->sendq[0];
@@ -31,7 +31,7 @@ msg_t *_fetch_message_from_send_queue(instance_t *instance)
       instance->sendq[i-1] = instance->sendq[i];
     instance->slast--;
   }
-  // until here
+  pthread_mutex_unlock(&(instance->slock));
 
   return ret;
 }
@@ -41,14 +41,14 @@ int _add_message_to_recv_queue(instance_t *instance, msg_t *msg)
   int ret;
   ret = -1;
 
-  // TODO: add a lock for the receive queue
-  if (instance->rlast >= MAX_QUEUE_LEN)
-    return ret;
+  pthread_mutex_lock(&(instance->rlock));
+  if (instance->rlast < MAX_QUEUE_LEN)
+  {
+    instance->recvq[instance->rlast++] = msg;
+    ret = 1;
+  }
+  pthread_mutex_unlock(&(instance->rlock));
 
-  instance->recvq[instance->rlast++] = msg;
-  // until here
-
-  ret = 1;
   return ret;
 }
 
@@ -58,7 +58,7 @@ msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
   msg_t *ret;
   ret = NULL;
 
-  // TODO: add a lock for the receive queue
+  pthread_mutex_lock(&(instance->rlock));
   if (instance->rlast > 0)
   {
     ret = instance->recvq[0];
@@ -66,7 +66,7 @@ msg_t *_fetch_message_from_recv_queue(instance_t *instance, msg_t *msg)
       instance->recvq[i-1] = instance->recvq[i];
     instance->rlast--;
   }
-  // until here
+  pthread_mutex_unlock(&(instance->rlock));
 
   return ret;
 }
@@ -114,10 +114,21 @@ instance_t *init_instance(int asock)
   instance_t *ret;
   ret = (instance_t *)calloc(1, sizeof(instance_t));
   ret->asock = asock;
+
   ret->add_message_to_send_queue = _add_message_to_send_queue;
   ret->fetch_message_from_send_queue = _fetch_message_from_send_queue;
+  if (pthread_mutex_init(&(ret->slock), NULL) != 0)
+  {
+    printf("initializing a mutex for the send queue failed\n");
+  }
+
   ret->add_message_to_recv_queue = _add_message_to_recv_queue;
   ret->fetch_message_from_recv_queue = _fetch_message_from_recv_queue;
+  if (pthread_mutex_init(&(ret->slock), NULL) != 0)
+  {
+    printf("initializing a mutex for the receive queue failed\n");
+  }
+
   ret->running = 1;
 
   return ret;
@@ -138,6 +149,8 @@ void free_instance(instance_t *instance)
       free_message(instance->recvq[i]);
     }
 
+    pthread_mutex_destroy(&(instance->slock));
+    pthread_mutex_destroy(&(instance->rlock));
     free(instance);
   }
 }
