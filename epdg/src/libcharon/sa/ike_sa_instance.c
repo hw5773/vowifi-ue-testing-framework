@@ -125,10 +125,73 @@ query_t *init_query(void)
 
 void free_query(query_t *query)
 {
+  query_t *curr, *next;
+
+  if (query)
+  {
+    if (query->name)
+      free(query->name);
+
+    if (query->value)
+      free(query->value);
+    
+    curr = query->sub;
+    
+    while (curr)
+    {
+      next = curr->next;
+      free_query(curr);
+      curr = next;
+    }
+
+    free(query);
+  }
+}
+
+void _print_query(query_t *query, int depth)
+{
+  query_t *sub;
+  int i, tlen;
+  uint8_t buf[MAX_MESSAGE_LEN] = {0, };
+  uint8_t *p, *tmp;
+
+  for (i=0; i<depth; i++)
+    printf("  ");
+  
+  p = buf;
+  tmp = get_query_name(query, &tlen);
+  if (tlen > 0)
+  {
+    snprintf(p, tlen, "%s", tmp);
+    p += tlen;
+  }
+
+  tmp = get_query_value(query, &tlen);
+  if (tlen > 0)
+  {
+    *(p++) = ':';
+    snprintf(p, tlen, "%s", tmp);
+  }
+
+  printf("%s\n", buf);
+
+  depth += 1;
+  sub = query->sub;
+  while (sub) 
+  {
+    _print_query(sub, depth);
+    sub = sub->next;
+  }
+  depth -= 1;
+
+  for (i=0; i<depth; i++)
+    printf("  ");
+  printf("end\n");
 }
 
 void print_query(query_t *query)
 {
+  _print_query(query, 0);
 }
 
 query_t *add_query_sub_message(query_t *query, int mtype)
@@ -174,6 +237,7 @@ uint8_t *get_query_name(query_t *query, int *nlen)
 void set_query_name(query_t *query, uint8_t *name)
 {
   int nlen = (int) strlen(name);
+  printf("nlen: %d\n", nlen);
   query->name = (uint8_t *)calloc(nlen, sizeof(uint8_t));
   memcpy(query->name, name, nlen);
   query->nlen = nlen;

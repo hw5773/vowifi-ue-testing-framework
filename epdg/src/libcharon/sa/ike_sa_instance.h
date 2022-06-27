@@ -97,13 +97,16 @@ int has_query_parent(query_t *query);
 query_t *get_query_parent(query_t *query);
 void set_query_parent(query_t *query, query_t *parent);
 uint8_t *get_query_name(query_t *query, int *nlen);
-void set_query_name(query_t *query, uint8_t *token);
+void set_query_name(query_t *query, uint8_t *name);
 int get_query_value_type(query_t *query);
-void set_query_value_type(query_t *query, uint8_t *token);
+void set_query_value_type(query_t *query, uint8_t *vtype);
 uint8_t *get_query_value(query_t *query, int *vlen);
-void set_query_value(query_t *query, uint8_t *token);
+void set_query_value(query_t *query, uint8_t *value);
 
 void *sender_run(void *data);
 void *listener_run(void *data);
+
+int int_to_char(int num, uint8_t *str, int base);
+int char_to_int(char *str, int slen, int base);
 #endif /* IKE_SA_INSTANCE_H__ */
 ///////////////////////

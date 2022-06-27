@@ -679,7 +679,8 @@ void *listener_run(void *data)
       query = NULL;
       do {
         p = buf;
-        mtype = *(p++);
+        mtype = char_to_int(p, 1, 10);
+        p++;
 
         switch (mtype)
         {
@@ -728,7 +729,7 @@ void *listener_run(void *data)
             switch (idx)
             {
               case 0:
-                printf("name: %s\n", token);
+                printf("query: %p, name: %s\n", query, token);
                 set_query_name(query, token);
                 break;
 
