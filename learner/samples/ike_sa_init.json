@@ -24,8 +24,11 @@
                 {
                   "name": "transform",
                   "sub": [
-                    "name": "encryption",
-                    "value": 13
+                    {
+                      "name": "encryption",
+                      "type": "uint16",
+                      "value": 13
+                    }
                   ]
                 }
               ]

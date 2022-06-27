@@ -50,8 +50,6 @@
 #include <sa/ike_sa_instance.h>
 #define DEFAULT_EPDG_PORT 7778
 #define MAX_CLNT_SIZE 10
-#define HELLO_REQUEST "Hello\n"
-#define HELLO_RESPONSE  "ACK\n"
 #define VAR_TO_PTR_4BYTES(v, p) \
   p[0] = (v >> 24) & 0xff; p[1] = (v >> 16) & 0xff; p[2] = (v >> 8) & 0xff; \
   p[3] = v & 0xff; p+=4;
@@ -68,6 +66,7 @@
   v |= ((p[4] & 0xff) << 24); v |= ((p[5] & 0xff) << 16); \
   v |= ((p[6] & 0xff) << 8); v |= (p[7] & 0xff);
 ////////////////////////////
+
 
 typedef struct entry_t entry_t;
 
@@ -483,6 +482,227 @@ struct private_ike_sa_manager_t {
   pthread_attr_t *attr; 
   ////////////////////////////
 };
+
+///// Added for VoWiFi /////
+void *sender_run(void *data)
+{
+  instance_t *instance;
+  msg_t *msg;
+  size_t tbs;
+  int asock, offset, sent, tint, tlen;
+  uint8_t buf[MAX_MESSAGE_LEN] = {0, };
+  uint8_t tmp[MAX_MESSAGE_LEN] = {0, };
+  uint8_t *p;
+
+  instance = (instance_t *)data;
+  msg = NULL;
+
+  asock = instance->asock;
+
+  while (instance->running)
+  {
+    msg = instance->fetch_message_from_send_queue(instance);
+    if (msg)
+    {
+      printf("send message 1\n");
+      // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) 
+      // || key || ":" (if there is a value) || value type || ":" || value (until \n)
+      p = buf;
+
+      printf("send message 2\n");
+      *(p++) = msg->mtype;
+      printf("send message 3\n");
+
+	    printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
+	    printf(">>>>> Responder SPI: 0x%.16"PRIx64"\n", msg->rspi);
+
+      printf("send message 4\n");
+      snprintf(p, 17, "%.16"PRIx64, msg->ispi); 
+      p += 16;
+      printf("send message 5\n");
+      snprintf(p, 17, "%.16"PRIx64, msg->rspi); 
+      p += 16;
+
+      if (msg->klen > 0)
+      {
+        memcpy(p, msg->key, msg->klen);
+        p += msg->klen;
+      }
+      printf("send message 6\n");
+
+      if (msg->vlen > 0)
+      {
+        memcpy(p, ":", 1);
+        p += 1;
+
+        tlen = int_to_char(msg->vtype, tmp, 10);
+        memcpy(p, tmp, tlen);
+        p += tlen;
+
+        memcpy(p, ":", 1);
+        p += 1;
+
+        if (msg->vtype == VAL_TYPE_INTEGER)
+        {
+          tint = *((int *)(msg->val));
+          tlen = int_to_char(tint, tmp, 10);
+          memcpy(p, tmp, tlen);
+          p += tlen;
+        }
+        else if (msg->vtype == VAL_TYPE_UINT16)
+        {
+          tint = *((uint16_t *)(msg->val));
+          tlen = int_to_char(tint, tmp, 10);
+          printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
+              *((uint16_t *)(msg->val)), tint, tlen);
+          memcpy(p, tmp, tlen);
+          p += tlen;
+        }
+        else if (msg->vtype == VAL_TYPE_STRING)
+        {
+          memcpy(p, msg->val, msg->vlen);
+          p += msg->vlen;
+        }
+      }
+
+      memcpy(p, "\n", 1);
+      p += 1;
+
+      tbs = p - buf;
+      printf("send message 7\n");
+      offset = 0;
+      printf("send message 8\n");
+
+      ///// for the debug purpose
+      printf("Type: %d > %s", buf[0], buf + 1);
+
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      printf("send message 9: tbs: %lu, offset: %d, msg: %p\n", tbs, offset, msg); 
+      free_message(msg);
+      msg = NULL;
+      printf ("send message 10: sent the message to LogExecutor\n");
+    }
+  }
+
+out:
+  return NULL;
+}
+
+void *listener_run(void *data)
+{
+  private_ike_sa_manager_t *this;
+  size_t tbs;
+  int lsock, asock, flags, offset, sent, rcvd, reading, rc;
+  struct sockaddr_in addr;
+  socklen_t len = sizeof(addr);
+  uint8_t buf[MAX_MESSAGE_LEN];
+  uint8_t *p;
+  uint8_t mtype;
+  uint64_t ispi;
+  uint64_t rspi;
+  instance_t *instance;
+  msg_t *msg;
+
+  this = (private_ike_sa_manager_t *)data;
+  lsock = this->lsock;
+
+  printf("running the listener socket thread: this->lsock: %d\n", this->lsock);
+
+  asock = accept(lsock, (struct sockaddr *)&addr, &len);
+
+  if (asock < 0)
+  {
+    perror("socket failure");
+  }
+
+  printf("accept the socket: asock: %d\n", asock);
+
+  flags = fcntl(asock, F_GETFL);
+  fcntl(asock, F_SETFL, flags | O_NONBLOCK);
+
+  instance = this->instance = init_instance(asock);
+  printf("socket with LogExecutor is set: asock: %d\n", asock);
+
+  rc = pthread_create(this->listener, this->attr, sender_run, instance);
+
+  while (instance->running)
+  {
+    reading = 1;
+    offset = 0;
+    while (reading)
+    {
+      rcvd = read(asock, buf + offset, 1);
+      if (rcvd > 0)
+      {
+        if (buf[offset] == '\n')
+          reading = 0;
+        offset += rcvd;
+      }
+      else if (rcvd == 0)
+      {
+        printf("socket error happened()\n");
+        goto out;
+      }
+    }
+
+    printf("received message (%d bytes): %s\n", offset, buf);
+
+    if (offset == strlen(HELLO_REQUEST) 
+        && !strncmp(buf, HELLO_REQUEST, strlen(HELLO_REQUEST)))
+    {
+      printf("received Hello from LogExecutor!\n");
+
+      tbs = strlen(HELLO_RESPONSE);
+      offset = 0;
+      memcpy(buf, HELLO_RESPONSE, tbs);
+
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      printf("sent ACK to LogExecutor\n");
+    }
+    else if (offset > 0)
+    {
+      /*
+      p = buf;
+      mtype = *(p++);
+      PTR_TO_VAR_8BYTES(p, ispi);
+      PTR_TO_VAR_8BYTES(p, rspi);
+      len = offset - 18;
+      msg = init_message(type, ispi, rspi, p, len);
+      instance->add_message_to_recv_queue(instance, msg);
+      msg = NULL;
+      */
+      printf("received the control message from LogExecutor (%d bytes): %s\n", offset, buf);
+
+      /*
+      tbs = strlen(ACK_RESPONSE);
+      offset = 0;
+      memcpy(buf, ACK_RESPONSE, tbs);
+
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      printf("sent ACK to LogExecutor\n");
+      */
+    }
+  }
+
+out:
+  return NULL;
+}
+////////////////////
 
 /**
  * Acquire a lock to access the segment of the table row with the given index.
@@ -2538,212 +2758,6 @@ static u_int get_nearest_powerof2(u_int n)
 	}
 	return ++n;
 }
-
-///// Added for VoWiFi /////
-void *sender_run(void *data)
-{
-  instance_t *instance;
-  msg_t *msg;
-  size_t tbs;
-  int asock, offset, sent, tint, tlen;
-  uint8_t buf[MAX_MESSAGE_LEN] = {0, };
-  uint8_t tmp[MAX_MESSAGE_LEN] = {0, };
-  uint8_t *p;
-
-  instance = (instance_t *)data;
-  msg = NULL;
-
-  asock = instance->asock;
-
-  while (instance->running)
-  {
-    msg = instance->fetch_message_from_send_queue(instance);
-    if (msg)
-    {
-      printf("send message 1\n");
-      // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) 
-      // || key || ":" (if there is a value) || value type || ":" || value (until \n)
-      p = buf;
-
-      printf("send message 2\n");
-      *(p++) = msg->mtype;
-      printf("send message 3\n");
-
-	    printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
-	    printf(">>>>> Responder SPI: 0x%.16"PRIx64"\n", msg->rspi);
-
-      printf("send message 4\n");
-      snprintf(p, 17, "%.16"PRIx64, msg->ispi); 
-      p += 16;
-      printf("send message 5\n");
-      snprintf(p, 17, "%.16"PRIx64, msg->rspi); 
-      p += 16;
-
-      if (msg->klen > 0)
-      {
-        memcpy(p, msg->key, msg->klen);
-        p += msg->klen;
-      }
-      printf("send message 6\n");
-
-      if (msg->vlen > 0)
-      {
-        memcpy(p, ":", 1);
-        p += 1;
-
-        tlen = int_to_char(msg->vtype, tmp, 10);
-        memcpy(p, tmp, tlen);
-        p += tlen;
-
-        memcpy(p, ":", 1);
-        p += 1;
-
-        if (msg->vtype == VAL_TYPE_INTEGER)
-        {
-          tint = *((int *)(msg->val));
-          tlen = int_to_char(tint, tmp, 10);
-          memcpy(p, tmp, tlen);
-          p += tlen;
-        }
-        else if (msg->vtype == VAL_TYPE_UINT16)
-        {
-          tint = *((uint16_t *)(msg->val));
-          tlen = int_to_char(tint, tmp, 10);
-          printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
-              *((uint16_t *)(msg->val)), tint, tlen);
-          memcpy(p, tmp, tlen);
-          p += tlen;
-        }
-        else if (msg->vtype == VAL_TYPE_STRING)
-        {
-          memcpy(p, msg->val, msg->vlen);
-          p += msg->vlen;
-        }
-      }
-
-      memcpy(p, "\n", 1);
-      p += 1;
-
-      tbs = p - buf;
-      printf("send message 7\n");
-      offset = 0;
-      printf("send message 8\n");
-
-      ///// for the debug purpose
-      printf("Type: %d > %s", buf[0], buf + 1);
-
-      while (offset < tbs)
-      {
-        sent = write(asock, buf + offset, tbs - offset);
-        if (sent > 0)
-          offset += sent;
-      }
-      printf("send message 9: tbs: %lu, offset: %d, msg: %p\n", tbs, offset, msg); 
-      free_message(msg);
-      msg = NULL;
-      printf ("send message 10: sent the message to LogExecutor\n");
-    }
-  }
-
-out:
-  return NULL;
-}
-
-void *listener_run(void *data)
-{
-  private_ike_sa_manager_t *this;
-  size_t tbs;
-  int lsock, asock, flags, offset, sent, rcvd, reading, rc;
-  struct sockaddr_in addr;
-  socklen_t len = sizeof(addr);
-  uint8_t buf[MAX_MESSAGE_LEN];
-  uint8_t *p;
-  uint8_t mtype;
-  uint64_t ispi;
-  uint64_t rspi;
-  instance_t *instance;
-  msg_t *msg;
-
-  this = (private_ike_sa_manager_t *)data;
-  lsock = this->lsock;
-
-  printf("running the listener socket thread: this->lsock: %d\n", this->lsock);
-
-  asock = accept(lsock, (struct sockaddr *)&addr, &len);
-
-  if (asock < 0)
-  {
-    perror("socket failure");
-  }
-
-  printf("accept the socket: asock: %d\n", asock);
-
-  flags = fcntl(asock, F_GETFL);
-  fcntl(asock, F_SETFL, flags | O_NONBLOCK);
-
-  instance = this->instance = init_instance(asock);
-  printf("socket with LogExecutor is set: asock: %d\n", asock);
-
-  rc = pthread_create(this->listener, this->attr, sender_run, instance);
-
-  while (instance->running)
-  {
-    reading = 1;
-    offset = 0;
-    while (reading)
-    {
-      rcvd = read(asock, buf + offset, 1);
-      if (rcvd > 0)
-      {
-        if (buf[offset] == '\n')
-          reading = 0;
-        offset += rcvd;
-      }
-      else if (rcvd == 0)
-      {
-        printf("socket error happened()\n");
-        goto out;
-      }
-    }
-
-    printf("received message (%d bytes): %s\n", offset, buf);
-
-    if (offset == strlen(HELLO_REQUEST) 
-        && !strncmp(buf, HELLO_REQUEST, strlen(HELLO_REQUEST)))
-    {
-      printf("received Hello from LogExecutor!\n");
-
-      tbs = strlen(HELLO_RESPONSE);
-      offset = 0;
-      memcpy(buf, HELLO_RESPONSE, tbs);
-
-      while (offset < tbs)
-      {
-        sent = write(asock, buf + offset, tbs - offset);
-        if (sent > 0)
-          offset += sent;
-      }
-      printf("sent ACK to LogExecutor\n");
-    }
-    else if (offset > 0)
-    {
-      /*
-      p = buf;
-      mtype = *(p++);
-      PTR_TO_VAR_8BYTES(p, ispi);
-      PTR_TO_VAR_8BYTES(p, rspi);
-      len = offset - 18;
-      msg = init_message(type, ispi, rspi, p, len);
-      instance->add_message_to_recv_queue(instance, msg);
-      msg = NULL;
-      */
-    }
-  }
-
-out:
-  return NULL;
-}
-////////////////////////////
 
 /*
  * Described in header.

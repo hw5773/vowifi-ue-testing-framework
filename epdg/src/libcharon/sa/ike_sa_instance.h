@@ -23,6 +23,10 @@
 #define VAL_LENGTH_INTEGER 4
 #define VAL_LENGTH_UINT16 2
 
+#define HELLO_REQUEST "Hello\n"
+#define HELLO_RESPONSE  "ACK\n"
+#define ACK_RESPONSE "ACK\n"
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -41,6 +45,11 @@ typedef struct msg_st
   void *val;
   int vlen;
 } msg_t;
+
+typedef struct query_st
+{
+
+} query_t;
 
 typedef struct instance_st 
 {
@@ -73,5 +82,8 @@ void free_message(msg_t *msg);
 instance_t *init_instance(int asock);
 void free_instance(instance_t *instance);
 int int_to_char(int num, uint8_t *str, int base);
+
+void *sender_run(void *data);
+void *listener_run(void *data);
 #endif /* IKE_SA_INSTANCE_H__ */
 ///////////////////////

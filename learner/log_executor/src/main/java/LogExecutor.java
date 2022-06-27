@@ -142,7 +142,7 @@ public class LogExecutor {
       e.printStackTrace();
     }
 
-    logger.info("# of Querie Strings: " + queries.size());
+    logger.info("# of Query Strings: " + queries.size());
 
     Boolean timeoutOccured = false;
     int queryNum = 1;
@@ -204,27 +204,113 @@ public class LogExecutor {
     logger.debug("FINISH: restartIMS()");
   }
 
-  public void sendMSGToEPDG(Query query) {
+  private void sendMSGToEPDG(Query query) {
     logger.debug("START: sendMSGToEPDG()");
 
-    /*
-    String result = new String();
+    String qname;
+    String result;
+    int depth;
+
+    qname = query.getName();
+    depth = 0;
+
+    sendMessage(query, depth);
     try {
-      msg = "----------------- " + msg + "------------------\n";
-      epdgOut.write(msg);
-      epdgOut.flush();
       result = epdgIn.readLine();
-      System.out.println("Received for the sent message = " + result);
-    } catch(SocketException e) {
+      logger.info("Check ACK: " + result);
+      if (result.startsWith("ACK")) {
+        logger.info("Received ACK for the query: " + qname);
+      }
+    } catch (SocketException e) {
       e.printStackTrace();
-    } catch(IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
-    */
 
     logger.debug("FINISH: sendMSGToEPDG()");
+  }
+
+  private void sendMessage(Query query, int depth) {
+    logger.debug("START: sendMessage()");
+
+    String name;
+    String ispi, rspi;
+    String msg;
+    String print;
+    Iterator iter;
+
+    name = query.getName();
+    ispi = query.getIspi();
+    rspi = query.getRspi();
+    logger.debug("Query: " + name + ", Type: " + query.getQueryType() + ", ISPI: " + ispi + ", RSPI: " + rspi);
+    print = "";
+
+    try {
+      for (int i=0; i<depth; i++)
+        print += "  ";
+
+      if (query.getQueryType() != QueryType.ATTRIBUTE) {
+        msg = "2";
+      } else {
+        msg = "1";
+      }
+      msg += ispi;
+      msg += rspi;
+      msg += name;
+
+      if (query.hasValue()) {
+        msg += ":";
+        msg += query.getValueType().getValueTypeAsInteger();
+        msg += ":";
+        msg += query.getValue();
+      }
+
+      msg += "\n";
+      epdgOut.write(msg);
+      epdgOut.flush();
+
+      print += name;
+      if (query.hasValue()) {
+        print += ": ";
+        print += query.getValue();
+      }
+      logger.info(print);
+
+      if (query.getHasSubQuery()) {
+        depth++;
+        while (query.getHasNextSubQuery()) {
+          sendMessage(query.getNextSubQuery(), depth);
+        }
+        depth--;
+      }
+
+      if (query.getQueryType() != QueryType.ATTRIBUTE) {
+        msg = "3";
+        print = "";
+        for (int i=0; i<depth; i++) {
+          print += "  ";
+        }
+        print += "end";
+        logger.info(print);
+      }
+      msg += ispi;
+      msg += rspi;
+
+      msg += "\n";
+      epdgOut.write(msg);
+      epdgOut.flush();
+
+    } catch (SocketException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    logger.debug("FINISH: sendMessage()");
   }
 
   public void initUEConnection() {
@@ -390,11 +476,22 @@ public class LogExecutor {
     boolean exceptionOccured = false;
     long startTime, endTime, duration;
     double insec;
+    String ispi = null;
+    String rspi = null;
 
     while (query.hasNextMessage()) {
       Query message = query.getNextMessage();
       Reply reply;
       String name = message.getName();
+
+      if (ispi != null) {
+        message.setIspi(ispi);
+        logger.debug("Message (" + name + ")'s ISPI: " + message.getIspi() + ", RSPI: " + message.getRspi());
+      }
+
+      if (rspi != null) {
+        message.setRspi(rspi);
+      }
 
       if (name.contains("ε"))
         continue;
@@ -412,6 +509,16 @@ public class LogExecutor {
       duration = (endTime - startTime);
       insec = duration/1000.0;
       logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
+      
+      if (ispi == null) {
+        ispi = reply.getIspi();
+        logger.debug("ISPI is set to " + ispi);
+      }
+
+      if (rspi == null) {
+        rspi = reply.getRspi();
+        logger.debug("RSPI is set to " + rspi);
+      }
 
       if (reply.getName().matches("EXCEPTION")) {
         logger.info("Exception occured, restarting query");
@@ -642,7 +749,6 @@ public class LogExecutor {
         rcvd = result.getBytes();
         type = (char) rcvd[idx++];
 
-        logger.debug("Message type: " + type);
         switch (type) {
           case 1:
             if (reply == null) {
@@ -737,6 +843,7 @@ public class LogExecutor {
     Reply reply;
     String qname = query.getName();
     String rname;
+    logger.info("Query (" + qname + ")'s ISPI: " + query.getIspi() + ", RSPI: " + query.getRspi());
     
 		try {
 			sleep(50); //50 milliseconds
@@ -747,7 +854,7 @@ public class LogExecutor {
 		if(qname.startsWith("enable_vowifi")) {
       logger.info("sendEnableVoWiFi()");
   		sendEnableVoWiFi();
-    } else if(qname.startsWith("ike_sa_init_response")) {
+    } else {
       logger.info("sendEnableVoWiFi()");
   		sendMSGToEPDG(query);
     }

@@ -784,6 +784,7 @@ static void process_sa_payload(private_ike_init_t *this, message_t *message,
 		}
 		else
 		{
+      // TODO: Check this
 			charon->bus->alert(charon->bus, ALERT_PROPOSAL_MISMATCH_IKE,
 							   proposal_list);
 		}
