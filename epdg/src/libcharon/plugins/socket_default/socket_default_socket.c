@@ -355,14 +355,6 @@ METHOD(socket_t, receiver, status_t,
   DBG2(DBG_NET, ">>>>> receiver 7");
 		data = chunk_create(buffer, bytes_read);
   DBG2(DBG_NET, ">>>>> receiver 8 (ptr: %p, len: %d", data.ptr, data.len);
-    ///// Test
-    for (i=0; i<data.len; i++)
-    {
-      printf("%02x ", (data.ptr)[i]);
-      if (i % 16 == 15)
-        printf("\n");
-    }
-    //////////
 		pkt->set_data(pkt, chunk_clone(data));
 	}
 	else
@@ -670,7 +662,6 @@ METHOD(socket_t, supported_families, socket_family_t,
 static int open_socket(private_socket_default_socket_t *this,
 					   int family, uint16_t *port)
 {
-  //printf(">>>>> open_socket()\n");
 	int on = TRUE;
 	union {
 		struct sockaddr sockaddr;
@@ -819,7 +810,6 @@ static bool use_family(int family)
 static void open_socketpair(private_socket_default_socket_t *this, int family,
 							int *skt, int *skt_natt, char *label)
 {
-  //printf(">>>>> open_socketpair()\n");
 	if (!use_family(family))
 	{
 		*skt = -1;
@@ -872,7 +862,6 @@ socket_default_socket_t *socket_default_socket_create()
 {
 	private_socket_default_socket_t *this;
 
-  printf(">>>>> socket_default_socket_create()\n");
 	INIT(this,
 		.public = {
 			.socket = {

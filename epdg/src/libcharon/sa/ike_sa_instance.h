@@ -24,8 +24,11 @@
 #define VAL_LENGTH_UINT16 2
 
 #define HELLO_REQUEST "Hello\n"
-#define HELLO_RESPONSE  "ACK\n"
+#define RESET_REQUEST "reset\n"
 #define ACK_RESPONSE "ACK\n"
+
+#define UPDATE  1
+#define NON_UPDATE 0
 
 #include <stdint.h>
 #include <stddef.h>
@@ -78,6 +81,8 @@ typedef struct instance_st
 
   int running;
 } instance_t;
+
+int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
 
 int _add_message_to_send_queue(instance_t *instance, msg_t *msg);
 msg_t *_fetch_message_from_send_queue(instance_t *instance);

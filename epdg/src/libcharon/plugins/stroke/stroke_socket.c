@@ -613,7 +613,6 @@ static void stroke_config(private_stroke_socket_t *this,
  */
 static bool on_accept(private_stroke_socket_t *this, stream_t *stream)
 {
-  printf("on_accept() 1\n");
 	stroke_msg_t *msg;
 	uint16_t len;
 	FILE *out;
@@ -662,103 +661,78 @@ static bool on_accept(private_stroke_socket_t *this, stream_t *stream)
 	switch (msg->type)
 	{
 		case STR_INITIATE:
-      printf("on_accept 2\n");
 			stroke_initiate(this, msg, out);
 			break;
 		case STR_ROUTE:
-      printf("on_accept 3\n");
 			stroke_route(this, msg, out);
 			break;
 		case STR_UNROUTE:
-      printf("on_accept 4\n");
 			stroke_unroute(this, msg, out);
 			break;
 		case STR_TERMINATE:
-      printf("on_accept 5\n");
 			stroke_terminate(this, msg, out);
 			break;
 		case STR_TERMINATE_SRCIP:
-      printf("on_accept 6\n");
 			stroke_terminate_srcip(this, msg, out);
 			break;
 		case STR_REKEY:
-      printf("on_accept 7\n");
 			stroke_rekey(this, msg, out);
 			break;
 		case STR_STATUS:
-      printf("on_accept 8\n");
 			stroke_status(this, msg, out, FALSE, TRUE);
 			break;
 		case STR_STATUS_ALL:
-      printf("on_accept 9\n");
 			stroke_status(this, msg, out, TRUE, TRUE);
 			break;
 		case STR_STATUS_ALL_NOBLK:
-      printf("on_accept 10\n");
 			stroke_status(this, msg, out, TRUE, FALSE);
 			break;
 		case STR_ADD_CONN:
-      printf("on_accept 11\n");
 			stroke_add_conn(this, msg);
 			break;
 		case STR_DEL_CONN:
-      printf("on_accept 12\n");
 			stroke_del_conn(this, msg);
 			break;
 		case STR_ADD_CA:
-      printf("on_accept 13\n");
 			stroke_add_ca(this, msg, out);
 			break;
 		case STR_DEL_CA:
-      printf("on_accept 14\n");
 			stroke_del_ca(this, msg, out);
 			break;
 		case STR_LOGLEVEL:
-      printf("on_accept 15\n");
 			stroke_loglevel(this, msg, out);
 			break;
 		case STR_CONFIG:
-      printf("on_accept 16\n");
 			stroke_config(this, msg, out);
 			break;
 		case STR_LIST:
-      printf("on_accept 17\n");
 			stroke_list(this, msg, out);
 			break;
 		case STR_REREAD:
-      printf("on_accept 18\n");
 			stroke_reread(this, msg, out);
 			break;
 		case STR_PURGE:
-      printf("on_accept 19\n");
 			stroke_purge(this, msg, out);
 			break;
 		case STR_EXPORT:
-      printf("on_accept 20\n");
 			stroke_export(this, msg, out);
 			break;
 		case STR_LEASES:
-      printf("on_accept 21\n");
 			stroke_leases(this, msg, out);
 			break;
 		case STR_MEMUSAGE:
-      printf("on_accept 22\n");
 			stroke_memusage(this, msg, out);
 			break;
 		case STR_USER_CREDS:
-      printf("on_accept 23\n");
 			stroke_user_creds(this, msg, out);
 			break;
 		case STR_COUNTERS:
-      printf("on_accept 24\n");
 			stroke_counters(this, msg, out);
 			break;
 		default:
-      printf("on_accept 25\n");
 			DBG1(DBG_CFG, "received unknown stroke");
 			break;
 	}
-      printf("on_accept 26\n");
 	free(msg);
 	fclose(out);
 	return FALSE;

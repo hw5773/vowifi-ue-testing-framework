@@ -1005,12 +1005,14 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   ike_sa_id_t *id;
   instance_t *instance;
-  //int len;
-  //uint8_t buf[MAX_MESSAGE_LEN];
-  //uint8_t *p;
-  //uint64_t ispi, rspi;
   msg_t *msg;
+  uint64_t ispi, rspi;
+
   instance = this->ike_sa->get_instance(this->ike_sa);
+  id = this->ike_sa->get_id(this->ike_sa);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+
   ////////////////////////////
 
 	if (array_count(this->passive_tasks) == 0)
@@ -1021,56 +1023,31 @@ static status_t process_request(private_task_manager_t *this,
 		{
 			case IKE_SA_INIT:
 			{
-        ///// Added for VoWiFi /////
-        if (instance)
-        {
-          id = this->ike_sa->get_id(this->ike_sa);
-          instance->ispi = id->get_initiator_spi(id);
-          instance->rspi = id->get_responder_spi(id);
-
-          msg = init_message(instance, MSG_TYPE_BLOCK_START, 
-              "ike_sa_init_request", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-        ///////////////////////////
-        printf("report to LogExecuter: IKE_SA_INIT request\n");
-        printf("ike_sa_init 1\n");
 				task = (task_t*)ike_vendor_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 2\n");
 				task = (task_t*)ike_init_create(this->ike_sa, FALSE, NULL);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 3\n");
 				task = (task_t*)ike_natd_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 4\n");
 				task = (task_t*)ike_cert_pre_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 5\n");
 #ifdef ME
 				task = (task_t*)ike_me_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
 #endif /* ME */
-        printf("ike_sa_init 6\n");
 				task = (task_t*)ike_auth_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 7\n");
 				task = (task_t*)ike_cert_post_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 8\n");
 				task = (task_t*)ike_config_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 9\n");
 				task = (task_t*)child_create_create(this->ike_sa, NULL, FALSE,
 													NULL, NULL);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 10\n");
 				task = (task_t*)ike_auth_lifetime_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 11\n");
 				task = (task_t*)ike_mobike_create(this->ike_sa, FALSE);
 				array_insert(this->passive_tasks, ARRAY_TAIL, task);
-        printf("ike_sa_init 12\n");
 				break;
 			}
 			case CREATE_CHILD_SA:
@@ -1236,6 +1213,22 @@ static status_t process_request(private_task_manager_t *this,
 		}
 	}
 
+  ///// Added for VoWiFi /////
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+		switch (message->get_exchange_type(message)) 
+    {
+      case IKE_SA_INIT:
+        msg = init_message(instance, MSG_TYPE_BLOCK_START, 
+            "ike_sa_init_request", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+        break;
+      default:
+        break;
+    }
+  }
+  ///////////////////////////
+
 	enumerator = array_create_enumerator(this->passive_tasks);
 	while (enumerator->enumerate(enumerator, &task))
 	{
@@ -1303,7 +1296,7 @@ static status_t process_request(private_task_manager_t *this,
 	enumerator->destroy(enumerator);
 
   ///// Added for VoWiFi /////
-  if (instance)
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
 		switch (message->get_exchange_type(message))
     {

@@ -1,5 +1,32 @@
 ///// Added for VoWiFi /////
+#include <inttypes.h>
 #include "ike_sa_instance.h"
+
+int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
+{
+  int ret;
+
+  if (instance)
+    printf("\n[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n\n", instance->ispi, instance->rspi, ispi, rspi);
+
+  if (!instance) 
+    ret = 0;
+  else if (!(instance->ispi) && !(instance->rspi))
+  {
+    if (update)
+    {
+      instance->ispi = ispi;
+      instance->rspi = rspi;
+    }
+    ret = 1;
+  }
+  else if (instance->ispi == ispi && instance->rspi == rspi)
+    ret = 1;
+  else
+    ret = 0;
+
+  return ret;
+}
 
 int _add_message_to_send_queue(instance_t *instance, msg_t *msg)
 {

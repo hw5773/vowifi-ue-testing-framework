@@ -216,7 +216,6 @@ static packet_t *receive_packet(private_socket_dynamic_socket_t *this,
 		DBG1(DBG_NET, "receive buffer too small, packet discarded");
 		return NULL;
 	}
-  printf("receiver dynamic\n");
 	DBG3(DBG_NET, "received packet %b", buffer, (u_int)len);
 
 	/* read ancillary data to get destination address */
@@ -290,7 +289,6 @@ METHOD(socket_t, receiver, status_t,
 	{
 		maxfd = build_fds(this, &fds);
 
-    printf("socket dynamic socket\n");
 		DBG2(DBG_NET, "socket dynamic socket: waiting for data on sockets");
 		oldstate = thread_cancelability(TRUE);
 		if (select(maxfd, &fds, NULL, NULL, NULL) <= 0)

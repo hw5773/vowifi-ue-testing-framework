@@ -459,17 +459,23 @@ static void process_sa_payload(private_ike_init_t *this, message_t *message,
 	host_t *me, *other;
 	proposal_selection_flag_t flags = 0;
   ///// Added for VoWiFi /////
+  ike_sa_id_t *id;
   instance_t *instance;
   msg_t *msg;
   proposal_t *proposal;
   uint16_t *algo, *klen;
   bool found;
+  uint64_t ispi, rspi;
   ////////////////////////////
 
 	ike_cfg = this->ike_sa->get_ike_cfg(this->ike_sa);
   ///// Added for VoWiFi /////
   instance = this->ike_sa->get_instance(this->ike_sa);
-  if (instance)
+  id = this->ike_sa->get_id(this->ike_sa);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     msg = init_message(instance, MSG_TYPE_BLOCK_START,
         "security_association", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
@@ -480,7 +486,7 @@ static void process_sa_payload(private_ike_init_t *this, message_t *message,
 
 	proposal_list = sa_payload->get_proposals(sa_payload);
   ///// Added for VoWiFi /////
-  if (instance)
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     enumerator = proposal_list->create_enumerator(proposal_list);
     while (enumerator->enumerate(enumerator, &proposal))
@@ -793,7 +799,7 @@ static void process_sa_payload(private_ike_init_t *this, message_t *message,
 								  offsetof(proposal_t, destroy));
 
   ///// Added for VoWiFi /////
-  if (instance)
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     msg = init_message(instance, MSG_TYPE_BLOCK_END,
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);

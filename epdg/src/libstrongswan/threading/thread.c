@@ -307,19 +307,6 @@ static void thread_cleanup(private_thread_t *this)
 	thread_destroy(this);
 }
 
-///// Added for VoWiFi /////
-static void *epdg_handler_thread_main(private_thread_t *this)
-{
-  void *res;
-
-  res = NULL;
-
-  printf("epdg_handler_thread_main\n");
-
-  return res;
-}
-////////////////////////////
-
 /**
  * Main function wrapper for threads.
  */
@@ -370,19 +357,6 @@ thread_t *thread_create(thread_main_t main, void *arg)
 		thread_destroy(this);
 		return NULL;
 	}
-
-  ///// Added for VoWiFi /////
-  printf("Spawning the thread for the Learner\n");
-	if (pthread_create(&this->epdg_handler_thread_id, NULL, (void*)epdg_handler_thread_main, this) != 0)
-	{
-		DBG1(DBG_LIB, "failed to create thread!");
-		this->mutex->lock(this->mutex);
-		this->terminated = TRUE;
-		this->detached_or_joined = TRUE;
-		thread_destroy(this);
-		return NULL;
-	}
-  ////////////////////////////
 
 	return &this->public;
 }

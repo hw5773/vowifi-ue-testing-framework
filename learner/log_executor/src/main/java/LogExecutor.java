@@ -220,6 +220,8 @@ public class LogExecutor {
       logger.info("Check ACK: " + result);
       if (result.startsWith("ACK")) {
         logger.info("Received ACK for the query: " + qname);
+      } else {
+        logger.error("Something is wrong with " + qname);
       }
     } catch (SocketException e) {
       e.printStackTrace();
@@ -538,18 +540,15 @@ public class LogExecutor {
     return exceptionOccured;
   }
 
-  public boolean resetEPDG() {
+  public void resetEPDG() {
     logger.debug("START: resetEPDG()");
     String result = "";
 
-    /*
-    logger.info("Sending symbol: RESET to ePDG");
+    logger.info("Sending symbol: reset to ePDG");
     try {
       sleep(COOLING_TIME);
-      epdgOut.write("RESET " + resetEPDGCount + "\n");
+      epdgOut.write("reset\n");
       epdgOut.flush();
-      result = epdgIn.readLine();
-      System.out.println("ACK for resetEPDG(): " + result);
       resetEPDGCount++;
     } catch(SocketException e) {
       e.printStackTrace();
@@ -558,10 +557,8 @@ public class LogExecutor {
     } catch(Exception e) {
       e.printStackTrace();
     }
-    */
 
     logger.debug("FINISH: resetEPDG()");
-    return true;
   }
 
   public boolean resetIMS() {
@@ -843,6 +840,7 @@ public class LogExecutor {
     Reply reply;
     String qname = query.getName();
     String rname;
+    boolean ret;
     logger.info("Query (" + qname + ")'s ISPI: " + query.getIspi() + ", RSPI: " + query.getRspi());
     
 		try {
@@ -854,8 +852,9 @@ public class LogExecutor {
 		if(qname.startsWith("enable_vowifi")) {
       logger.info("sendEnableVoWiFi()");
   		sendEnableVoWiFi();
+      resetEPDG();
     } else {
-      logger.info("sendEnableVoWiFi()");
+      logger.info("sendMSGToEPDG()");
   		sendMSGToEPDG(query);
     }
     reply = processResult(query);
@@ -884,26 +883,8 @@ public class LogExecutor {
 
 			do {
 				try {
-          /*
-					do { 
-            trial++;
-            ret = resetUE();
-          } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
-          */
-
           if (trial == DEFAULT_NUMBER_OF_TRIALS) {
             logger.error("Resetting UE failed");
-            System.exit(1);
-          }
-
-          trial = 0;
-          do {
-            trial++;
-            ret = resetEPDG();
-          } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
-
-          if (trial == DEFAULT_NUMBER_OF_TRIALS) {
-            logger.error("Resetting ePDG failed");
             System.exit(1);
           }
 
