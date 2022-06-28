@@ -13,7 +13,7 @@ FAIL = "Fail\n".encode()
 REBOOT_TIMEOUT = 120
 REBOOT_WAIT_TIME = 5
 
-def turn_off_wifi_interface(device):
+def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "disable"]
         subprocess.run(cmd)
@@ -41,7 +41,7 @@ def turn_off_wifi_interface(device):
         subprocess.run(cmd)
     time.sleep(1)
 
-def turn_on_wifi_interface(device):
+def handle_turn_on_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "enable"]
         subprocess.run(cmd)
@@ -96,10 +96,10 @@ def adb_server_restart():
 
 def handle_reset(client, device):
     logging.debug("Before turning off the wifi interface")
-    turn_off_wifi_interface(device)
+    handle_turn_off_wifi_interface(device)
     logging.debug("After turning off the wifi interface")
     logging.debug("Before turning on the wifi interface")
-    turn_on_wifi_interface(device)
+    handle_turn_on_wifi_interface(device)
     logging.debug("After turning on the wifi interface")
     logging.debug("Before waking up the device")
     ue_wakeup(device)
@@ -146,12 +146,19 @@ def handle_client_connection(client, server, device):
             opcode = opcode.strip()
             logging.info("Received opcode: {}".format(opcode))
 
+            ue_wakeup(device)
             if opcode == "reset":
                 handle_reset(client, device)
             elif opcode == "ue_reboot":
                 handle_ue_reboot(client, device)
             elif opcode == "adb_server_restart":
                 handle_adb_server_restart(client)
+            elif opcode == "wifi_off":
+                handle_turn_off_wifi_interface(device)
+                client.send(ACK)
+            elif opcode == "wifi_on":
+                handle_turn_on_wifi_interface(device)
+                client.send(ACK)
             else:
                 logging.info("Invalid opcode: {}".format(opcode))
 
@@ -159,13 +166,13 @@ def handle_client_connection(client, server, device):
         logging.info("Keyboard Interrupt")
         logging.info("Closing the connecting socket ...")
         client.close()
-        turn_off_wifi_interface()
+        handle_turn_off_wifi_interface(device)
 
     except:
         logging.error("Error occurred")
         logging.error("Closing the connecting socket ...")
         client.close()
-        turn_off_wifi_interface()
+        handle_turn_off_wifi_interface(device)
 
 def check_device_model():
     result = subprocess.run(['adb', 'devices', '-l'], stdout=subprocess.PIPE, text=True)
@@ -219,7 +226,7 @@ def main():
 
     server.listen(5)
     device = check_device_model()
-    turn_off_wifi_interface(device)
+    handle_turn_off_wifi_interface(device)
 
     try:
         client, address = server.accept()

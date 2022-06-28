@@ -41,7 +41,7 @@ public class LogExecutor {
 
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
-  private static final int COOLING_TIME = 5*1000;
+  private static final int COOLING_TIME = 1*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 30*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 180*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
@@ -296,13 +296,13 @@ public class LogExecutor {
         }
         print += "end";
         logger.info(print);
-      }
-      msg += ispi;
-      msg += rspi;
 
-      msg += "\n";
-      epdgOut.write(msg);
-      epdgOut.flush();
+        msg += ispi;
+        msg += rspi;
+        msg += "\n";
+        epdgOut.write(msg);
+        epdgOut.flush();
+      }
 
     } catch (SocketException e) {
       e.printStackTrace();
@@ -540,9 +540,10 @@ public class LogExecutor {
     return exceptionOccured;
   }
 
-  public void resetEPDG() {
+  public boolean resetEPDG() {
     logger.debug("START: resetEPDG()");
     String result = "";
+    boolean ret = false;
 
     logger.info("Sending symbol: reset to ePDG");
     try {
@@ -550,6 +551,8 @@ public class LogExecutor {
       epdgOut.write("reset\n");
       epdgOut.flush();
       resetEPDGCount++;
+      result = epdgIn.readLine();
+      logger.info("ACK for resetEPDG(): " + result);
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -558,7 +561,18 @@ public class LogExecutor {
       e.printStackTrace();
     }
 
+    if(result.contains("ACK")) {
+      logger.info("PASSED: Resetting the ePDG is succeeded");
+      logger.debug("FINISH: resetUE()");
+      ret = true;
+    } else {
+      logger.error("FAILED: Reseeting the ePDG is failed");
+      logger.debug("FINISH: resetUE()");
+      ret = false;
+    }
+
     logger.debug("FINISH: resetEPDG()");
+    return ret;
   }
 
   public boolean resetIMS() {
@@ -668,6 +682,64 @@ public class LogExecutor {
     return result;
   }
 
+  public boolean sendDisableWiFi() {
+    boolean ret = false;
+    String result;
+
+    try {
+			ueSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+      logger.info("Sending symbol: wifi_off to UE Controller to enable VoWiFi");
+      ueOut.write("wifi_off\n");
+      ueOut.flush();
+
+      result = ueIn.readLine();
+      logger.info("UE Controller's ACK for reset: " + result);
+      if (result.contains("ACK")) {
+        ret = true;
+      }
+    } catch (SocketException e) {
+      ret = false;
+      e.printStackTrace();
+    } catch (IOException e) {
+      ret = false;
+      e.printStackTrace();
+    } catch (Exception e) {
+      ret = false;
+      e.printStackTrace();
+    }
+
+    return ret;
+  }
+
+  public boolean sendEnableWiFi() {
+    boolean ret = false;
+    String result;
+
+    try {
+			ueSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+      logger.info("Sending symbol: wifi_on to UE Controller to enable VoWiFi");
+      ueOut.write("wifi_on\n");
+      ueOut.flush();
+
+      result = ueIn.readLine();
+      logger.info("UE Controller's ACK for reset: " + result);
+      if (result.contains("ACK")) {
+        ret = true;
+      }
+    } catch (SocketException e) {
+      ret = false;
+      e.printStackTrace();
+    } catch (IOException e) {
+      ret = false;
+      e.printStackTrace();
+    } catch (Exception e) {
+      ret = false;
+      e.printStackTrace();
+    }
+
+    return ret;
+  }
+
   public void sendEnableVoWiFi() {
     String result;
     int retry = 3;
@@ -677,17 +749,11 @@ public class LogExecutor {
     try {
       sleep(COOLING_TIME);
 
-			ueSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
       while (enabled == false && retry > 0) {
-        logger.info("Sending symbol: reset to UE Controller to enable VoWiFi");
-        enableVoWiFiCount++;
-        ueOut.write("reset\n");
-        ueOut.flush();
-
-        result = ueIn.readLine();
-        logger.info("UE Controller's ACK for reset: " + result);
-        if (result.contains("ACK")) {
-          enabled = true;
+        if (sendDisableWiFi()) {
+          if (resetEPDG()) {
+            enabled = sendEnableWiFi();
+          }
         }
         retry--;
       }
@@ -852,7 +918,6 @@ public class LogExecutor {
 		if(qname.startsWith("enable_vowifi")) {
       logger.info("sendEnableVoWiFi()");
   		sendEnableVoWiFi();
-      resetEPDG();
     } else {
       logger.info("sendMSGToEPDG()");
   		sendMSGToEPDG(query);

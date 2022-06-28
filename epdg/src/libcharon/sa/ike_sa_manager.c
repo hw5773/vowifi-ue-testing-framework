@@ -672,6 +672,18 @@ void *listener_run(void *data)
       printf("receiver reset from LogExecutor!\n");
       instance->ispi = 0;
       instance->rspi = 0;
+
+      tbs = strlen(ACK_RESPONSE);
+      offset = 0;
+      memcpy(buf, ACK_RESPONSE, tbs);
+
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      printf("sent ACK to LogExecutor\n");
     }
     else if (offset > 0)
     {
