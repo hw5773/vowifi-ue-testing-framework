@@ -26,6 +26,7 @@
                   "sub": [
                     {
                       "name": "encryption",
+                      "op": "update"
                       "type": "uint16",
                       "value": 13
                     }

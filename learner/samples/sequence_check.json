@@ -1,0 +1,98 @@
+{
+  "queries": [
+    {
+      "query": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "sequence_number",
+                  "op": "update",
+                  "type": "hexarray",
+                  "value": "0000000000"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "query": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "random_number",
+                  "op": "update",
+                  "type": "hexarray",
+                  "value": "00000000000000000000000000000000"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "query": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "sequence_number",
+                  "op": "update",
+                  "type": "hexarray",
+                  "value": "0000000000"
+                },
+                {
+                  "name": "random_number",
+                  "op": "update",
+                  "type": "hexarray",
+                  "value": "00000000000000000000000000000000"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+
+  ]
+}
