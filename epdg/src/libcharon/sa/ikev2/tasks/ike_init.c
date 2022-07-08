@@ -328,7 +328,6 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
   query_t *query;
 
   instance = this->ike_sa->get_instance(this->ike_sa);
-  query = instance->query;
   ////////////////////////////
 
 	id = this->ike_sa->get_id(this->ike_sa);
@@ -378,17 +377,37 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
     ///// Added for VoWiFi /////
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
-      if (query)
+      if (has_query(instance))
       {
-        // ike_sa_init_response - security_association - transform - encryption
-        if (is_query_name(query, "ike_sa_init_response"))
+        // encryption related
+        algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+        klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+        this->proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
+
+        // ike_sa_init_response - security_association - transform - encryption_algorithm
+        if ((query = get_query(instance)
+            || is_query_name(query, "ike_sa_init_response"))
+            || (query = get_sub_query_by_name(query, "security_association"))
+            || (query = get_sub_query_by_name(query, "transform"))
+            || (query = get_sub_query_by_name(query, "encryption_algorithm")))
         {
-          if ((query = get_sub_query_by_name(query, "security_association"))
-              || (query = get_sub_query_by_name(query, "transform"))
-              || (query = get_sub_query_by_name(query, "encryption_algorithm")))
+          vtype = get_query_value_type(query);
+          if (vtype == VAL_TYPE_UINT16)
           {
-
-
+            algo = (uint16_t *)get_query_value(query);
+          }
+        }
+        // ike_sa_init_response - security_association - transform - encryption_key_length
+        if ((query = get_query(instance)
+            || is_query_name(query, "ike_sa_init_response"))
+            || (query = get_sub_query_by_name(query, "security_association"))
+            || (query = get_sub_query_by_name(query, "transform"))
+            || (query = get_sub_query_by_name(query, "encryption_key_length")))
+        {
+          vtype = get_query_value_type(query);
+          if (vtype == VAL_TYPE_UINT16)
+          {
+            klen = (uint16_t *)get_query_value(query);
           }
         }
       }

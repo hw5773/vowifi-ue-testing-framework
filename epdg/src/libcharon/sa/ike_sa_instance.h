@@ -108,6 +108,8 @@ void set_query_value_type(query_t *query, uint8_t *vtype);
 uint8_t *get_query_value(query_t *query, int *vlen);
 void set_query_value(query_t *query, uint8_t *value);
 
+int has_query(instance_t *instance);
+query_t *get_query(instance_t *instance);
 int is_query_name(query_t *query, const uint8_t *name);
 query_t *get_sub_query_by_name(query_t *query, const uint8_t *name);
 
