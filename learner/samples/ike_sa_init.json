@@ -25,10 +25,16 @@
                   "name": "transform",
                   "sub": [
                     {
-                      "name": "encryption",
+                      "name": "encryption_algorithm",
                       "op": "update"
                       "type": "uint16",
                       "value": 13
+                    },
+                    {
+                      "name": "integrity",
+                      "op": "drop"
+                      "type": "uint16",
+                      "value": 10
                     }
                   ]
                 }

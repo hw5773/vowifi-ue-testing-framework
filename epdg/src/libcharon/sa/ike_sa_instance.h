@@ -56,7 +56,7 @@ typedef struct query_st
 
   int vtype;
 
-  void *value;
+  uint8_t *value;
   int vlen;
 
   struct query_st *parent;
@@ -97,7 +97,7 @@ query_t *init_query(void);
 void free_query(query_t *query);
 void print_query(query_t *query);
 
-query_t *add_query_sub_message(query_t *query, int mtype);
+query_t *add_query_sub_message(query_t *query, int ptype, int mtype);
 int has_query_parent(query_t *query);
 query_t *get_query_parent(query_t *query);
 void set_query_parent(query_t *query, query_t *parent);
@@ -107,6 +107,9 @@ int get_query_value_type(query_t *query);
 void set_query_value_type(query_t *query, uint8_t *vtype);
 uint8_t *get_query_value(query_t *query, int *vlen);
 void set_query_value(query_t *query, uint8_t *value);
+
+int is_query_name(query_t *query, const uint8_t *name);
+query_t *get_sub_query_by_name(query_t *query, const uint8_t *name);
 
 void *sender_run(void *data);
 void *listener_run(void *data);

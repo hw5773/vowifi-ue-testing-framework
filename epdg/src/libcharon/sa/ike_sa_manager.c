@@ -592,7 +592,7 @@ void *listener_run(void *data)
   socklen_t len = sizeof(addr);
   uint8_t buf[MAX_MESSAGE_LEN];
   uint8_t *p, *token;
-  uint8_t mtype;
+  uint8_t ptype, mtype;
   uint8_t ispi[17] = {0, };
   uint8_t rspi[17] = {0, };
   uint8_t spi[17] = {0, };
@@ -603,6 +603,7 @@ void *listener_run(void *data)
 
   query = NULL;
   depth = 0;
+  ptype = 0;
 
   this = (private_ike_sa_manager_t *)data;
   lsock = this->lsock;
@@ -694,13 +695,14 @@ void *listener_run(void *data)
       switch (mtype)
       {
         case MSG_TYPE_ATTRIBUTE:
+          query = add_query_sub_message(query, ptype, mtype);
           break;
 
         case MSG_TYPE_BLOCK_START:
           if (!query)
             query = init_query();
           else
-            query = add_query_sub_message(query, mtype);
+            query = add_query_sub_message(query, ptype, mtype);
           depth++;
           break;
 
@@ -711,6 +713,7 @@ void *listener_run(void *data)
         default:
           break;
       }
+      ptype = mtype;
         
       offset -= 1;
       memcpy(ispi, p, 16);
@@ -731,7 +734,8 @@ void *listener_run(void *data)
         printf("ERROR: Responder's SPIs are different\n");
       }
 
-      if (offset > 0)
+      // if offset == 1, it means that there is only '\n'
+      if (offset > 1)
       {
         token = strtok(p, ":");
         idx = 0;

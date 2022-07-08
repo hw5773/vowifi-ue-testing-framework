@@ -120,9 +120,6 @@ instance_t *init_instance(int asock)
     printf("initializing a mutex for the send queue failed\n");
   }
 
-  //ret->set_query = _set_query;
-  //ret->get_current_query = _get_current_queue;
-
   ret->running = 1;
 
   return ret;
@@ -178,9 +175,10 @@ void free_query(query_t *query)
 void _print_query(query_t *query, int depth)
 {
   query_t *sub;
-  int i, tlen;
+  int i, tlen, vtype;
   uint8_t buf[MAX_MESSAGE_LEN] = {0, };
   uint8_t *p, *tmp;
+  void *val;
 
   for (i=0; i<depth; i++)
     printf("  ");
@@ -189,15 +187,17 @@ void _print_query(query_t *query, int depth)
   tmp = get_query_name(query, &tlen);
   if (tlen > 0)
   {
-    snprintf(p, tlen, "%s", tmp);
+    snprintf(p, tlen+1, "%s", tmp);
     p += tlen;
   }
 
-  tmp = get_query_value(query, &tlen);
+  val = get_query_value(query, &tlen);
   if (tlen > 0)
   {
-    *(p++) = ':';
-    snprintf(p, tlen, "%s", tmp);
+    memcpy(p, ":", 1);
+    p += 1;
+    snprintf(p, tlen+1, "%s", val);
+    p += tlen;
   }
 
   printf("%s\n", buf);
@@ -218,12 +218,24 @@ void _print_query(query_t *query, int depth)
 
 void print_query(query_t *query)
 {
+  printf(">>>>> print_query() <<<<<\n");
   _print_query(query, 0);
+  printf(">>>>>>>>>>>>><<<<<<<<<<<<\n");
 }
 
-query_t *add_query_sub_message(query_t *query, int mtype)
+query_t *add_query_sub_message(query_t *query, int ptype, int ctype)
 {
   query_t *sub;
+  if (ctype == MSG_TYPE_ATTRIBUTE && ptype == MSG_TYPE_ATTRIBUTE)
+  {
+    if (has_query_parent(query))
+      query = get_query_parent(query);
+    else
+    {
+      perror("error: there is no parent");
+      exit(1);
+    }
+  }
   sub = init_query();
   set_query_parent(sub, query);
   
@@ -264,9 +276,12 @@ uint8_t *get_query_name(query_t *query, int *nlen)
 void set_query_name(query_t *query, uint8_t *name)
 {
   int nlen = (int) strlen(name);
-  printf("nlen: %d\n", nlen);
-  query->name = (uint8_t *)calloc(nlen, sizeof(uint8_t));
+  if (name[nlen-1] == '\n')
+    nlen -= 1;
+  printf("set_query_name()> name: %s, nlen: %d\n", name, nlen);
+  query->name = (uint8_t *)calloc(nlen+1, sizeof(uint8_t));
   memcpy(query->name, name, nlen);
+  printf("set_query_name()> query->name: %s\n", query->name);
   query->nlen = nlen;
 }
 
@@ -290,8 +305,12 @@ uint8_t *get_query_value(query_t *query, int *vlen)
 void set_query_value(query_t *query, uint8_t *value)
 {
   int vlen = (int) strlen(value);
-  query->value = (uint8_t *)calloc(vlen, sizeof(uint8_t));
+  printf("set_query_value()> value: %s, vlen: %d\n", value, vlen);
+  if (value[vlen-1] == '\n')
+    vlen -= 1;
+  query->value = (uint8_t *)calloc(vlen+1, sizeof(uint8_t));
   memcpy(query->value, value, vlen);
+  query->vlen = vlen;
 }
 
 int int_to_char(int num, uint8_t *str, int base)

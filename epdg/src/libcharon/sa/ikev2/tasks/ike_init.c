@@ -319,7 +319,25 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	enumerator_t *enumerator;
 	ike_cfg_t *ike_cfg;
 
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  uint64_t ispi, rspi;
+  uint16_t *algo, *klen;
+  bool found;
+  int vtype;
+  query_t *query;
+
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  query = instance->query;
+  ////////////////////////////
+
 	id = this->ike_sa->get_id(this->ike_sa);
+
+  ///// Added for VoWiFi /////
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
+
 
 	ike_cfg = this->ike_sa->get_ike_cfg(this->ike_sa);
 
@@ -357,6 +375,26 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	}
 	else
 	{
+    ///// Added for VoWiFi /////
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      if (query)
+      {
+        // ike_sa_init_response - security_association - transform - encryption
+        if (is_query_name(query, "ike_sa_init_response"))
+        {
+          if ((query = get_sub_query_by_name(query, "security_association"))
+              || (query = get_sub_query_by_name(query, "transform"))
+              || (query = get_sub_query_by_name(query, "encryption_algorithm")))
+          {
+
+
+          }
+        }
+      }
+    }
+    ////////////////////////////
+
 		if (this->old_sa)
 		{
 			/* include SPI of new IKE_SA when we are rekeying */
@@ -816,14 +854,8 @@ static void process_payloads(private_ike_init_t *this, message_t *message)
 	enumerator_t *enumerator;
 	payload_t *payload;
 	ke_payload_t *ke_payload = NULL;
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  ////////////////////////////
 
 	enumerator = message->create_payload_enumerator(message);
-  ///// Added for VoWiFi /////
-  instance = this->ike_sa->get_instance(this->ike_sa);
-  ////////////////////////////
 
 	while (enumerator->enumerate(enumerator, &payload))
 	{
@@ -1105,6 +1137,17 @@ METHOD(task_t, build_r, status_t,
 	private_ike_init_t *this, message_t *message)
 {
 	identification_t *gateway;
+
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ike_sa_id_t *id;
+  uint64_t ispi, rspi;
+
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  id = this->ike_sa->get_id(this->ike_sa);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
 
 	/* check if we have everything we need */
 	if (this->proposal == NULL ||
