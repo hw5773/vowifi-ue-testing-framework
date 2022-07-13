@@ -770,6 +770,7 @@ void *listener_run(void *data)
       if (!depth)
       {
         print_query(query);
+        instance->set_query(instance, query);
 
         tbs = strlen(ACK_RESPONSE);
         offset = 0;

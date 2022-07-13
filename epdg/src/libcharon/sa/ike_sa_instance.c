@@ -346,6 +346,8 @@ bool is_query_finished(instance_t *instance)
 
 query_t *get_query(instance_t *instance)
 {
+  printf("[VoWiFi] ike_sa_instance.c: instance: %p\n", instance);
+  printf("[VoWiFi] ike_sa_instance.c: instance->query: %p\n", instance->query);
   return instance->query;
 }
 
@@ -363,7 +365,7 @@ bool is_query_name(query_t *query, const uint8_t *name)
   if ((qlen == nlen) && !strncmp(qname, name, qlen))
     ret = true;
 
-  printf("\n\n[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n\n\n", qlen, qname, nlen, name, ret);
+  printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
 
   return ret;
 }
@@ -371,6 +373,8 @@ bool is_query_name(query_t *query, const uint8_t *name)
 query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
 {
   query_t *ret, *curr;
+
+  printf("[VoWiFi] ike_sa_instance.c: get_sub_query_by_name(): query: %p, name: %s\n", query, name);
   ret = NULL;
   curr = query->sub;
 
@@ -381,6 +385,7 @@ query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
       ret = curr;
       break;
     }
+    curr = curr->next;
   }
 
   return ret;
