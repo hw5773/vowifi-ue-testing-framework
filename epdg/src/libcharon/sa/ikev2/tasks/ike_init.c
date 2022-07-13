@@ -322,9 +322,10 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
   ///// Added for VoWiFi /////
   instance_t *instance;
   uint64_t ispi, rspi;
+  uint8_t *tmp;
   uint16_t *algo, *klen;
   bool found;
-  int vtype;
+  int vtype, tlen;
   query_t *query;
 
   instance = this->ike_sa->get_instance(this->ike_sa);
@@ -377,7 +378,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
     ///// Added for VoWiFi /////
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
-      if (has_query(instance))
+      if (wait_query(instance))
       {
         // encryption related
         algo = (uint16_t *)calloc(1, sizeof(uint16_t));
@@ -394,7 +395,8 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
           vtype = get_query_value_type(query);
           if (vtype == VAL_TYPE_UINT16)
           {
-            algo = (uint16_t *)get_query_value(query);
+            tmp = get_query_value(query, &tlen);
+            *algo = (uint16_t) char_to_int(tmp, tlen, 10);
           }
         }
         // ike_sa_init_response - security_association - transform - encryption_key_length
@@ -407,9 +409,11 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
           vtype = get_query_value_type(query);
           if (vtype == VAL_TYPE_UINT16)
           {
-            klen = (uint16_t *)get_query_value(query);
+            tmp = get_query_value(query, &tlen);
+            klen = (uint16_t) char_to_int(tmp, tlen, 10);
           }
         }
+        printf("\n\n[VoWiFi] ike_init.c: algo: %u, klen: %u\n\n\n", algo, klen);
       }
     }
     ////////////////////////////

@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <pthread.h>
 
 typedef struct msg_st
@@ -74,18 +75,21 @@ typedef struct instance_st
   msg_t *sendq[MAX_QUEUE_LEN];
   int (*add_message_to_send_queue)(struct instance_st *instance, msg_t *msg);
   msg_t *(*fetch_message_from_send_queue)(struct instance_st *instance);
+  void (*set_query)(struct instance_st *instance, query_t *query);
   pthread_mutex_t slock;
 
   query_t *query;
   query_t *curr;
 
   int running;
+  bool finished;
 } instance_t;
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
 
 int _add_message_to_send_queue(instance_t *instance, msg_t *msg);
 msg_t *_fetch_message_from_send_queue(instance_t *instance);
+void _set_query(instance_t *instance, query_t *query);
 msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
     int vtype, void *val, int vlen);
 void free_message(msg_t *msg);
@@ -108,9 +112,11 @@ void set_query_value_type(query_t *query, uint8_t *vtype);
 uint8_t *get_query_value(query_t *query, int *vlen);
 void set_query_value(query_t *query, uint8_t *value);
 
-int has_query(instance_t *instance);
+bool has_query(instance_t *instance);
+bool wait_query(instance_t *instance);
+bool is_query_finished(instance_t *instance);
 query_t *get_query(instance_t *instance);
-int is_query_name(query_t *query, const uint8_t *name);
+bool is_query_name(query_t *query, const uint8_t *name);
 query_t *get_sub_query_by_name(query_t *query, const uint8_t *name);
 
 void *sender_run(void *data);

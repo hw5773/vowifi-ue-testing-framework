@@ -63,11 +63,15 @@ msg_t *_fetch_message_from_send_queue(instance_t *instance)
   return ret;
 }
 
+void _set_query(instance_t *instance, query_t *query)
+{
+  instance->query = query;
+}
+
 msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
     int vtype, void *val, int vlen)
 {
   msg_t *ret;
-  uint8_t *p;
   uint64_t ispi, rspi;
 
   ispi = instance->ispi;
@@ -115,6 +119,8 @@ instance_t *init_instance(int asock)
 
   ret->add_message_to_send_queue = _add_message_to_send_queue;
   ret->fetch_message_from_send_queue = _fetch_message_from_send_queue;
+  ret->set_query = _set_query;
+  ret->finished = false;
   if (pthread_mutex_init(&(ret->slock), NULL) != 0)
   {
     printf("initializing a mutex for the send queue failed\n");
@@ -175,7 +181,7 @@ void free_query(query_t *query)
 void _print_query(query_t *query, int depth)
 {
   query_t *sub;
-  int i, tlen, vtype;
+  int i, tlen;
   uint8_t buf[MAX_MESSAGE_LEN] = {0, };
   uint8_t *p, *tmp;
   void *val;
@@ -311,6 +317,73 @@ void set_query_value(query_t *query, uint8_t *value)
   query->value = (uint8_t *)calloc(vlen+1, sizeof(uint8_t));
   memcpy(query->value, value, vlen);
   query->vlen = vlen;
+}
+
+bool has_query(instance_t *instance)
+{
+  return instance->query != NULL;
+}
+
+bool wait_query(instance_t *instance)
+{
+  volatile bool ret;
+  ret = false;
+
+  while (!has_query(instance)) {};
+
+  if (has_query(instance))
+    ret = true;
+  else if (is_query_finished(instance))
+    ret = false;
+
+  return ret;
+}
+
+bool is_query_finished(instance_t *instance)
+{
+  return instance->finished;
+}
+
+query_t *get_query(instance_t *instance)
+{
+  return instance->query;
+}
+
+bool is_query_name(query_t *query, const uint8_t *name)
+{
+  int qlen, nlen;
+  uint8_t *qname;
+  bool ret;
+
+  ret = false;
+  qname = query->name;
+  qlen = query->nlen;
+  nlen = (int) strlen(name);
+
+  if ((qlen == nlen) && !strncmp(qname, name, qlen))
+    ret = true;
+
+  printf("\n\n[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n\n\n", qlen, qname, nlen, name, ret);
+
+  return ret;
+}
+
+query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
+{
+  query_t *ret, *curr;
+  ret = NULL;
+  curr = query->sub;
+
+  while (curr)
+  {
+    if (is_query_name(curr, name))
+    {
+      ret = curr;
+      break;
+    }
+  }
+
+  return ret;
 }
 
 int int_to_char(int num, uint8_t *str, int base)
