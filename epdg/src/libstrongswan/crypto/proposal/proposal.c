@@ -199,6 +199,64 @@ METHOD(proposal_t, add_algorithm, void,
 	add_type(this->types, type);
 }
 
+///// Added for VoWiFi /////
+CALLBACK(alg_setter, bool,
+	uintptr_t type, enumerator_t *orig, va_list args)
+{
+	entry_t *entry;
+	uint16_t *alg, *key_size;
+
+	VA_ARGS_VGET(args, alg, key_size);
+  printf("[VoWiFi] proposal.c: after get args: alg: %u, key_size: %u\n", *alg, *key_size);
+
+	while (orig->enumerate(orig, &entry))
+	{
+		if (entry->type != type)
+		{
+			continue;
+		}
+		if (alg)
+		{
+			entry->alg = *alg;
+      printf("[VoWiFi] proposal.c: the algorithm is set to %u by %u\n", entry->alg, *alg);
+		}
+		if (key_size)
+		{
+			entry->key_size = *key_size;
+      printf("[VoWiFi] proposal.c: the key size is set to %u by %u\n", entry->key_size, *key_size);
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+METHOD(proposal_t, create_setter_enumerator, enumerator_t*,
+	private_proposal_t *this, transform_type_t type)
+{
+	return enumerator_create_filter(
+						array_create_enumerator(this->transforms),
+						alg_setter, (void*)(uintptr_t)type, NULL);
+}
+
+METHOD(proposal_t, set_algorithm, bool,
+	private_proposal_t *this, transform_type_t type,
+	uint16_t alg, uint16_t key_size)
+{
+	enumerator_t *enumerator;
+	bool found = FALSE;
+
+  printf("[VoWiFi] proposal.c: set_algorithm(): alg: %u, key_size: %u\n", alg, key_size);
+	enumerator = create_setter_enumerator(this, type);
+	if (enumerator->enumerate(enumerator, &alg, &key_size))
+	{
+		found = TRUE;
+	}
+	enumerator->destroy(enumerator);
+
+	return found;
+}
+/////////////////////////
+
 CALLBACK(alg_filter, bool,
 	uintptr_t type, enumerator_t *orig, va_list args)
 {
@@ -941,6 +999,7 @@ proposal_t *proposal_create_v1(protocol_id_t protocol, uint8_t number,
 		.public = {
 			.add_algorithm = _add_algorithm,
 			.create_enumerator = _create_enumerator,
+      .set_algorithm = _set_algorithm,
 			.get_algorithm = _get_algorithm,
 			.has_dh_group = _has_dh_group,
 			.promote_dh_group = _promote_dh_group,

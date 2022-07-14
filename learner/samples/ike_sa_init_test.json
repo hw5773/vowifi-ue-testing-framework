@@ -1,0 +1,40 @@
+{
+  "queries": [
+    {
+      "query": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "encryption_algorithm",
+                      "op": "update"
+                      "type": "uint16",
+                      "value": 13
+                    },
+                    {
+                      "name": "integrity",
+                      "op": "drop"
+                      "type": "uint16",
+                      "value": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -108,6 +108,9 @@ struct proposal_t {
 	bool (*get_algorithm) (proposal_t *this, transform_type_t type,
 						   uint16_t *alg, uint16_t *key_size);
 
+  bool (*set_algorithm) (proposal_t *this, transform_type_t type,
+              uint16_t alg, uint16_t key_size);
+
 	/**
 	 * Check if the proposal has a specific DH group.
 	 *

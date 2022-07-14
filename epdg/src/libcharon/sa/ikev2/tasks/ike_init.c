@@ -419,6 +419,8 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
         }
         printf("[VoWiFi] ike_init.c: after modification: algo: %u, klen: %u\n", *algo, *klen);
       }
+
+      this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
     }
     ////////////////////////////
 
@@ -1164,17 +1166,6 @@ METHOD(task_t, build_r, status_t,
 	private_ike_init_t *this, message_t *message)
 {
 	identification_t *gateway;
-
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  ike_sa_id_t *id;
-  uint64_t ispi, rspi;
-
-  instance = this->ike_sa->get_instance(this->ike_sa);
-  id = this->ike_sa->get_id(this->ike_sa);
-  ispi = id->get_initiator_spi(id);
-  rspi = id->get_responder_spi(id);
-  ////////////////////////////
 
 	/* check if we have everything we need */
 	if (this->proposal == NULL ||
