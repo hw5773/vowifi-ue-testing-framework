@@ -514,14 +514,6 @@ public class LogExecutor {
     if (exceptionOccured)
       pairs = null;
 
-    logger.info("== Result of executeTestcase()");
-    Iterator i = pairs.iterator();
-    while (i.hasNext()) {
-      QueryReplyPair pair = (QueryReplyPair) i.next();
-      logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
-    }
-    logger.info("==============================");
-
     logger.debug("FINISH: executeTestcase()");
     return pairs;
   }

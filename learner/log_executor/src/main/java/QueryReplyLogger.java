@@ -63,7 +63,7 @@ class QueryReplyLogger {
       writer.write("Message:\n");
 
       k = plst.iterator();
-      if (k.hasNext()) {
+      while (k.hasNext()) {
         tmp = (QueryReplyPair) k.next();
         logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
         writer.write("  Query: " + tmp.getQueryName() + "\n");
@@ -141,7 +141,7 @@ class QueryReplyPair {
   }
 
   public String getRspi() {
-    return this.reply.getIspi();
+    return this.reply.getRspi();
   }
 
   public void setLogger(Log logger) {
