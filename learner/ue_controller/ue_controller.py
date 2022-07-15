@@ -134,7 +134,7 @@ def handle_adb_server_restart(client):
     client.send(ACK)
 
 def handle_client_connection(client, server, device):
-    logging.info("Client Handler initiated")
+    logging.info("Client handler initiated")
     count_enable_vowifi = 0
 
     try:
@@ -149,6 +149,9 @@ def handle_client_connection(client, server, device):
             ue_wakeup(device)
             if opcode == "reset":
                 handle_reset(client, device)
+            elif opcode == "device":
+                logging.info("UE model name to be sent: {}".format(device))
+                client.send("{}\n".format(device).encode())
             elif opcode == "ue_reboot":
                 handle_ue_reboot(client, device)
             elif opcode == "adb_server_restart":

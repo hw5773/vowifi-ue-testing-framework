@@ -20,6 +20,7 @@ import java.io.IOException;
 public class VoWiFiUEConfig extends LearningConfig {
   String alphabet;
   String hostname;
+  String outputDir;
 
   String ueControllerIPAddress;
   String epdgControllerIPAddress;
@@ -55,6 +56,9 @@ public class VoWiFiUEConfig extends LearningConfig {
 
     if(properties.getProperty("hostname") != null)
       hostname = properties.getProperty("hostname");
+
+    if(properties.getProperty("output_dir") != null)
+      outputDir = properties.getProperty("output_dir");
 
     if(properties.getProperty("ue_controller_ip_address") != null)
       ueControllerIPAddress = properties.getProperty("ue_controller_ip_address");
@@ -104,6 +108,10 @@ public class VoWiFiUEConfig extends LearningConfig {
 
   public boolean getCombineQuery() {
     return combineQuery;
+  }
+
+  public String getOutputDir() {
+    return outputDir;
   }
 
   public String getUEControllerIPAddress() {

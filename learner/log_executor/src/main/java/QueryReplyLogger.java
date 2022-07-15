@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,12 +15,78 @@ import org.apache.commons.codec.binary.Hex;
 class QueryReplyLogger {
   private List<Testcases> testcases = null;
   private List<List<QueryReplyPair>> pairs = null;
-  private String outputFileName;
+  private String outputRootDir;
+  private String outputDir;
+  private String ueModel;
+  private Log logger;
 
-  QueryReplyLogger(String outputFileName) {
+  QueryReplyLogger(String outputDir, Log logger) {
+    File directory = new File(outputDir);
+    if (!directory.exists()) {
+      directory.mkdir();
+    }
+
+    setLogger(logger);
     this.testcases = new ArrayList<>();
     this.pairs = new ArrayList<>();
-    this.outputFileName = outputFileName;
+    this.outputRootDir = outputDir;
+    this.ueModel = null;
+  }
+
+  public void storeLog() throws IOException {
+    Iterator i = this.testcases.iterator();
+    Iterator j = this.pairs.iterator();
+    Iterator k;
+    int num = 0;
+
+    Testcases tcs;
+    List<QueryReplyPair> plst;
+    QueryReplyPair tmp = null;
+
+    while (i.hasNext()) {
+      num++;
+      String filename = this.outputDir + "/result." + num;
+      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+      tcs = (Testcases) i.next();
+      if (j.hasNext())
+        plst = (List<QueryReplyPair>) j.next();
+      else {
+        logger.error("Should not happen");
+        break;
+      }
+
+      logger.info("Testcase #" + num);
+      logger.info("Testcase: " + tcs.getOriginalTestcase());
+
+      writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");
+      writer.write("Message:\n");
+
+      k = plst.iterator();
+      if (k.hasNext()) {
+        tmp = (QueryReplyPair) k.next();
+        logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
+        writer.write("  Query: " + tmp.getQueryName() + "\n");
+        writer.write("  Reply: " + tmp.getReplyName() + "\n");
+      }
+
+      writer.close();
+    }
+  }
+
+  public void setUEModel(String ueModel) {
+    File directory;
+    this.ueModel = ueModel;
+    this.outputDir = this.outputRootDir + "/" + ueModel;
+
+    directory = new File(this.outputDir);
+    if (!directory.exists()) {
+      directory.mkdir();
+    }
+  }
+
+  public void setLogger(Log logger) {
+    this.logger = logger;
   }
 
   public void addLog(Testcases ts, List<QueryReplyPair> pair) {

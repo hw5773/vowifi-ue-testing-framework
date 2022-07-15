@@ -24,6 +24,7 @@ import static java.lang.Thread.sleep;
 
 public class LogExecutor {
   private static VoWiFiUEConfig config = null;
+  private static QueryReplyLogger qrLogger = null;
 
   final static Log logger = LogFactory.getLog(LogExecutor.class);
 
@@ -47,11 +48,11 @@ public class LogExecutor {
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
-  private static final String DEFAULT_OUTPUT_FILENAME = "output.log";
   private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
 
-  public LogExecutor(VoWiFiUEConfig config) throws Exception {
+  public LogExecutor(VoWiFiUEConfig config, QueryReplyLogger qrLogger) throws Exception {
     this.config = config;
+    this.qrLogger = qrLogger;
 
     initUEConnection();
     initEPDGConnection();
@@ -62,7 +63,7 @@ public class LogExecutor {
     List<Testcases> testcases = new ArrayList<>();
     LogExecutor logExecutor = null;
     VoWiFiUEConfig vowifiUEConfig = null;
-    QueryReplyLogger qrLogger = null;
+    QueryReplyLogger vowifiQRLogger = null;
 
     Options options = new Options();
 
@@ -71,9 +72,6 @@ public class LogExecutor {
 
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
-
-    Option argOutput = new Option("o", "output", true, "Output filename");
-    options.addOption(argOutput);
 
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
@@ -90,7 +88,6 @@ public class LogExecutor {
 
     String testcaseFilePath = cmd.getOptionValue("file");
     String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
-    String outputFileName = cmd.getOptionValue("output", DEFAULT_OUTPUT_FILENAME);
 
     if (testcaseFilePath == null) {
       logger.error("Query File should be inserted");
@@ -122,16 +119,17 @@ public class LogExecutor {
     }
 
     try {
-      logExecutor = new LogExecutor(vowifiUEConfig);
+      String outputDir = vowifiUEConfig.getOutputDir();
+      vowifiQRLogger = new QueryReplyLogger(outputDir, logger);
     } catch (Exception e) {
-      logger.error("Error happend while initializing LogExecutor");
+      logger.error("Error happened while initializing QueryReplyLogger");
       e.printStackTrace();
     }
 
     try {
-      qrLogger = new QueryReplyLogger(outputFileName);
+      logExecutor = new LogExecutor(vowifiUEConfig, vowifiQRLogger);
     } catch (Exception e) {
-      logger.error("Error happened while initializing QueryReplyLogger");
+      logger.error("Error happend while initializing LogExecutor");
       e.printStackTrace();
     }
 
@@ -160,7 +158,6 @@ public class LogExecutor {
     Boolean timeoutOccured = false;
     int testcaseNum = 1;
     List<QueryReplyPair> pairs;
-    QueryReplyPair pair;
     Iterator iter;
 
     for (Testcases testcase: testcases) {
@@ -177,21 +174,8 @@ public class LogExecutor {
 
       qrLogger.addLog(testcase, pairs);
     }
-    
-    try {
-      //sleep(1000000);
-      sleep(3000);
-    } catch (Exception e) {
 
-    }
-
-    //killEPDG();
-    try {
-      sleep(3000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    //killIMS();
+    qrLogger.storeLog();
   }
 
   public void restartEPDG() throws InterruptedException {
@@ -311,6 +295,7 @@ public class LogExecutor {
   public void initUEConnection() {
     logger.debug("START: initUEConnection()");
 
+    String result;
     String ueControllerIPAddress = config.getUEControllerIPAddress();
     int uePort = config.getUEControllerPort();
     
@@ -325,6 +310,14 @@ public class LogExecutor {
       ueOut = new BufferedWriter(new OutputStreamWriter(ueSocket.getOutputStream()));
       ueIn = new BufferedReader(new InputStreamReader(ueSocket.getInputStream()));
       logger.debug("Initialized Buffers for UE");
+
+      ueOut.write("device\n");
+      ueOut.flush();
+
+      result = ueIn.readLine();
+      logger.info("UE model: " + result);
+      qrLogger.setUEModel(result);
+
     } catch (UnknownHostException e) {
       e.printStackTrace();
     } catch (SocketException e) {
@@ -467,7 +460,6 @@ public class LogExecutor {
 
       if (ispi != null) {
         message.setIspi(ispi);
-        logger.debug("Message (" + name + ")'s ISPI: " + message.getIspi() + ", RSPI: " + message.getRspi());
       }
 
       if (rspi != null) {
@@ -487,6 +479,7 @@ public class LogExecutor {
       startTime = System.currentTimeMillis();
       pair = logExecutor.step(message);
       endTime = System.currentTimeMillis();
+      logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
       duration = (endTime - startTime);
       insec = duration/1000.0;
       logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
@@ -501,6 +494,8 @@ public class LogExecutor {
         logger.debug("RSPI is set to " + rspi);
       }
 
+      pairs.add(pair);
+
       if (pair.getReplyName().matches("exception")) {
         logger.info("Exception occured, restarting testcase");
         exceptionOccured = true;
@@ -514,11 +509,18 @@ public class LogExecutor {
       }
 
       logger.info("RESULT: " + pair.getReplyName());
-      pairs.add(pair);
     }
 
     if (exceptionOccured)
       pairs = null;
+
+    logger.info("== Result of executeTestcase()");
+    Iterator i = pairs.iterator();
+    while (i.hasNext()) {
+      QueryReplyPair pair = (QueryReplyPair) i.next();
+      logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
+    }
+    logger.info("==============================");
 
     logger.debug("FINISH: executeTestcase()");
     return pairs;
