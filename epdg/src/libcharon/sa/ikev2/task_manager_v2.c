@@ -883,6 +883,18 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	uint64_t responder_spi = 0;
 	bool result;
 
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  msg_t *msg;
+  uint64_t ispi, rspi;
+
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  id = this->ike_sa->get_id(this->ike_sa);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  id = NULL;
+  ////////////////////////////
+
 	me = request->get_destination(request);
 	other = request->get_source(request);
 
@@ -893,6 +905,22 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	message->set_destination(message, other->clone(other));
 	message->set_message_id(message, this->responding.mid);
 	message->set_request(message, FALSE);
+
+  ///// Added for VoWiFi /////
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+		switch (message->get_exchange_type(message)) 
+    {
+      case IKE_SA_INIT:
+        msg = init_message(instance, MSG_TYPE_BLOCK_START, 
+            "ike_sa_init_response", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+        break;
+      default:
+        break;
+    }
+  }
+  ///////////////////////////
 
 	enumerator = array_create_enumerator(this->passive_tasks);
 	while (enumerator->enumerate(enumerator, (void*)&task))
@@ -949,6 +977,23 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		responder_spi = id->get_responder_spi(id);
 		id->set_responder_spi(id, 0);
 	}
+
+  ///// Added for VoWiFi /////
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+		switch (message->get_exchange_type(message))
+    {
+      case IKE_SA_INIT:
+        msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+            NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+        printf("have added the message to the send queue\n");
+        break;
+      default:
+        break;
+    }
+  }
+  ////////////////////////////
 
 	/* message complete, send it */
 	clear_packets(this->responding.packets);
@@ -1012,7 +1057,6 @@ static status_t process_request(private_task_manager_t *this,
   id = this->ike_sa->get_id(this->ike_sa);
   ispi = id->get_initiator_spi(id);
   rspi = id->get_responder_spi(id);
-
   ////////////////////////////
 
 	if (array_count(this->passive_tasks) == 0)

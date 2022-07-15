@@ -42,11 +42,12 @@ public class LogExecutor {
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
   private static final int COOLING_TIME = 1*1000;
-  private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 30*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 180*1000; 
+  private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 10*1000; 
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 20*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
+  private static final String DEFAULT_OUTPUT_FILENAME = "output.log";
   private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
 
   public LogExecutor(VoWiFiUEConfig config) throws Exception {
@@ -58,17 +59,21 @@ public class LogExecutor {
   }
 
   public static void main(String[] args) throws Exception {
-    List<QueryString> queries = new ArrayList<>();
+    List<Testcases> testcases = new ArrayList<>();
     LogExecutor logExecutor = null;
     VoWiFiUEConfig vowifiUEConfig = null;
+    QueryReplyLogger qrLogger = null;
 
     Options options = new Options();
 
-    Option argFile = new Option("f", "file", true, "File that contains queries");
+    Option argFile = new Option("f", "file", true, "File that contains testcases");
     options.addOption(argFile);
 
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
+
+    Option argOutput = new Option("o", "output", true, "Output filename");
+    options.addOption(argOutput);
 
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
@@ -83,10 +88,11 @@ public class LogExecutor {
       System.exit(1);
     }
 
-    String queryFilePath = cmd.getOptionValue("file");
+    String testcaseFilePath = cmd.getOptionValue("file");
     String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
+    String outputFileName = cmd.getOptionValue("output", DEFAULT_OUTPUT_FILENAME);
 
-    if (queryFilePath == null) {
+    if (testcaseFilePath == null) {
       logger.error("Query File should be inserted");
       formatter.printHelp("Options", options);
 
@@ -122,43 +128,54 @@ public class LogExecutor {
       e.printStackTrace();
     }
 
-    jsonParser = new JSONParser();
-
-    logger.info("Query File Mode (File Path: " + queryFilePath + ")");
-    try (FileReader reader = new FileReader(queryFilePath)) {
-      JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
-      JSONArray queryArray = (JSONArray) jsonObject.get("queries");
-      logger.info("queries: " + queryArray);
-      Iterator i = queryArray.iterator();
-
-      while (i.hasNext()) {
-        JSONObject q = (JSONObject) i.next();
-        logger.info("Next Message: " + q);
-        QueryString qs = new QueryString(q, logger);
-        queries.add(qs);
-      }
+    try {
+      qrLogger = new QueryReplyLogger(outputFileName);
     } catch (Exception e) {
-      logger.error("Error happened while processing the query file");
+      logger.error("Error happened while initializing QueryReplyLogger");
       e.printStackTrace();
     }
 
-    logger.info("# of Query Strings: " + queries.size());
+    jsonParser = new JSONParser();
+
+    logger.info("Testcase File Mode (File Path: " + testcaseFilePath + ")");
+    try (FileReader reader = new FileReader(testcaseFilePath)) {
+      JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+      JSONArray testcaseArray = (JSONArray) jsonObject.get("testcases");
+      logger.info("testcases: " + testcaseArray);
+      Iterator i = testcaseArray.iterator();
+
+      while (i.hasNext()) {
+        JSONObject tc = (JSONObject) i.next();
+        logger.info("Next Message: " + tc);
+        Testcases tcs = new Testcases(tc, logger);
+        testcases.add(tcs);
+      }
+    } catch (Exception e) {
+      logger.error("Error happened while processing the testcase file");
+      e.printStackTrace();
+    }
+
+    logger.info("# of Testcases: " + testcases.size());
 
     Boolean timeoutOccured = false;
-    int queryNum = 1;
+    int testcaseNum = 1;
+    List<QueryReplyPair> pairs;
+    QueryReplyPair pair;
+    Iterator iter;
 
-    for (QueryString query: queries) {
-      logger.info("Starting Query #" + queryNum);
+    for (Testcases testcase: testcases) {
+      logger.info("Starting Testcase #" + testcaseNum);
 
-      Boolean exceptionOccured = executeQuery(logExecutor, query);
+      pairs = executeTestcase(logExecutor, testcase);
 
-      while (exceptionOccured) {
-        exceptionOccured = executeQuery(logExecutor, query);
+      while (pairs == null) {
+        pairs = executeTestcase(logExecutor, testcase);
       }
 
-      logger.info("Finished Query #" + queryNum);
+      logger.info("Finished Testcase #" + testcaseNum);
+      testcaseNum ++;
 
-      queryNum ++;
+      qrLogger.addLog(testcase, pairs);
     }
     
     try {
@@ -204,56 +221,34 @@ public class LogExecutor {
     logger.debug("FINISH: restartIMS()");
   }
 
-  private void sendMSGToEPDG(Query query) {
+  private void sendMSGToEPDG(Testcase testcase) {
     logger.debug("START: sendMSGToEPDG()");
-
-    String qname;
-    String result;
     int depth;
 
-    qname = query.getName();
     depth = 0;
-
-    sendMessage(query, depth);
-    try {
-      result = epdgIn.readLine();
-      logger.info("Check ACK: " + result);
-      if (result.startsWith("ACK")) {
-        logger.info("Received ACK for the query: " + qname);
-      } else {
-        logger.error("Something is wrong with " + qname);
-      }
-    } catch (SocketException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    sendMessage(testcase, depth);
 
     logger.debug("FINISH: sendMSGToEPDG()");
   }
 
-  private void sendMessage(Query query, int depth) {
-    logger.debug("START: sendMessage()");
-
+  private void sendMessage(Testcase testcase, int depth) {
     String name;
     String ispi, rspi;
     String msg;
     String print;
     Iterator iter;
 
-    name = query.getName();
-    ispi = query.getIspi();
-    rspi = query.getRspi();
-    logger.debug("Query: " + name + ", Type: " + query.getQueryType() + ", ISPI: " + ispi + ", RSPI: " + rspi);
+    name = testcase.getName();
+    ispi = testcase.getIspi();
+    rspi = testcase.getRspi();
+    logger.debug("Testcase: " + name + ", Type: " + testcase.getTestcaseType() + ", ISPI: " + ispi + ", RSPI: " + rspi);
     print = "";
 
     try {
       for (int i=0; i<depth; i++)
         print += "  ";
 
-      if (query.getQueryType() != QueryType.ATTRIBUTE) {
+      if (testcase.getTestcaseType() != TestcaseType.ATTRIBUTE) {
         msg = "2";
       } else {
         msg = "1";
@@ -262,11 +257,11 @@ public class LogExecutor {
       msg += rspi;
       msg += name;
 
-      if (query.hasValue()) {
+      if (testcase.hasValue()) {
         msg += ":";
-        msg += query.getValueType().getValueTypeAsInteger();
+        msg += testcase.getValueType().getValueTypeAsInteger();
         msg += ":";
-        msg += query.getValue();
+        msg += testcase.getValue();
       }
 
       msg += "\n";
@@ -274,21 +269,21 @@ public class LogExecutor {
       epdgOut.flush();
 
       print += name;
-      if (query.hasValue()) {
+      if (testcase.hasValue()) {
         print += ": ";
-        print += query.getValue();
+        print += testcase.getValue();
       }
       logger.info(print);
 
-      if (query.getHasSubQuery()) {
+      if (testcase.getHasSubTestcase()) {
         depth++;
-        while (query.getHasNextSubQuery()) {
-          sendMessage(query.getNextSubQuery(), depth);
+        while (testcase.getHasNextSubTestcase()) {
+          sendMessage(testcase.getNextSubTestcase(), depth);
         }
         depth--;
       }
 
-      if (query.getQueryType() != QueryType.ATTRIBUTE) {
+      if (testcase.getTestcaseType() != TestcaseType.ATTRIBUTE) {
         msg = "3";
         print = "";
         for (int i=0; i<depth; i++) {
@@ -311,8 +306,6 @@ public class LogExecutor {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    logger.debug("FINISH: sendMessage()");
   }
 
   public void initUEConnection() {
@@ -453,26 +446,8 @@ public class LogExecutor {
     logger.debug("FINISH: initIMSConnection()");
   }
 
-	public String getExpectedResult(String symbol, String result) {
-    logger.debug("START: getExpectedResult()");
-		String final_result = "null_action";
-
-    /*
-		if (symbol.contains("ike_sa_init_request") 
-        || symbol.contains("iks_sa_init_response")) {
-		  if (ikeSaInitExpectedResults.contains(result)) {
-				final_result = result;
-			}
-		}
-    */
-
-    logger.debug("FINISH: getExpectedResult()");
-		return final_result;
-	}
-
-  public static Boolean executeQuery(LogExecutor logExecutor, QueryString query) {
-    logger.debug("START: executeQuery()");
-    logExecutor.pre();
+  public static List<QueryReplyPair> executeTestcase(LogExecutor logExecutor, Testcases testcase) {
+    logger.debug("START: executeTestcase()");
 
     boolean timeoutOccured = false;
     boolean exceptionOccured = false;
@@ -480,10 +455,14 @@ public class LogExecutor {
     double insec;
     String ispi = null;
     String rspi = null;
+    List<QueryReplyPair> pairs;
 
-    while (query.hasNextMessage()) {
-      Query message = query.getNextMessage();
-      Reply reply;
+    logExecutor.pre();
+    pairs = new ArrayList<>();
+
+    while (testcase.hasNextMessage()) {
+      Testcase message = testcase.getNextMessage();
+      QueryReplyPair pair;
       String name = message.getName();
 
       if (ispi != null) {
@@ -501,43 +480,48 @@ public class LogExecutor {
       logger.info("COMMAND: " + name);
 
       if (timeoutOccured) {
-        logger.info("RESULT: NULL ACTION (TIMEOUT)");
+        logger.info("RESULT: null_action (timeout)");
         continue;
       }
 
       startTime = System.currentTimeMillis();
-      reply = logExecutor.step(message);
+      pair = logExecutor.step(message);
       endTime = System.currentTimeMillis();
       duration = (endTime - startTime);
       insec = duration/1000.0;
       logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
       
       if (ispi == null) {
-        ispi = reply.getIspi();
+        ispi = pair.getIspi();
         logger.debug("ISPI is set to " + ispi);
       }
 
       if (rspi == null) {
-        rspi = reply.getRspi();
+        rspi = pair.getRspi();
         logger.debug("RSPI is set to " + rspi);
       }
 
-      if (reply.getName().matches("EXCEPTION")) {
-        logger.info("Exception occured, restarting query");
+      if (pair.getReplyName().matches("exception")) {
+        logger.info("Exception occured, restarting testcase");
         exceptionOccured = true;
+        break;
       }
 
-      if (reply.getName().matches("timeout")) {
+      if (pair.getReplyName().matches("timeout")) {
         timeoutOccured = true;
-        logger.info("RESULT: NULL ACTION (TIMEOUT)");
+        logger.info("RESULT: null_action (timeout)");
         continue;
       }
 
-      logger.info("RESULT: " + reply.getName());
+      logger.info("RESULT: " + pair.getReplyName());
+      pairs.add(pair);
     }
 
-    logger.debug("FINISH: executeQuery()");
-    return exceptionOccured;
+    if (exceptionOccured)
+      pairs = null;
+
+    logger.debug("FINISH: executeTestcase()");
+    return pairs;
   }
 
   public boolean resetEPDG() {
@@ -787,13 +771,13 @@ public class LogExecutor {
     }
   }
 
-  private Reply processResult(Query query) {
+  private MessageLog processResult(Testcase testcase) {
     String result = null;
     String rstr;
     String print;
     String spi, ispi, rspi;
     byte rcvd[];
-    Reply reply = null;
+    MessageLog mlog = null;
     Stack<Integer> stack = new Stack<Integer>();
     int idx, type, len, depth;
 
@@ -814,26 +798,26 @@ public class LogExecutor {
 
         switch (type) {
           case 1:
-            if (reply == null) {
+            if (mlog == null) {
               logger.error("The attribute should be within the block");
             } else {
-              reply = reply.addSubmessage(ReplyType.ATTRIBUTE);
+              mlog = mlog.addSubmessage(MessageLogType.ATTRIBUTE);
             }
             break;
 
           case 2:
-            if (reply == null) {
-              reply = new Reply(query, ReplyType.MESSAGE, logger);
+            if (mlog == null) {
+              mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
             } else {
-              reply = reply.addSubmessage(ReplyType.PAYLOAD);
+              mlog = mlog.addSubmessage(MessageLogType.PAYLOAD);
             }
             depth++;
             stack.push(1);
             break;
 
           case 3:
-            if (reply.hasParent()) {
-              reply = reply.getParent();
+            if (mlog.hasParent()) {
+              mlog = mlog.getParent();
             }
             depth--;
             stack.pop();
@@ -843,9 +827,9 @@ public class LogExecutor {
         len -= 1;
         ispi = result.substring(idx, idx + 16);
         idx += 16; len -= 16;
-        spi = reply.getIspi();
+        spi = mlog.getIspi();
         if (spi == null) {
-          reply.setIspi(ispi);
+          mlog.setIspi(ispi);
         } else {
           if (!spi.equals(ispi)) {
             logger.error("Initiator's SPIs are different");
@@ -854,9 +838,9 @@ public class LogExecutor {
 
         rspi = result.substring(idx, idx + 16);
         idx += 16; len -= 16;
-        spi = reply.getRspi();
+        spi = mlog.getRspi();
         if (spi == null) {
-          reply.setRspi(rspi);
+          mlog.setRspi(rspi);
         } else {
           if (!spi.equals(rspi)) {
             logger.error("Responder's SPIs are different");
@@ -870,15 +854,15 @@ public class LogExecutor {
           print += rstr;
           arr = rstr.split(":", 0);
 
-          reply.setName(arr[0]);
+          mlog.setName(arr[0]);
 
           if (arr.length > 1) {
             if (arr.length != 3) {
               logger.error("The array length should be 3");
             }
             else {
-              reply.setValueType(arr[1]);
-              reply.setValue(arr[2]);
+              mlog.setValueType(arr[1]);
+              mlog.setValue(arr[2]);
             }
           }
           logger.info(print);
@@ -886,28 +870,29 @@ public class LogExecutor {
       } while (stack.size() != 0);
   	  epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
 		} catch (SocketTimeoutException e) {
-			logger.info("Timeout occured for " + query.getName());
+			logger.info("Timeout occured for " + testcase.getName());
 			handleTimeout();
-			reply = new Reply(query, ReplyType.MESSAGE, logger);
-      reply.setName("timeout");
+			mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+      mlog.setName("timeout");
     } catch (Exception e) {
 			e.printStackTrace();
-			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting query.");
+			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting testcase.");
 			handleEPDGIMSFailure();
-			reply = new Reply(query, ReplyType.MESSAGE, logger);
-      reply.setName("null_action");
+			mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+      mlog.setName("null_action");
 		}
 
-    return reply;
+    return mlog;
   }
 
-	public Reply step(Query query) {
+	public QueryReplyPair step(Testcase testcase) {
     logger.debug("START: step()");
-    Reply reply;
-    String qname = query.getName();
-    String rname;
+    MessageLog query, reply;
+    QueryReplyPair pair;
+    String tname = testcase.getName();
+    String qname, rname;
     boolean ret;
-    logger.info("Query (" + qname + ")'s ISPI: " + query.getIspi() + ", RSPI: " + query.getRspi());
+    logger.info("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
     
 		try {
 			sleep(50); //50 milliseconds
@@ -915,20 +900,24 @@ public class LogExecutor {
 			e.printStackTrace();
 		}
 
-		if(qname.startsWith("enable_vowifi")) {
+		if(tname.startsWith("enable_vowifi")) {
       logger.info("sendEnableVoWiFi()");
   		sendEnableVoWiFi();
+      query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+      query.setName("enable_vowifi");
     } else {
       logger.info("sendMSGToEPDG()");
-  		sendMSGToEPDG(query);
+  		sendMSGToEPDG(testcase);
+      query = processResult(testcase);
     }
-    reply = processResult(query);
+    reply = processResult(testcase);
     rname = reply.getName();
 
-	  logger.info("##### " + qname + " -> " + rname + " #####");
+	  logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
+    pair = new QueryReplyPair(testcase, query, reply, logger);
     
     logger.debug("FINISH: step()");
-		return reply;
+		return pair;
 	}
 
   public void pre() {
@@ -983,22 +972,9 @@ public class LogExecutor {
   public void handleTimeout(){
     logger.debug("START: handleTimeout()");
     
-    String result = new String("");
     if (isEPDGAlive() == false || isIMSAlive() == false) {
       handleEPDGIMSFailure();
       return;
-    }
-    try {
-      ueOut.write("ue_reboot\n");
-      ueOut.flush();
-      logger.info("Sleeping while UE reboots");
-      sleep(UE_REBOOT_SLEEP_TIME);
-      result = ueIn.readLine();
-      logger.info("Result for reboot: " + result);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
     }
     
     logger.debug("FINISH: handleTimeout()");
@@ -1013,7 +989,6 @@ public class LogExecutor {
     logger.debug("START: handleEPDGIMSFailure()");
 
     try {
-      rebootUE();
       restartEPDG();
       restartIMS();
     } catch (Exception e) {
