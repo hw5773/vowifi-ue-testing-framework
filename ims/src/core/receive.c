@@ -294,6 +294,7 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
 	if(likely(sr_msg_time == 1))
 		msg_set_time(msg);
 
+  LM_INFO("received buffer (len: %d bytes): %s\n", len, buf);
 	if(parse_msg(buf, len, msg) != 0) {
 		errsipmsg = 1;
 		evp.data = (void *)msg;

@@ -170,6 +170,7 @@ struct module_exports exports = {
 };
 
 static int mod_init(void) {
+  LM_INFO("mod_init() for ims_auth\n");
     registration_default_algorithm_type = get_algorithm_type(registration_default_algorithm);
 
 #ifdef STATISTICS

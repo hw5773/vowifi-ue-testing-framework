@@ -132,6 +132,10 @@
 static unsigned int* tcp_total_wq=0;
 #endif
 
+///// Added for VoWiFi /////
+#include <pthread.h>
+#include "sip_instance.h"
+////////////////////////////
 
 enum fd_types { F_NONE, F_SOCKINFO /* a tcp_listen fd */,
 				F_TCPCONN, F_TCPCHILD, F_PROC };
@@ -2007,6 +2011,7 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 		return -1;
 	}
 
+  LM_INFO("tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
 	port=su_getport(&dst->to);
 	try_local_port = (dst->send_sock)?dst->send_sock->port_no:0;
 	con_lifetime=cfg_get(tcp, tcp_cfg, con_lifetime);
@@ -4749,8 +4754,6 @@ static inline void tcpconn_destroy_all(void)
 	TCPCONN_UNLOCK;
 }
 
-
-
 /* tcp main loop */
 void tcp_main_loop()
 {
@@ -4833,6 +4836,21 @@ void tcp_main_loop()
 	/* initialize the cfg framework */
 	if (cfg_child_init()) goto error;
 
+  ///// Added for VoWiFi /////
+  int rc;
+  pthread_t *listener;
+  pthread_attr_t *attr;
+  attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
+  pthread_attr_init(attr);
+  pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
+
+  listener = (pthread_t *)calloc(1, sizeof(pthread_t));
+  rc = pthread_create(listener, attr, listener_run, NULL);
+
+  if (rc < 0)
+    perror("error in pthread create");
+  ////////////////////////////
+
 	/* main loop */
 	switch(io_h.poll_method){
 		case POLL_POLL:
@@ -4865,6 +4883,7 @@ void tcp_main_loop()
 #ifdef HAVE_EPOLL
 		case POLL_EPOLL_LT:
 			while(1){
+        LM_INFO("===== tcp_main.c: io_wait_loop_epoll() 1 =====\n");
 				io_wait_loop_epoll(&io_h, TCP_MAIN_SELECT_TIMEOUT, 0);
 				send_fd_queue_run(&send2child_q); /* then new io */
 				tcp_timer_run();
@@ -4872,6 +4891,7 @@ void tcp_main_loop()
 			break;
 		case POLL_EPOLL_ET:
 			while(1){
+        LM_INFO("===== tcp_main.c: io_wait_loop_epoll() 2 =====\n");
 				io_wait_loop_epoll(&io_h, TCP_MAIN_SELECT_TIMEOUT, 1);
 				send_fd_queue_run(&send2child_q); /* then new io */
 				tcp_timer_run();

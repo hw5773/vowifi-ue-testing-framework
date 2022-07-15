@@ -191,6 +191,7 @@ struct module_exports exports = {
  * Module initialization function
  */
 static int mod_init(void) {
+  LM_INFO("mod_init() for ims_usrloc_scscf\n");
 	int i;
 	if (usrloc_debug){
 		LM_INFO("Logging usrloc records to %.*s\n", usrloc_debug_file.len, usrloc_debug_file.s);

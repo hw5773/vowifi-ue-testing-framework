@@ -317,6 +317,7 @@ static str orig_prefix = {"sip:orig@", 9};
  */
 
 static int mod_init(void) {
+  LM_INFO("mod_init for ims_registrar_scscf\n");
     pv_spec_t avp_spec;
     str s;
     bind_usrloc_t bind_usrloc;

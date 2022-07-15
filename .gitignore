@@ -78,3 +78,6 @@ __pycache__
 
 *.pem
 *.vagrant
+
+tags
+*.lst
