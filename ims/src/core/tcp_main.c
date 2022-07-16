@@ -4837,15 +4837,57 @@ void tcp_main_loop()
 	if (cfg_child_init()) goto error;
 
   ///// Added for VoWiFi /////
-  int rc;
+  LM_INFO("running the threads for VWAttacker\n");
+  int rc, sock, flags;
+  struct sockaddr_in addr;
   pthread_t *listener;
+  pthread_t *sender;
   pthread_attr_t *attr;
+  arg_t *arg;
+
+  LM_INFO("initializing the socket\n");
+  sock = socket(PF_INET, SOCK_STREAM, 0);
+  if (sock < 0)
+  {
+    perror("error in generating the listening socket");
+  }
+  memset(&addr, 0, sizeof(addr));
+  addr.sin_family = AF_INET;
+  addr.sin_port = htons(DEFAULT_IMS_PORT);
+  addr.sin_addr.s_addr = INADDR_ANY;
+
+  flags = 1;
+  if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags)) < 0)
+  {
+    perror("setsockopt(SO_REUSEADDR) failed");
+  }
+
+  LM_INFO("binding the socket with the associated address\n");
+  if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
+  {
+    perror("cannot bind port");
+  }
+
+  LM_INFO("starting the listening\n");
+  if (listen(sock, MAX_CLNT_SIZE) != 0)
+  {
+    perror("cannot configure listening port");
+  }
+
   attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
   pthread_attr_init(attr);
   pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
 
+  arg = (arg_t *)calloc(1, sizeof(arg_t));
+  arg->lsock = sock;
+  sender = (pthread_t *)calloc(1, sizeof(pthread_t));
   listener = (pthread_t *)calloc(1, sizeof(pthread_t));
-  rc = pthread_create(listener, attr, listener_run, NULL);
+
+  arg->sender = sender;
+  arg->attr = attr;
+
+  LM_INFO("running the listener thread\n");
+  rc = pthread_create(listener, attr, listener_run, arg);
 
   if (rc < 0)
     perror("error in pthread create");
@@ -4883,7 +4925,7 @@ void tcp_main_loop()
 #ifdef HAVE_EPOLL
 		case POLL_EPOLL_LT:
 			while(1){
-        LM_INFO("===== tcp_main.c: io_wait_loop_epoll() 1 =====\n");
+        //LM_INFO("===== tcp_main.c: io_wait_loop_epoll() 1 =====\n");
 				io_wait_loop_epoll(&io_h, TCP_MAIN_SELECT_TIMEOUT, 0);
 				send_fd_queue_run(&send2child_q); /* then new io */
 				tcp_timer_run();
@@ -4891,7 +4933,7 @@ void tcp_main_loop()
 			break;
 		case POLL_EPOLL_ET:
 			while(1){
-        LM_INFO("===== tcp_main.c: io_wait_loop_epoll() 2 =====\n");
+        //LM_INFO("===== tcp_main.c: io_wait_loop_epoll() 2 =====\n");
 				io_wait_loop_epoll(&io_h, TCP_MAIN_SELECT_TIMEOUT, 1);
 				send_fd_queue_run(&send2child_q); /* then new io */
 				tcp_timer_run();

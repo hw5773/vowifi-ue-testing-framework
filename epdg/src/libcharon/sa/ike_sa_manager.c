@@ -479,6 +479,7 @@ struct private_ike_sa_manager_t {
   instance_t *instance;
   int asock; // accepted socket (when accepted, it is assigned)
   pthread_t *listener; // listener
+  pthread_t *sender; // sender
   pthread_attr_t *attr; 
   ////////////////////////////
 };
@@ -625,7 +626,8 @@ void *listener_run(void *data)
   instance = this->instance = init_instance(asock);
   printf("socket with LogExecutor is set: asock: %d\n", asock);
 
-  rc = pthread_create(this->listener, this->attr, sender_run, instance);
+  this->sender = (pthread_t *)calloc(1, sizeof(pthread_t));
+  rc = pthread_create(this->sender, this->attr, sender_run, instance);
 
   while (instance->running)
   {
@@ -2978,6 +2980,7 @@ ike_sa_manager_t *ike_sa_manager_create()
   addr.sin_port = htons(DEFAULT_EPDG_PORT);
   addr.sin_addr.s_addr = INADDR_ANY;
 
+  flags = 1
   if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags)) < 0)
   {
     perror("setsockopt(SO_REUSEADDR) failed");
@@ -2985,12 +2988,12 @@ ike_sa_manager_t *ike_sa_manager_create()
 
   if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
   {
-    perror("can't bind port");
+    perror("cannot bind port");
   }
 
   if (listen(sock, MAX_CLNT_SIZE) != 0)
   {
-    perror("can't configure listening port");
+    perror("cannot configure listening port");
   }
 
   this->lsock = sock;

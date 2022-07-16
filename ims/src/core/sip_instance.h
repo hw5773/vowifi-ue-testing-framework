@@ -30,6 +30,9 @@
 #define UPDATE  1
 #define NON_UPDATE 0
 
+#define DEFAULT_IMS_PORT 7779
+#define MAX_CLNT_SIZE 10
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -64,6 +67,13 @@ typedef struct query_st
   struct query_st *sub;
   struct query_st *next;
 } query_t;
+
+typedef struct arg_st
+{
+  int lsock;
+  pthread_t *sender;
+  pthread_attr_t *attr;
+} arg_t;
 
 typedef struct instance_st 
 {

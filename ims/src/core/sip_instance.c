@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include "sip_instance.h"
+#include "dprint.h"
 
 void *sender_run(void *data)
 {
@@ -116,12 +117,15 @@ void *listener_run(void *data)
   int depth;
   instance_t *instance;
   query_t *query;
+  arg_t *arg;
 
   query = NULL;
   depth = 0;
   ptype = 0;
+  arg = (arg_t *)data;
+  lsock = arg->lsock;
 
-  printf("running the listener socket thread: this->lsock: %d\n", lsock);
+  LM_INFO("running the listener socket thread: this->lsock: %d\n", lsock);
 
   asock = accept(lsock, (struct sockaddr *)&addr, &len);
 
@@ -130,15 +134,15 @@ void *listener_run(void *data)
     perror("socket failure");
   }
 
-  printf("accept the socket: asock: %d\n", asock);
+  LM_INFO("accept the socket: asock: %d\n", asock);
 
   flags = fcntl(asock, F_GETFL);
   fcntl(asock, F_SETFL, flags | O_NONBLOCK);
 
   instance = init_instance(asock);
-  printf("socket with LogExecutor is set: asock: %d\n", asock);
+  LM_INFO("socket with LogExecutor is set: asock: %d\n", asock);
 
-  rc = pthread_create(listener, attr, sender_run, instance);
+  rc = pthread_create(arg->sender, arg->attr, sender_run, instance);
   if (rc < 0)
     perror("error in pthread_create");
 
@@ -158,17 +162,17 @@ void *listener_run(void *data)
       }
       else if (rcvd == 0)
       {
-        printf("socket error happened()\n");
+        LM_ERR("socket error happened()\n");
         goto out;
       }
     }
 
-    printf("received message (%d bytes): %s\n", offset, buf);
+    LM_INFO("received message (%d bytes): %s\n", offset, buf);
 
     if (offset == strlen(HELLO_REQUEST) 
         && !strncmp((const char *)buf, HELLO_REQUEST, strlen(HELLO_REQUEST)))
     {
-      printf("received Hello from LogExecutor!\n");
+      LM_INFO("received Hello from LogExecutor!\n");
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -180,12 +184,12 @@ void *listener_run(void *data)
         if (sent > 0)
           offset += sent;
       }
-      printf("sent ACK to LogExecutor\n");
+      LM_INFO("sent ACK to LogExecutor\n");
     }
     else if (offset == strlen(RESET_REQUEST)
         && !strncmp((const char *)buf, RESET_REQUEST, strlen(RESET_REQUEST)))
     {
-      printf("receiver reset from LogExecutor!\n");
+      LM_INFO("receiver reset from LogExecutor!\n");
       instance->ispi = 0;
       instance->rspi = 0;
 
@@ -199,7 +203,7 @@ void *listener_run(void *data)
         if (sent > 0)
           offset += sent;
       }
-      printf("sent ACK to LogExecutor\n");
+      LM_INFO("sent ACK to LogExecutor\n");
     }
     else if (offset > 0)
     {
@@ -236,8 +240,8 @@ void *listener_run(void *data)
       snprintf((char *)spi, 17, "%.16"PRIx64, instance->ispi); 
       if (strncmp((const char *)ispi, (const char *)spi, 16))
       {
-        printf("ispi: %s, instance->ispi: %s\n", ispi, spi);
-        printf("ERROR: Initiator's SPIs are different\n");
+        LM_INFO("ispi: %s, instance->ispi: %s\n", ispi, spi);
+        LM_ERR("ERROR: Initiator's SPIs are different\n");
       }
 
       memcpy(rspi, p, 16);
@@ -245,8 +249,8 @@ void *listener_run(void *data)
       snprintf((char *)spi, 17, "%.16"PRIx64, instance->rspi); 
       if (strncmp((const char *)rspi, (const char *)spi, 16))
       {
-        printf("rspi: %s, instance->rspi: %s\n", rspi, spi);
-        printf("ERROR: Responder's SPIs are different\n");
+        LM_INFO("rspi: %s, instance->rspi: %s\n", rspi, spi);
+        LM_ERR("ERROR: Responder's SPIs are different\n");
       }
 
       // if offset == 1, it means that there is only '\n'
@@ -259,17 +263,17 @@ void *listener_run(void *data)
           switch (idx)
           {
             case 0:
-              printf("query: %p, name: %s\n", query, token);
+              LM_INFO("query: %p, name: %s\n", query, token);
               set_query_name(query, token);
               break;
 
             case 1:
-              printf("value type: %s\n", token);
+              LM_INFO("value type: %s\n", token);
               set_query_value_type(query, token);
               break;
 
             case 2:
-              printf("value: %s\n", token);
+              LM_INFO("value: %s\n", token);
               set_query_value(query, token);
               break;
 
@@ -312,7 +316,7 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   int ret;
 
   if (instance)
-    printf("\n[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n\n", instance->ispi, instance->rspi, ispi, rspi);
+    LM_INFO("\n[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n\n", instance->ispi, instance->rspi, ispi, rspi);
 
   if (!instance) 
     ret = 0;
@@ -404,7 +408,7 @@ void free_message(msg_t *msg)
 {
   if (msg)
   {
-    printf("msg: %p\n", msg);
+    LM_INFO("msg: %p\n", msg);
 
     if (msg->val)
     {
@@ -428,7 +432,7 @@ instance_t *init_instance(int asock)
   ret->finished = false;
   if (pthread_mutex_init(&(ret->slock), NULL) != 0)
   {
-    printf("initializing a mutex for the send queue failed\n");
+    LM_ERR("initializing a mutex for the send queue failed\n");
   }
 
   ret->running = 1;
@@ -589,10 +593,10 @@ void set_query_name(query_t *query, uint8_t *name)
   int nlen = (int) strlen((const char *)name);
   if (name[nlen-1] == '\n')
     nlen -= 1;
-  printf("set_query_name()> name: %s, nlen: %d\n", name, nlen);
+  LM_INFO("set_query_name()> name: %s, nlen: %d\n", name, nlen);
   query->name = (uint8_t *)calloc(nlen+1, sizeof(uint8_t));
   memcpy(query->name, name, nlen);
-  printf("set_query_name()> query->name: %s\n", query->name);
+  LM_INFO("set_query_name()> query->name: %s\n", query->name);
   query->nlen = nlen;
 }
 
@@ -616,7 +620,7 @@ uint8_t *get_query_value(query_t *query, int *vlen)
 void set_query_value(query_t *query, uint8_t *value)
 {
   int vlen = (int) strlen((const char *)value);
-  printf("set_query_value()> value: %s, vlen: %d\n", value, vlen);
+  LM_INFO("set_query_value()> value: %s, vlen: %d\n", value, vlen);
   if (value[vlen-1] == '\n')
     vlen -= 1;
   query->value = (uint8_t *)calloc(vlen+1, sizeof(uint8_t));
@@ -651,8 +655,8 @@ bool is_query_finished(instance_t *instance)
 
 query_t *get_query(instance_t *instance)
 {
-  printf("[VoWiFi] ike_sa_instance.c: instance: %p\n", instance);
-  printf("[VoWiFi] ike_sa_instance.c: instance->query: %p\n", instance->query);
+  LM_INFO("[VoWiFi] ike_sa_instance.c: instance: %p\n", instance);
+  LM_INFO("[VoWiFi] ike_sa_instance.c: instance->query: %p\n", instance->query);
   return instance->query;
 }
 
@@ -670,7 +674,7 @@ bool is_query_name(query_t *query, const uint8_t *name)
   if ((qlen == nlen) && !strncmp((const char *)qname, (const char *)name, qlen))
     ret = true;
 
-  printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
+  LM_INFO("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
 
   return ret;
 }
@@ -679,7 +683,7 @@ query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
 {
   query_t *ret, *curr;
 
-  printf("[VoWiFi] ike_sa_instance.c: get_sub_query_by_name(): query: %p, name: %s\n", query, name);
+  LM_INFO("[VoWiFi] ike_sa_instance.c: get_sub_query_by_name(): query: %p, name: %s\n", query, name);
   ret = NULL;
   curr = query->sub;
 

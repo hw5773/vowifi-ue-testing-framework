@@ -1356,7 +1356,7 @@ static int hep3_process_msg(char* tcpbuf, unsigned int len,
 		return -1;
 	}
 
-  LM_INFO("===== receive_msg() 1 =====\n");
+  //LM_INFO("===== receive_msg() 1 =====\n");
 	ret = receive_msg(msg.buf, msg.len, &msg.rcv);
 	LM_DBG("running hep3-enclosed sip request route returned %d\n", ret);
 	free_sip_msg(&msg);
@@ -1397,7 +1397,7 @@ int receive_tcp_msg(char* tcpbuf, unsigned int len,
 		if(unlikely(con->req.flags&F_TCP_REQ_HEP3))
 			return hep3_process_msg(tcpbuf, len, rcv_info, con);
 
-    LM_INFO("===== receive_msg() 2 =====\n");
+    //LM_INFO("===== receive_msg() 2 =====\n");
 		return receive_msg(tcpbuf, len, rcv_info);
 	}
 
@@ -1447,7 +1447,7 @@ int receive_tcp_msg(char* tcpbuf, unsigned int len,
 #endif
 	if(unlikely(con->req.flags&F_TCP_REQ_HEP3))
 		return hep3_process_msg(tcpbuf, len, rcv_info, con);
-  LM_INFO("===== receive_msg() 3 =====\n");
+  //LM_INFO("===== receive_msg() 3 =====\n");
 	return receive_msg(buf, len, rcv_info);
 #else /* TCP_CLONE_RCVBUF */
 #ifdef READ_MSRP
@@ -1461,7 +1461,7 @@ int receive_tcp_msg(char* tcpbuf, unsigned int len,
 	if(unlikely(con->req.flags&F_TCP_REQ_HEP3))
 		return hep3_process_msg(tcpbuf, len, rcv_info, con);
 
-  LM_INFO("===== receive_msg() 4 =====\n");
+  //LM_INFO("===== receive_msg() 4 =====\n");
 	return receive_msg(tcpbuf, len, rcv_info);
 #endif /* TCP_CLONE_RCVBUF */
 }
@@ -1614,7 +1614,7 @@ again:
 			// if (unlikely(req->flags&F_TCP_REQ_MSRP_FRAME)){
 			if (unlikely(req->state==H_MSRP_FINISH)){
 				/* msrp frame */
-        LM_INFO("===== receive_tcp_msg() 1 =====\n");
+        //LM_INFO("===== receive_tcp_msg() 1 =====\n");
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
 			}else
@@ -1623,7 +1623,7 @@ again:
 			if (unlikely(req->state==H_HTTP11_CHUNK_FINISH)){
 				/* http chunked request */
 				req->body[req->content_len] = 0;
-        LM_INFO("===== receive_tcp_msg() 2 =====\n");
+        //LM_INFO("===== receive_tcp_msg() 2 =====\n");
 				ret = receive_tcp_msg(req->start,
 						req->body + req->content_len - req->start,
 						&con->rcv, con);
@@ -1631,12 +1631,12 @@ again:
 #endif
 #ifdef READ_WS
 			if (unlikely(con->type == PROTO_WS || con->type == PROTO_WSS)){
-        LM_INFO("===== receive_tcp_msg() 3 =====\n");
+        //LM_INFO("===== receive_tcp_msg() 3 =====\n");
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
 			}else
 #endif
-        LM_INFO("===== receive_tcp_msg() here! =====\n");
+        //LM_INFO("===== receive_tcp_msg() here! =====\n");
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
 
@@ -1810,7 +1810,7 @@ again:
 #ifdef USE_TLS
 repeat_1st_read:
 #endif /* USE_TLS */
-      LM_INFO("===== tcp_read_req() 1 =====\n");
+      //LM_INFO("===== tcp_read_req() 1 =====\n");
 			resp=tcp_read_req(con, &n, &read_flags);
 			if (unlikely(resp<0)){
 				/* some error occurred, but on the new fd, not on the tcp
@@ -1869,7 +1869,7 @@ repeat_1st_read:
 #ifdef USE_TLS
 repeat_read:
 #endif /* USE_TLS */
-      LM_INFO("===== tcp_read_req() here! =====\n");
+      //LM_INFO("===== tcp_read_req() here! =====\n");
 			resp=tcp_read_req(con, &ret, &read_flags);
 			if (unlikely(resp<0)){
 read_error:
@@ -1982,14 +1982,14 @@ void tcp_receive_loop(int unix_sock)
 #ifdef HAVE_EPOLL
 		case POLL_EPOLL_LT:
 			while(1){
-        LM_INFO("===== tcp_read.c: io_wait_loop_epoll() here! =====\n");
+        //LM_INFO("===== tcp_read.c: io_wait_loop_epoll() here! =====\n");
 				io_wait_loop_epoll(&io_w, TCP_CHILD_SELECT_TIMEOUT, 0);
 				tcp_reader_timer_run();
 			}
 			break;
 		case POLL_EPOLL_ET:
 			while(1){
-        LM_INFO("===== tcp_read.c: io_wait_loop_epoll() 2 =====\n");
+        //LM_INFO("===== tcp_read.c: io_wait_loop_epoll() 2 =====\n");
 				io_wait_loop_epoll(&io_w, TCP_CHILD_SELECT_TIMEOUT, 1);
 				tcp_reader_timer_run();
 			}
