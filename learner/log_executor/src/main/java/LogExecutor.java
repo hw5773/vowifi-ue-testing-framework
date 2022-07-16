@@ -37,8 +37,8 @@ public class LogExecutor {
 
   int rebootCount = 0;
   int enableVoWiFiCount = 0;
-  int resetEPDGCount = 0;
-  int resetIMSCount = 0;
+  int initEPDGCount = 0;
+  int initIMSCount = 0;
 
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
@@ -56,7 +56,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    initIMSConnection();
+    //initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -200,7 +200,7 @@ public class LogExecutor {
     startIMS();
     sleep(COOLING_TIME);
     logger.debug("Invoke initIMSConnection()");
-    initEPDGConnection();
+    initIMSConnection();
 
     logger.debug("FINISH: restartIMS()");
   }
@@ -210,12 +210,22 @@ public class LogExecutor {
     int depth;
 
     depth = 0;
-    sendMessage(testcase, depth);
+    sendMessage(testcase, depth, "epdg");
 
     logger.debug("FINISH: sendMSGToEPDG()");
   }
 
-  private void sendMessage(Testcase testcase, int depth) {
+  private void sendMSGToIMS(Testcase testcase) {
+    logger.debug("START: sendMSGToEPDG()");
+    int depth;
+
+    depth = 0;
+    sendMessage(testcase, depth, "ims");
+
+    logger.debug("FINISH: sendMSGToEPDG()");
+  }
+
+  private void sendMessage(Testcase testcase, int depth, String receiver) {
     String name;
     String ispi, rspi;
     String msg;
@@ -249,8 +259,13 @@ public class LogExecutor {
       }
 
       msg += "\n";
-      epdgOut.write(msg);
-      epdgOut.flush();
+      if (receiver.startsWith("epdg")) {
+        epdgOut.write(msg);
+        epdgOut.flush();
+      } else if (receiver.startsWith("ims")) {
+        imsOut.write(msg);
+        imsOut.flush();
+      }
 
       print += name;
       if (testcase.hasValue()) {
@@ -262,7 +277,7 @@ public class LogExecutor {
       if (testcase.getHasSubTestcase()) {
         depth++;
         while (testcase.getHasNextSubTestcase()) {
-          sendMessage(testcase.getNextSubTestcase(), depth);
+          sendMessage(testcase.getNextSubTestcase(), depth, receiver);
         }
         depth--;
       }
@@ -279,10 +294,14 @@ public class LogExecutor {
         msg += ispi;
         msg += rspi;
         msg += "\n";
-        epdgOut.write(msg);
-        epdgOut.flush();
+        if (receiver.startsWith("epdg")) {
+          epdgOut.write(msg);
+          epdgOut.flush();
+        } else if (receiver.startsWith("ims")) {
+          imsOut.write(msg);
+          imsOut.flush();
+        }
       }
-
     } catch (SocketException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -345,7 +364,7 @@ public class LogExecutor {
 
       String result = new String();
       try {
-        sleep(2*1000);
+        sleep(1*1000);
         epdgOut.write("Hello\n");
         epdgOut.flush();
         System.out.println("Sent = Hello");
@@ -387,11 +406,15 @@ public class LogExecutor {
 
   public void initIMSConnection() {
     logger.debug("START: initIMSConnection()");
-    /*
+    
+    String imsControllerIPAddress = config.getIMSControllerIPAddress();
+    int imsPort = config.getIMSControllerPort();
+   
     try {
       // Initialize test service
       System.out.println("Connecting to IMS (S-CSCF)...");
-      imsSocket = new Socket(config.ims_controller_ip_address, config.ims_port);
+      System.out.println("IP address: " + imsControllerIPAddress + " / Port: " + imsPort);
+      imsSocket = new Socket(imsControllerIPAddress, imsPort);
       imsSocket.setTcpNoDelay(true);
       imsOut = new BufferedWriter(new OutputStreamWriter(imsSocket.getOutputStream()));
       imsIn = new BufferedReader(new InputStreamReader(imsSocket.getInputStream()));
@@ -419,7 +442,7 @@ public class LogExecutor {
       }
 
       if(result.startsWith("ACK")) {
-        logger.info("PASSED: Testing the connection between the statelearner and the ePDG");
+        logger.info("PASSED: Testing the connection between the statelearner and IMS (S-CSCF)");
       }
     } catch (UnknownHostException e) {
       e.printStackTrace();
@@ -435,7 +458,7 @@ public class LogExecutor {
       initIMSConnection();
     }
     System.out.println("Initialize the connection with IMS (S-CSCF) success");
-    */
+    
     logger.debug("FINISH: initIMSConnection()");
   }
 
@@ -510,6 +533,7 @@ public class LogExecutor {
 
       logger.info("RESULT: " + pair.getReplyName());
     }
+    logExecutor.post();
 
     if (exceptionOccured)
       pairs = null;
@@ -518,19 +542,19 @@ public class LogExecutor {
     return pairs;
   }
 
-  public boolean resetEPDG() {
-    logger.debug("START: resetEPDG()");
+  public boolean initEPDG() {
+    logger.debug("START: initEPDG()");
     String result = "";
     boolean ret = false;
 
-    logger.info("Sending symbol: reset to ePDG");
+    logger.info("Sending symbol: init to ePDG");
     try {
       sleep(COOLING_TIME);
-      epdgOut.write("reset\n");
+      epdgOut.write("init\n");
       epdgOut.flush();
-      resetEPDGCount++;
+      initEPDGCount++;
       result = epdgIn.readLine();
-      logger.info("ACK for resetEPDG(): " + result);
+      logger.info("ACK for initEPDG(): " + result);
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -540,32 +564,61 @@ public class LogExecutor {
     }
 
     if(result.contains("ACK")) {
-      logger.info("PASSED: Resetting the ePDG is succeeded");
-      logger.debug("FINISH: resetUE()");
+      logger.info("PASSED: Initializing the ePDG is succeeded");
       ret = true;
     } else {
-      logger.error("FAILED: Reseeting the ePDG is failed");
-      logger.debug("FINISH: resetUE()");
+      logger.error("FAILED: Initializing the ePDG is failed");
       ret = false;
     }
 
-    logger.debug("FINISH: resetEPDG()");
+    logger.debug("FINISH: initEPDG()");
     return ret;
   }
 
-  public boolean resetIMS() {
-    logger.debug("START: resetIMS()");
+  public boolean finEPDG() {
+    logger.debug("START: finEPDG()");
+    String result = "";
+    boolean ret = false;
+
+    logger.info("Sending symbol: reset to ePDG");
+    try {
+      epdgOut.write("fin\n");
+      epdgOut.flush();
+      result = epdgIn.readLine();
+      logger.info("ACK for finEPDG(): " + result);
+    } catch(SocketException e) {
+      e.printStackTrace();
+    } catch(IOException e) {
+      e.printStackTrace();
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+
+    if(result.contains("ACK")) {
+      logger.info("PASSED: Finalizing the ePDG is succeeded");
+      ret = true;
+    } else {
+      logger.error("FAILED: Finalizing the ePDG is failed");
+      ret = false;
+    }
+
+    logger.debug("FINISH: finEPDG()");
+    return ret;
+  }
+
+  public boolean initIMS() {
+    logger.debug("START: initIMS()");
     String result = "";
 
     /*
-    System.out.println("Sending symbol: RESET to IMS Server");
+    System.out.println("Sending symbol: init to IMS Server");
     try {
       sleep(1*1000);
-      imsOut.write("RESET " + resetIMSCount + "\n");
+      imsOut.write("RESET " + initIMSCount + "\n");
       imsOut.flush();
       result = imsIn.readLine();
-      logger.info("ACK for resetIMS(): " + result);
-      resetIMSCount++;
+      logger.info("ACK for initIMS(): " + result);
+      initIMSCount++;
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -574,8 +627,41 @@ public class LogExecutor {
       e.printStackTrace();
     }
     */
-    logger.debug("FINISH: resetIMS()");
+    logger.debug("FINISH: initIMS()");
     return true;
+  }
+
+  public boolean finIMS() {
+    logger.debug("START: finIMS()");
+    String result = "";
+    boolean ret = false;
+
+    /*
+    logger.info("Sending symbol: fin to IMS");
+    try {
+      imsOut.write("fin\n");
+      imsOut.flush();
+      result = epdgIn.readLine();
+      logger.info("ACK for finIMS(): " + result);
+    } catch(SocketException e) {
+      e.printStackTrace();
+    } catch(IOException e) {
+      e.printStackTrace();
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+
+    if(result.contains("ACK")) {
+      logger.info("PASSED: Finalizing the IMS is succeeded");
+      ret = true;
+    } else {
+      logger.error("FAILED: Finalizing the IMS is failed");
+      ret = false;
+    }
+    */
+
+    logger.debug("FINISH: finIMS()");
+    return ret;
   }
 
   public boolean resetUE() {
@@ -729,7 +815,7 @@ public class LogExecutor {
 
       while (enabled == false && retry > 0) {
         if (sendDisableWiFi()) {
-          if (resetEPDG()) {
+          if (initEPDG()) {
             enabled = sendEnableWiFi();
           }
         }
@@ -879,41 +965,6 @@ public class LogExecutor {
     return mlog;
   }
 
-	public QueryReplyPair step(Testcase testcase) {
-    logger.debug("START: step()");
-    MessageLog query, reply;
-    QueryReplyPair pair;
-    String tname = testcase.getName();
-    String qname, rname;
-    boolean ret;
-    logger.info("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
-    
-		try {
-			sleep(50); //50 milliseconds
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		if(tname.startsWith("enable_vowifi")) {
-      logger.info("sendEnableVoWiFi()");
-  		sendEnableVoWiFi();
-      query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
-      query.setName("enable_vowifi");
-    } else {
-      logger.info("sendMSGToEPDG()");
-  		sendMSGToEPDG(testcase);
-      query = processResult(testcase);
-    }
-    reply = processResult(testcase);
-    rname = reply.getName();
-
-	  logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
-    pair = new QueryReplyPair(testcase, query, reply, logger);
-    
-    logger.debug("FINISH: step()");
-		return pair;
-	}
-
   public void pre() {
     logger.debug("START: pre()");
     
@@ -939,7 +990,7 @@ public class LogExecutor {
           trial = 0;
           do {
             trial++;
-            ret = resetIMS();
+            ret = initIMS();
           } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
 
           if (trial == DEFAULT_NUMBER_OF_TRIALS) {
@@ -962,6 +1013,55 @@ public class LogExecutor {
 
     logger.debug("FINISH: pre()");
 	}
+
+	public QueryReplyPair step(Testcase testcase) {
+    logger.debug("START: step()");
+    MessageLog query, reply;
+    QueryReplyPair pair;
+    String tname = testcase.getName();
+    String receiver = testcase.getReceiver();
+    String qname, rname;
+    boolean ret;
+    logger.info("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
+    
+		try {
+			sleep(50); //50 milliseconds
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+    if (receiver.startsWith("epdg")) {
+      logger.info("sendMSGToEPDG()");
+  		sendMSGToEPDG(testcase);
+      query = processResult(testcase);
+    } else if (receiver.startsWith("ims")) {
+      logger.info("sendMSGToIMS()");
+      sendMSGToIMS(testcase);
+      query = processResult(testcase);
+    } else {
+      logger.info("sendEnableVoWiFi(): enable_vowifi");
+  		sendEnableVoWiFi();
+      query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+      query.setName("enable_vowifi");
+    }
+    reply = processResult(testcase);
+    rname = reply.getName();
+
+	  logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
+    pair = new QueryReplyPair(testcase, query, reply, logger);
+    
+    logger.debug("FINISH: step()");
+		return pair;
+	}
+
+  public void post() {
+    logger.debug("START: post()");
+
+    finEPDG();
+    finIMS();
+
+    logger.debug("FINISH: post()");
+  }
 
   public void handleTimeout(){
     logger.debug("START: handleTimeout()");
@@ -1070,9 +1170,9 @@ public class LogExecutor {
   public static void startIMS() {
     logger.debug("START: startIMS()");
 
-    String imsStartCmd = config.getIMSStartCmd();
-    logger.info("start IMS Server by " + imsStartCmd);
-    runProcess(imsStartCmd);
+    //String imsStartCmd = config.getIMSStartCmd();
+    //logger.info("start IMS Server by " + imsStartCmd);
+    //runProcess(imsStartCmd);
 
     logger.debug("FINISH: startIMS()");
   }

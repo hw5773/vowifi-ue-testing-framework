@@ -1,6 +1,6 @@
 ///// Added for VoWiFi /////
-#ifndef IKE_SA_INSTANCE_H__
-#define IKE_SA_INSTANCE_H__
+#ifndef __IKE_SA_INSTANCE_H__
+#define __IKE_SA_INSTANCE_H__
 
 #ifndef MAX_MESSAGE_LEN
 #define MAX_MESSAGE_LEN 1514
@@ -24,7 +24,8 @@
 #define VAL_LENGTH_UINT16 2
 
 #define HELLO_REQUEST "Hello\n"
-#define RESET_REQUEST "reset\n"
+#define RESET_REQUEST "init\n"
+#define FIN_REQUEST "fin\n"
 #define ACK_RESPONSE "ACK\n"
 
 #define UPDATE  1
@@ -82,6 +83,7 @@ typedef struct instance_st
   query_t *curr;
 
   int running;
+  bool initiated;
   bool finished;
 } instance_t;
 
@@ -124,5 +126,5 @@ void *listener_run(void *data);
 
 int int_to_char(int num, uint8_t *str, int base);
 int char_to_int(char *str, int slen, int base);
-#endif /* IKE_SA_INSTANCE_H__ */
+#endif /* __IKE_SA_INSTANCE_H__ */
 ///////////////////////

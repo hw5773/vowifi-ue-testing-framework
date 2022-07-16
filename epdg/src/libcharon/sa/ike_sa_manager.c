@@ -548,8 +548,8 @@ void *sender_run(void *data)
         {
           tint = *((uint16_t *)(msg->val));
           tlen = int_to_char(tint, tmp, 10);
-          printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
-              *((uint16_t *)(msg->val)), tint, tlen);
+          //printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
+          //    *((uint16_t *)(msg->val)), tint, tlen);
           memcpy(p, tmp, tlen);
           p += tlen;
         }
@@ -567,7 +567,7 @@ void *sender_run(void *data)
       offset = 0;
 
       ///// for the debug purpose
-      printf("Type: %d > %s", buf[0], buf + 1);
+      //printf("Type: %d > %s", buf[0], buf + 1);
 
       while (offset < tbs)
       {
@@ -580,7 +580,6 @@ void *sender_run(void *data)
     }
   }
 
-out:
   return NULL;
 }
 
@@ -599,7 +598,6 @@ void *listener_run(void *data)
   uint8_t spi[17] = {0, };
   int depth;
   instance_t *instance;
-  msg_t *msg;
   query_t *query;
 
   query = NULL;
@@ -628,6 +626,8 @@ void *listener_run(void *data)
 
   this->sender = (pthread_t *)calloc(1, sizeof(pthread_t));
   rc = pthread_create(this->sender, this->attr, sender_run, instance);
+  if (rc < 0)
+    perror("error in pthread_create()");
 
   while (instance->running)
   {
@@ -672,9 +672,32 @@ void *listener_run(void *data)
     else if (offset == strlen(RESET_REQUEST)
         && !strncmp(buf, RESET_REQUEST, strlen(RESET_REQUEST)))
     {
-      printf("receiver reset from LogExecutor!\n");
+      printf("received reset from LogExecutor!\n");
       instance->ispi = 0;
       instance->rspi = 0;
+      if (instance->query)
+        free_query(instance->query);
+      instance->query = NULL;
+      instance->finished = false;
+      instance->initiated = true;
+
+      tbs = strlen(ACK_RESPONSE);
+      offset = 0;
+      memcpy(buf, ACK_RESPONSE, tbs);
+
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      printf("sent ACK to LogExecutor\n");
+    }
+    else if (offset == strlen(FIN_REQUEST)
+        && !strncmp(buf, FIN_REQUEST, strlen(FIN_REQUEST)))
+    {
+      printf("received fin from LogExecutor!\n");
+      instance->finished = true;
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -716,7 +739,7 @@ void *listener_run(void *data)
           break;
       }
       ptype = mtype;
-        
+      
       offset -= 1;
       memcpy(ispi, p, 16);
       p += 16; offset -= 16;
@@ -785,7 +808,9 @@ void *listener_run(void *data)
         }
         printf("sent ACK to LogExecutor\n");
         */
+        printf(">>>>> before set_query()\n");
         instance->set_query(instance, query);
+        printf(">>>>> after set_query()\n");
       }
     }
   }
@@ -1743,7 +1768,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
             ispi = id->get_initiator_spi(id);
             rspi = id->get_responder_spi(id);
             
-            printf("\n\n===== ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64") =====\n\n\n",
+            printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
                 ike_sa, ispi, rspi);
 
             if (check_instance(this->instance, ispi, rspi, UPDATE))

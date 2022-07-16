@@ -7,7 +7,7 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   int ret;
 
   if (instance)
-    printf("\n[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n\n", instance->ispi, instance->rspi, ispi, rspi);
+    printf("[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", instance->ispi, instance->rspi, ispi, rspi);
 
   if (!instance) 
     ret = 0;
@@ -120,6 +120,7 @@ instance_t *init_instance(int asock)
   ret->add_message_to_send_queue = _add_message_to_send_queue;
   ret->fetch_message_from_send_queue = _fetch_message_from_send_queue;
   ret->set_query = _set_query;
+  ret->initiated = false;
   ret->finished = false;
   if (pthread_mutex_init(&(ret->slock), NULL) != 0)
   {
@@ -346,9 +347,34 @@ bool is_query_finished(instance_t *instance)
 
 query_t *get_query(instance_t *instance)
 {
-  printf("[VoWiFi] ike_sa_instance.c: instance: %p\n", instance);
-  printf("[VoWiFi] ike_sa_instance.c: instance->query: %p\n", instance->query);
-  return instance->query;
+  volatile bool wait;
+  query_t *ret;
+
+  ret = NULL;
+  printf("instance->initiated: %d\n", instance->initiated);
+  printf("instance->finished: %d\n", instance->finished);
+  if (instance->initiated && !instance->finished)
+  {
+    wait = !instance->query && instance->initiated && !instance->finished;
+
+    while (wait)
+    {
+      sleep(0.1);
+      printf("instance->query: %d\n", !instance->query);
+      printf("instance->initiated: %d\n", instance->initiated);
+      printf("instance->finished: %d\n", instance->finished);
+
+      if (instance->query || instance->finished) 
+        wait = false;
+    }
+
+    if (instance->finished)
+      ret = NULL;
+    else
+      ret = instance->query;
+  }
+
+  return ret;
 }
 
 bool is_query_name(query_t *query, const uint8_t *name)

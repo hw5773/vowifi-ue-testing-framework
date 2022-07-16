@@ -432,7 +432,13 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 		}
 		sa_payload = sa_payload_create_from_proposal_v2(this->proposal);
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
-      report_sa_payload(sa_payload, instance, ispi, rspi);
+    {
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response"))
+      {
+        report_sa_payload(sa_payload, instance, ispi, rspi);
+      }
+    }
 	}
 	message->add_payload(message, (payload_t*)sa_payload);
 

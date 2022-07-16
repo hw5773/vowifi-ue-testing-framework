@@ -142,6 +142,10 @@ class Testcase {
       setTestcaseType(TestcaseType.PAYLOAD);
   }
 
+  Testcase(TestcaseType type, Log logger) {
+    this(null, type, null, logger);
+  }
+
   TestcaseType getTestcaseType() {
     return this.type;
   }
@@ -159,7 +163,7 @@ class Testcase {
   }
 
   String getReceiver() {
-    return receiver;
+    return this.receiver;
   }
 
   void setReceiver(String receiver) {

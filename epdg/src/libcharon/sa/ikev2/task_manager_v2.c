@@ -886,6 +886,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   ///// Added for VoWiFi /////
   instance_t *instance;
   msg_t *msg;
+  query_t *query;
   uint64_t ispi, rspi;
 
   instance = this->ike_sa->get_instance(this->ike_sa);
@@ -907,14 +908,25 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	message->set_request(message, FALSE);
 
   ///// Added for VoWiFi /////
+  printf("\n\n>>>>> build_response(): before check_instance()\n\n\n");
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
 		switch (message->get_exchange_type(message)) 
     {
       case IKE_SA_INIT:
-        msg = init_message(instance, MSG_TYPE_BLOCK_START, 
-            "ike_sa_init_response", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        instance->add_message_to_send_queue(instance, msg);
+        printf("\n\n>>>>> check_instance! before get_query()\n\n\n");
+        if ((query = get_query(instance))
+            && is_query_name(query, "ike_sa_init_response"))
+        {
+          printf("\n\nget query!\n\n\n");
+          msg = init_message(instance, MSG_TYPE_BLOCK_START, 
+              "ike_sa_init_response", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+          instance->add_message_to_send_queue(instance, msg);
+        }
+        else
+        {
+          printf("\n\ncannot get query!\n\n\n");
+        }
         break;
       default:
         break;
@@ -984,10 +996,14 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		switch (message->get_exchange_type(message))
     {
       case IKE_SA_INIT:
-        msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-            NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        instance->add_message_to_send_queue(instance, msg);
-        printf("have added the message to the send queue\n");
+        if ((query = get_query(instance))
+            && is_query_name(query, "ike_sa_init_response"))
+        {
+          msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+              NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+          instance->add_message_to_send_queue(instance, msg);
+          printf("have added the message to the send queue\n");
+        }
         break;
       default:
         break;
