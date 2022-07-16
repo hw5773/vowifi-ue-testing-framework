@@ -4839,22 +4839,22 @@ void tcp_main_loop()
   ///// Added for VoWiFi /////
   LM_INFO("running the threads for VWAttacker\n");
   int rc, sock, flags;
-  struct sockaddr_in addr;
+  struct sockaddr_in6 addr;
   pthread_t *listener;
   pthread_t *sender;
   pthread_attr_t *attr;
   arg_t *arg;
 
   LM_INFO("initializing the socket\n");
-  sock = socket(PF_INET, SOCK_STREAM, 0);
+  sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
   if (sock < 0)
   {
     perror("error in generating the listening socket");
   }
   memset(&addr, 0, sizeof(addr));
-  addr.sin_family = AF_INET;
-  addr.sin_port = htons(DEFAULT_IMS_PORT);
-  addr.sin_addr.s_addr = INADDR_ANY;
+  addr.sin6_family = AF_INET6;
+  addr.sin6_addr = in6addr_any;
+  addr.sin6_port = htons(DEFAULT_IMS_PORT);
 
   flags = 1;
   if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags)) < 0)
@@ -4862,7 +4862,7 @@ void tcp_main_loop()
     perror("setsockopt(SO_REUSEADDR) failed");
   }
 
-  LM_INFO("binding the socket with the associated address\n");
+  LM_INFO("binding the socket with the associated address (port: %d)\n", DEFAULT_IMS_PORT);
   if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
   {
     perror("cannot bind port");
@@ -4886,7 +4886,7 @@ void tcp_main_loop()
   arg->sender = sender;
   arg->attr = attr;
 
-  LM_INFO("running the listener thread\n");
+  LM_INFO("running the listener thread: opened socket: %d\n", sock);
   rc = pthread_create(listener, attr, listener_run, arg);
 
   if (rc < 0)
