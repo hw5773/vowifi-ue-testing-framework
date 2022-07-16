@@ -2980,7 +2980,7 @@ ike_sa_manager_t *ike_sa_manager_create()
   addr.sin_port = htons(DEFAULT_EPDG_PORT);
   addr.sin_addr.s_addr = INADDR_ANY;
 
-  flags = 1
+  flags = 1;
   if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags)) < 0)
   {
     perror("setsockopt(SO_REUSEADDR) failed");

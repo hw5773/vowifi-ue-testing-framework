@@ -844,7 +844,6 @@ static int init_mod( struct sr_module* m )
 		 */
 		if (init_mod(m->next)!=0) return -1;
 			if (m->exports.init_mod_f) {
-				LM_INFO("init_mod(): %s\n", m->exports.name);
 				if (m->exports.init_mod_f()!=0) {
 					LM_ERR("Error while initializing module %s (%s)\n",
 								m->exports.name, m->path);
