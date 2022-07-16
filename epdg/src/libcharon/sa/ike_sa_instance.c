@@ -347,26 +347,22 @@ bool is_query_finished(instance_t *instance)
 
 query_t *get_query(instance_t *instance)
 {
-  volatile bool wait;
   query_t *ret;
 
   ret = NULL;
-  printf("instance->initiated: %d\n", instance->initiated);
-  printf("instance->finished: %d\n", instance->finished);
   if (instance->initiated && !instance->finished)
   {
-    wait = !instance->query && instance->initiated && !instance->finished;
-
-    while (wait)
+    printf("[VoWiFi] before the while loop\n");
+    while (!instance->query)
     {
-      sleep(0.1);
-      printf("instance->query: %d\n", !instance->query);
-      printf("instance->initiated: %d\n", instance->initiated);
-      printf("instance->finished: %d\n", instance->finished);
+      printf("[VoWiFi] instance->query: %d\n", !instance->query);
+      printf("[VoWiFi] instance->initiated: %d\n", instance->initiated);
+      printf("[VoWiFi] instance->finished: %d\n", instance->finished);
 
-      if (instance->query || instance->finished) 
-        wait = false;
+      if (instance->finished) 
+        break;
     }
+    printf("[VoWiFi] after the while loop\n");
 
     if (instance->finished)
       ret = NULL;

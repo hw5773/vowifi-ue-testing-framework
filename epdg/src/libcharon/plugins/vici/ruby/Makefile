@@ -158,18 +158,18 @@ EASY_INSTALL =
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
-EGREP = /usr/bin/grep -E
+EGREP = /bin/grep -E
 EXEEXT = 
-FGREP = /usr/bin/grep -F
+FGREP = /bin/grep -F
 FUZZING_CFLAGS = 
 FUZZING_LDFLAGS = 
 GEM = 
 GENHTML = 
 GIT_VERSION = UNKNOWN
-GPERF = /usr/bin/gperf
-GPERF_LEN_TYPE = size_t
+GPERF = 
+GPERF_LEN_TYPE = 
 GPRBUILD = 
-GREP = /usr/bin/grep
+GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -190,7 +190,7 @@ LTLIBOBJS =
 LT_SYS_LIBRARY_PATH = 
 MAKEINFO = ${SHELL} /home/hyun/vowifi-core-network/epdg/missing makeinfo
 MANIFEST_TOOL = :
-MKDIR_P = /usr/bin/mkdir -p
+MKDIR_P = /bin/mkdir -p
 MYSQLCFLAG = 
 MYSQLCONFIG = 
 MYSQLLIB = 
@@ -230,7 +230,7 @@ PY_TEST =
 RANLIB = ranlib
 RTLIB = 
 RUBYGEMDIR = 
-SED = /usr/bin/sed
+SED = /bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
 SOCKLIB = 
@@ -487,8 +487,8 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-install-data-local:
 uninstall-local:
+install-data-local:
 clean: clean-am
 
 clean-am: clean-generic clean-libtool clean-local mostlyclean-am

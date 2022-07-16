@@ -908,7 +908,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	message->set_request(message, FALSE);
 
   ///// Added for VoWiFi /////
-  printf("\n\n>>>>> build_response(): before check_instance()\n\n\n");
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
 		switch (message->get_exchange_type(message)) 
