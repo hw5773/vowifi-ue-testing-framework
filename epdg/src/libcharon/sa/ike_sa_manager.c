@@ -810,6 +810,7 @@ void *listener_run(void *data)
         */
         printf(">>>>> before set_query()\n");
         instance->set_query(instance, query);
+        query = NULL;
         printf(">>>>> after set_query()\n");
       }
     }

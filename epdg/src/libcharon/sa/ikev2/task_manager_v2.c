@@ -908,28 +908,80 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	message->set_request(message, FALSE);
 
   ///// Added for VoWiFi /////
+  const uint8_t *symbol;
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-		switch (message->get_exchange_type(message)) 
+    if ((query = get_query(instance)))
     {
-      case IKE_SA_INIT:
-        printf("\n\n>>>>> check_instance! before get_query()\n\n\n");
-        if ((query = get_query(instance))
-            && is_query_name(query, "ike_sa_init_response"))
-        {
-          printf("\n\nget query!\n\n\n");
-          msg = init_message(instance, MSG_TYPE_BLOCK_START, 
-              "ike_sa_init_response", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-          instance->add_message_to_send_queue(instance, msg);
-        }
-        else
-        {
-          printf("\n\ncannot get query!\n\n\n");
-        }
-        break;
-      default:
-        break;
+		  switch (message->get_exchange_type(message)) 
+      {
+        case IKE_SA_INIT:
+          if (is_query_name(query, "ike_sa_init_response"))
+          {
+            symbol = "ike_sa_init_response";
+            instance->sprev = "ike_sa_init_response";
+          }
+          else
+          {
+            symbol = "error in ike_sa_init";
+            instance->sprev = "error";
+          }
+          break;
+
+        case IKE_AUTH:
+          printf("\n\n[VoWiFi/IKE_AUTH] instance->sprev: %s\n\n\n", instance->sprev);
+          if (is_query_name(query, "ike_auth_1_response")
+              && (!strncmp(instance->sprev, "ike_sa_init_response", strlen("ike_sa_init_response"))))
+          {
+            symbol = "ike_auth_1_response";
+            instance->sprev = "ike_auth_1_response";
+          }
+          else if (is_query_name(query, "ike_auth_2_response")
+              && (!strncmp(instance->sprev, "ike_auth_1_response", strlen("ike_auth_1_response"))))
+          {
+            symbol = "ike_auth_2_response";
+            instance->sprev = "ike_auth_2_response";
+          }
+          else if (is_query_name(query, "ike_auth_3_response")
+              && (!strncmp(instance->sprev, "ike_auth_2_response", strlen("ike_auth_2_response"))))
+          {
+            symbol = "ike_auth_3_response";
+            instance->sprev = "ike_auth_3_response";
+          }
+          else if (is_query_name(query, "ike_auth_4_response")
+              && (!strncmp(instance->sprev, "ike_auth_3_response", strlen("ike_auth_3_response"))))
+          {
+            symbol = "ike_auth_4_response";
+            instance->sprev = "ike_auth_4_response";
+          }
+          else if (is_query_name(query, "ike_auth_5_response")
+              && (!strncmp(instance->sprev, "ike_auth_4_response", strlen("ike_auth_4_response"))))
+          {
+            symbol = "ike_auth_5_response";
+            instance->sprev = "ike_auth_5_response";
+          }
+          else
+          {
+            symbol = "error in ike_auth";
+            instance->sprev = "error";
+          }
+          break;
+  
+		    case CREATE_CHILD_SA:
+      	case INFORMATIONAL:
+        default:
+          symbol = "error in exchange_type";
+          instance->sprev = "error";
+      }
     }
+    else
+    {
+      symbol = "error in query";
+      instance->sprev = "error";
+    }
+    msg = init_message(instance, MSG_TYPE_BLOCK_START, 
+        symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
   }
   ///////////////////////////
 
@@ -992,21 +1044,9 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-		switch (message->get_exchange_type(message))
-    {
-      case IKE_SA_INIT:
-        if ((query = get_query(instance))
-            && is_query_name(query, "ike_sa_init_response"))
-        {
-          msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-              NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-          instance->add_message_to_send_queue(instance, msg);
-          printf("have added the message to the send queue\n");
-        }
-        break;
-      default:
-        break;
-    }
+    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
   }
   ////////////////////////////
 
@@ -1273,18 +1313,59 @@ static status_t process_request(private_task_manager_t *this,
 	}
 
   ///// Added for VoWiFi /////
+  const uint8_t *symbol;
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
 		switch (message->get_exchange_type(message)) 
     {
       case IKE_SA_INIT:
-        msg = init_message(instance, MSG_TYPE_BLOCK_START, 
-            "ike_sa_init_request", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        instance->add_message_to_send_queue(instance, msg);
+        symbol = "ike_sa_init_request";
+        instance->rprev = "ike_sa_init_request";
         break;
+
+      case IKE_AUTH:
+        if (!strncmp(instance->rprev, "ike_sa_init_request", strlen("ike_sa_init_request")))
+        {
+          symbol = "ike_auth_1_request";
+          instance->rprev = "ike_auth_1_request";
+        }
+        else if (!strncmp(instance->rprev, "ike_auth_1_request", strlen("ike_auth_1_request")))
+        {
+          symbol = "ike_auth_2_request";
+          instance->rprev = "ike_auth_2_request";
+        }
+        else if (!strncmp(instance->rprev, "ike_auth_2_request", strlen("ike_auth_2_request")))
+        {
+          symbol = "ike_auth_3_request";
+          instance->rprev = "ike_auth_3_request";
+        }
+        else if (!strncmp(instance->rprev, "ike_auth_3_request", strlen("ike_auth_3_request")))
+        {
+          symbol = "ike_auth_4_request";
+          instance->rprev = "ike_auth_4_request";
+        }
+        else if (!strncmp(instance->rprev, "ike_auth_4_request", strlen("ike_auth_4_request")))
+        {
+          symbol = "ike_auth_5_request";
+          instance->rprev = "ike_auth_5_request";
+        }
+        else
+        {
+          symbol = "error in ike_auth";
+          instance->rprev = "error";
+        }
+        break;
+
+			case CREATE_CHILD_SA:
+			case INFORMATIONAL:
       default:
-        break;
+        symbol = "error in exchange_type";
+        instance->rprev = "error";
     }
+    msg = init_message(instance, MSG_TYPE_BLOCK_START,
+        symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
+
   }
   ///////////////////////////
 
@@ -1357,21 +1438,13 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-		switch (message->get_exchange_type(message))
-    {
-      case IKE_SA_INIT:
-        msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-            NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        instance->add_message_to_send_queue(instance, msg);
-        printf("have added the message to the send queue\n");
-        break;
-      default:
-        break;
-    }
+    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
+    printf("have added the message to the send queue\n");
   }
   ////////////////////////////
 
-  // TODO: Needs to check and understand build_response()
 	return build_response(this, message);
 }
 

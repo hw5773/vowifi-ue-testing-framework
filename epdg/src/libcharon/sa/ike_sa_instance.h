@@ -85,6 +85,9 @@ typedef struct instance_st
   int running;
   bool initiated;
   bool finished;
+
+  const uint8_t *rprev;
+  const uint8_t *sprev;
 } instance_t;
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);

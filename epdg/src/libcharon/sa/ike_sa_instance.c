@@ -362,6 +362,17 @@ query_t *get_query(instance_t *instance)
       if (instance->finished) 
         break;
     }
+
+    /*
+    while (is_query_name(instance->query, instance->sprev))
+    {
+      printf("[VoWiFi] instance->query->name: %s\n", instance->query->name);
+      printf("[VoWiFi] instance->sprev: %s\n", instance->sprev);
+
+      if (instance->finished) 
+        break;
+    }
+    */
     printf("[VoWiFi] after the while loop\n");
 
     if (instance->finished)
@@ -380,14 +391,17 @@ bool is_query_name(query_t *query, const uint8_t *name)
   bool ret;
 
   ret = false;
-  qname = query->name;
-  qlen = query->nlen;
-  nlen = (int) strlen(name);
+  if (name)
+  {
+    qname = query->name;
+    qlen = query->nlen;
+    nlen = (int) strlen(name);
 
-  if ((qlen == nlen) && !strncmp(qname, name, qlen))
-    ret = true;
+    if ((qlen == nlen) && !strncmp(qname, name, qlen))
+      ret = true;
 
-  printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
+    printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
+  }
 
   return ret;
 }

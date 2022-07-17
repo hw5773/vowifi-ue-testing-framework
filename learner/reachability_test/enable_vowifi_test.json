@@ -1,0 +1,12 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi"
+        }
+      ]
+    }
+  ]
+}
