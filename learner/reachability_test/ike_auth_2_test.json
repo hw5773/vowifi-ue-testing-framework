@@ -1,0 +1,24 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response"
+        }
+      ]
+    }
+  ]
+}
