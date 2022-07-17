@@ -348,6 +348,7 @@ bool is_query_finished(instance_t *instance)
 query_t *get_query(instance_t *instance)
 {
   query_t *ret;
+  query_t *query;
 
   ret = NULL;
   if (instance->initiated && !instance->finished)
@@ -355,25 +356,44 @@ query_t *get_query(instance_t *instance)
     printf("[VoWiFi] before the while loop\n");
     while (!instance->query)
     {
-      printf("[VoWiFi] instance->query: %d\n", !instance->query);
-      printf("[VoWiFi] instance->initiated: %d\n", instance->initiated);
-      printf("[VoWiFi] instance->finished: %d\n", instance->finished);
+      printf("[VoWiFi] instance->query: %p\n", instance->query);
 
       if (instance->finished) 
         break;
-    }
 
-    /*
-    while (is_query_name(instance->query, instance->sprev))
+      sleep(1);
+    }
+    printf("[VoWiFi] after the while loop\n");
+
+    if (instance->finished)
+      ret = NULL;
+    else
+      ret = instance->query;
+  }
+
+  return ret;
+}
+
+query_t *get_next_query(instance_t *instance)
+{
+  query_t *ret;
+  query_t *query;
+  ret = NULL;
+
+  if (instance->initiated && !instance->finished)
+  {
+    query = get_query(instance);
+    while (is_query_name(query, instance->sprev))
     {
       printf("[VoWiFi] instance->query->name: %s\n", instance->query->name);
       printf("[VoWiFi] instance->sprev: %s\n", instance->sprev);
 
       if (instance->finished) 
         break;
+
+      sleep(1);
+      query = get_query(instance);
     }
-    */
-    printf("[VoWiFi] after the while loop\n");
 
     if (instance->finished)
       ret = NULL;
@@ -391,7 +411,7 @@ bool is_query_name(query_t *query, const uint8_t *name)
   bool ret;
 
   ret = false;
-  if (name)
+  if (query && name)
   {
     qname = query->name;
     qlen = query->nlen;
@@ -400,7 +420,7 @@ bool is_query_name(query_t *query, const uint8_t *name)
     if ((qlen == nlen) && !strncmp(qname, name, qlen))
       ret = true;
 
-    printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
+    //printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
   }
 
   return ret;

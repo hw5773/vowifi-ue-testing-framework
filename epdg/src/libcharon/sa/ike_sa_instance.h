@@ -121,6 +121,7 @@ bool has_query(instance_t *instance);
 bool wait_query(instance_t *instance);
 bool is_query_finished(instance_t *instance);
 query_t *get_query(instance_t *instance);
+query_t *get_next_query(instance_t *instance);
 bool is_query_name(query_t *query, const uint8_t *name);
 query_t *get_sub_query_by_name(query_t *query, const uint8_t *name);
 

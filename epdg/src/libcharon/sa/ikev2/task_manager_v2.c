@@ -911,8 +911,9 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   const uint8_t *symbol;
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    if ((query = get_query(instance)))
+    if ((query = get_next_query(instance)))
     {
+      printf("\n\n[VoWiFi] query name: %s, instance->sprev: %s\n\n\n", query->name, instance->sprev);
 		  switch (message->get_exchange_type(message)) 
       {
         case IKE_SA_INIT:
