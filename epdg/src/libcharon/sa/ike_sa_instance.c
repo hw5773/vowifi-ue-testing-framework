@@ -99,8 +99,6 @@ void free_message(msg_t *msg)
 {
   if (msg)
   {
-    printf("msg: %p\n", msg);
-
     if (msg->val)
     {
       free(msg->val);
