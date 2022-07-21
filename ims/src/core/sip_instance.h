@@ -68,13 +68,6 @@ typedef struct query_st
   struct query_st *next;
 } query_t;
 
-typedef struct arg_st
-{
-  int lsock;
-  pthread_t *sender;
-  pthread_attr_t *attr;
-} arg_t;
-
 typedef struct instance_st 
 {
   int asock;
@@ -83,9 +76,6 @@ typedef struct instance_st
 
   int slast;
   msg_t *sendq[MAX_QUEUE_LEN];
-  int (*add_message_to_send_queue)(struct instance_st *instance, msg_t *msg);
-  msg_t *(*fetch_message_from_send_queue)(struct instance_st *instance);
-  void (*set_query)(struct instance_st *instance, query_t *query);
   pthread_mutex_t slock;
 
   query_t *query;
@@ -95,11 +85,19 @@ typedef struct instance_st
   bool finished;
 } instance_t;
 
+typedef struct arg_st
+{
+  int lsock;
+  pthread_t *sender;
+  pthread_attr_t *attr;
+  void *io_h;
+} arg_t;
+
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
 
-int _add_message_to_send_queue(instance_t *instance, msg_t *msg);
-msg_t *_fetch_message_from_send_queue(instance_t *instance);
-void _set_query(instance_t *instance, query_t *query);
+int add_message_to_send_queue(instance_t *instance, msg_t *msg);
+msg_t *fetch_message_from_send_queue(instance_t *instance);
+void set_query(instance_t *instance, query_t *query);
 msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
     int vtype, void *val, int vlen);
 void free_message(msg_t *msg);
@@ -134,5 +132,8 @@ void *listener_run(void *data);
 
 int int_to_char(int num, uint8_t *str, int base);
 int char_to_int(char *str, int slen, int base);
+
+extern instance_t *instance;
+extern int vowifi;
 #endif /* __SIP_INSTANCE_H__ */
 ///////////////////////

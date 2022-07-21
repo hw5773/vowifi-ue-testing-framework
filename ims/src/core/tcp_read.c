@@ -78,6 +78,11 @@
 
 #define TCPCONN_TIMEOUT_MIN_RUN  1 /* run the timers each new tick */
 
+///// Added for VoWiFi /////
+#include "sip_instance.h"
+#include <sys/shm.h>
+////////////////////////////
+
 /* types used in io_wait* */
 enum fd_types { F_NONE, F_TCPMAIN, F_TCPCONN };
 
@@ -1447,7 +1452,22 @@ int receive_tcp_msg(char* tcpbuf, unsigned int len,
 #endif
 	if(unlikely(con->req.flags&F_TCP_REQ_HEP3))
 		return hep3_process_msg(tcpbuf, len, rcv_info, con);
-  //LM_INFO("===== receive_msg() 3 =====\n");
+  //LM_INFO("===== receive_msg() here! =====\n");
+  ////// Added for VoWiFi /////
+  instance_t *instance;
+  if (con->instance)
+  {
+    //rcv_info->instance = con->instance;
+    int shmid = shmget((key_t)1234, sizeof(instance_t), 0666);
+    rcv_info->instance = (instance_t *)shmat(shmid, NULL, 0);
+    LM_INFO("[VoWiFi] rcv_info->instance: %p\n", rcv_info->instance);
+    //LM_INFO("[VoWiFi] before reporting the asock value\n");
+    //instance = con->instance;
+    //LM_INFO("[VoWiFi] con->instance->asock: %d\n", instance->asock);
+    //instance = rcv_info->instance;
+    //LM_INFO("[VoWiFi] rcv_info->instance->asock: %d\n", instance->asock);
+  }
+  /////////////////////////////
 	return receive_msg(buf, len, rcv_info);
 #else /* TCP_CLONE_RCVBUF */
 #ifdef READ_MSRP
@@ -1637,8 +1657,17 @@ again:
 			}else
 #endif
         //LM_INFO("===== receive_tcp_msg() here! =====\n");
+      {
+        /*
+        if (con->instance)
+        {
+          LM_INFO("[VoWiFi] con->instance: %p\n", con->instance);
+          LM_INFO("[VoWiFi] con->instance->asock: %d\n", con->instance->asock);
+        }
+        */
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
+      }
 
 			if (unlikely(ret < 0)) {
 				*req->parsed=c;
@@ -1810,7 +1839,17 @@ again:
 #ifdef USE_TLS
 repeat_1st_read:
 #endif /* USE_TLS */
-      //LM_INFO("===== tcp_read_req() 1 =====\n");
+      LM_INFO("===== tcp_read_req() 1 =====\n");
+      ///// Added for VoWiFi /////
+      /*
+      if (con->instance)
+      {
+        LM_INFO("con->instance: %p\n", con->instance);
+        LM_INFO("con->instance->asock: %d\n", con->instance->asock);
+      }
+      */
+      ////////////////////////////
+
 			resp=tcp_read_req(con, &n, &read_flags);
 			if (unlikely(resp<0)){
 				/* some error occurred, but on the new fd, not on the tcp
@@ -1869,7 +1908,16 @@ repeat_1st_read:
 #ifdef USE_TLS
 repeat_read:
 #endif /* USE_TLS */
-      //LM_INFO("===== tcp_read_req() here! =====\n");
+      LM_INFO("===== tcp_read_req() here! =====\n");
+
+      ///// Added for VoWiFi /////
+      if (con->instance)
+      {
+        LM_INFO("con->instance: %p\n", con->instance);
+        LM_INFO("con->instance->asock: %d\n", con->instance->asock);
+      }
+      ////////////////////////////
+
 			resp=tcp_read_req(con, &ret, &read_flags);
 			if (unlikely(resp<0)){
 read_error:

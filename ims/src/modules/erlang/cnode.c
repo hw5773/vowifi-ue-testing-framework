@@ -358,6 +358,7 @@ int handle_io(struct fd_map* fm, short events, int idx)
 {
 	int type;
 	handler_common_t *phandler;
+  LM_INFO("handle io!\n");
 
 	phandler = (handler_common_t*)fm->data;
 

@@ -41,6 +41,10 @@
 
 #include "dprint.h"
 
+///// Added for VoWiFi /////
+#include "sip_instance.h"
+////////////////////////////
+
 enum sip_protos { PROTO_NONE, PROTO_UDP, PROTO_TCP, PROTO_TLS, PROTO_SCTP,
 	PROTO_WS, PROTO_WSS, PROTO_OTHER };
 #define PROTO_LAST PROTO_OTHER
@@ -152,6 +156,9 @@ typedef struct receive_info {
 	char proto_pad0;  /* padding field */
 	short proto_pad1; /* padding field */
 #endif
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 	/* no need for dst_su yet */
 } receive_info_t;
 

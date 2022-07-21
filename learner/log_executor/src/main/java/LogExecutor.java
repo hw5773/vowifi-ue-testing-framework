@@ -425,6 +425,7 @@ public class LogExecutor {
         sleep(2*1000);
         imsOut.write("Hello\n");
         imsOut.flush();
+        System.out.println("Sent = Hello");
         result = imsIn.readLine();
         System.out.println("Received = " + result);
       } catch(SocketException e) {

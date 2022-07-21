@@ -60,6 +60,10 @@
 #include "../../lib/ims/useful_defs.h"
 #include "pvt_message.h"
 
+///// Added for VoWiFi /////
+#include "../../core/sip_instance.h"
+////////////////////////////
+
 MODULE_VERSION
 
 static void destroy(void);
@@ -172,6 +176,11 @@ struct module_exports exports = {
 static int mod_init(void) {
   LM_INFO("mod_init() for ims_auth\n");
     registration_default_algorithm_type = get_algorithm_type(registration_default_algorithm);
+
+  ///// Added for VoWiFi /////
+  vowifi = 1;
+  LM_INFO("The variable vowifi of S-CSCF is set to 1\n");
+  ////////////////////////////
 
 #ifdef STATISTICS
 	/* register statistics */

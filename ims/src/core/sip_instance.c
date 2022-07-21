@@ -1,11 +1,20 @@
 ///// Added for VoWiFi /////
 #include <inttypes.h>
 #include <unistd.h>
-#include <fcntl.h>
+//#include <fcntl.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <sys/shm.h>
+
 #include "sip_instance.h"
+#include "io_wait.h"
 #include "dprint.h"
+
+#define SHARED_MEMORY_INSTANCE_KEY 1234
+#define SHARED_MEMORY_MESSAGE_KEY 1235
+#define SHARED_MEMORY_QUERY_KEY 1236
+
+int vowifi = 0;
 
 void *sender_run(void *data)
 {
@@ -21,10 +30,11 @@ void *sender_run(void *data)
   msg = NULL;
 
   asock = instance->asock;
+  LM_INFO("sender_run(): instance: %p, asock: %d\n", instance, instance->asock);
 
   while (instance->running)
   {
-    msg = instance->fetch_message_from_send_queue(instance);
+    msg = fetch_message_from_send_queue(instance);
     if (msg)
     {
       // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) 
@@ -118,12 +128,14 @@ void *listener_run(void *data)
   instance_t *instance;
   query_t *query;
   arg_t *arg;
+  io_wait_h *io_h;
 
   query = NULL;
   depth = 0;
   ptype = 0;
   arg = (arg_t *)data;
   lsock = arg->lsock;
+  io_h = (io_wait_h *)arg->io_h;
 
   LM_INFO("running the listener socket thread: this->lsock: %d\n", lsock);
 
@@ -131,7 +143,7 @@ void *listener_run(void *data)
 
   if (asock < 0)
   {
-    perror("socket failure");
+    LM_ERR("socket failure: %d\n", asock);
   }
 
   LM_INFO("accept the socket: asock: %d\n", asock);
@@ -140,7 +152,10 @@ void *listener_run(void *data)
   fcntl(asock, F_SETFL, flags | O_NONBLOCK);
 
   instance = init_instance(asock);
-  LM_INFO("socket with LogExecutor is set: asock: %d\n", asock);
+  io_h->instance = instance;
+
+  LM_INFO("[VoWiFi] socket with LogExecutor is set: instance: %p, asock: %d, io_h->instance: %p\n", instance, asock, io_h->instance);
+  LM_INFO("[VoWiFi] socket with LogExecutor is set: instance->asock: %d\n", instance->asock);
 
   rc = pthread_create(arg->sender, arg->attr, sender_run, instance);
   if (rc < 0)
@@ -302,7 +317,7 @@ void *listener_run(void *data)
         }
         printf("sent ACK to LogExecutor\n");
         */
-        instance->set_query(instance, query);
+        set_query(instance, query);
       }
     }
   }
@@ -337,7 +352,7 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   return ret;
 }
 
-int _add_message_to_send_queue(instance_t *instance, msg_t *msg)
+int add_message_to_send_queue(instance_t *instance, msg_t *msg)
 {
   int ret;
   ret = -1;
@@ -353,7 +368,7 @@ int _add_message_to_send_queue(instance_t *instance, msg_t *msg)
   return ret;
 }
 
-msg_t *_fetch_message_from_send_queue(instance_t *instance)
+msg_t *fetch_message_from_send_queue(instance_t *instance)
 {
   int i;
   msg_t *ret;
@@ -372,7 +387,7 @@ msg_t *_fetch_message_from_send_queue(instance_t *instance)
   return ret;
 }
 
-void _set_query(instance_t *instance, query_t *query)
+void set_query(instance_t *instance, query_t *query)
 {
   instance->query = query;
 }
@@ -380,13 +395,21 @@ void _set_query(instance_t *instance, query_t *query)
 msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
     int vtype, void *val, int vlen)
 {
+  int shmid;
   msg_t *ret;
   uint64_t ispi, rspi;
 
   ispi = instance->ispi;
   rspi = instance->rspi;
 
-  ret = (msg_t *)calloc(1, sizeof(msg_t));
+  shmid = shmget((key_t)SHARED_MEMORY_MESSAGE_KEY, sizeof(msg_t), 0666 | IPC_CREAT);
+
+  ret = (msg_t *)shmat(shmid, NULL, 0);
+  if (ret == (msg_t *)-1)
+  {
+    perror("shmat failed");
+    exit(0);
+  }
   ret->mtype = mtype;
   ret->ispi = ispi;
   ret->rspi = rspi;
@@ -422,13 +445,28 @@ void free_message(msg_t *msg)
 
 instance_t *init_instance(int asock)
 {
+  int shmid;
   instance_t *ret;
+
   ret = (instance_t *)calloc(1, sizeof(instance_t));
+
+  shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666 | IPC_CREAT);
+  if (shmid == -1)
+  {
+    perror("shmget failed");
+    exit(0);
+  }
+
+  ret = (instance_t *)shmat(shmid, NULL, 0);
+  if (ret == (instance_t *)-1)
+  {
+    perror("shmat failed");
+    exit(0);
+  }
+
+  LM_INFO("[VoWiFi] address of instance: %p\n", ret);
   ret->asock = asock;
 
-  ret->add_message_to_send_queue = _add_message_to_send_queue;
-  ret->fetch_message_from_send_queue = _fetch_message_from_send_queue;
-  ret->set_query = _set_query;
   ret->finished = false;
   if (pthread_mutex_init(&(ret->slock), NULL) != 0)
   {
@@ -442,13 +480,14 @@ instance_t *init_instance(int asock)
 
 void free_instance(instance_t *instance)
 {
-  int i;
+  //int i;
   if (instance)
   {
-    for (i=0; i<instance->slast; i++)
-    {
-      free_message(instance->sendq[i]);
-    }
+    //for (i=0; i<instance->slast; i++)
+    //{
+    //  free_message(instance->sendq[i]);
+    //}
+    shmdt(instance->sendq);
     
     pthread_mutex_destroy(&(instance->slock));
     free(instance);
@@ -457,8 +496,17 @@ void free_instance(instance_t *instance)
 
 query_t *init_query(void)
 {
+  int shmid;
   query_t *ret;
-  ret = (query_t *) calloc(1, sizeof(query_t));
+
+  shmid = shmget((key_t)SHARED_MEMORY_QUERY_KEY, sizeof(query_t), 0666 | IPC_CREAT);
+  if (shmid == -1)
+  {
+    perror("shmget failed");
+    exit(0);
+  }
+  ret = (query_t *) shmat(shmid, NULL, 0);
+
   return ret;
 }
 
