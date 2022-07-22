@@ -1452,22 +1452,6 @@ int receive_tcp_msg(char* tcpbuf, unsigned int len,
 #endif
 	if(unlikely(con->req.flags&F_TCP_REQ_HEP3))
 		return hep3_process_msg(tcpbuf, len, rcv_info, con);
-  //LM_INFO("===== receive_msg() here! =====\n");
-  ////// Added for VoWiFi /////
-  instance_t *instance;
-  if (con->instance)
-  {
-    //rcv_info->instance = con->instance;
-    int shmid = shmget((key_t)1234, sizeof(instance_t), 0666);
-    rcv_info->instance = (instance_t *)shmat(shmid, NULL, 0);
-    LM_INFO("[VoWiFi] rcv_info->instance: %p\n", rcv_info->instance);
-    //LM_INFO("[VoWiFi] before reporting the asock value\n");
-    //instance = con->instance;
-    //LM_INFO("[VoWiFi] con->instance->asock: %d\n", instance->asock);
-    //instance = rcv_info->instance;
-    //LM_INFO("[VoWiFi] rcv_info->instance->asock: %d\n", instance->asock);
-  }
-  /////////////////////////////
 	return receive_msg(buf, len, rcv_info);
 #else /* TCP_CLONE_RCVBUF */
 #ifdef READ_MSRP
@@ -1634,7 +1618,6 @@ again:
 			// if (unlikely(req->flags&F_TCP_REQ_MSRP_FRAME)){
 			if (unlikely(req->state==H_MSRP_FINISH)){
 				/* msrp frame */
-        //LM_INFO("===== receive_tcp_msg() 1 =====\n");
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
 			}else
@@ -1643,7 +1626,6 @@ again:
 			if (unlikely(req->state==H_HTTP11_CHUNK_FINISH)){
 				/* http chunked request */
 				req->body[req->content_len] = 0;
-        //LM_INFO("===== receive_tcp_msg() 2 =====\n");
 				ret = receive_tcp_msg(req->start,
 						req->body + req->content_len - req->start,
 						&con->rcv, con);
@@ -1651,20 +1633,11 @@ again:
 #endif
 #ifdef READ_WS
 			if (unlikely(con->type == PROTO_WS || con->type == PROTO_WSS)){
-        //LM_INFO("===== receive_tcp_msg() 3 =====\n");
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
 			}else
 #endif
-        //LM_INFO("===== receive_tcp_msg() here! =====\n");
       {
-        /*
-        if (con->instance)
-        {
-          LM_INFO("[VoWiFi] con->instance: %p\n", con->instance);
-          LM_INFO("[VoWiFi] con->instance->asock: %d\n", con->instance->asock);
-        }
-        */
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
       }
@@ -1839,16 +1812,6 @@ again:
 #ifdef USE_TLS
 repeat_1st_read:
 #endif /* USE_TLS */
-      LM_INFO("===== tcp_read_req() 1 =====\n");
-      ///// Added for VoWiFi /////
-      /*
-      if (con->instance)
-      {
-        LM_INFO("con->instance: %p\n", con->instance);
-        LM_INFO("con->instance->asock: %d\n", con->instance->asock);
-      }
-      */
-      ////////////////////////////
 
 			resp=tcp_read_req(con, &n, &read_flags);
 			if (unlikely(resp<0)){
@@ -1908,15 +1871,6 @@ repeat_1st_read:
 #ifdef USE_TLS
 repeat_read:
 #endif /* USE_TLS */
-      LM_INFO("===== tcp_read_req() here! =====\n");
-
-      ///// Added for VoWiFi /////
-      if (con->instance)
-      {
-        LM_INFO("con->instance: %p\n", con->instance);
-        LM_INFO("con->instance->asock: %d\n", con->instance->asock);
-      }
-      ////////////////////////////
 
 			resp=tcp_read_req(con, &ret, &read_flags);
 			if (unlikely(resp<0)){

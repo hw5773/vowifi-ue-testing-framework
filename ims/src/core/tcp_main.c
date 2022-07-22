@@ -3819,7 +3819,6 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 	ticks_t nxt_timeout;
 #endif /* TCP_ASYNC */
 	
-  LM_INFO("handle_ser_child 1\n");
 	ret=-1;
 	if (unlikely(p->unix_sock<=0)){
 		/* (we can't have a fd==0, 0 is never closed )*/
@@ -3827,56 +3826,42 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 		goto error;
 	}
 			
-  LM_INFO("handle_ser_child 2\n");
 	/* get all bytes and the fd (if transmitted)
 	 * (this is a SOCK_STREAM so read is not atomic) */
 	bytes=receive_fd(p->unix_sock, response, sizeof(response), &fd,
 						MSG_DONTWAIT);
-  LM_INFO("handle_ser_child 2-1\n");
 	if (unlikely(bytes<(int)sizeof(response))){
-  LM_INFO("handle_ser_child 2-2\n");
 		/* too few bytes read */
 		if (bytes==0){
-  LM_INFO("handle_ser_child 2-3\n");
 			/* EOF -> bad, child has died */
 			LM_DBG("dead child %d, pid %d (shutting down?)\n",
 					(int)(p-&pt[0]), p->pid);
 			/* don't listen on it any more */
-  LM_INFO("handle_ser_child 2-4\n");
 			io_watch_del(&io_h, p->unix_sock, fd_i, 0);
-  LM_INFO("handle_ser_child 2-5\n");
 			goto error; /* child dead => no further io events from it */
 		}else if (bytes<0){
 			/* EAGAIN is ok if we try to empty the buffer
 			 * e.g: SIGIO_RT overflow mode or EPOLL ET */
-  LM_INFO("handle_ser_child 2-6\n");
 			if ((errno!=EAGAIN) && (errno!=EWOULDBLOCK)){
 				LM_CRIT("read from child %d  (pid %d):  %s [%d]\n",
 						(int)(p-&pt[0]), p->pid,
 						strerror(errno), errno);
 				ret=-1;
 
-  LM_INFO("handle_ser_child 2-7\n");
 			}else{
 				ret=0;
-  LM_INFO("handle_ser_child 2-8\n");
 			}
-  LM_INFO("handle_ser_child 2-9\n");
 			/* try to ignore ? */
 			goto end;
 		}else{
-  LM_INFO("handle_ser_child 2-10\n");
 			/* should never happen */
 			LM_CRIT("too few bytes received (%d)\n", bytes );
-  LM_INFO("handle_ser_child 2-11\n");
 			ret=0; /* something was read so there is no error; otoh if
 					  receive_fd returned less then requested => the receive
 					  buffer is empty => no more io queued on this fd */
-  LM_INFO("handle_ser_child 2-12\n");
 			goto end;
 		}
 	}
-  LM_INFO("handle_ser_child 3\n");
 	ret=1; /* something was received, there might be more queued */
 	LM_DBG("read response= %lx, %ld, fd %d from %d (%d)\n",
 					response[0], response[1], fd, (int)(p-&pt[0]), p->pid);
@@ -3887,14 +3872,12 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 				 	(int)(p-&pt[0]), p->pid, response[0], response[1]) ;
 		goto end;
 	}
-  LM_INFO("handle_ser_child 4\n");
 	switch(cmd){
 		case CONN_ERROR:
 			LM_ERR("received CON_ERROR for %p (id %d), refcnt %d, flags 0x%0x\n",
 					tcpconn, tcpconn->id, atomic_get(&tcpconn->refcnt),
 					tcpconn->flags);
 		case CONN_EOF: /* forced EOF after full send, due to send flags */
-  LM_INFO("handle_ser_child 5\n");
 #ifdef TCP_CONNECT_WAIT
 			/* if the connection is marked as pending => it might be on
 			 *  the way of reaching tcp_main (e.g. CONN_NEW_COMPLETE or
@@ -3920,7 +3903,6 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 			tcpconn_put_destroy(tcpconn); /* dec refcnt & destroy on 0 */
 			break;
 		case CONN_GET_FD:
-  LM_INFO("handle_ser_child 6\n");
 			/* send the requested FD  */
 			/* WARNING: take care of setting refcnt properly to
 			 * avoid race conditions */
@@ -3946,7 +3928,6 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 			}
 			break;
 		case CONN_NEW:
-  LM_INFO("handle_ser_child 7\n");
 			/* update the fd in the requested tcpconn*/
 			/* WARNING: take care of setting refcnt properly to
 			 * avoid race conditions */
@@ -3999,7 +3980,6 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 			break;
 #ifdef TCP_ASYNC
 		case CONN_QUEUED_WRITE:
-  LM_INFO("handle_ser_child 8\n");
 			/* received only if the wr. queue is empty and a write finishes
 			 * with EAGAIN (common after connect())
 			 * it should only enable write watching on the fd. The connection
@@ -4065,7 +4045,6 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 #ifdef TCP_CONNECT_WAIT
 		case CONN_NEW_COMPLETE:
 		case CONN_NEW_PENDING_WRITE:
-  LM_INFO("handle_ser_child 9\n");
 				/* received when a pending connect completes in the same
 				 * tcp_send() that initiated it
 				 * the connection is already in the hash with F_CONN_PENDING
@@ -4159,13 +4138,6 @@ inline static int send2child(struct tcp_connection* tcpconn)
 	static int crt=0; /* current child */
 	int last;
 	
-  if (tcpconn->instance)
-  {
-    LM_INFO("===== 1 =====\n");
-    LM_INFO("tcpconn: %p, tcpconn->instance: %p\n", tcpconn, tcpconn->instance);
-    LM_INFO("asock: %d\n", tcpconn->instance->asock);
-  }
-
 	if(likely(tcp_sockets_gworkers==0)) {
 		/* no child selection based on received socket
 		 * - use least loaded over all */
@@ -4174,7 +4146,6 @@ inline static int send2child(struct tcp_connection* tcpconn)
 		last=crt+tcp_children_no;
 		for (; crt<last; crt++){
 			i=crt%tcp_children_no;
-      LM_INFO("[VoWiFi] tcp_children[%d].pid: %d\n", i, tcp_children[i].pid);
 			if (!tcp_children[i].busy){
 				idx=i;
 				min_busy=0;
@@ -4220,7 +4191,6 @@ inline static int send2child(struct tcp_connection* tcpconn)
 		}
 	}
 
-  LM_INFO("[VoWiFi] idx: %d, tcp_children[%d].n_reqs: %d\n", idx, idx, tcp_children[idx].n_reqs);
 	tcp_children[idx].busy++;
 	tcp_children[idx].n_reqs++;
 	if (unlikely(min_busy)){
@@ -4237,34 +4207,12 @@ inline static int send2child(struct tcp_connection* tcpconn)
 	 * send a release command, but the master fills its socket buffer
 	 * with new connection commands => deadlock) */
 	/* answer tcp_send requests first */
-  if (tcpconn->instance)
-  {
-    LM_INFO("===== 2 =====\n");
-    LM_INFO("tcpconn: %p, tcpconn->instance: %p\n", tcpconn, tcpconn->instance);
-    LM_INFO("asock: %d\n", tcpconn->instance->asock);
-  }
-
-  LM_INFO("[VoWiFi] tcp_children[%d].pid: %d, tcp_children[%d].proc_no: %d\n", idx, tcp_children[idx].pid, idx, tcp_children[idx].proc_no);
 	while(unlikely((tcpconn->state != S_CONN_BAD) &&
 					(handle_ser_child(&pt[tcp_children[idx].proc_no], -1)>0)));
-
-  if (tcpconn->instance)
-  {
-    LM_INFO("===== 3 =====\n");
-    LM_INFO("tcpconn: %p, tcpconn->instance: %p\n", tcpconn, tcpconn->instance);
-    LM_INFO("asock: %d\n", tcpconn->instance->asock);
-  }
-
+ 
 	/* process tcp readers requests */
 	while(unlikely((tcpconn->state != S_CONN_BAD &&
 					(handle_tcp_child(&tcp_children[idx], -1)>0))));
-
-  if (tcpconn->instance)
-  {
-    LM_INFO("===== 4 =====\n");
-    LM_INFO("tcpconn: %p, tcpconn->instance: %p\n", tcpconn, tcpconn->instance);
-    LM_INFO("asock: %d\n", tcpconn->instance->asock);
-  }
 
 	/* the above possible pending requests might have included a
 	   command to close this tcpconn (e.g. CONN_ERROR, CONN_EOF).
@@ -4275,16 +4223,9 @@ inline static int send2child(struct tcp_connection* tcpconn)
 					(tcpconn->flags & F_CONN_FD_CLOSED)))
 		return -1;
 
-  if (tcpconn->instance)
-  {
-    LM_INFO("===== 5 =====\n");
-    LM_INFO("tcpconn: %p, tcpconn->instance: %p\n", tcpconn, tcpconn->instance);
-    LM_INFO("asock: %d\n", tcpconn->instance->asock);
-  }
 
 #ifdef SEND_FD_QUEUE
 	/* if queue full, try to queue the io */\
-  LM_INFO("[VoWiFi] Send FD Queue 1\n");
 	if (unlikely(send_fd(tcp_children[idx].unix_sock, &tcpconn,
 							sizeof(tcpconn), tcpconn->s)<=0)){
 		if ((errno==EAGAIN)||(errno==EWOULDBLOCK)){
@@ -4304,7 +4245,6 @@ inline static int send2child(struct tcp_connection* tcpconn)
 		}
 	}
 #else
-  LM_INFO("[VoWiFi] Send FD Queue 2\n");
 	if (unlikely(send_fd(tcp_children[idx].unix_sock, &tcpconn,
 						sizeof(tcpconn), tcpconn->s)<=0)){
 		LM_ERR("send_fd failed for %p (flags 0x%0x), fd %d\n",
@@ -4487,25 +4427,12 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 #ifdef TCP_ASYNC
 	empty_q=0; /* warning fix */
 
-  if (tcpconn->instance)
-  {
-    LM_INFO("[VoWiFi] tcpconn 1: %p\n", tcpconn);
-    LM_INFO("[VoWiFi] tcpconn->instance: %p\n", tcpconn->instance);
-    LM_INFO("[VoWiFi] tcpconn->instance->asock: %d\n", tcpconn->instance->asock);
-  }
-
 	if (unlikely((ev & (POLLOUT|POLLERR|POLLHUP)) &&
 					(tcpconn->flags & F_CONN_WRITE_W))){
 		if (unlikely((ev & (POLLERR|POLLHUP)) ||
 					(wbufq_run(tcpconn->s, tcpconn, &empty_q)<0) ||
 					(empty_q && tcpconn_close_after_send(tcpconn))
 			)){
-  if (tcpconn->instance)
-  {
-    LM_INFO("[VoWiFi] tcpconn 2: %p\n", tcpconn);
-    LM_INFO("[VoWiFi] tcpconn->instance: %p\n", tcpconn->instance);
-    LM_INFO("[VoWiFi] tcpconn->instance->asock: %d\n", tcpconn->instance->asock);
-  }
 
 			if ((tcpconn->flags & F_CONN_READ_W) && (ev & POLLIN)){
 				/* connection is watched for read and there is a read event
@@ -4534,12 +4461,6 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 											IO_FD_CLOSING) < 0)){
 				LM_ERR("io_watch_del() failed: for %p, fd %d\n", tcpconn, tcpconn->s);
 			}
-  if (tcpconn->instance)
-  {
-    LM_INFO("[VoWiFi] tcpconn 3: %p\n", tcpconn);
-    LM_INFO("[VoWiFi] tcpconn->instance: %p\n", tcpconn->instance);
-    LM_INFO("[VoWiFi] tcpconn->instance->asock: %d\n", tcpconn->instance->asock);
-  }
 
 			tcpconn->flags&=~(F_CONN_WRITE_W|F_CONN_READ_W|
 								F_CONN_WANTS_RD|F_CONN_WANTS_WR);
@@ -4569,12 +4490,6 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 			tcpconn_put_destroy(tcpconn);
 			goto error;
 		}
-  if (tcpconn->instance)
-  {
-    LM_INFO("[VoWiFi] tcpconn 4: %p\n", tcpconn);
-    LM_INFO("[VoWiFi] tcpconn->instance: %p\n", tcpconn->instance);
-    LM_INFO("[VoWiFi] tcpconn->instance->asock: %d\n", tcpconn->instance->asock);
-  }
 
 		if (empty_q){
 			tcpconn->flags&=~F_CONN_WANTS_WR;
@@ -4596,12 +4511,6 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 		}
 		ev&=~POLLOUT; /* clear POLLOUT */
 	}
-  if (tcpconn->instance)
-  {
-    LM_INFO("[VoWiFi] tcpconn 5: %p\n", tcpconn);
-    LM_INFO("[VoWiFi] tcpconn->instance: %p\n", tcpconn->instance);
-    LM_INFO("[VoWiFi] tcpconn->instance->asock: %d\n", tcpconn->instance->asock);
-  }
 
 	if (likely(ev && (tcpconn->flags & F_CONN_READ_W))){
 		/* if still some other IO event (POLLIN|POLLHUP|POLLERR) and
@@ -4639,12 +4548,6 @@ send_to_child:
 		local_timer_del(&tcp_main_ltimer, &tcpconn->timer);
 		tcpconn->flags&=~(F_CONN_MAIN_TIMER|F_CONN_READ_W|F_CONN_WANTS_RD);
 		tcpconn_ref(tcpconn); /* refcnt ++ */
-  if (tcpconn->instance)
-  {
-    LM_INFO("[VoWiFi] tcpconn 6: %p\n", tcpconn);
-    LM_INFO("[VoWiFi] tcpconn->instance: %p\n", tcpconn->instance);
-    LM_INFO("[VoWiFi] tcpconn->instance->asock: %d\n", tcpconn->instance->asock);
-  }
 
 		if (unlikely(send2child(tcpconn)<0)){
 			tcpconn->flags&=~F_CONN_READER;
@@ -4663,12 +4566,6 @@ send_to_child:
 			tcpconn_put_destroy(tcpconn); /* because of the tcpconn_ref() */
 		}
 	}
-  if (tcpconn->instance)
-  {
-    LM_INFO("[VoWiFi] tcpconn 7: %p\n", tcpconn);
-    LM_INFO("[VoWiFi] tcpconn->instance: %p\n", tcpconn->instance);
-    LM_INFO("[VoWiFi] tcpconn->instance->asock: %d\n", tcpconn->instance->asock);
-  }
 
 	return 0; /* we are not interested in possibly queued io events, 
 				 the fd was either passed to a child, closed, or for writes,
@@ -4695,37 +4592,21 @@ error:
 inline static int handle_io(struct fd_map* fm, short ev, int idx)
 {	
 	int ret;
-  LM_INFO("handle_io! 1\n");
 
 	/* update the local config */
 	cfg_update();
-  LM_INFO("handle_io! 2\n");
 	
 	switch(fm->type){
 		case F_SOCKINFO:
-      LM_INFO("handle_io: F_SOCKINFO\n");
 			ret=handle_new_connect((struct socket_info*)fm->data);
 			break;
 		case F_TCPCONN:
-      LM_INFO("handle_io: F_TCPCONN\n");
-      
-      if (fm->instance)
-      {
-        struct tcp_connection *con = (struct tcp_connection *)fm->data;
-        con->instance = fm->instance;
-        LM_INFO("[VoWiFi] fm->instance: %p, con->instance: %p\n", fm->instance, con->instance);
-        LM_INFO("[VoWiFi] fm->instance->asock: %d\n", fm->instance->asock);
-        LM_INFO("[VoWiFi] con->instance->asock: %d\n", con->instance->asock);
-      }
-      
 			ret=handle_tcpconn_ev((struct tcp_connection*)fm->data, ev, idx);
 			break;
 		case F_TCPCHILD:
-      LM_INFO("handle_io: F_TCPCHILD\n");
 			ret=handle_tcp_child((struct tcp_child*)fm->data, idx);
 			break;
 		case F_PROC:
-      LM_INFO("handle_io: F_PROC\n");
 			ret=handle_ser_child((struct process_table*)fm->data, idx);
 			break;
 		case F_NONE:
@@ -4736,7 +4617,6 @@ inline static int handle_io(struct fd_map* fm, short ev, int idx)
 			LM_CRIT("unknown fd type %d\n", fm->type); 
 			goto error;
 	}
-  LM_INFO("handle_io! 3\n");
 	return ret;
 error:
 	return -1;

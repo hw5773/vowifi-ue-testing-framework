@@ -310,17 +310,9 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
   if (vowifi)
   {
     const uint8_t *symbol;
-    uint8_t fname[256] = {0, };
-    static int a = 1;
-    FILE *fp;
     msg_t *msg;
-    fp = NULL;
     msg = NULL;
-    snprintf(fname, 7, "fname.%d", a);
-    a++;
-    fp = fopen(fname, "w");
-    fwrite(buf, len, 1, fp);
-    fclose(fp);
+
     int shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666);
     if (shmid == -1)
     {
@@ -330,9 +322,7 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
     LM_INFO("received buffer (len: %d bytes): %s\n", len, buf);
     if (instance)
     {
-      
-      //msg = init_message(instance, MSG_TYPE_BLOCK_START, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-      //add_message_to_send_queue(instance, msg);
+      parse_sip_message(instance, buf, len);
     }
   }
   ////////////////////////////

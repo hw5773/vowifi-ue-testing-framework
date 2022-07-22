@@ -113,8 +113,6 @@ struct fd_map{
 	fd_type type;         /* "data" type */
 	void* data;           /* pointer to the corresponding structure */
 	short events;         /* events we are interested int */
-  ///// Added for VoWiFi /////
-  instance_t *instance;
 };
 
 
@@ -173,9 +171,6 @@ struct io_wait_handler{
 	fd_set master_wset; /* write set */
 	int max_fd_select; /* maximum select used fd */
 #endif
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  ////////////////////////////
 };
 
 typedef struct io_wait_handler io_wait_h;
@@ -1033,16 +1028,6 @@ inline static int io_wait_loop_epoll(io_wait_h* h, int t, int repeat)
 	int n, r;
 	struct fd_map* fm;
 	int revents;
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  instance = NULL;
-  if (h->instance)
-  {
-    instance = h->instance;
-    LM_INFO("[VoWiFi] h->instance: %p\n", h->instance);
-    LM_INFO("[VoWiFi] h->instance->asock: %d\n", h->instance->asock);
-  }
-  ////////////////////////////
 	
 again:
 		n=epoll_wait(h->epfd, h->ep_array, h->fd_no, t*1000);
@@ -1076,16 +1061,7 @@ again:
 					;
 			if (likely(revents)){
 				fm=(struct fd_map*)h->ep_array[r].data.ptr;
-        ///// Added for VoWiFi /////
-        LM_INFO("r: %d, fm: %p, instance: %p, fm->instance: %p\n", r, fm, instance, fm->instance);
-        if (instance)
-        {
-          fm->instance = instance;
-          LM_INFO("[VoWiFi] fm: %p, fm->instance: %p\n", fm, fm->instance);
-          LM_INFO("[VoWiFi] fm->instance->asock: %d\n", fm->instance->asock);
-        }
-        ////////////////////////////
-				while(fm->type && ((fm->events|POLLERR|POLLHUP) & revents) &&
+ 				while(fm->type && ((fm->events|POLLERR|POLLHUP) & revents) &&
 						(handle_io(fm, revents, -1)>0) && repeat);
 			}else{
 				LM_ERR("unexpected event %x on %d/%d, data=%p\n",
