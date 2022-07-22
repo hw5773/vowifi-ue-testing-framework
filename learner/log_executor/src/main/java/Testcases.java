@@ -66,6 +66,7 @@ class Testcase {
   private JSONObject orig;
   private String name;
   private String receiver;
+  private String sender;
   private String value = null;
   private Testcase parent;
   private TestcaseType type;
@@ -84,6 +85,7 @@ class Testcase {
     this.logger = logger;
 
     this.receiver = (String) testcase.get("receiver");
+    this.sender = (String) testcase.get("sender");
     this.name = (String) testcase.get("name");
 
     logger.debug("name: " + name);
@@ -162,12 +164,20 @@ class Testcase {
     this.parent = parent;
   }
 
-  String getReceiver() {
+  String getQueryReceiver() {
     return this.receiver;
   }
 
-  void setReceiver(String receiver) {
+  void setQueryReceiver(String receiver) {
     this.receiver = receiver;
+  }
+
+  String getReplySender() {
+    return this.sender;
+  }
+
+  void setReplySender(String sender) {
+    this.sender = sender;
   }
 
   ValueType getValueType() {

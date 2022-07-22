@@ -45,6 +45,7 @@ public class LogExecutor {
   private static final int COOLING_TIME = 1*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 10*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 20*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 20*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
@@ -56,7 +57,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    //initIMSConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -580,7 +581,7 @@ public class LogExecutor {
     String result = "";
     boolean ret = false;
 
-    logger.info("Sending symbol: reset to ePDG");
+    logger.info("Sending symbol: fin to ePDG");
     try {
       epdgOut.write("fin\n");
       epdgOut.flush();
@@ -851,7 +852,7 @@ public class LogExecutor {
     }
   }
 
-  private MessageLog processResult(Testcase testcase) {
+  private MessageLog processResult(Testcase testcase, String reporter) {
     String result = null;
     String rstr;
     String print;
@@ -860,17 +861,25 @@ public class LogExecutor {
     MessageLog mlog = null;
     Stack<Integer> stack = new Stack<Integer>();
     int idx, type, len, depth;
+    BufferedReader sockIn = null;
 
     depth = 0;
     try {
-		  epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
+      if (reporter.startsWith("epdg")) {
+  		  epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
+        sockIn = epdgIn;
+      } else if (reporter.startsWith("ims")) {
+        imsSocket.setSoTimeout(IMS_SOCKET_TIMEOUT_VALUE);
+        sockIn = imsIn;
+      }
       do {
         print = "";
         for (int i=0; i<depth; i++)
         {
           print += "  ";
         }
-      	result = epdgIn.readLine();
+      	result = sockIn.readLine();
+        logger.debug("Result from " + reporter + ": " + result);
         len = result.length();
         idx = 0;
         rcvd = result.getBytes();
@@ -1019,7 +1028,8 @@ public class LogExecutor {
     MessageLog query, reply;
     QueryReplyPair pair;
     String tname = testcase.getName();
-    String receiver = testcase.getReceiver();
+    String receiver = testcase.getQueryReceiver();
+    String sender = testcase.getReplySender();
     String qname, rname;
     boolean ret;
     logger.info("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
@@ -1033,18 +1043,21 @@ public class LogExecutor {
     if (receiver.startsWith("epdg")) {
       logger.info("sendMSGToEPDG()");
   		sendMSGToEPDG(testcase);
-      query = processResult(testcase);
+      logger.debug("Receiver 1: " + receiver);
+      query = processResult(testcase, receiver);
     } else if (receiver.startsWith("ims")) {
       logger.info("sendMSGToIMS()");
       sendMSGToIMS(testcase);
-      query = processResult(testcase);
+      logger.debug("Receiver 2: " + receiver);
+      query = processResult(testcase, receiver);
     } else {
       logger.info("sendEnableVoWiFi(): enable_vowifi");
   		sendEnableVoWiFi();
       query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       query.setName("enable_vowifi");
     }
-    reply = processResult(testcase);
+    logger.debug("Sender: " + sender);
+    reply = processResult(testcase, sender);
     rname = reply.getName();
 
 	  logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
@@ -1057,8 +1070,8 @@ public class LogExecutor {
   public void post() {
     logger.debug("START: post()");
 
-    finEPDG();
-    finIMS();
+    //finEPDG();
+    //finIMS();
 
     logger.debug("FINISH: post()");
   }
