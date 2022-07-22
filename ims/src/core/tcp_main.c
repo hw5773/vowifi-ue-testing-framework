@@ -2011,7 +2011,15 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 		return -1;
 	}
 
-  LM_INFO("tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
+  ///// Added for VoWiFi /////
+  if (vowifi)
+  {
+    LM_INFO("tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
+    //if (instance)
+    //  LM_INFO("[VoWiFi] want to send the message via a socket: %d\n", instance->asock);
+  }
+  ////////////////////////////
+
 	port=su_getport(&dst->to);
 	try_local_port = (dst->send_sock)?dst->send_sock->port_no:0;
 	con_lifetime=cfg_get(tcp, tcp_cfg, con_lifetime);
@@ -3839,6 +3847,7 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 						(int)(p-&pt[0]), p->pid,
 						strerror(errno), errno);
 				ret=-1;
+
 			}else{
 				ret=0;
 			}
@@ -4200,6 +4209,7 @@ inline static int send2child(struct tcp_connection* tcpconn)
 	/* answer tcp_send requests first */
 	while(unlikely((tcpconn->state != S_CONN_BAD) &&
 					(handle_ser_child(&pt[tcp_children[idx].proc_no], -1)>0)));
+ 
 	/* process tcp readers requests */
 	while(unlikely((tcpconn->state != S_CONN_BAD &&
 					(handle_tcp_child(&tcp_children[idx], -1)>0))));
@@ -4212,8 +4222,10 @@ inline static int send2child(struct tcp_connection* tcpconn)
 	if (unlikely(tcpconn->state == S_CONN_BAD ||
 					(tcpconn->flags & F_CONN_FD_CLOSED)))
 		return -1;
+
+
 #ifdef SEND_FD_QUEUE
-	/* if queue full, try to queue the io */
+	/* if queue full, try to queue the io */\
 	if (unlikely(send_fd(tcp_children[idx].unix_sock, &tcpconn,
 							sizeof(tcpconn), tcpconn->s)<=0)){
 		if ((errno==EAGAIN)||(errno==EWOULDBLOCK)){
@@ -4240,7 +4252,7 @@ inline static int send2child(struct tcp_connection* tcpconn)
 		return -1;
 	}
 #endif
-	
+
 	return 0;
 }
 
@@ -4414,12 +4426,14 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 	 *  timer */
 #ifdef TCP_ASYNC
 	empty_q=0; /* warning fix */
+
 	if (unlikely((ev & (POLLOUT|POLLERR|POLLHUP)) &&
 					(tcpconn->flags & F_CONN_WRITE_W))){
 		if (unlikely((ev & (POLLERR|POLLHUP)) ||
 					(wbufq_run(tcpconn->s, tcpconn, &empty_q)<0) ||
 					(empty_q && tcpconn_close_after_send(tcpconn))
 			)){
+
 			if ((tcpconn->flags & F_CONN_READ_W) && (ev & POLLIN)){
 				/* connection is watched for read and there is a read event
 				 * (unfortunately if we have POLLIN here we don't know if 
@@ -4447,6 +4461,7 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 											IO_FD_CLOSING) < 0)){
 				LM_ERR("io_watch_del() failed: for %p, fd %d\n", tcpconn, tcpconn->s);
 			}
+
 			tcpconn->flags&=~(F_CONN_WRITE_W|F_CONN_READ_W|
 								F_CONN_WANTS_RD|F_CONN_WANTS_WR);
 			if (unlikely(ev & POLLERR)){
@@ -4475,6 +4490,7 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 			tcpconn_put_destroy(tcpconn);
 			goto error;
 		}
+
 		if (empty_q){
 			tcpconn->flags&=~F_CONN_WANTS_WR;
 			if (!(tcpconn->flags & F_CONN_READ_W)){
@@ -4495,6 +4511,7 @@ inline static int handle_tcpconn_ev(struct tcp_connection* tcpconn, short ev,
 		}
 		ev&=~POLLOUT; /* clear POLLOUT */
 	}
+
 	if (likely(ev && (tcpconn->flags & F_CONN_READ_W))){
 		/* if still some other IO event (POLLIN|POLLHUP|POLLERR) and
 		 * connection is still watched in tcp_main for reads, send it to a
@@ -4531,6 +4548,7 @@ send_to_child:
 		local_timer_del(&tcp_main_ltimer, &tcpconn->timer);
 		tcpconn->flags&=~(F_CONN_MAIN_TIMER|F_CONN_READ_W|F_CONN_WANTS_RD);
 		tcpconn_ref(tcpconn); /* refcnt ++ */
+
 		if (unlikely(send2child(tcpconn)<0)){
 			tcpconn->flags&=~F_CONN_READER;
 #ifdef TCP_ASYNC
@@ -4548,6 +4566,7 @@ send_to_child:
 			tcpconn_put_destroy(tcpconn); /* because of the tcpconn_ref() */
 		}
 	}
+
 	return 0; /* we are not interested in possibly queued io events, 
 				 the fd was either passed to a child, closed, or for writes,
 				 everything possible was already written */
@@ -4837,60 +4856,64 @@ void tcp_main_loop()
 	if (cfg_child_init()) goto error;
 
   ///// Added for VoWiFi /////
-  LM_INFO("running the threads for VWAttacker\n");
-  int rc, sock, flags;
-  struct sockaddr_in6 addr;
-  pthread_t *listener;
-  pthread_t *sender;
-  pthread_attr_t *attr;
-  arg_t *arg;
-
-  LM_INFO("initializing the socket\n");
-  sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
-  if (sock < 0)
+  if (vowifi)
   {
-    perror("error in generating the listening socket");
+    LM_INFO("running the threads for VWAttacker\n");
+    int rc, sock, flags;
+    struct sockaddr_in6 addr;
+    pthread_t *listener;
+    pthread_t *sender;
+    pthread_attr_t *attr;
+    arg_t *arg;
+
+    LM_INFO("initializing the socket\n");
+    sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+    if (sock < 0)
+    {
+      perror("error in generating the listening socket");
+    }
+    memset(&addr, 0, sizeof(addr));
+    addr.sin6_family = AF_INET6;
+    addr.sin6_addr = in6addr_any;
+    addr.sin6_port = htons(DEFAULT_IMS_PORT);
+
+    flags = 1;
+    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags)) < 0)
+    {
+      perror("setsockopt(SO_REUSEADDR) failed");
+    }
+
+    LM_INFO("binding the socket with the associated address (port: %d)\n", DEFAULT_IMS_PORT);
+    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
+    {
+      perror("cannot bind port");
+    }
+
+    LM_INFO("starting the listening\n");
+    if (listen(sock, MAX_CLNT_SIZE) != 0)
+    {
+      perror("cannot configure listening port");
+    }
+
+    attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
+    pthread_attr_init(attr);
+    pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
+
+    arg = (arg_t *)calloc(1, sizeof(arg_t));
+    arg->lsock = sock;
+    sender = (pthread_t *)calloc(1, sizeof(pthread_t));
+    listener = (pthread_t *)calloc(1, sizeof(pthread_t));
+
+    arg->sender = sender;
+    arg->attr = attr;
+    arg->io_h = (void *)&io_h;
+
+    LM_INFO("running the listener thread: opened socket: %d\n", sock);
+    rc = pthread_create(listener, attr, listener_run, arg);
+
+    if (rc < 0)
+      perror("error in pthread create");
   }
-  memset(&addr, 0, sizeof(addr));
-  addr.sin6_family = AF_INET6;
-  addr.sin6_addr = in6addr_any;
-  addr.sin6_port = htons(DEFAULT_IMS_PORT);
-
-  flags = 1;
-  if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags)) < 0)
-  {
-    perror("setsockopt(SO_REUSEADDR) failed");
-  }
-
-  LM_INFO("binding the socket with the associated address (port: %d)\n", DEFAULT_IMS_PORT);
-  if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
-  {
-    perror("cannot bind port");
-  }
-
-  LM_INFO("starting the listening\n");
-  if (listen(sock, MAX_CLNT_SIZE) != 0)
-  {
-    perror("cannot configure listening port");
-  }
-
-  attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
-  pthread_attr_init(attr);
-  pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
-
-  arg = (arg_t *)calloc(1, sizeof(arg_t));
-  arg->lsock = sock;
-  sender = (pthread_t *)calloc(1, sizeof(pthread_t));
-  listener = (pthread_t *)calloc(1, sizeof(pthread_t));
-
-  arg->sender = sender;
-  arg->attr = attr;
-
-  LM_INFO("running the listener thread: opened socket: %d\n", sock);
-  rc = pthread_create(listener, attr, listener_run, arg);
-
-  if (rc < 0)
-    perror("error in pthread create");
   ////////////////////////////
 
 	/* main loop */
@@ -4925,7 +4948,7 @@ void tcp_main_loop()
 #ifdef HAVE_EPOLL
 		case POLL_EPOLL_LT:
 			while(1){
-        //LM_INFO("===== tcp_main.c: io_wait_loop_epoll() 1 =====\n");
+        //LM_INFO("===== tcp_main.c: io_wait_loop_epoll() here! =====\n");
 				io_wait_loop_epoll(&io_h, TCP_MAIN_SELECT_TIMEOUT, 0);
 				send_fd_queue_run(&send2child_q); /* then new io */
 				tcp_timer_run();

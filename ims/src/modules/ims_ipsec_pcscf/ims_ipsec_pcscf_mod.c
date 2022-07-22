@@ -30,6 +30,9 @@
 #include "spi_gen.h"
 #include "port_gen.h"
 
+///// Added for VoWiFi /////
+#include "../../core/sip_instance.h"
+////////////////////////////
 
 MODULE_VERSION
 
@@ -256,6 +259,11 @@ static int ipsec_add_listen_ifaces()
 static int mod_init(void) {
 	bind_usrloc_t bind_usrloc;
 
+  ///// Added for VoWiFi /////
+  vowifi = 0;
+  LM_INFO("The variable vowifi of P-CSCF is set to 0\n");
+  ////////////////////////////
+  
 	bind_usrloc = (bind_usrloc_t) find_export("ul_bind_ims_usrloc_pcscf", 1, 0);
 	if (!bind_usrloc) {
 		LM_ERR("can't bind ims_usrloc_pcscf\n");

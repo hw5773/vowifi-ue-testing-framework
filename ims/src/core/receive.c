@@ -59,6 +59,14 @@
 #include <mem/dmalloc.h>
 #endif
 
+///// Added for VoWiFi /////
+#include "sip_instance.h"
+#include <sys/shm.h>
+#define SHARED_MEMORY_INSTANCE_KEY 1234
+#define SHARED_MEMORY_MESSAGE_KEY 1235
+#define SHARED_MEMORY_QUERY_KEY 1236
+////////////////////////////
+
 int _sr_ip_free_bind = 0;
 
 unsigned int msg_no = 0;
@@ -238,6 +246,10 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
 	unsigned int cidlockset = 0;
 	int errsipmsg = 0;
 	int exectime = 0;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  instance = NULL;
+  ////////////////////////////
 
 	if(rcv_info->bind_address==NULL) {
 		LM_ERR("critical - incoming message without local socket [%.*s ...]\n",
@@ -294,7 +306,27 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
 	if(likely(sr_msg_time == 1))
 		msg_set_time(msg);
 
-  LM_INFO("received buffer (len: %d bytes): %s\n", len, buf);
+  ///// Added for VoWiFi /////
+  if (vowifi)
+  {
+    const uint8_t *symbol;
+    msg_t *msg;
+    msg = NULL;
+
+    int shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666);
+    if (shmid == -1)
+    {
+      LM_ERR("[VoWiFi] error in shmget()\n");
+    }
+    instance = (instance_t *)shmat(shmid, NULL, 0);
+    LM_INFO("received buffer (len: %d bytes): %s\n", len, buf);
+    if (instance)
+    {
+      parse_sip_message(instance, buf, len);
+    }
+  }
+  ////////////////////////////
+
 	if(parse_msg(buf, len, msg) != 0) {
 		errsipmsg = 1;
 		evp.data = (void *)msg;

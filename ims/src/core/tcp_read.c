@@ -78,6 +78,11 @@
 
 #define TCPCONN_TIMEOUT_MIN_RUN  1 /* run the timers each new tick */
 
+///// Added for VoWiFi /////
+#include "sip_instance.h"
+#include <sys/shm.h>
+////////////////////////////
+
 /* types used in io_wait* */
 enum fd_types { F_NONE, F_TCPMAIN, F_TCPCONN };
 
@@ -1447,7 +1452,6 @@ int receive_tcp_msg(char* tcpbuf, unsigned int len,
 #endif
 	if(unlikely(con->req.flags&F_TCP_REQ_HEP3))
 		return hep3_process_msg(tcpbuf, len, rcv_info, con);
-  //LM_INFO("===== receive_msg() 3 =====\n");
 	return receive_msg(buf, len, rcv_info);
 #else /* TCP_CLONE_RCVBUF */
 #ifdef READ_MSRP
@@ -1614,7 +1618,6 @@ again:
 			// if (unlikely(req->flags&F_TCP_REQ_MSRP_FRAME)){
 			if (unlikely(req->state==H_MSRP_FINISH)){
 				/* msrp frame */
-        //LM_INFO("===== receive_tcp_msg() 1 =====\n");
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
 			}else
@@ -1623,7 +1626,6 @@ again:
 			if (unlikely(req->state==H_HTTP11_CHUNK_FINISH)){
 				/* http chunked request */
 				req->body[req->content_len] = 0;
-        //LM_INFO("===== receive_tcp_msg() 2 =====\n");
 				ret = receive_tcp_msg(req->start,
 						req->body + req->content_len - req->start,
 						&con->rcv, con);
@@ -1631,14 +1633,14 @@ again:
 #endif
 #ifdef READ_WS
 			if (unlikely(con->type == PROTO_WS || con->type == PROTO_WSS)){
-        //LM_INFO("===== receive_tcp_msg() 3 =====\n");
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
 			}else
 #endif
-        //LM_INFO("===== receive_tcp_msg() here! =====\n");
+      {
 				ret = receive_tcp_msg(req->start, req->parsed-req->start,
 									&con->rcv, con);
+      }
 
 			if (unlikely(ret < 0)) {
 				*req->parsed=c;
@@ -1810,7 +1812,7 @@ again:
 #ifdef USE_TLS
 repeat_1st_read:
 #endif /* USE_TLS */
-      //LM_INFO("===== tcp_read_req() 1 =====\n");
+
 			resp=tcp_read_req(con, &n, &read_flags);
 			if (unlikely(resp<0)){
 				/* some error occurred, but on the new fd, not on the tcp
@@ -1869,7 +1871,7 @@ repeat_1st_read:
 #ifdef USE_TLS
 repeat_read:
 #endif /* USE_TLS */
-      //LM_INFO("===== tcp_read_req() here! =====\n");
+
 			resp=tcp_read_req(con, &ret, &read_flags);
 			if (unlikely(resp<0)){
 read_error:

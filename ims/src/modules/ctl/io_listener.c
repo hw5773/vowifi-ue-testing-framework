@@ -691,6 +691,7 @@ error:
 inline static int handle_io(struct fd_map* fm, short events, int idx)
 {
 	int ret;
+  LM_INFO("handle io!\n");
 
 	/* update the local config */
 	cfg_update();

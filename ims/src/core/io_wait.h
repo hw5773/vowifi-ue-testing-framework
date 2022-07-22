@@ -80,7 +80,6 @@
 
 #include "compiler_opt.h"
 
-
 #ifdef HAVE_EPOLL
 /* fix defines for EPOLL */
 #if defined POLLRDHUP && ! defined EPOLLRDHUP
@@ -1062,7 +1061,7 @@ again:
 					;
 			if (likely(revents)){
 				fm=(struct fd_map*)h->ep_array[r].data.ptr;
-				while(fm->type && ((fm->events|POLLERR|POLLHUP) & revents) &&
+ 				while(fm->type && ((fm->events|POLLERR|POLLHUP) & revents) &&
 						(handle_io(fm, revents, -1)>0) && repeat);
 			}else{
 				LM_ERR("unexpected event %x on %d/%d, data=%p\n",

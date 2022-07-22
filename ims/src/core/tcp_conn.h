@@ -31,6 +31,10 @@
 #include "timer_ticks.h"
 #include "timer.h"
 
+///// Added for VoWiFi /////
+#include "sip_instance.h"
+////////////////////////////
+
 /* maximum number of port aliases x search wildcard possibilities */
 #define TCP_CON_MAX_ALIASES (4*3)
 
@@ -220,6 +224,9 @@ typedef struct tcp_connection {
 #ifdef TCP_ASYNC
 	struct tcp_wbuffer_queue wbuf_q;
 #endif
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 } tcp_connection_t;
 
 

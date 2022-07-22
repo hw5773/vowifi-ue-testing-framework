@@ -53,6 +53,10 @@
 #include "db.h"
 #include "nds.h"
 
+///// Added for VoWiFi /////
+#include "../../core/sip_instance.h"
+////////////////////////////
+
 MODULE_VERSION
 
 struct tm_binds tmb;
@@ -159,6 +163,11 @@ struct module_exports exports = {
 static int mod_init(void) {
 	cdp_avp = 0;
 	int route_no;
+
+  ///// Added for VoWiFi /////
+  vowifi = 0;
+  LM_INFO("The variable vowifi of I-CSCF is set to 0\n");
+  ////////////////////////////
 
 #ifdef STATISTICS
 	if (register_module_stats( exports.name, mod_stats) != 0) {
