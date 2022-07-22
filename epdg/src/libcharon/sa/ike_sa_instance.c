@@ -354,7 +354,7 @@ query_t *get_query(instance_t *instance)
     printf("[VoWiFi] before the while loop\n");
     while (!instance->query)
     {
-      printf("[VoWiFi] instance->query: %p\n", instance->query);
+      //printf("[VoWiFi] instance->query: %p\n", instance->query);
 
       if (instance->finished) 
         break;

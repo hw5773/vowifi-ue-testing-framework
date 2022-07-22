@@ -909,8 +909,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
   ///// Added for VoWiFi /////
   const uint8_t *symbol;
+  int failed;
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
+    failed = 0;
     if ((query = get_next_query(instance)))
     {
       printf("\n\n[VoWiFi] query name: %s, instance->sprev: %s\n\n\n", query->name, instance->sprev);
@@ -961,6 +963,18 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
             symbol = "ike_auth_5_response";
             instance->sprev = "ike_auth_5_response";
           }
+          else if (is_query_name(query, "redirect_supported"))
+          {
+            symbol = "redirect_supported";
+            message->add_notify(message, TRUE, REDIRECT_SUPPORTED, chunk_empty);
+            failed = 1;
+          }
+          else if (is_query_name(query, "invalid_syntax"))
+          {
+            symbol = "invalid_syntax";
+            message->add_notify(message, TRUE, INVALID_SYNTAX, chunk_empty);
+            failed = 1;
+          }
           else
           {
             symbol = "error in ike_auth";
@@ -973,6 +987,17 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         default:
           symbol = "error in exchange_type";
           instance->sprev = "error";
+      }
+
+      if (failed)
+      {
+        msg = init_message(instance, MSG_TYPE_BLOCK_START, 
+          symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+        msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+          NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+        return FAILED;
       }
     }
     else

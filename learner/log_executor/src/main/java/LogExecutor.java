@@ -43,6 +43,7 @@ public class LogExecutor {
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
   private static final int COOLING_TIME = 1*1000;
+  private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 10*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 20*1000; 
   private static final int IMS_SOCKET_TIMEOUT_VALUE = 20*1000; 
@@ -174,6 +175,7 @@ public class LogExecutor {
       testcaseNum ++;
 
       qrLogger.addLog(testcase, pairs);
+      sleep(TESTCASE_SLEEP_TIME);
     }
 
     qrLogger.storeLog();
