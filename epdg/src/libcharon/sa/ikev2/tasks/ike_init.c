@@ -379,48 +379,44 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
     ///// Added for VoWiFi /////
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
-      if (wait_query(instance))
+      // encryption related
+      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+      this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
+      printf("[VoWiFi] ike_init.c: before modification: algo: %u, klen: %u\n", *algo, *klen);
+
+      // ike_sa_init_response - security_association - transform - encryption_algorithm
+      query = get_query(instance);
+      print_query(query);
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "encryption_algorithm")))
       {
-        // encryption related
-        algo = (uint16_t *)calloc(1, sizeof(uint16_t));
-        klen = (uint16_t *)calloc(1, sizeof(uint16_t));
-        this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
-        printf("[VoWiFi] ike_init.c: before modification: algo: %u, klen: %u\n", *algo, *klen);
-
-        // ike_sa_init_response - security_association - transform - encryption_algorithm
-        query = get_query(instance);
-        print_query(query);
-        if ((query = get_query(instance))
-            && is_query_name(query, "ike_sa_init_response")
-            && (query = get_sub_query_by_name(query, "security_association"))
-            && (query = get_sub_query_by_name(query, "transform"))
-            && (query = get_sub_query_by_name(query, "encryption_algorithm")))
+        vtype = get_query_value_type(query);
+        if (vtype == VAL_TYPE_UINT16)
         {
-          vtype = get_query_value_type(query);
-          if (vtype == VAL_TYPE_UINT16)
-          {
-            tmp = get_query_value(query, &tlen);
-            *algo = (uint16_t) char_to_int(tmp, tlen, 10);
-          }
+          tmp = get_query_value(query, &tlen);
+          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
         }
-
-        // ike_sa_init_response - security_association - transform - encryption_key_length
-        if ((query = get_query(instance))
-            && is_query_name(query, "ike_sa_init_response")
-            && (query = get_sub_query_by_name(query, "security_association"))
-            && (query = get_sub_query_by_name(query, "transform"))
-            && (query = get_sub_query_by_name(query, "encryption_key_length")))
-        {
-          vtype = get_query_value_type(query);
-          if (vtype == VAL_TYPE_UINT16)
-          {
-            tmp = get_query_value(query, &tlen);
-            klen = (uint16_t) char_to_int(tmp, tlen, 10);
-          }
-        }
-        printf("[VoWiFi] ike_init.c: after modification: algo: %u, klen: %u\n", *algo, *klen);
       }
 
+      // ike_sa_init_response - security_association - transform - encryption_key_length
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "encryption_key_length")))
+      {
+        vtype = get_query_value_type(query);
+        if (vtype == VAL_TYPE_UINT16)
+        {
+          tmp = get_query_value(query, &tlen);
+          klen = (uint16_t) char_to_int(tmp, tlen, 10);
+        }
+      }
+      printf("[VoWiFi] ike_init.c: after modification: algo: %u, klen: %u\n", *algo, *klen);
       this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
     }
     ////////////////////////////

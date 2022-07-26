@@ -680,6 +680,8 @@ void *listener_run(void *data)
       instance->query = NULL;
       instance->finished = false;
       instance->initiated = true;
+      instance->sprev = NULL;
+      instance->rprev = NULL;
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -698,7 +700,11 @@ void *listener_run(void *data)
     {
       printf("received fin from LogExecutor!\n");
       instance->finished = true;
+      instance->query = NULL;
+      instance->ispi = -1;
+      instance->rspi = -1;
 
+      /*
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
       memcpy(buf, ACK_RESPONSE, tbs);
@@ -710,6 +716,7 @@ void *listener_run(void *data)
           offset += sent;
       }
       printf("sent ACK to LogExecutor\n");
+      */
     }
     else if (offset > 0)
     {

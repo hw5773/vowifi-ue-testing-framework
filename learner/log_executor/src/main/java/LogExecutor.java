@@ -584,12 +584,13 @@ public class LogExecutor {
     String result = "";
     boolean ret = false;
 
+    sendDisableWiFi();
     logger.info("Sending symbol: fin to ePDG");
     try {
       epdgOut.write("fin\n");
       epdgOut.flush();
-      result = epdgIn.readLine();
-      logger.info("ACK for finEPDG(): " + result);
+      //result = epdgIn.readLine();
+      //logger.info("ACK for finEPDG(): " + result);
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -598,6 +599,7 @@ public class LogExecutor {
       e.printStackTrace();
     }
 
+    /*
     if(result.contains("ACK")) {
       logger.info("PASSED: Finalizing the ePDG is succeeded");
       ret = true;
@@ -605,6 +607,7 @@ public class LogExecutor {
       logger.error("FAILED: Finalizing the ePDG is failed");
       ret = false;
     }
+    */
 
     logger.debug("FINISH: finEPDG()");
     return ret;
@@ -1073,7 +1076,7 @@ public class LogExecutor {
   public void post() {
     logger.debug("START: post()");
 
-    //finEPDG();
+    finEPDG();
     //finIMS();
 
     logger.debug("FINISH: post()");
