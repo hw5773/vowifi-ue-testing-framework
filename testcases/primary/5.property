@@ -12,12 +12,12 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg",
+          "sender": "epdg"
         },
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "epdg",
+          "sender": "epdg"
         },
         {
           "receiver": "epdg",

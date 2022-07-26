@@ -12,7 +12,7 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg",
+          "sender": "epdg"
         },
         {
           "receiver": "epdg",
@@ -23,17 +23,18 @@
               "name": "message_id",
               "type": "uint16",
               "value": "1"
+            }
           ]
         },
         {
           "receiver": "epdg",
           "name": "ike_auth_2_response",
-          "sender": "epdg",
+          "sender": "epdg"
         },
         {
           "receiver": "epdg",
           "name": "ike_auth_3_response",
-          "sender": "epdg",
+          "sender": "epdg"
         },
         {
           "receiver": "epdg",

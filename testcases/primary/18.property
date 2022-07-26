@@ -20,7 +20,7 @@
                 {
                   "name": "key_exchange_data",
                   "type": "string",
-                  "value": VALUE([0, max, mid, random])
+                  "value": VALUE
                 }
               ]
             }
