@@ -915,7 +915,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     failed = 0;
     if ((query = get_next_query(instance)))
     {
-      printf("\n\n[VoWiFi] query name: %s, instance->sprev: %s\n\n\n", query->name, instance->sprev);
+      printf("[VoWiFi] query name: %s, instance->sprev: %s\n", query->name, instance->sprev);
 		  switch (message->get_exchange_type(message)) 
       {
         case IKE_SA_INIT:
@@ -932,7 +932,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
           break;
 
         case IKE_AUTH:
-          printf("\n\n[VoWiFi/IKE_AUTH] instance->sprev: %s\n\n\n", instance->sprev);
+          printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
           if (is_query_name(query, "ike_auth_1_response")
               && (!strncmp(instance->sprev, "ike_sa_init_response", strlen("ike_sa_init_response"))))
           {
@@ -989,6 +989,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
           instance->sprev = "error";
       }
 
+      msg = init_message(instance, MSG_TYPE_BLOCK_START, 
+        symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+      instance->add_message_to_send_queue(instance, msg);
+
       if (failed)
       {
         msg = init_message(instance, MSG_TYPE_BLOCK_START, 
@@ -1000,14 +1004,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         return FAILED;
       }
     }
-    else
-    {
-      symbol = "error in query";
-      instance->sprev = "error";
-    }
-    msg = init_message(instance, MSG_TYPE_BLOCK_START, 
-        symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(instance, msg);
   }
   ///////////////////////////
 

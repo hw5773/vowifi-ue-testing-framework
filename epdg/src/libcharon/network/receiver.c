@@ -422,7 +422,6 @@ static job_requeue_t receive_packets(private_receiver_t *this)
 	chunk_t data, marker = chunk_from_chars(0x00, 0x00, 0x00, 0x00);
 
 	/* read in a packet */
-  printf("***** receive_packets() 1\n");
 	status = charon->socket->receive(charon->socket, &packet);
 	if (status == NOT_SUPPORTED)
 	{
@@ -449,7 +448,6 @@ static job_requeue_t receive_packets(private_receiver_t *this)
 
 	dst = packet->get_destination(packet);
 	src = packet->get_source(packet);
-  printf("***** receive_packets() 2: packet from %#H to %#H\n", src, dst);
 	if (!charon->kernel->all_interfaces_usable(charon->kernel)
 		&& !charon->kernel->get_interface(charon->kernel, dst, NULL))
 	{
@@ -464,7 +462,6 @@ static job_requeue_t receive_packets(private_receiver_t *this)
 	if (dst->get_port(dst) != IKEV2_UDP_PORT &&
 		src->get_port(src) != IKEV2_UDP_PORT)
 	{
-  printf("***** receive_packets() 3: marker.len: %d\n", marker.len);
 		if (memeq(data.ptr, marker.ptr, marker.len))
 		{	/* remove Non-ESP marker */
 			packet->skip_bytes(packet, marker.len);
@@ -552,7 +549,6 @@ static job_requeue_t receive_packets(private_receiver_t *this)
 			message->destroy(message);
 			return JOB_REQUEUE_DIRECT;
 		}
-  printf("***** receive_packets() 4: report to the LogExecuter that we have received the IKE_SA_INIT message\n");
 	}
 	if (message->get_exchange_type(message) == ID_PROT ||
 		message->get_exchange_type(message) == AGGRESSIVE)

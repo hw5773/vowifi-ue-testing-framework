@@ -1653,7 +1653,6 @@ METHOD(ike_sa_t, process_message, status_t,
 	{	/* do not handle messages in passive state */
 		return FAILED;
 	}
-  printf("ike-sa >>>>> process_message 1\n");
 	if (message->get_major_version(message) != this->version)
 	{
 		DBG1(DBG_IKE, "ignoring %N IKEv%u exchange on %N SA",
@@ -1664,7 +1663,6 @@ METHOD(ike_sa_t, process_message, status_t,
 		 * INVALID_MAJOR_VERSION on an IKEv2 SA. */
 		return FAILED;
 	}
-  printf("ike-sa >>>>> process_message 2\n");
 	status = this->task_manager->process_message(this->task_manager, message);
 	if (this->flush_auth_cfg && this->state == IKE_ESTABLISHED)
 	{
