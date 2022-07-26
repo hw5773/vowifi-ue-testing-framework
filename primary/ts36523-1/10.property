@@ -1,0 +1,32 @@
+# The IKE_SA_INIT response message should include a diffie-hellman group supported by the peer
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "key_exchange",
+              "sub": [
+                {
+                  "name": "key_exchange_data",
+                  "type": "string",
+                  "value": VALUE([0, max, mid, random])
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

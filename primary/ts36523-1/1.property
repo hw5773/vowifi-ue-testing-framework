@@ -1,0 +1,20 @@
+# with a UE has transmitted an IKE_SA_INIT Request message addressed to the ePDG to initiate security association establishmemt, when a UE should receive an IKE_SA_INIT response message
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        }
+      ]
+    }
+  ]
+}

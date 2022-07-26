@@ -1,0 +1,37 @@
+# The IKE_SA_INIT response message should include an encryption algorithm that is supported by the peer
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "encryption_algorithm",
+                      "type": "uint16",
+                      "value": VALUE([3, 6, 7, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28], [12])
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
