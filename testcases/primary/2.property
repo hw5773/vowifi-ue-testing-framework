@@ -1,4 +1,4 @@
-# If the initiator guesses wrong (a DH group), the responder will respond with a Notify payload of type INVALID_KE_PAYLOAD indicating the selected group. In this case, the initiator MUST retry the IKE_SA_INIT with the corrected DH group.
+# If the initiator guesses wrong (a DH group), the responder will respond with a Notify payload of type INVALUE_KE_PAYLOAD indicating the selected group. In this case, the initiator MUST retry the IKE_SA_INIT with the corrected DH group.
 
 {
   "testcases": [
@@ -17,7 +17,7 @@
             {
               "name": "diffie_hellman_group",
               "type": "uint16",
-              "value": VALID([1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], [2])
+              "value": VALUE([1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], [2])
             }
           ]
         }
