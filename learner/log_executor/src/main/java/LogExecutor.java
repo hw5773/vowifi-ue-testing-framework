@@ -1041,7 +1041,7 @@ public class LogExecutor {
 		String resultForIMS = "";
 
 		try {
-			logger.info("---- Starting RESET ----");
+			logger.debug("---- Starting RESET ----");
 
 			do {
 				try {
@@ -1068,7 +1068,7 @@ public class LogExecutor {
         }
 			}while(resetDone == false);
 
-			logger.info("---- RESET DONE ----");
+			logger.debug("---- RESET DONE ----");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
