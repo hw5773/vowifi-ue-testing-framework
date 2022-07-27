@@ -15,6 +15,8 @@ import org.apache.commons.codec.binary.Hex;
 class QueryReplyLogger {
   private List<Testcases> testcases = null;
   private List<List<QueryReplyPair>> pairs = null;
+  private List<Integer> functionalOracleResults = null;
+  private List<Boolean> reliableOracleResults = null;
   private String outputRootDir;
   private String outputDir;
   private String ueModel;
@@ -29,6 +31,8 @@ class QueryReplyLogger {
     setLogger(logger);
     this.testcases = new ArrayList<>();
     this.pairs = new ArrayList<>();
+    this.functionalOracleResults = new ArrayList<>();
+    this.reliableOracleResults = new ArrayList<>();
     this.outputRootDir = outputDir;
     this.ueModel = null;
   }
@@ -37,6 +41,8 @@ class QueryReplyLogger {
     Iterator i = this.testcases.iterator();
     Iterator j = this.pairs.iterator();
     Iterator k;
+    Iterator r1 = this.functionalOracleResults.iterator();
+    Iterator r2 = this.reliableOracleResults.iterator();
     int num = 0;
 
     Testcases tcs;
@@ -70,6 +76,30 @@ class QueryReplyLogger {
         writer.write("  Reply: " + tmp.getReplyName() + "\n");
       }
 
+      if (r1.hasNext() && r2.hasNext()) {
+        int r1result = (int) r1.next();
+        boolean r2result = (boolean) r2.next();
+
+        writer.write("Result:\n");
+        if (r1result == 0) {
+          writer.write("  Functional Oracle: negative\n");
+        } else if (r1result == 1) {
+          writer.write("  Functional Oracle: maybe\n");
+        } else if (r1result == 2) {
+          writer.write("  Functional Oracle: positive\n");
+        } else {
+          writer.write("  Functional Oracle: error\n");
+        }
+
+        if (r2result == false) {
+          writer.write("  Reliable Oracle: negative\n");
+        } else { 
+          writer.write("  Reliable Oracle: positive\n");
+        }
+      }
+      else {
+        logger.error("error in results");
+      }
       writer.close();
     }
   }
@@ -94,6 +124,14 @@ class QueryReplyLogger {
     this.pairs.add(pair);
   }
 
+  public void addFunctionalOracleResult(int deviated) {
+    this.functionalOracleResults.add(deviated);
+  }
+
+  public void addReliableOracleResult(boolean unreliable) {
+    this.reliableOracleResults.add(unreliable);
+  }
+
   public List<Testcases> getTestcases() {
     return this.testcases;
   }
@@ -108,6 +146,8 @@ class QueryReplyPair {
   private MessageLog query;
   private MessageLog reply;
   static Log logger;
+  private int deviated;
+  private boolean unreliable;
 
   QueryReplyPair(Testcase testcase, MessageLog query, MessageLog reply, Log logger) {
     setLogger(logger);

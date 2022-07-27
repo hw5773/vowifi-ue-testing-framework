@@ -230,6 +230,7 @@ def main():
     server.listen(5)
     device = check_device_model()
     handle_turn_off_wifi_interface(device)
+    ue_reboot(device)
 
     try:
         client, address = server.accept()

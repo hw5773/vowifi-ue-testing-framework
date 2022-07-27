@@ -39,6 +39,8 @@ public class VoWiFiUEConfig extends LearningConfig {
   String delimiterInput;
   String delimiterOutput;
 
+  String reliabilityTestcasePath;
+
   public VoWiFiUEConfig(String filename) throws IOException {
     super(filename);
   }
@@ -89,6 +91,9 @@ public class VoWiFiUEConfig extends LearningConfig {
 
     if(properties.getProperty("ims_stop_cmd") != null)
       imsStopCmd = properties.getProperty("ims_stop_cmd");
+
+    if(properties.getProperty("reliability_test") != null)
+      reliabilityTestcasePath = properties.getProperty("reliability_test");
 
     if(properties.getProperty("combine_query") != null)
       combineQuery = Boolean.parseBoolean(properties.getProperty("combine_query"));
@@ -152,5 +157,9 @@ public class VoWiFiUEConfig extends LearningConfig {
 
   public String getIMSStopCmd() {
     return imsStopCmd;
+  }
+
+  public String getReliabilityTest() {
+    return reliabilityTestcasePath;
   }
 }

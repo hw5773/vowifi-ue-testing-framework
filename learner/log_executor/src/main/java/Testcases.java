@@ -53,6 +53,10 @@ class Testcases {
     }
   }
 
+  void resetIterator() {
+    iter = messages.iterator();
+  }
+
   boolean hasNextMessage() {
     return iter.hasNext();
   }

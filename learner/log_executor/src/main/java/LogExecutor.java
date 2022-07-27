@@ -25,6 +25,7 @@ import static java.lang.Thread.sleep;
 public class LogExecutor {
   private static VoWiFiUEConfig config = null;
   private static QueryReplyLogger qrLogger = null;
+  private static Oracle oracle = null;
 
   final static Log logger = LogFactory.getLog(LogExecutor.class);
 
@@ -33,7 +34,7 @@ public class LogExecutor {
   public BufferedWriter ueOut, epdgOut, imsOut;
   public BufferedReader ueIn, epdgIn, imsIn;
 
-  static JSONParser jsonParser;
+  private static JSONParser jsonParser;
 
   int rebootCount = 0;
   int enableVoWiFiCount = 0;
@@ -44,7 +45,7 @@ public class LogExecutor {
 
   private static final int COOLING_TIME = 1*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
-  private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 10*1000; 
+  private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 20*1000; 
   private static final int IMS_SOCKET_TIMEOUT_VALUE = 20*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
@@ -52,9 +53,10 @@ public class LogExecutor {
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
   private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
 
-  public LogExecutor(VoWiFiUEConfig config, QueryReplyLogger qrLogger) throws Exception {
+  public LogExecutor(VoWiFiUEConfig config, QueryReplyLogger qrLogger, Oracle oracle) throws Exception {
     this.config = config;
     this.qrLogger = qrLogger;
+    this.oracle = oracle;
 
     initUEConnection();
     initEPDGConnection();
@@ -66,6 +68,7 @@ public class LogExecutor {
     LogExecutor logExecutor = null;
     VoWiFiUEConfig vowifiUEConfig = null;
     QueryReplyLogger vowifiQRLogger = null;
+    Oracle oracle = null;
 
     Options options = new Options();
 
@@ -129,7 +132,14 @@ public class LogExecutor {
     }
 
     try {
-      logExecutor = new LogExecutor(vowifiUEConfig, vowifiQRLogger);
+      oracle = new Oracle();
+    } catch (Exception e) {
+      logger.error("Error happened while initializing Oracle");
+      e.printStackTrace();
+    }
+
+    try {
+      logExecutor = new LogExecutor(vowifiUEConfig, vowifiQRLogger, oracle);
     } catch (Exception e) {
       logger.error("Error happend while initializing LogExecutor");
       e.printStackTrace();
@@ -141,12 +151,12 @@ public class LogExecutor {
     try (FileReader reader = new FileReader(testcaseFilePath)) {
       JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
       JSONArray testcaseArray = (JSONArray) jsonObject.get("testcases");
-      logger.info("testcases: " + testcaseArray);
+      logger.debug("testcases: " + testcaseArray);
       Iterator i = testcaseArray.iterator();
 
       while (i.hasNext()) {
         JSONObject tc = (JSONObject) i.next();
-        logger.info("Next Message: " + tc);
+        logger.debug("Next Message: " + tc);
         Testcases tcs = new Testcases(tc, logger);
         testcases.add(tcs);
       }
@@ -160,8 +170,25 @@ public class LogExecutor {
     Boolean timeoutOccured = false;
     int testcaseNum = 1;
     List<QueryReplyPair> pairs;
+    QueryReplyPair pair;
     Iterator iter;
+    String rpath;
+    Testcases reliabilityTestcase = null;
+    int r1;
+    boolean r2;
 
+    rpath = config.getReliabilityTest();
+    try (FileReader reader = new FileReader(rpath)) {
+      JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+      JSONArray jsonArr = (JSONArray) jsonObject.get("testcases");
+      Iterator i = jsonArr.iterator();
+      JSONObject rtc = (JSONObject) i.next();
+      reliabilityTestcase = new Testcases(rtc, logger);
+    } catch (Exception e) {
+      logger.error("Error happened while processing the reliability file");
+      e.printStackTrace();
+    }
+    
     for (Testcases testcase: testcases) {
       logger.info("Starting Testcase #" + testcaseNum);
 
@@ -172,9 +199,27 @@ public class LogExecutor {
       }
 
       logger.info("Finished Testcase #" + testcaseNum);
-      testcaseNum ++;
-
+      logger.info("Test Result #" + testcaseNum);
       qrLogger.addLog(testcase, pairs);
+      r1 = oracle.getFunctionalOracleResult(pairs);
+      qrLogger.addFunctionalOracleResult(r1);
+      logger.info("  Functional Oracle Result: " + r1);
+
+      if (reliabilityTestcase != null) {
+        reliabilityTestcase.resetIterator();
+        pairs = executeTestcase(logExecutor, reliabilityTestcase);
+        r2 = oracle.getReliableOracleResult(pairs.get(0));
+      } else {
+        r2 = false;
+      }
+      qrLogger.addReliableOracleResult(r2);
+      logger.info("  Reliable Oracle Result: " + r2);
+      if (r2 == true) {
+        logExecutor.rebootUE();
+        sleep(UE_REBOOT_SLEEP_TIME);
+      }
+
+      testcaseNum ++;
       sleep(TESTCASE_SLEEP_TIME);
     }
 
@@ -275,7 +320,7 @@ public class LogExecutor {
         print += ": ";
         print += testcase.getValue();
       }
-      logger.info(print);
+      logger.debug(print);
 
       if (testcase.getHasSubTestcase()) {
         depth++;
@@ -292,7 +337,7 @@ public class LogExecutor {
           print += "  ";
         }
         print += "end";
-        logger.info(print);
+        logger.debug(print);
 
         msg += ispi;
         msg += rspi;
@@ -361,18 +406,21 @@ public class LogExecutor {
       logger.info("Connecting to ePDG...");
       epdgSocket = new Socket(epdgControllerIPAddress , epdgPort);
       epdgSocket.setTcpNoDelay(true);
+      logger.info("Connected to ePDG");
+
+      logger.debug("Initializing Buffers for ePDG...");
       epdgOut = new BufferedWriter(new OutputStreamWriter(epdgSocket.getOutputStream()));
       epdgIn = new BufferedReader(new InputStreamReader(epdgSocket.getInputStream()));
-      System.out.println("The TCP connection with ePDG is established.");
+      logger.debug("The TCP connection with ePDG is established.");
 
       String result = new String();
       try {
         sleep(1*1000);
         epdgOut.write("Hello\n");
         epdgOut.flush();
-        System.out.println("Sent = Hello");
+        logger.debug("Sent = Hello");
         result = epdgIn.readLine();
-        System.out.println("Received = " + result);
+        logger.debug("Received = " + result);
       } catch(SocketException e) {
         e.printStackTrace();
         startEPDG();
@@ -524,14 +572,14 @@ public class LogExecutor {
       pairs.add(pair);
 
       if (pair.getReplyName().matches("exception")) {
-        logger.info("Exception occured, restarting testcase");
+        logger.error("Exception occured, restarting testcase");
         exceptionOccured = true;
         break;
       }
 
       if (pair.getReplyName().matches("timeout")) {
         timeoutOccured = true;
-        logger.info("RESULT: null_action (timeout)");
+        logger.error("RESULT: null_action (timeout)");
         continue;
       }
 
@@ -1038,7 +1086,7 @@ public class LogExecutor {
     String sender = testcase.getReplySender();
     String qname, rname;
     boolean ret;
-    logger.info("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
+    logger.debug("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
     
 		try {
 			sleep(50); //50 milliseconds
@@ -1047,17 +1095,17 @@ public class LogExecutor {
 		}
 
     if (receiver.startsWith("epdg")) {
-      logger.info("sendMSGToEPDG()");
+      logger.debug("sendMSGToEPDG()");
   		sendMSGToEPDG(testcase);
       logger.debug("Receiver 1: " + receiver);
       query = processResult(testcase, receiver);
     } else if (receiver.startsWith("ims")) {
-      logger.info("sendMSGToIMS()");
+      logger.debug("sendMSGToIMS()");
       sendMSGToIMS(testcase);
       logger.debug("Receiver 2: " + receiver);
       query = processResult(testcase, receiver);
     } else {
-      logger.info("sendEnableVoWiFi(): enable_vowifi");
+      logger.debug("sendEnableVoWiFi(): enable_vowifi");
   		sendEnableVoWiFi();
       query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       query.setName("enable_vowifi");
@@ -1119,9 +1167,9 @@ public class LogExecutor {
       epdgSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
       epdgOut.write("Hello\n");
       epdgOut.flush();
-      logger.info("Sent the Hello message to ePDG");
+      logger.debug("Sent the hello message to ePDG");
       result = epdgIn.readLine();
-      logger.info("Received the Hello message from ePDG in isEPDGAlive() = " + result);
+      logger.debug("Received the hello message from ePDG in isEPDGAlive() = " + result);
       epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
     } catch(SocketTimeoutException e) {
       logger.error("Timeout in Socket with ePDG");
@@ -1133,7 +1181,7 @@ public class LogExecutor {
     }
 
     if(result.contains("ACK")) {
-      logger.info("PASSED: Testing the connection between the statelearner and ePDG");
+      logger.debug("PASSED: Testing the connection between the statelearner and ePDG");
       return true;
     } else {
       logger.error("FAILED: Testing the connection between the statelearner and ePDG");
