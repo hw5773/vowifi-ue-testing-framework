@@ -61,7 +61,10 @@ class Testcases:
                     self.possible_values[target] = possible_values
                     self.correct_values[target] = correct_values
 
-                    line = "\"value\": 0"
+                    if len(correct_values) > 0:
+                        line = "\"value\": {}".format(list(correct_values)[0])
+                    else:
+                        line = "\"value\": 0"
 
                 js += line
 

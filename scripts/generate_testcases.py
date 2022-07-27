@@ -4,6 +4,7 @@ import argparse
 import logging
 import time
 import json
+import copy
 from testcases import Testcases
 
 def abstract_testcases(pname):
@@ -16,10 +17,35 @@ def abstract_testcases(pname):
     return ret
 
 def substitution(ptcs, ename):
-    ret = []
+    ret = {}
+    ret["testcases"] = []
 
     errors = open(ename, "r").read()
-    emsgs = json.loads(errors)
+    emsgs = json.loads(errors)["errors"]
+
+    for tc in ptcs:
+        obj = tc.get_default_object()
+        testcases = obj["testcases"]
+
+        for testcase in testcases:
+            tc = testcase["testcase"]
+
+            for emsg in emsgs:
+                t = {}
+                t["testcase"] = copy.copy(tc[:-1])
+                t["testcase"].append(emsg)
+                ret["testcases"].append(t)
+
+    return ret
+
+def replay(ptcs):
+    ret = {}
+    ret["testcases"] = []
+    return ret
+
+def update_values(ptcs):
+    ret = {}
+    ret["testcases"] = []
 
     for tc in ptcs:
         fname = tc.get_filename()
@@ -30,43 +56,56 @@ def substitution(ptcs, ename):
             pvals = tc.get_possible_values(target)
             cvals = tc.get_correct_values(target)
             avals = pvals - cvals
-        
-            logging.info("{}> target: {}, possible_values: {}".format(fname, target, pvals))
 
-    return ret
-
-def replay(ptcs):
-    ret = []
-    return ret
-
-def update_values(ptcs):
-    ret = []
     return ret
 
 def drop_payloads(ptcs):
-    ret = []
+    ret = {}
+    ret["testcases"] = []
     return ret
 
 def message_level_manipulation(ptcs, ename):
+    ret = {}
+    ret["testcases"] = []
+
     lst1 = substitution(ptcs, ename)
     lst2 = replay(ptcs)
 
-    ret = lst1.append(lst2)
+    for tc in lst1["testcases"]:
+        ret["testcases"].append(tc)
+
+    for tc in lst2["testcases"]:
+        ret["testcases"].append(tc)
+
     return ret 
 
 def attribute_level_manipulation(ptcs):
+    ret = {}
+    ret["testcases"] = []
+
     lst1 = update_values(ptcs)
     lst2 = drop_payloads(ptcs)
+
+    for tc in lst1["testcases"]:
+        ret["testcases"].append(tc)
+
+    for tc in lst2["testcases"]:
+        ret["testcases"].append(tc)
     
-    ret = lst1.append(lst2)
     return ret
 
 def write_testcases(ofname, mtcs, atcs):
     testcases = {}
     testcases["testcases"] = []
 
+    for tc in mtcs["testcases"]:
+        testcases["testcases"].append(tc)
+
+    for tc in atcs["testcases"]:
+        testcases["testcases"].append(tc)
+
     with open(ofname, "w") as of:
-        of.write(json.dumps(testcases))
+        of.write(json.dumps(testcases, indent=2))
 
 def generate_testcases(pname, ename, ofname):
     ptcs = abstract_testcases(pname)
