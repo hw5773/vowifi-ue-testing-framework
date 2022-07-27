@@ -22,6 +22,7 @@ def substitution(ptcs, ename):
 
     errors = open(ename, "r").read()
     emsgs = json.loads(errors)["errors"]
+    cnt = 0
 
     for tc in ptcs:
         obj = tc.get_default_object()
@@ -35,12 +36,40 @@ def substitution(ptcs, ename):
                 t["testcase"] = copy.copy(tc[:-1])
                 t["testcase"].append(emsg)
                 ret["testcases"].append(t)
+                cnt += 1
 
+    logging.info("Substitution> {} testcases are generated".format(cnt))
     return ret
 
 def replay(ptcs):
     ret = {}
     ret["testcases"] = []
+
+    cnt = 0
+
+    for tc in ptcs:
+        obj = tc.get_default_object()
+        testcases = obj["testcases"]
+
+        for testcase in testcases:
+            tc = testcase["testcase"]
+
+            t = {}
+            t["testcase"] = copy.copy(tc)
+            r = t["testcase"][-1]
+            if "sub" not in r:
+                r["sub"] = []
+            s = {}
+            s["name"] = "message_id"
+            s["type"] = "string"
+            s["value"] = "previous"
+            r["sub"].append(s)
+
+            t["testcase"].append(r)
+            ret["testcases"].append(t)
+            cnt += 1
+
+    logging.info("Reply> {} testcases are generated".format(cnt))
     return ret
 
 def update_values(ptcs):
