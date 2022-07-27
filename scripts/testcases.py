@@ -4,9 +4,9 @@ class Testcases:
 
     def __init__(self, fname):
         self.fname = fname
-        self.target = ""
-        self.possible_values = set([])
-        self.correct_values = set([])
+        self.targets = []
+        self.possible_values = {}
+        self.correct_values = {}
         target = None
 
         with open(fname, "r") as f:
@@ -33,27 +33,33 @@ class Testcases:
                         comma = False
 
                     _, values = line.split(":")
-                    self.target = target
+                    self.targets.append(target)
 
+                    possible_values = set([])
+                    correct_values = set([])
                     if "(" in values:
                         args = values[values.index("(")+1 : values.index(")")]
                         pvals = args[args.index("[")+1 : args.index("]")].split(",")
                         for v in pvals:
-                            self.possible_values.add(int(v))
+                            possible_values.add(int(v))
+                        self.possible_values[target] = possible_values
 
                         tmp = args[args.index("]")+1:].strip()
                         if len(tmp) > 0:
                             cvals = tmp[tmp.index("[")+1 : tmp.index("]")].split(",")
                             for v in cvals:
-                                self.correct_values.add(int(v))
+                                correct_values.add(int(v))
                         else:
                             cvals = []
                     else:
-                        self.possible_values.add("min")
-                        self.possible_values.add("median")
-                        self.possible_values.add("max")
-                        self.possible_values.add("mean")
-                        self.possible_values.add("random")
+                        possible_values.add("min")
+                        possible_values.add("median")
+                        possible_values.add("max")
+                        possible_values.add("mean")
+                        possible_values.add("random")
+
+                    self.possible_values[target] = possible_values
+                    self.correct_values[target] = correct_values
 
                     line = "\"value\": 0"
 
@@ -61,14 +67,17 @@ class Testcases:
 
             self.default_object = json.loads(js)
 
+    def get_filename(self):
+        return self.fname
+
     def get_default_object(self):
         return self.default_object
 
-    def get_target(self):
-        return self.target
+    def get_targets(self):
+        return self.targets
 
-    def get_possible_values(self):
-        return self.possible_values
+    def get_possible_values(self, target):
+        return self.possible_values[target]
 
-    def get_correct_values(self):
-        return self.correct_values
+    def get_correct_values(self, target):
+        return self.correct_values[target]

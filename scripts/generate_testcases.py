@@ -21,8 +21,17 @@ def substitution(ptcs, ename):
     errors = open(ename, "r").read()
     emsgs = json.loads(errors)
 
-    for msg in emsgs["errors"]:
-        print (msg)
+    for tc in ptcs:
+        fname = tc.get_filename()
+        obj = tc.get_default_object()
+        targets = tc.get_targets()
+
+        for target in targets:
+            pvals = tc.get_possible_values(target)
+            cvals = tc.get_correct_values(target)
+            avals = pvals - cvals
+        
+            logging.info("{}> target: {}, possible_values: {}".format(fname, target, pvals))
 
     return ret
 
@@ -67,7 +76,7 @@ def generate_testcases(pname, ename, ofname):
 
 def command_line_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--primary", metavar="<directory of primary properties>", help="Directory of Primary Properties", type=str, required=True)
+    parser.add_argument("-p", "--primary", metavar="<directory of primary properties>", help="Directory of Primary Properties", type=str, default="../testcases/primary")
     parser.add_argument("-e", "--errors", metavar="<error messages file>", help="Error Message File", type=str, default="../testcases/errors/errors")
     parser.add_argument("-d", "--output-directory", metavar="<output directory>", help="Output directory", type=str, default="../testcases")
     parser.add_argument("-o", "--output", metavar="<output filename>", help="Output filename", type=str, default="testcases.json")

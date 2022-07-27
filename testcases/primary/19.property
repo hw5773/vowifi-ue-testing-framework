@@ -1,0 +1,32 @@
+# The UE should not accept the same sequence number
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "edpg",
+          "sub": [
+            {
+              "name": "sequence_number",
+              "type": "uint32",
+              "value": VALUE
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
