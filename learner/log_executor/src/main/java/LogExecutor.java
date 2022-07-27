@@ -177,7 +177,7 @@ public class LogExecutor {
     int r1;
     boolean r2;
 
-    rpath = config.getReliabilityTest();
+    rpath = config.getLivenessTestcasePath();
     try (FileReader reader = new FileReader(rpath)) {
       JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
       JSONArray jsonArr = (JSONArray) jsonObject.get("testcases");

@@ -39,7 +39,11 @@ public class VoWiFiUEConfig extends LearningConfig {
   String delimiterInput;
   String delimiterOutput;
 
-  String reliabilityTestcasePath;
+  String livenessTestcasePath;
+
+  boolean tmp;
+  boolean livenessOracleEnabled;
+  boolean functionalOracleEnabled;
 
   public VoWiFiUEConfig(String filename) throws IOException {
     super(filename);
@@ -53,62 +57,72 @@ public class VoWiFiUEConfig extends LearningConfig {
   public void loadProperties() {
     super.loadProperties();
 
-    if(properties.getProperty("alphabet") != null)
+    if (properties.getProperty("alphabet") != null)
       alphabet = properties.getProperty("alphabet");
 
-    if(properties.getProperty("hostname") != null)
+    if (properties.getProperty("hostname") != null)
       hostname = properties.getProperty("hostname");
 
-    if(properties.getProperty("output_dir") != null)
+    if (properties.getProperty("output_dir") != null)
       outputDir = properties.getProperty("output_dir");
 
-    if(properties.getProperty("ue_controller_ip_address") != null)
+    if (properties.getProperty("ue_controller_ip_address") != null)
       ueControllerIPAddress = properties.getProperty("ue_controller_ip_address");
 
-    if(properties.getProperty("epdg_controller_ip_address") != null)
+    if (properties.getProperty("epdg_controller_ip_address") != null)
       epdgControllerIPAddress = properties.getProperty("epdg_controller_ip_address");
 
-    if(properties.getProperty("ims_controller_ip_address") != null)
+    if (properties.getProperty("ims_controller_ip_address") != null)
       imsControllerIPAddress = properties.getProperty("ims_controller_ip_address");
 
-    if(properties.getProperty("ue_port") != null)
+    if (properties.getProperty("ue_port") != null)
       uePort = Integer.parseInt(properties.getProperty("ue_port"));
 
-    if(properties.getProperty("epdg_port") != null)
+    if (properties.getProperty("epdg_port") != null)
       epdgPort = Integer.parseInt(properties.getProperty("epdg_port"));
 
-    if(properties.getProperty("ims_port") != null)
+    if (properties.getProperty("ims_port") != null)
       imsPort = Integer.parseInt(properties.getProperty("ims_port"));
 
-    if(properties.getProperty("epdg_start_cmd") != null)
+    if (properties.getProperty("epdg_start_cmd") != null)
       epdgStartCmd = properties.getProperty("epdg_start_cmd");
 
-    if(properties.getProperty("epdg_stop_cmd") != null)
+    if (properties.getProperty("epdg_stop_cmd") != null)
       epdgStopCmd = properties.getProperty("epdg_stop_cmd");
 
-    if(properties.getProperty("ims_start_cmd") != null)
+    if (properties.getProperty("ims_start_cmd") != null)
       imsStartCmd = properties.getProperty("ims_start_cmd");
 
-    if(properties.getProperty("ims_stop_cmd") != null)
+    if (properties.getProperty("ims_stop_cmd") != null)
       imsStopCmd = properties.getProperty("ims_stop_cmd");
 
-    if(properties.getProperty("reliability_test") != null)
-      reliabilityTestcasePath = properties.getProperty("reliability_test");
+    if (properties.getProperty("liveness_testcase_path") != null)
+      livenessTestcasePath = properties.getProperty("liveness_testcase_path");
 
-    if(properties.getProperty("combine_query") != null)
+    if (properties.getProperty("combine_query") != null)
       combineQuery = Boolean.parseBoolean(properties.getProperty("combine_query"));
     else
       combineQuery = false;
 
-    if(properties.getProperty("delimiter_input") != null)
+    if (properties.getProperty("delimiter_input") != null)
       delimiterInput = properties.getProperty("delimiter_input");
     else
       delimiterInput = ";";
 
-    if(properties.getProperty("delimiter_output") != null)
+    if (properties.getProperty("delimiter_output") != null)
       delimiterOutput = properties.getProperty("delimiter_output");
     else
       delimiterOutput = ";";
+
+    if (properties.getProperty("liveness_oracle") != null)
+      livenessOracleEnabled = properties.getProperty("liveness_oracle").equals("on");
+    else
+      livenessOracleEnabled = false;
+
+    if (properties.getProperty("functional_oracle") != null)
+      functionalOracleEnabled = properties.getProperty("functional_oracle").equals("on");
+    else
+      functionalOracleEnabled = false;
   }
 
   public boolean getCombineQuery() {
@@ -159,7 +173,15 @@ public class VoWiFiUEConfig extends LearningConfig {
     return imsStopCmd;
   }
 
-  public String getReliabilityTest() {
-    return reliabilityTestcasePath;
+  public String getLivenessTestcasePath() {
+    return livenessTestcasePath;
+  }
+
+  public boolean isLivenessOracleEnabled() {
+    return livenessOracleEnabled;
+  }
+
+  public boolean isFunctionalOracleEnabled() {
+    return functionalOracleEnabled;
   }
 }
