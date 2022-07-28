@@ -16,7 +16,7 @@ class QueryReplyLogger {
   private List<Testcases> testcases = null;
   private List<List<QueryReplyPair>> pairs = null;
   private List<Integer> functionalOracleResults = null;
-  private List<Boolean> reliableOracleResults = null;
+  private List<Boolean> livenessOracleResults = null;
   private String outputRootDir;
   private String outputDir;
   private String ueModel;
@@ -32,7 +32,7 @@ class QueryReplyLogger {
     this.testcases = new ArrayList<>();
     this.pairs = new ArrayList<>();
     this.functionalOracleResults = new ArrayList<>();
-    this.reliableOracleResults = new ArrayList<>();
+    this.livenessOracleResults = new ArrayList<>();
     this.outputRootDir = outputDir;
     this.ueModel = null;
   }
@@ -42,7 +42,7 @@ class QueryReplyLogger {
     Iterator j = this.pairs.iterator();
     Iterator k;
     Iterator r1 = this.functionalOracleResults.iterator();
-    Iterator r2 = this.reliableOracleResults.iterator();
+    Iterator r2 = this.livenessOracleResults.iterator();
     int num = 0;
 
     Testcases tcs;
@@ -92,9 +92,9 @@ class QueryReplyLogger {
         }
 
         if (r2result == false) {
-          writer.write("  Reliable Oracle: negative\n");
+          writer.write("  Liveness Oracle: negative\n");
         } else { 
-          writer.write("  Reliable Oracle: positive\n");
+          writer.write("  Liveness Oracle: positive\n");
         }
       }
       else {
@@ -128,8 +128,8 @@ class QueryReplyLogger {
     this.functionalOracleResults.add(deviated);
   }
 
-  public void addReliableOracleResult(boolean unreliable) {
-    this.reliableOracleResults.add(unreliable);
+  public void addLivenessOracleResult(boolean unreliable) {
+    this.livenessOracleResults.add(unreliable);
   }
 
   public List<Testcases> getTestcases() {
@@ -147,7 +147,6 @@ class QueryReplyPair {
   private MessageLog reply;
   static Log logger;
   private int deviated;
-  private boolean unreliable;
 
   QueryReplyPair(Testcase testcase, MessageLog query, MessageLog reply, Log logger) {
     setLogger(logger);

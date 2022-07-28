@@ -26,6 +26,12 @@ class Testcases:
                     if target[-1] == ',':
                         target = target[:-1]
 
+                    target = target.strip()
+                    if target[0] == '\"':
+                        target = target[1:]
+                    if target[-1] == '\"':
+                        target = target[:-1]
+
                 if "VALUE" in line:
                     if line[-1] == ',':
                         comma = True

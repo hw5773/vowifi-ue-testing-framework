@@ -5,15 +5,19 @@ import logging
 import time
 import json
 import copy
+import random
 from testcases import Testcases
 
 def abstract_testcases(pname):
     ret = []
     lst = ["{}/{}".format(pname, f) for f in os.listdir(pname) if "swp" not in f]
+    cnt = 0
 
     for fname in lst:
         ret.append(Testcases(fname))
+        cnt += 1
 
+    logging.info("Abstract> {} primary properties are ready".format(cnt))
     return ret
 
 def substitution(ptcs, ename):
@@ -33,7 +37,7 @@ def substitution(ptcs, ename):
 
             for emsg in emsgs:
                 t = {}
-                t["testcase"] = copy.copy(tc[:-1])
+                t["testcase"] = copy.deepcopy(tc[:-1])
                 t["testcase"].append(emsg)
                 ret["testcases"].append(t)
                 cnt += 1
@@ -55,8 +59,8 @@ def replay(ptcs):
             tc = testcase["testcase"]
 
             t = {}
-            t["testcase"] = copy.copy(tc)
-            r = t["testcase"][-1]
+            t["testcase"] = copy.deepcopy(tc)
+            r = copy.deepcopy(t["testcase"][-1])
             if "sub" not in r:
                 r["sub"] = []
             s = {}
@@ -69,28 +73,93 @@ def replay(ptcs):
             ret["testcases"].append(t)
             cnt += 1
 
-    logging.info("Reply> {} testcases are generated".format(cnt))
+    logging.info("Replay> {} testcases are generated".format(cnt))
     return ret
+
+def _find_target(testcase, target):
+    if isinstance(testcase, list):
+        for msg in testcase:
+            if "sub" in msg:
+                ret = _find_target(msg["sub"], target)
+                if ret != None:
+                    return ret
+
+            if msg["name"] == target:
+                return msg
+    return None
 
 def update_values(ptcs):
     ret = {}
     ret["testcases"] = []
+    cnt = 0
 
     for tc in ptcs:
         fname = tc.get_filename()
         obj = tc.get_default_object()
         targets = tc.get_targets()
 
-        for target in targets:
-            pvals = tc.get_possible_values(target)
-            cvals = tc.get_correct_values(target)
-            avals = pvals - cvals
+        testcases = obj["testcases"]
 
+        for testcase in testcases:
+            for target in targets:
+                pvals = tc.get_possible_values(target)
+                cvals = tc.get_correct_values(target)
+                avals = pvals - cvals
+                msg = _find_target(testcase["testcase"], target)
+                if msg != None:
+                    for val in avals:
+                        if val == "min":
+                            msg["value"] = 0
+                        elif val == "max":
+                            msg["value"] = 0xffff
+                        elif val == "mean":
+                            msg["value"] = 0xaaaa
+                        elif val == "random":
+                            msg["value"] = int(random.random())
+                        msg["value"] = val
+                        msg["op"] = "update"
+                        t = copy.deepcopy(testcase)
+                        ret["testcases"].append(t)
+                        msg.pop("op", None)
+                        cnt += 1
+
+    logging.info("Update Values> {} testcases are generated".format(cnt))
+    return ret
+
+def _make_targets(testcase):
+    ret = []
+    if isinstance(testcase, list):
+        msg = testcase[-1]
+        if "sub" in msg:
+            tmp = _make_targets(msg["sub"])
+            for e in tmp:
+                ret.append(e)
+
+        if "value" in msg:
+            ret.append(msg["name"])
     return ret
 
 def drop_payloads(ptcs):
     ret = {}
     ret["testcases"] = []
+    cnt = 0
+
+    for tc in ptcs:
+        obj = tc.get_default_object()
+        testcases = obj["testcases"]
+
+        for testcase in testcases:
+            targets = _make_targets(testcase["testcase"])
+            for target in targets:
+                msg = _find_target(testcase["testcase"], target)
+                if msg != None:
+                    msg["op"] = "drop"
+                    t = copy.deepcopy(testcase)
+                    ret["testcases"].append(t)
+                    msg.pop("op", None)
+                    cnt += 1
+
+    logging.info("Drop> {} testcases are generated".format(cnt))
     return ret
 
 def message_level_manipulation(ptcs, ename):

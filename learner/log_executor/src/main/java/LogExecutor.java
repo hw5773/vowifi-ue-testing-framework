@@ -208,12 +208,12 @@ public class LogExecutor {
       if (reliabilityTestcase != null) {
         reliabilityTestcase.resetIterator();
         pairs = executeTestcase(logExecutor, reliabilityTestcase);
-        r2 = oracle.getReliableOracleResult(pairs.get(0));
+        r2 = oracle.getLivenessOracleResult(pairs.get(0));
       } else {
         r2 = false;
       }
-      qrLogger.addReliableOracleResult(r2);
-      logger.info("  Reliable Oracle Result: " + r2);
+      qrLogger.addLivenessOracleResult(r2);
+      logger.info("  Liveness Oracle Result: " + r2);
       if (r2 == true) {
         logExecutor.rebootUE();
         sleep(UE_REBOOT_SLEEP_TIME);

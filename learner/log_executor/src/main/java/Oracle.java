@@ -52,7 +52,7 @@ public class Oracle {
     return ret;
   }
 
-  public boolean getReliableOracleResult(QueryReplyPair pair) {
+  public boolean getLivenessOracleResult(QueryReplyPair pair) {
     logger.debug("Tagging if the behavior is unreliable");
     boolean ret;
     String query, reply;
