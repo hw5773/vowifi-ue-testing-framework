@@ -46,8 +46,8 @@ public class LogExecutor {
   private static final int COOLING_TIME = 1*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int IMS_SOCKET_TIMEOUT_VALUE = 20*1000; 
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 12*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 12*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
@@ -78,8 +78,8 @@ public class LogExecutor {
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
 
-    Option argConfig = new Option("n", "number", true, "Starting testcase number");
-    options.addOption(argConfig);
+    Option argNumber = new Option("n", "number", true, "Starting testcase number");
+    options.addOption(argNumber);
 
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();

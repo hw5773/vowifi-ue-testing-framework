@@ -37,141 +37,58 @@ class QueryReplyLogger {
     this.ueModel = null;
   }
 
-  public void storeLog() throws IOException {
-    Iterator i = this.testcases.iterator();
-    Iterator j = this.pairs.iterator();
-    Iterator k;
+  public void storeLog(int num) throws IOException {
+    Iterator i;
     Iterator r1 = this.functionalOracleResults.iterator();
     Iterator r2 = this.livenessOracleResults.iterator();
-    int num = 0;
-
+ 
     Testcases tcs;
     List<QueryReplyPair> plst;
     QueryReplyPair tmp = null;
+    int r1result;
+    boolean r2result;
 
+    String filename = this.outputDir + "/result." + num;
+    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+    tcs = (Testcases) this.testcases.get(this.testcases.size()-1);
+    plst = (List<QueryReplyPair>) this.pairs.get(this.pairs.size()-1);
+
+    logger.info("Testcase #" + num);
+    logger.info("Testcase: " + tcs.getOriginalTestcase());
+
+    writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");
+    writer.write("Message:\n");
+
+    i = plst.iterator();
     while (i.hasNext()) {
-      num++;
-      String filename = this.outputDir + "/result." + num;
-      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-
-      tcs = (Testcases) i.next();
-      if (j.hasNext())
-        plst = (List<QueryReplyPair>) j.next();
-      else {
-        logger.error("Should not happen");
-        break;
-      }
-
-      logger.info("Testcase #" + num);
-      logger.info("Testcase: " + tcs.getOriginalTestcase());
-
-      writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");
-      writer.write("Message:\n");
-
-      k = plst.iterator();
-      while (k.hasNext()) {
-        tmp = (QueryReplyPair) k.next();
-        logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
-        writer.write("  Query: " + tmp.getQueryName() + "\n");
-        writer.write("  Reply: " + tmp.getReplyName() + "\n");
-      }
-
-      if (r1.hasNext() && r2.hasNext()) {
-        int r1result = (int) r1.next();
-        boolean r2result = (boolean) r2.next();
-
-        writer.write("Result:\n");
-        if (r1result == 0) {
-          writer.write("  Functional Oracle: negative\n");
-        } else if (r1result == 1) {
-          writer.write("  Functional Oracle: maybe\n");
-        } else if (r1result == 2) {
-          writer.write("  Functional Oracle: positive\n");
-        } else {
-          writer.write("  Functional Oracle: error\n");
-        }
-
-        if (r2result == false) {
-          writer.write("  Liveness Oracle: negative\n");
-        } else { 
-          writer.write("  Liveness Oracle: positive\n");
-        }
-      }
-      else {
-        logger.error("error in results");
-      }
-      writer.close();
+      tmp = (QueryReplyPair) i.next();
+      logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
+      writer.write("  Query: " + tmp.getQueryName() + "\n");
+      writer.write("  Reply: " + tmp.getReplyName() + "\n");
     }
-  }
 
-  /*
-  public void storeLog() throws IOException {
-    Iterator i = this.testcases.iterator();
-    Iterator j = this.pairs.iterator();
-    Iterator k;
-    Iterator r1 = this.functionalOracleResults.iterator();
-    Iterator r2 = this.livenessOracleResults.iterator();
-    int num = 0;
+    r1result = (int) this.functionalOracleResults.get(this.functionalOracleResults.size()-1);
+    r2result = (boolean) this.livenessOracleResults.get(this.livenessOracleResults.size()-1);
 
-    Testcases tcs;
-    List<QueryReplyPair> plst;
-    QueryReplyPair tmp = null;
-
-    while (i.hasNext()) {
-      num++;
-      String filename = this.outputDir + "/result." + num;
-      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-
-      tcs = (Testcases) i.next();
-      if (j.hasNext())
-        plst = (List<QueryReplyPair>) j.next();
-      else {
-        logger.error("Should not happen");
-        break;
-      }
-
-      logger.info("Testcase #" + num);
-      logger.info("Testcase: " + tcs.getOriginalTestcase());
-
-      writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");
-      writer.write("Message:\n");
-
-      k = plst.iterator();
-      while (k.hasNext()) {
-        tmp = (QueryReplyPair) k.next();
-        logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
-        writer.write("  Query: " + tmp.getQueryName() + "\n");
-        writer.write("  Reply: " + tmp.getReplyName() + "\n");
-      }
-
-      if (r1.hasNext() && r2.hasNext()) {
-        int r1result = (int) r1.next();
-        boolean r2result = (boolean) r2.next();
-
-        writer.write("Result:\n");
-        if (r1result == 0) {
-          writer.write("  Functional Oracle: negative\n");
-        } else if (r1result == 1) {
-          writer.write("  Functional Oracle: maybe\n");
-        } else if (r1result == 2) {
-          writer.write("  Functional Oracle: positive\n");
-        } else {
-          writer.write("  Functional Oracle: error\n");
-        }
-
-        if (r2result == false) {
-          writer.write("  Liveness Oracle: negative\n");
-        } else { 
-          writer.write("  Liveness Oracle: positive\n");
-        }
-      }
-      else {
-        logger.error("error in results");
-      }
-      writer.close();
+    writer.write("Result:\n");
+    if (r1result == 0) {
+      writer.write("  Functional Oracle: negative\n");
+    } else if (r1result == 1) {
+      writer.write("  Functional Oracle: maybe\n");
+    } else if (r1result == 2) {
+      writer.write("  Functional Oracle: positive\n");
+    } else {
+      writer.write("  Functional Oracle: error\n");
     }
+
+    if (r2result == false) {
+      writer.write("  Liveness Oracle: negative\n");
+    } else { 
+      writer.write("  Liveness Oracle: positive\n");
+    }
+    writer.close();
   }
-  */
 
   public void setUEModel(String ueModel) {
     File directory;
