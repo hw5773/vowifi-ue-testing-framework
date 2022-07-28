@@ -211,6 +211,10 @@ struct queued_task_t {
 	timeval_t time;
 };
 
+///// Added for VoWiFi /////
+static void send_notify_response(private_task_manager_t *this, message_t *request, notify_type_t type, chunk_t data);
+///////////////////////////
+
 /**
  * Reset retransmission packet list
  */
@@ -910,83 +914,183 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   ///// Added for VoWiFi /////
   const uint8_t *symbol;
   int failed;
+	notify_type_t ntype;
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     failed = 0;
     if ((query = get_next_query(instance)))
     {
       printf("[VoWiFi] query name: %s, instance->sprev: %s\n", query->name, instance->sprev);
-		  switch (message->get_exchange_type(message)) 
+      if (is_query_name(query, "unsupported_critical_payload"))
       {
-        case IKE_SA_INIT:
-          if (is_query_name(query, "ike_sa_init_response"))
-          {
-            symbol = "ike_sa_init_response";
-            instance->sprev = "ike_sa_init_response";
-          }
-          else
-          {
-            symbol = "error in ike_sa_init";
-            instance->sprev = "error";
-          }
-          break;
+        symbol = "unsupported_critical_payload";
+        ntype = UNSUPPORTED_CRITICAL_PAYLOAD;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_ike_spi"))
+      {
+        symbol = "invalid_ike_spi";
+        ntype = INVALID_IKE_SPI;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_major_version"))
+      {
+        symbol = "invalid_major_version";
+        ntype = INVALID_MAJOR_VERSION;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_syntax"))
+      {
+        symbol = "invalid_syntax";
+        ntype = INVALID_SYNTAX;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_message_id"))
+      {
+        symbol = "invalid_message_id";
+        ntype = INVALID_MESSAGE_ID;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_spi"))
+      {
+        symbol = "invalid_spi";
+        ntype = INVALID_SPI;
+        failed = 1;
+      }
+      else if (is_query_name(query, "no_proposal_chosen"))
+      {
+        symbol = "no_proposal_chosen";
+        ntype = NO_PROPOSAL_CHOSEN;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_ke_payload"))
+      {
+        symbol = "invalid_ke_payload";
+        ntype = INVALID_KE_PAYLOAD;
+        failed = 1;
+      }
+      else if (is_query_name(query, "authentication_failed"))
+      {
+        symbol = "authentication_failed";
+        ntype = AUTHENTICATION_FAILED;
+        failed = 1;
+      }
+      else if (is_query_name(query, "single_pair_required"))
+      {
+        symbol = "single_pair_required";
+        ntype = SINGLE_PAIR_REQUIRED;
+        failed = 1;
+      }
+      else if (is_query_name(query, "no_additional_sas"))
+      {
+        symbol = "no_additional_sas";
+        ntype = NO_ADDITIONAL_SAS;
+        failed = 1;
+      }
+      else if (is_query_name(query, "internal_address_failure"))
+      {
+        symbol = "internal_address_failure";
+        ntype = INTERNAL_ADDRESS_FAILURE;
+        failed = 1;
+      }
+      else if (is_query_name(query, "failed_cp_required"))
+      {
+        symbol = "failed_cp_required";
+        ntype = FAILED_CP_REQUIRED;
+        failed = 1;
+      }
+      else if (is_query_name(query, "ts_unacceptable"))
+      {
+        symbol = "ts_unacceptable";
+        ntype = TS_UNACCEPTABLE;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_selectors"))
+      {
+        symbol = "invalid_selectors";
+        ntype = INVALID_SELECTORS;
+        failed = 1;
+      }
+      else if (is_query_name(query, "temporary_failure"))
+      {
+        symbol = "temporary_failure";
+        ntype = TEMPORARY_FAILURE;
+        failed = 1;
+      }
+      else if (is_query_name(query, "child_sa_not_found"))
+      {
+        symbol = "child_sa_not_found";
+        ntype = CHILD_SA_NOT_FOUND;
+        failed = 1;
+      }
+      else if (is_query_name(query, "invalid_cert_authority"))
+      {
+        symbol = "invalid_cert_authority";
+        ntype = INVALID_CERT_AUTHORITY;
+        failed = 1;
+      }
+      else 
+      {
+  		  switch (message->get_exchange_type(message)) 
+        {
+          case IKE_SA_INIT:
+            if (is_query_name(query, "ike_sa_init_response"))
+            {
+              symbol = "ike_sa_init_response";
+              instance->sprev = "ike_sa_init_response";
+            }
+            else
+            {
+              symbol = "error in ike_sa_init";
+              instance->sprev = "error";
+            }
+            break;
 
-        case IKE_AUTH:
-          printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
-          if (is_query_name(query, "ike_auth_1_response")
-              && (!strncmp(instance->sprev, "ike_sa_init_response", strlen("ike_sa_init_response"))))
-          {
-            symbol = "ike_auth_1_response";
-            instance->sprev = "ike_auth_1_response";
-          }
-          else if (is_query_name(query, "ike_auth_2_response")
-              && (!strncmp(instance->sprev, "ike_auth_1_response", strlen("ike_auth_1_response"))))
-          {
-            symbol = "ike_auth_2_response";
-            instance->sprev = "ike_auth_2_response";
-          }
-          else if (is_query_name(query, "ike_auth_3_response")
-              && (!strncmp(instance->sprev, "ike_auth_2_response", strlen("ike_auth_2_response"))))
-          {
-            symbol = "ike_auth_3_response";
-            instance->sprev = "ike_auth_3_response";
-          }
-          else if (is_query_name(query, "ike_auth_4_response")
-              && (!strncmp(instance->sprev, "ike_auth_3_response", strlen("ike_auth_3_response"))))
-          {
-            symbol = "ike_auth_4_response";
-            instance->sprev = "ike_auth_4_response";
-          }
-          else if (is_query_name(query, "ike_auth_5_response")
-              && (!strncmp(instance->sprev, "ike_auth_4_response", strlen("ike_auth_4_response"))))
-          {
-            symbol = "ike_auth_5_response";
-            instance->sprev = "ike_auth_5_response";
-          }
-          else if (is_query_name(query, "redirect_supported"))
-          {
-            symbol = "redirect_supported";
-            message->add_notify(message, TRUE, REDIRECT_SUPPORTED, chunk_empty);
-            failed = 1;
-          }
-          else if (is_query_name(query, "invalid_syntax"))
-          {
-            symbol = "invalid_syntax";
-            message->add_notify(message, TRUE, INVALID_SYNTAX, chunk_empty);
-            failed = 1;
-          }
-          else
-          {
-            symbol = "error in ike_auth";
-            instance->sprev = "error";
-          }
-          break;
+          case IKE_AUTH:
+            printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
+            if (is_query_name(query, "ike_auth_1_response")
+                && (!strncmp(instance->sprev, "ike_sa_init_response", strlen("ike_sa_init_response"))))
+            {
+              symbol = "ike_auth_1_response";
+              instance->sprev = "ike_auth_1_response";
+            }
+            else if (is_query_name(query, "ike_auth_2_response")
+                && (!strncmp(instance->sprev, "ike_auth_1_response", strlen("ike_auth_1_response"))))
+            {
+              symbol = "ike_auth_2_response";
+              instance->sprev = "ike_auth_2_response";
+            }
+            else if (is_query_name(query, "ike_auth_3_response")
+                && (!strncmp(instance->sprev, "ike_auth_2_response", strlen("ike_auth_2_response"))))
+            {
+              symbol = "ike_auth_3_response";
+              instance->sprev = "ike_auth_3_response";
+            }
+            else if (is_query_name(query, "ike_auth_4_response")
+                && (!strncmp(instance->sprev, "ike_auth_3_response", strlen("ike_auth_3_response"))))
+            {
+              symbol = "ike_auth_4_response";
+              instance->sprev = "ike_auth_4_response";
+            }
+            else if (is_query_name(query, "ike_auth_5_response")
+                && (!strncmp(instance->sprev, "ike_auth_4_response", strlen("ike_auth_4_response"))))
+            {
+              symbol = "ike_auth_5_response";
+              instance->sprev = "ike_auth_5_response";
+            }
+            else
+            {
+              symbol = "error in ike_auth";
+              instance->sprev = "error";
+            }
+            break;
   
-		    case CREATE_CHILD_SA:
-      	case INFORMATIONAL:
-        default:
-          symbol = "error in exchange_type";
-          instance->sprev = "error";
+  		    case CREATE_CHILD_SA:
+        	case INFORMATIONAL:
+          default:
+            symbol = "error in exchange_type";
+            instance->sprev = "error";
+        }
       }
 
       msg = init_message(instance, MSG_TYPE_BLOCK_START, 
@@ -995,12 +1099,46 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
       if (failed)
       {
-        msg = init_message(instance, MSG_TYPE_BLOCK_START, 
-          symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        instance->add_message_to_send_queue(instance, msg);
+        //uint8_t type = 0;
         msg = init_message(instance, MSG_TYPE_BLOCK_END, 
           NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
         instance->add_message_to_send_queue(instance, msg);
+
+        switch (ntype)
+        {
+	        case UNSUPPORTED_CRITICAL_PAYLOAD:
+  	      case INVALID_IKE_SPI:
+        	case INVALID_MAJOR_VERSION:
+        	case INVALID_SYNTAX:
+	        case INVALID_MESSAGE_ID:
+	        case INVALID_SPI:
+	        case ATTRIBUTES_NOT_SUPPORTED:
+	        case NO_PROPOSAL_CHOSEN:
+	        case INVALID_KE_PAYLOAD:
+	        case INVALID_CERT_ENCODING:
+	        case INVALID_CERTIFICATE:
+	        case CERT_TYPE_UNSUPPORTED:
+	        case INVALID_CERT_AUTHORITY:
+	        case INVALID_HASH_INFORMATION:
+  	      case AUTHENTICATION_FAILED:
+	        case SINGLE_PAIR_REQUIRED:
+	        case NO_ADDITIONAL_SAS:
+  	      case INTERNAL_ADDRESS_FAILURE:
+	        case FAILED_CP_REQUIRED:
+	        case TS_UNACCEPTABLE:
+	        case INVALID_SELECTORS:
+	        case UNACCEPTABLE_ADDRESSES:
+	        case UNEXPECTED_NAT_DETECTED:
+	        case USE_ASSIGNED_HoA:
+	        case TEMPORARY_FAILURE:
+	        case CHILD_SA_NOT_FOUND:
+          default:
+				    //send_notify_response(this, message, ntype, chunk_from_thing(type));
+				    send_notify_response(this, message, ntype, chunk_empty);
+            break;
+        }
+
+		    this->responding.mid++;
         return FAILED;
       }
     }
@@ -1336,6 +1474,10 @@ static status_t process_request(private_task_manager_t *this,
 
   ///// Added for VoWiFi /////
   const uint8_t *symbol;
+	enumerator_t *enumer;
+  notify_payload_t *noti;
+	payload_t *pload;
+
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
 		switch (message->get_exchange_type(message)) 
@@ -1378,8 +1520,106 @@ static status_t process_request(private_task_manager_t *this,
         }
         break;
 
-			case CREATE_CHILD_SA:
 			case INFORMATIONAL:
+        if (message->get_exchange_type(message) == INFORMATIONAL)
+	      {
+      		enumer = message->create_payload_enumerator(message);
+      		while (enumer->enumerate(enumer, &pload))
+      		{
+      			if (payload->get_type(pload) == PLV2_NOTIFY)
+      			{
+			      	noti = (notify_payload_t*)pload;
+      				switch (noti->get_notify_type(noti))
+      				{
+      	        case UNSUPPORTED_CRITICAL_PAYLOAD:
+                  symbol = "unsupported_critical_payload";
+                  break;
+  	            case INVALID_IKE_SPI:
+                  symbol = "invalid_ike_spi";
+                  break;
+              	case INVALID_MAJOR_VERSION:
+                  symbol = "invalid_major_version";
+                  break;
+              	case INVALID_SYNTAX:
+                  symbol = "invalid_syntax";
+                  break;
+      	        case INVALID_MESSAGE_ID:
+                  symbol = "invalid_message_id";
+                  break;
+      	        case INVALID_SPI:
+                  symbol = "invalid_spi";
+                  break;
+      	        case ATTRIBUTES_NOT_SUPPORTED:
+                  symbol = "attributes_not_supported";
+                  break;
+      	        case NO_PROPOSAL_CHOSEN:
+                  symbol = "no_proposal_chosen";
+                  break;
+      	        case INVALID_KE_PAYLOAD:
+                  symbol = "invalid_ke_payload";
+                  break;
+      	        case INVALID_CERT_ENCODING:
+                  symbol = "invalid_cert_encoding";
+                  break;
+      	        case INVALID_CERTIFICATE:
+                  symbol = "invalid_certificate";
+                  break;
+      	        case CERT_TYPE_UNSUPPORTED:
+                  symbol = "cert_type_unsupported";
+                  break;
+      	        case INVALID_CERT_AUTHORITY:
+                  symbol = "invalid_cert_authority";
+                  break;
+      	        case INVALID_HASH_INFORMATION:
+                  symbol = "invalid_hash_information";
+                  break;
+        	      case AUTHENTICATION_FAILED:
+                  symbol = "authentication_failed";
+                  break;
+      	        case SINGLE_PAIR_REQUIRED:
+                  symbol = "single_pair_required";
+                  break;
+      	        case NO_ADDITIONAL_SAS:
+                  symbol = "no_additional_sas";
+                  break;
+        	      case INTERNAL_ADDRESS_FAILURE:
+                  symbol = "internal_address_failure";
+                  break;
+      	        case FAILED_CP_REQUIRED:
+                  symbol = "failed_cp_required";
+                  break;
+      	        case TS_UNACCEPTABLE:
+                  symbol = "ts_unacceptable";
+                  break;
+      	        case INVALID_SELECTORS:
+                  symbol = "invalid_selectors";
+                  break;
+      	        case UNACCEPTABLE_ADDRESSES:
+                  symbol = "unacceptable_addresses";
+                  break;
+      	        case UNEXPECTED_NAT_DETECTED:
+                  symbol = "unexpected_nat_detected";
+                  break;
+      	        case USE_ASSIGNED_HoA:
+                  symbol = "use_assigned_hoa";
+                  break;
+      	        case TEMPORARY_FAILURE:
+                  symbol = "temporary_failure";
+                  break;
+      	        case CHILD_SA_NOT_FOUND:
+                  symbol = "chile_sa_not_found";
+                  break;
+					      default:
+                  symbol = "unknown";
+						      break;
+              }
+            }
+          }
+				}
+    		enumer->destroy(enumerator);
+        break;
+
+			case CREATE_CHILD_SA:
       default:
         symbol = "error in exchange_type";
         instance->rprev = "error";

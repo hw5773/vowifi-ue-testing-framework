@@ -1,0 +1,37 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "unsupported_critical_payload",
+          "sender": "epdg"
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "unsupported_critical_payload",
+          "sender": "epdg"
+        }
+      ]
+    }
+  ]
+}

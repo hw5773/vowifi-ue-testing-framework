@@ -60,7 +60,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    initIMSConnection();
+    //initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -78,6 +78,9 @@ public class LogExecutor {
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
 
+    Option argConfig = new Option("n", "number", true, "Starting testcase number");
+    options.addOption(argConfig);
+
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
     CommandLine cmd = null;
@@ -93,6 +96,8 @@ public class LogExecutor {
 
     String testcaseFilePath = cmd.getOptionValue("file");
     String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
+    String startNumberString = cmd.getOptionValue("number", "0");
+    int startNumber = Integer.parseInt(startNumberString);
 
     if (testcaseFilePath == null) {
       logger.error("Query File should be inserted");
@@ -168,12 +173,12 @@ public class LogExecutor {
     logger.info("# of Testcases: " + testcases.size());
 
     Boolean timeoutOccured = false;
-    int testcaseNum = 1;
+    int testcaseNum = 0;
     List<QueryReplyPair> pairs;
     QueryReplyPair pair;
     Iterator iter;
     String rpath;
-    Testcases reliabilityTestcase = null;
+    Testcases livenessTestcase = null;
     int r1;
     boolean r2;
 
@@ -183,14 +188,28 @@ public class LogExecutor {
       JSONArray jsonArr = (JSONArray) jsonObject.get("testcases");
       Iterator i = jsonArr.iterator();
       JSONObject rtc = (JSONObject) i.next();
-      reliabilityTestcase = new Testcases(rtc, logger);
+      livenessTestcase = new Testcases(rtc, logger);
     } catch (Exception e) {
-      logger.error("Error happened while processing the reliability file");
+      logger.error("Error happened while processing the liveness testcase file");
       e.printStackTrace();
     }
     
+    if (livenessTestcase != null) {
+      livenessTestcase.resetIterator();
+      pairs = executeTestcase(logExecutor, livenessTestcase);
+      if (pairs.get(0).getReplyName().contains("timeout")) {
+        logExecutor.rebootUE();
+        sleep(UE_REBOOT_SLEEP_TIME);
+      }
+    }
+
     for (Testcases testcase: testcases) {
+      testcaseNum ++;
       logger.info("Starting Testcase #" + testcaseNum);
+      if (testcaseNum < startNumber) {
+        logger.info("Skipping Testcase #" + testcaseNum);
+        continue;
+      }
 
       pairs = executeTestcase(logExecutor, testcase);
 
@@ -205,9 +224,9 @@ public class LogExecutor {
       qrLogger.addFunctionalOracleResult(r1);
       logger.info("  Functional Oracle Result: " + r1);
 
-      if (reliabilityTestcase != null) {
-        reliabilityTestcase.resetIterator();
-        pairs = executeTestcase(logExecutor, reliabilityTestcase);
+      if (livenessTestcase != null) {
+        livenessTestcase.resetIterator();
+        pairs = executeTestcase(logExecutor, livenessTestcase);
         r2 = oracle.getLivenessOracleResult(pairs.get(0));
       } else {
         r2 = false;
@@ -219,11 +238,11 @@ public class LogExecutor {
         sleep(UE_REBOOT_SLEEP_TIME);
       }
 
-      testcaseNum ++;
+      qrLogger.storeLog(testcaseNum);
       sleep(TESTCASE_SLEEP_TIME);
     }
 
-    qrLogger.storeLog();
+    //qrLogger.storeLog();
   }
 
   public void restartEPDG() throws InterruptedException {

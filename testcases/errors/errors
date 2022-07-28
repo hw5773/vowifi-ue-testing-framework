@@ -84,6 +84,11 @@
       "receiver": "epdg", 
       "name": "child_sa_not_found",
       "sender": "epdg"
+    },
+    { 
+      "receiver": "epdg", 
+      "name": "invalid_cert_authority",
+      "sender": "epdg"
     }
   ]
 }

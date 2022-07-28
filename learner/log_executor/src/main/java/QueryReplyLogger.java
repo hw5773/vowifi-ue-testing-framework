@@ -104,6 +104,75 @@ class QueryReplyLogger {
     }
   }
 
+  /*
+  public void storeLog() throws IOException {
+    Iterator i = this.testcases.iterator();
+    Iterator j = this.pairs.iterator();
+    Iterator k;
+    Iterator r1 = this.functionalOracleResults.iterator();
+    Iterator r2 = this.livenessOracleResults.iterator();
+    int num = 0;
+
+    Testcases tcs;
+    List<QueryReplyPair> plst;
+    QueryReplyPair tmp = null;
+
+    while (i.hasNext()) {
+      num++;
+      String filename = this.outputDir + "/result." + num;
+      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+      tcs = (Testcases) i.next();
+      if (j.hasNext())
+        plst = (List<QueryReplyPair>) j.next();
+      else {
+        logger.error("Should not happen");
+        break;
+      }
+
+      logger.info("Testcase #" + num);
+      logger.info("Testcase: " + tcs.getOriginalTestcase());
+
+      writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");
+      writer.write("Message:\n");
+
+      k = plst.iterator();
+      while (k.hasNext()) {
+        tmp = (QueryReplyPair) k.next();
+        logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
+        writer.write("  Query: " + tmp.getQueryName() + "\n");
+        writer.write("  Reply: " + tmp.getReplyName() + "\n");
+      }
+
+      if (r1.hasNext() && r2.hasNext()) {
+        int r1result = (int) r1.next();
+        boolean r2result = (boolean) r2.next();
+
+        writer.write("Result:\n");
+        if (r1result == 0) {
+          writer.write("  Functional Oracle: negative\n");
+        } else if (r1result == 1) {
+          writer.write("  Functional Oracle: maybe\n");
+        } else if (r1result == 2) {
+          writer.write("  Functional Oracle: positive\n");
+        } else {
+          writer.write("  Functional Oracle: error\n");
+        }
+
+        if (r2result == false) {
+          writer.write("  Liveness Oracle: negative\n");
+        } else { 
+          writer.write("  Liveness Oracle: positive\n");
+        }
+      }
+      else {
+        logger.error("error in results");
+      }
+      writer.close();
+    }
+  }
+  */
+
   public void setUEModel(String ueModel) {
     File directory;
     this.ueModel = ueModel;
