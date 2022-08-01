@@ -1968,7 +1968,7 @@ void send_notification(reg_notification * n) {
         ul.register_udomain("location", &domain);
     }
 
-    LM_DBG("Have a notification to send for the following IMPUs using domain [%.*s]\n", domain->name->len, domain->name->s);
+    LM_INFO("Have a notification to send for the following IMPUs using domain [%.*s]\n", domain->name->len, domain->name->s);
 
 
     content = generate_reginfo_full(domain, n->impus, n->num_impus, n->explit_dereg_contact, n->num_explit_dereg_contact, n->reginfo_s_version);
@@ -1989,8 +1989,8 @@ void send_notification(reg_notification * n) {
 
     str method = {"NOTIFY", 6};
 
-    LM_DBG("Notification content: [%.*s]\n", buf.len, buf.s);
-    LM_DBG("DBG:send_notification: NOTIFY about <%.*s>\n", n->watcher_uri.len, n->watcher_uri.s);
+    LM_INFO("Notification content: [%.*s]\n", buf.len, buf.s);
+    LM_INFO("DBG:send_notification: NOTIFY about <%.*s>\n", n->watcher_uri.len, n->watcher_uri.s);
 
     h.len = 0;
     h.len += contact_hdr1.len + scscf_name_str.len + contact_hdr2.len;
@@ -2036,7 +2036,7 @@ void send_notification(reg_notification * n) {
     }
 
     if (buf.len) {
-        LM_DBG("Notification content exists - about to send notification with subscription state: [%.*s] content_type: [%.*s] content: [%.*s] : presentity_uri: [%.*s] watcher_uri: [%.*s]\n",
+        LM_INFO("Notification content exists - about to send notification with subscription state: [%.*s] content_type: [%.*s] content: [%.*s] : presentity_uri: [%.*s] watcher_uri: [%.*s]\n",
                 n->subscription_state.len, n->subscription_state.s, n->content_type.len, n->content_type.s, buf.len, buf.s,
                 n->presentity_uri.len, n->presentity_uri.s, n->watcher_uri.len, n->watcher_uri.s);
 
@@ -2044,7 +2044,7 @@ void send_notification(reg_notification * n) {
                 uac_request_cb, 0);
         tmb.t_request_within(&uac_r);
     } else {
-        LM_DBG("o notification content - about to send notification with subscription state: [%.*s] presentity_uri: [%.*s] watcher_uri: [%.*s]\n",
+        LM_INFO("o notification content - about to send notification with subscription state: [%.*s] presentity_uri: [%.*s] watcher_uri: [%.*s]\n",
                 n->subscription_state.len, n->subscription_state.s, n->presentity_uri.len, n->presentity_uri.s,
                 n->watcher_uri.len, n->watcher_uri.s);
 
@@ -2115,13 +2115,13 @@ reg_notification * new_notification(str subscription_state,
     n->from_tag.len = r->from_tag.len;
     memcpy(p, r->from_tag.s, r->from_tag.len);
     p += r->from_tag.len;
-    LM_DBG("from tag: [%.*s]\n", n->from_tag.len, n->from_tag.s);
+    LM_INFO("from tag: [%.*s]\n", n->from_tag.len, n->from_tag.s);
 
     n->to_tag.s = p;
     n->to_tag.len = r->to_tag.len;
     memcpy(p, r->to_tag.s, r->to_tag.len);
     p += r->to_tag.len;
-    LM_DBG("to tag: [%.*s]\n", n->to_tag.len, n->to_tag.s);
+    LM_INFO("to tag: [%.*s]\n", n->to_tag.len, n->to_tag.s);
 
     n->watcher_uri.s = p;
     n->watcher_uri.len = r->watcher_uri.len;

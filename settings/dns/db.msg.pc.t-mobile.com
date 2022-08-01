@@ -26,5 +26,5 @@ scscf                   1D IN A         127.0.0.3
 _sip._udp.scscf         1D IN SRV 0 0 6060 scscf
 _sip._tcp.scscf         1D IN SRV 0 0 6060 scscf
 
-hss                     3600 IN CNAME        hss.ims.mnc210.mcc310.3gppnetwork.org.
+hss                     3600 IN CNAME        hss.ims.mnc260.mcc310.3gppnetwork.org.
 
