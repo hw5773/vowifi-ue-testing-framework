@@ -46,8 +46,8 @@ public class LogExecutor {
   private static final int COOLING_TIME = 1*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int IMS_SOCKET_TIMEOUT_VALUE = 20*1000; 
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
   private static final int UE_REBOOT_TIMEOUT_VALUE = 60*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
@@ -1040,8 +1040,8 @@ public class LogExecutor {
       mlog.setName("timeout");
     } catch (Exception e) {
 			e.printStackTrace();
-			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting testcase.");
-			handleEPDGIMSFailure();
+			logger.info("Some error happened. Restart UE.");
+			rebootUE();
 			mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       mlog.setName("null_action");
 		}
@@ -1088,6 +1088,21 @@ public class LogExecutor {
           e.printStackTrace();
         }
 			}while(resetDone == false);
+
+      if (ueSocket != null) {
+        ueIn = new BufferedReader(new InputStreamReader(ueSocket.getInputStream()));
+        ueOut.flush();
+      }
+
+      if (epdgSocket != null) {
+        epdgIn = new BufferedReader(new InputStreamReader(epdgSocket.getInputStream()));
+        epdgOut.flush();
+      }
+
+      if (imsSocket != null) {
+        imsIn = new BufferedReader(new InputStreamReader(imsSocket.getInputStream()));
+        imsOut.flush();
+      }
 
 			logger.debug("---- RESET DONE ----");
 		} catch (Exception e) {

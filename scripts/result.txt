@@ -1,0 +1,9 @@
+===== LM_G900TM =====
+/home/hyun/vowifi-log/LM_G900TM/result.20: Liveness Oracle: positive
+===============
+===== SM_G920T =====
+/home/hyun/vowifi-log/SM_G920T/result.22: Liveness Oracle: positive
+/home/hyun/vowifi-log/SM_G920T/result.26: Liveness Oracle: positive
+/home/hyun/vowifi-log/SM_G920T/result.7: Liveness Oracle: positive
+/home/hyun/vowifi-log/SM_G920T/result.8: Liveness Oracle: positive
+===============
