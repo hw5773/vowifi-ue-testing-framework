@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- HSS Server config -->
 <DiameterPeer 
-	FQDN="hss.ims.mcc210.mcc310.3gppnetwork.org"
-	Realm="ims.mcc210.mcc310.3gppnetwork.org"
+	FQDN="hss.ims.mnc260.mcc310.3gppnetwork.org"
+	Realm="ims.mnc260.mcc310.3gppnetwork.org"
 	Vendor_Id="10415"
 	Product_Name="JavaDiameterPeer"
 	AcceptUnknownPeers="1"
@@ -11,8 +11,8 @@
 	Workers="4"
 	QueueLength="32"
 >
-	<Peer FQDN="icscf.ims.mcc210.mcc310.3gppnetwork.org" Realm="ims.mcc210.mcc310.3gppnetwork.org" port="3869" /> 
-	<Peer FQDN="scscf.ims.mcc210.mcc310.3gppnetwork.org" Realm="ims.mcc210.mcc310.3gppnetwork.org" port="3870" /> 
+	<Peer FQDN="icscf.ims.mnc260.mcc310.3gppnetwork.org" Realm="ims.mnc260.mcc310.3gppnetwork.org" port="3869" /> 
+	<Peer FQDN="scscf.ims.mnc260.mcc310.3gppnetwork.org" Realm="ims.mnc260.mcc310.3gppnetwork.org" port="3870" /> 
 
 	<Acceptor port="3868" bind="127.0.0.1" />
 	

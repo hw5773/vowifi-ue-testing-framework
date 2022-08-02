@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DiameterPeer 
-	FQDN="scscf.ims.mnc210.mcc310.3gppnetwork.org"
+	FQDN="scscf.ims.mnc260.mcc310.3gppnetwork.org"
 	Realm="msg.pc.t-mobile.com"
 	Vendor_Id="10415"
 	Product_Name="CDiameterPeer"
@@ -14,7 +14,7 @@
 	DefaultAuthSessionTimeout="3600"
 	MaxAuthSessionTimeout="3600"
 >
-	<Peer FQDN="hss.ims.mnc210.mcc310.3gppnetwork.org" Realm="msg.pc.t-mobile.com" port="3868"/>
+	<Peer FQDN="hss.ims.mnc260.mcc310.3gppnetwork.org" Realm="msg.pc.t-mobile.com" port="3868"/>
 		
 	<Acceptor port="3870" bind="127.0.0.1"/>
 
@@ -32,5 +32,5 @@
         -->
         <SupportedVendor vendor="10415" />
 
-	<DefaultRoute FQDN="hss.ims.mnc210.mcc310.3gppnetwork.org" metric="10"/>
+	<DefaultRoute FQDN="hss.ims.mnc260.mcc310.3gppnetwork.org" metric="10"/>
 </DiameterPeer>
