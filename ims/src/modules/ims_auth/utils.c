@@ -180,24 +180,45 @@ int get_nonce_response(struct sip_msg *msg, str *username, str realm,str *nonce,
   LM_INFO("get_nonce_response(): 4\n");
 	if (h && h->parsed) {
 		if (nonce)
+    {
 			*nonce = ((auth_body_t*) h->parsed)->digest.nonce;
+      LM_INFO("nonce: %.*s\n", nonce->len, nonce->s);
+    }
 		if (response)
+    {
 			*response = ((auth_body_t*) h->parsed)->digest.response;
+      LM_INFO("response: %.*s\n", response->len, response->s);
+    }
 		if (qop)
 			*qop = ((auth_body_t*) h->parsed)->digest.qop.qop_parsed;
 		if (qop_str)
+    {
 			*qop_str = ((auth_body_t*) h->parsed)->digest.qop.qop_str;
+      LM_INFO("qop: %.*s\n", qop_str->len, qop_str->s);
+    }
 		if (nc)
+    {
 			*nc = ((auth_body_t*) h->parsed)->digest.nc;
+      LM_INFO("nc: %.*s\n", nc->len, nc->s);
+    }
 		if (cnonce)
+    {
 			*cnonce = ((auth_body_t*) h->parsed)->digest.cnonce;
+      LM_INFO("cnonce: %.*s\n", cnonce->len, cnonce->s);
+    }
 		if (uri)
+    {
 			*uri = ((auth_body_t*) h->parsed)->digest.uri;
+      LM_INFO("uri: %.*s\n", uri->len, uri->s);
+    }
 		if (username)
+    {
 			*username = ((auth_body_t*) h->parsed)->digest.username.whole;
+      LM_INFO("username: %.*s\n", username->len, username->s);
+    }
 	}
   LM_INFO("get_nonce_response(): 5\n");
-	LM_DBG("Found nonce response\n");
+	LM_INFO("Found nonce response\n");
 	return 1;
 }
 
