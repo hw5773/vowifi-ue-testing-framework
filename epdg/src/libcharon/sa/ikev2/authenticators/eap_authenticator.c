@@ -664,6 +664,7 @@ METHOD(authenticator_t, build_server, status_t,
           tmp = get_query_value(query, &tlen);
           if (!strncmp(tmp, "min", tlen))
           {
+
           }
         }
       }
