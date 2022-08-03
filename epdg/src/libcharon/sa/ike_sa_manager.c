@@ -544,6 +544,13 @@ void *sender_run(void *data)
           memcpy(p, tmp, tlen);
           p += tlen;
         }
+        else if (msg->vtype == VAL_TYPE_UINT8)
+        {
+          tint = *((uint8_t *)(msg->val));
+          tlen = int_to_char(tint, tmp, 10);
+          memcpy(p, tmp, tlen);
+          p += tlen;
+        }
         else if (msg->vtype == VAL_TYPE_UINT16)
         {
           tint = *((uint16_t *)(msg->val));
@@ -781,11 +788,20 @@ void *listener_run(void *data)
               break;
 
             case 1:
+              printf("operator: %s\n", token);
+              if (strlen(token) >= 6 && !strncmp(token, "update", 6))
+                set_query_operator(query, OP_TYPE_UPDATE);
+              else if (strlen(token) >= 4 && !strncmp(token, "drop", 4))
+                set_query_operator(query, OP_TYPE_DROP);
+              printf("  the operator is set to %d\n", get_query_operator(query));
+              break;
+
+            case 2:
               printf("value type: %s\n", token);
               set_query_value_type(query, token);
               break;
 
-            case 2:
+            case 3:
               printf("value: %s\n", token);
               set_query_value(query, token);
               break;

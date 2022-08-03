@@ -71,6 +71,7 @@ class Testcase {
   private String name;
   private String receiver;
   private String sender;
+  private String op = null;
   private String value = null;
   private Testcase parent;
   private TestcaseType type;
@@ -98,6 +99,8 @@ class Testcase {
       vt = (String) testcase.get("type");
       if (vt.equals("integer")) {
         this.vtype = ValueType.INTEGER;
+      } else if (vt.equals("uint8")) {
+        this.vtype = ValueType.UINT8;
       } else if (vt.equals("uint16")) {
         this.vtype = ValueType.UINT16;
       } else if (vt.equals("string")) {
@@ -108,6 +111,10 @@ class Testcase {
       this.value = testcase.get("value").toString();
       logger.debug("type: " + this.vtype);
       logger.debug("value: " + this.value);
+    }
+
+    if (testcase.get("op") != null) {
+      this.op = (String) testcase.get("op");
     }
     
     JSONArray testcaseArr = (JSONArray) testcase.get("sub");
@@ -182,6 +189,18 @@ class Testcase {
 
   void setReplySender(String sender) {
     this.sender = sender;
+  }
+
+  boolean hasOperator() {
+    return this.op != null;
+  }
+
+  String getOperator() {
+    return this.op;
+  }
+
+  void setOperator(String op) {
+    this.op = op;
   }
 
   ValueType getValueType() {

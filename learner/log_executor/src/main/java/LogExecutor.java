@@ -321,6 +321,8 @@ public class LogExecutor {
 
       if (testcase.hasValue()) {
         msg += ":";
+        msg += testcase.getOperator();
+        msg += ":";
         msg += testcase.getValueType().getValueTypeAsInteger();
         msg += ":";
         msg += testcase.getValue();

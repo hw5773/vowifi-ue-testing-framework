@@ -298,11 +298,21 @@ void *listener_run(void *data)
               break;
 
             case 1:
+              LM_INFO("operator: %s\n", token);
+              if (strlen(token) >= 6 && !strncmp(token, "update", 6))
+                set_query_operator(query, OP_TYPE_UPDATE);
+              else if (strlen(token) >= 4 && !strncmp(token, "drop", 4))
+                set_query_operator(query, OP_TYPE_DROP);
+              LM_INFO("  the operator is set to %d\n", get_query_operator(query));
+              break;
+
+
+            case 2:
               LM_INFO("value type: %s\n", token);
               set_query_value_type(query, token);
               break;
 
-            case 2:
+            case 3:
               LM_INFO("value: %s\n", token);
               set_query_value(query, token);
               break;
@@ -671,6 +681,16 @@ void set_query_name(query_t *query, uint8_t *name)
   memcpy(query->name, name, nlen);
   LM_INFO("set_query_name()> query->name: %s\n", query->name);
   query->nlen = nlen;
+}
+
+int get_query_operator(query_t *query)
+{
+  return query->op;
+}
+
+void set_query_operator(query_t *query, int op)
+{
+  query->op = op;
 }
 
 int get_query_value_type(query_t *query)

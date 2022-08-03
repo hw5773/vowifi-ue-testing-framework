@@ -66,6 +66,9 @@ struct eap_payload_t {
 	 * @return			EAP message as chunk_t
 	 */
 	eap_code_t (*get_code) (eap_payload_t *this);
+  ///// Added for VoWiFi /////
+	eap_code_t (*set_code) (eap_payload_t *this, uint8_t code);
+  ////////////////////////////
 
 	/**
 	 * Get the EAP identifier.

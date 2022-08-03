@@ -290,6 +290,16 @@ void set_query_name(query_t *query, uint8_t *name)
   query->nlen = nlen;
 }
 
+int get_query_operator(query_t *query)
+{
+  return query->op;
+}
+
+void set_query_operator(query_t *query, int op)
+{
+  query->op = op;
+}
+
 int get_query_value_type(query_t *query)
 {
   return query->vtype;

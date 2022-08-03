@@ -18,13 +18,18 @@
 #define MSG_TYPE_BLOCK_START 2
 #define MSG_TYPE_BLOCK_END 3
 
+#define OP_TYPE_UPDATE 1
+#define OP_TYPE_DROP 2
+
 #define VAL_TYPE_NONE 1
 #define VAL_TYPE_INTEGER  2
-#define VAL_TYPE_UINT16 3
-#define VAL_TYPE_STRING 4
+#define VAL_TYPE_UINT8 3
+#define VAL_TYPE_UINT16 4
+#define VAL_TYPE_STRING 5
 
 #define VAL_LENGTH_NONE 0
 #define VAL_LENGTH_INTEGER 4
+#define VAL_LENGTH_UINT8 1
 #define VAL_LENGTH_UINT16 2
 
 #define HELLO_REQUEST "Hello\n"
@@ -68,6 +73,7 @@ typedef struct query_st
   uint8_t *name;
   int nlen;
 
+  int op;
   int vtype;
 
   uint8_t *value;
@@ -124,6 +130,8 @@ query_t *add_query_sub_message(query_t *query, int ptype, int mtype);
 int has_query_parent(query_t *query);
 query_t *get_query_parent(query_t *query);
 void set_query_parent(query_t *query, query_t *parent);
+int get_query_operator(query_t *query);
+void set_query_operator(query_t *query, int op);
 uint8_t *get_query_name(query_t *query, int *nlen);
 void set_query_name(query_t *query, uint8_t *name);
 int get_query_value_type(query_t *query);

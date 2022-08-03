@@ -197,6 +197,17 @@ METHOD(eap_payload_t, set_data, void,
 	this->payload_length = this->data.len + 4;
 }
 
+///// Added for VoWiFi /////
+METHOD(eap_payload_t, set_code, void,
+	private_eap_payload_t *this, uint8_t code)
+{
+	if (this->data.len > 0)
+	{
+		this->data.ptr[0] = code;
+	}
+}
+////////////////////////////
+
 METHOD(eap_payload_t, get_code, eap_code_t,
 	private_eap_payload_t *this)
 {
@@ -340,6 +351,9 @@ eap_payload_t *eap_payload_create()
 			.get_data = _get_data,
 			.set_data = _set_data,
 			.get_code = _get_code,
+      ///// Added for VoWiFi /////
+      .set_code = _set_code,
+      ////////////////////////////
 			.get_identifier = _get_identifier,
 			.get_type = _get_type,
 			.get_types = _get_types,
