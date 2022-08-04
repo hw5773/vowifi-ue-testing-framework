@@ -942,19 +942,23 @@ public class LogExecutor {
 
     depth = 0;
     try {
-      if (reporter.startsWith("epdg")) {
+      if (reporter.contains("epdg")) {
   		  epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
         sockIn = epdgIn;
-      } else if (reporter.startsWith("ims")) {
+      } else if (reporter.contains("ims")) {
         imsSocket.setSoTimeout(IMS_SOCKET_TIMEOUT_VALUE);
         sockIn = imsIn;
       }
       do {
         print = "";
-        for (int i=0; i<depth; i++)
-        {
+        for (int i=0; i<depth; i++) {
           print += "  ";
         }
+
+        if (sockIn == null) {
+          logger.error("sockIn should not be null");
+        }
+
         while (true) {
         	result = sockIn.readLine();
           len = result.length();
