@@ -1,4 +1,40 @@
+===== SM_A21 =====
+/home/cyber2slab/vowifi-log/SM_A21/result.1: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.13: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.14: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.2: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.24: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.27: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.32: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.34: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.35: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_A21/result.36: Liveness Oracle: positive
+===============
 ===== SM_G920T =====
+/home/cyber2slab/vowifi-log/SM_G920T/result.1: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.101: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.102: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.103: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.104: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.105: Functional Oracle: positive
 /home/cyber2slab/vowifi-log/SM_G920T/result.2: Functional Oracle: positive
-/home/cyber2slab/vowifi-log/SM_G920T/result.3: Functional Oracle: maybe
+/home/cyber2slab/vowifi-log/SM_G920T/result.23: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.24: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.25: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.26: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.27: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.46: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.47: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.48: Functional Oracle: maybe
+/home/cyber2slab/vowifi-log/SM_G920T/result.48: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.49: Functional Oracle: maybe
+/home/cyber2slab/vowifi-log/SM_G920T/result.49: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.50: Functional Oracle: maybe
+/home/cyber2slab/vowifi-log/SM_G920T/result.50: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.52: Functional Oracle: maybe
+/home/cyber2slab/vowifi-log/SM_G920T/result.52: Liveness Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.54: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.55: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.56: Functional Oracle: positive
+/home/cyber2slab/vowifi-log/SM_G920T/result.57: Functional Oracle: positive
 ===============

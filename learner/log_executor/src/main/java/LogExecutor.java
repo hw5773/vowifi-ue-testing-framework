@@ -955,9 +955,13 @@ public class LogExecutor {
         {
           print += "  ";
         }
-      	result = sockIn.readLine();
+        while (true) {
+        	result = sockIn.readLine();
+          len = result.length();
+          if (len > 16)
+            break;
+        }
         logger.debug("Result from " + reporter + ": " + result);
-        len = result.length();
         idx = 0;
         rcvd = result.getBytes();
         type = (char) rcvd[idx++];
@@ -1202,11 +1206,12 @@ public class LogExecutor {
     String result;
     
     try {
+      epdgSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
+      epdgOut.write("Hello\n");
+      epdgOut.flush();
+      logger.debug("Sent the hello message to ePDG");
+
       while (true) {
-        epdgSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
-        epdgOut.write("Hello\n");
-        epdgOut.flush();
-        logger.debug("Sent the hello message to ePDG");
         result = epdgIn.readLine();
         logger.debug("Received the hello message from ePDG in isEPDGAlive() = " + result);
         epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);

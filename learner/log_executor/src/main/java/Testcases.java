@@ -97,15 +97,20 @@ class Testcase {
     if (testcase.get("value") != null) {
       String vt;
       vt = (String) testcase.get("type");
-      if (vt.equals("integer")) {
-        this.vtype = ValueType.INTEGER;
-      } else if (vt.equals("uint8")) {
-        this.vtype = ValueType.UINT8;
-      } else if (vt.equals("uint16")) {
-        this.vtype = ValueType.UINT16;
-      } else if (vt.equals("string")) {
-        this.vtype = ValueType.STRING;
-      } else {
+      if (vt != null) {
+        if (vt.equals("integer")) {
+          this.vtype = ValueType.INTEGER;
+        } else if (vt.equals("uint8")) {
+          this.vtype = ValueType.UINT8;
+        } else if (vt.equals("uint16")) {
+          this.vtype = ValueType.UINT16;
+        } else if (vt.equals("string")) {
+          this.vtype = ValueType.STRING;
+        } else {
+          this.vtype = ValueType.STRING;
+        }
+      }
+      else {
         this.vtype = ValueType.STRING;
       }
       this.value = testcase.get("value").toString();

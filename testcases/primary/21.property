@@ -31,6 +31,7 @@
           "sub": [
             {
               "name": "message_authentication_code",
+              "type": "string",
               "value": VALUE
             }
           ]
