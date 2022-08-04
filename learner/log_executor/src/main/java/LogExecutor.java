@@ -775,6 +775,8 @@ public class LogExecutor {
     logger.debug("START: rebootUE()");
     String result = "";
     
+    sendDisableWiFi();
+
     try {
 			ueSocket.setSoTimeout(UE_REBOOT_TIMEOUT_VALUE);
       sleep(COOLING_TIME);
