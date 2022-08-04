@@ -262,11 +262,11 @@ METHOD(simaka_message_t, add_attribute, void,
 }
 
 ///// Added for VoWiFi /////
-METHOD(simaka_message_t, get_attributes, void,
-	private_simaka_message_t *this, simaka_attribute_t type, chunk_t data)
-{
-	return this->attributes;
-}
+//METHOD(simaka_message_t, get_attributes, void,
+//	private_simaka_message_t *this, simaka_attribute_t type, chunk_t data)
+//{
+//	return this->attributes;
+//}
 ///////////////////////////
 
 /**
@@ -919,7 +919,7 @@ static simaka_message_t *simaka_message_create_data(chunk_t data,
 			.generate = _generate,
 			.destroy = _destroy,
       ///// Added for VoWiFi /////
-      .get_attributes = _get_attributes,
+      //.get_attributes = _get_attributes,
       ////////////////////////////
 		},
 		.attributes = linked_list_create(),
