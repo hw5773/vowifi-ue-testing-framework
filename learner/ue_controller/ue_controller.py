@@ -17,25 +17,31 @@ def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "disable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus":
+    elif device == "moto_e5_plus" or device == "HTC_U11":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
         if "enabled" in result.stdout.decode():
             logging.info("WiFi is enabled: need to toggle the WiFi button")
-            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
-            subprocess.run(cmd)
-            time.sleep(1)
+            ue_wakeup(device)
 
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
-            subprocess.run(cmd)
+            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
+            output = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(1)
 
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             subprocess.run(cmd)
-            time.sleep(1)
+            time.sleep(5)
+
+            cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
+            output = subprocess.run(cmd, stdout=subprocess.PIPE)
+
+            if "enabled" in output.stdout.decode():
+                cmd = ["adb", "shell", "input", "keyevent", "23"]
+                subprocess.run(cmd)
+                time.sleep(5)
         else:
-            logging.info("WiFi is enabled: need not to toggle the WiFi button")
+            logging.info("WiFi is disabled: need not to toggle the WiFi button")
     else:
         cmd = ["adb", "shell", "svc", "wifi", "disable"]
         subprocess.run(cmd)
@@ -45,23 +51,29 @@ def handle_turn_on_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "enable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus":
+    elif device == "moto_e5_plus" or device == "HTC_U11":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
         if "disabled" in result.stdout.decode():
             logging.info("WiFi is disabled: need to toggle the WiFi button")
-            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
-            subprocess.run(cmd)
-            time.sleep(1)
+            ue_wakeup(device)
 
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
             subprocess.run(cmd)
             time.sleep(1)
 
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             subprocess.run(cmd)
             time.sleep(1)
+
+            cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
+            output = subprocess.run(cmd, stdout=subprocess.PIPE)
+
+            if "disabled" in output.stdout.decode():
+                cmd = ["adb", "shell", "input", "keyevent", "23"]
+                subprocess.run(cmd)
+                time.sleep(1)
         else:
             logging.info("WiFi is enabled: need not to toggle the WiFi button")
     else:

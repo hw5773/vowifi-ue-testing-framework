@@ -49,6 +49,18 @@
 ///// Added for VoWiFi /////
 #include <unistd.h>
 #include <sa/ike_sa_instance.h>
+#include "../../../libsimaka/simaka_message.h"
+
+typedef struct eap_header_t ehdr_t;
+struct eap_header_t
+{
+  uint8_t code;
+  uint8_t identifier;
+  uint16_t length;
+  uint8_t type;
+  uint8_t subtype;
+  uint16_t reserved;
+} __attribute__((__packed__));
 ////////////////////////////
 
 #ifdef ME
@@ -1572,6 +1584,8 @@ static status_t process_request(private_task_manager_t *this,
 	enumerator_t *enumer;
   notify_payload_t *noti;
 	payload_t *pload;
+  eap_payload_t *epload;
+  ehdr_t *ehdr;
 
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
@@ -1612,6 +1626,13 @@ static status_t process_request(private_task_manager_t *this,
         {
           symbol = "error in ike_auth";
           instance->rprev = "error";
+        }
+        epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
+        if (epload)
+        {
+          ehdr = (ehdr_t *)epload->get_data(epload).ptr;
+          if (ehdr->subtype == AKA_CLIENT_ERROR)
+            symbol = "client_error";
         }
         break;
 

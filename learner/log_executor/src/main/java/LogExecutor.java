@@ -574,7 +574,15 @@ public class LogExecutor {
       }
 
       startTime = System.currentTimeMillis();
-      pair = logExecutor.step(message);
+      while (true) {
+        pair = logExecutor.step(message);
+
+        if (pair.getQueryName().contains("client_error")) {
+          logExecutor.rebootUE();
+        } else {
+          break;
+        }
+      }
       endTime = System.currentTimeMillis();
       logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
       duration = (endTime - startTime);
