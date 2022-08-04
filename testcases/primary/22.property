@@ -1,4 +1,4 @@
-# Both parities in the IKE_AUTH exchange MUST verify that all signatures and Message Authentication Codes (MACs) are computed correctly.
+# In eap-aka, AT_MAC is based on a keyed message authentication code.
 
 {
   "testcases": [
@@ -17,26 +17,17 @@
         { 
           "receiver": "epdg", 
           "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_2_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_3_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_4_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "message_authentication_code",
-              "value": VALUE
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "at_mac",
+                  "type": "string",
+                  "value": VALUE
+                }
+              ]
             }
           ]
         }

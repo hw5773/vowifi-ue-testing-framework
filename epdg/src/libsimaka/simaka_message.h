@@ -210,6 +210,7 @@ struct simaka_message_t {
 	void (*add_attribute)(simaka_message_t *this, simaka_attribute_t type,
 						  chunk_t data);
 
+
 	/**
 	 * Parse a message, with optional attribute decryption.
 	 *

@@ -9,8 +9,32 @@
         },
         {
           "receiver": "epdg",
-          "name": "unsupported_critical_payload",
+          "name": "ike_sa_init_response",
           "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "code",
+                  "type": "uint8",
+                  "value": 2,
+                  "op": "update"
+                },
+                {
+                  "name": "eap_aka_subtype",
+                  "type": "uint8",
+                  "value": 3,
+                  "op": "update"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -28,8 +52,21 @@
         },
         {
           "receiver": "epdg",
-          "name": "unsupported_critical_payload",
+          "name": "ike_auth_1_response",
           "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "message_size",
+              "type": "uint16",
+              "value": 4000,
+              "op": "update"
+            }
+          ]
         }
       ]
     }

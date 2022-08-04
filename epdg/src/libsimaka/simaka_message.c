@@ -261,6 +261,14 @@ METHOD(simaka_message_t, add_attribute, void,
 	this->attributes->insert_last(this->attributes, attr);
 }
 
+///// Added for VoWiFi /////
+METHOD(simaka_message_t, get_attributes, void,
+	private_simaka_message_t *this, simaka_attribute_t type, chunk_t data)
+{
+	return this->attributes;
+}
+///////////////////////////
+
 /**
  * Error handling for unencrypted attributes
  */
@@ -910,6 +918,9 @@ static simaka_message_t *simaka_message_create_data(chunk_t data,
 			.verify = _verify,
 			.generate = _generate,
 			.destroy = _destroy,
+      ///// Added for VoWiFi /////
+      .get_attributes = _get_attributes,
+      ////////////////////////////
 		},
 		.attributes = linked_list_create(),
 		.crypto = crypto,

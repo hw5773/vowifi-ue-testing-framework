@@ -207,7 +207,9 @@ def write_testcases(ofname, mtcs, atcs):
 
 def generate_testcases(pname, ename, ofname):
     ptcs = abstract_testcases(pname)
-    mtcs = message_level_manipulation(ptcs, ename)
+    #mtcs = message_level_manipulation(ptcs, ename)
+    mtcs = {}
+    mtcs["testcases"] = []
     atcs = attribute_level_manipulation(ptcs)
     write_testcases(ofname, mtcs, atcs)
 

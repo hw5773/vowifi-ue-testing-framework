@@ -46,9 +46,9 @@ public class LogExecutor {
   private static final int COOLING_TIME = 1*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
-  private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
-  private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 15*1000;
   private static final int UE_REBOOT_TIMEOUT_VALUE = 60*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
@@ -1202,27 +1202,32 @@ public class LogExecutor {
     String result;
     
     try {
-      epdgSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
-      epdgOut.write("Hello\n");
-      epdgOut.flush();
-      logger.debug("Sent the hello message to ePDG");
-      result = epdgIn.readLine();
-      logger.debug("Received the hello message from ePDG in isEPDGAlive() = " + result);
-      epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+      while (true) {
+        epdgSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
+        epdgOut.write("Hello\n");
+        epdgOut.flush();
+        logger.debug("Sent the hello message to ePDG");
+        result = epdgIn.readLine();
+        logger.debug("Received the hello message from ePDG in isEPDGAlive() = " + result);
+        epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+
+        if(result.contains("ACK")) {
+          logger.debug("PASSED: Testing the connection between the statelearner and ePDG");
+          return true;
+        } 
+        /*
+        else {
+          logger.error("FAILED: Testing the connection between the statelearner and ePDG");
+          return false;
+        }
+        */
+      }
     } catch(SocketTimeoutException e) {
       logger.error("Timeout in Socket with ePDG");
       e.printStackTrace();
       return false;
     } catch (Exception e) {
       e.printStackTrace();
-      return false;
-    }
-
-    if(result.contains("ACK")) {
-      logger.debug("PASSED: Testing the connection between the statelearner and ePDG");
-      return true;
-    } else {
-      logger.error("FAILED: Testing the connection between the statelearner and ePDG");
       return false;
     }
   }

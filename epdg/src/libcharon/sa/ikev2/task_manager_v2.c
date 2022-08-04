@@ -892,6 +892,9 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   msg_t *msg;
   query_t *query;
   uint64_t ispi, rspi;
+  uint8_t *tmp;
+  int vtype, tlen, op;
+  uint16_t size;
 
   instance = this->ike_sa->get_instance(this->ike_sa);
   id = this->ike_sa->get_id(this->ike_sa);
@@ -1204,6 +1207,98 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_auth_1_response")
+        && (query = get_sub_query_by_name(query, "message_size")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+      {
+        int i, nnoti;
+        tmp = get_query_value(query, &tlen);
+        size = (uint16_t) char_to_int(tmp, tlen, 10);
+        nnoti = size / 8;      
+        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
+
+        ntype = 10000;
+        for (i=0; i<nnoti; i++)
+        {
+          message->add_notify(message, FALSE, ntype, chunk_empty);
+          ntype++;
+        }
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_auth_2_response")
+        && (query = get_sub_query_by_name(query, "message_size")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+      {
+        int i, nnoti;
+        tmp = get_query_value(query, &tlen);
+        size = (uint16_t) char_to_int(tmp, tlen, 10);
+        nnoti = size / 8;      
+        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
+
+        ntype = 10000;
+        for (i=0; i<nnoti; i++)
+        {
+          message->add_notify(message, FALSE, ntype, chunk_empty);
+          ntype++;
+        }
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_auth_3_response")
+        && (query = get_sub_query_by_name(query, "message_size")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+      {
+        int i, nnoti;
+        tmp = get_query_value(query, &tlen);
+        size = (uint16_t) char_to_int(tmp, tlen, 10);
+        nnoti = size / 8;      
+        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
+
+        ntype = 10000;
+        for (i=0; i<nnoti; i++)
+        {
+          message->add_notify(message, FALSE, ntype, chunk_empty);
+          ntype++;
+        }
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_auth_4_response")
+        && (query = get_sub_query_by_name(query, "message_size")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+      {
+        int i, nnoti;
+        tmp = get_query_value(query, &tlen);
+        size = (uint16_t) char_to_int(tmp, tlen, 10);
+        nnoti = size / 8;      
+        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
+
+        ntype = 10000;
+        for (i=0; i<nnoti; i++)
+        {
+          message->add_notify(message, FALSE, ntype, chunk_empty);
+          ntype++;
+        }
+      }
+    }
+
     msg = init_message(instance, MSG_TYPE_BLOCK_END, 
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
@@ -1526,7 +1621,7 @@ static status_t process_request(private_task_manager_t *this,
       		enumer = message->create_payload_enumerator(message);
       		while (enumer->enumerate(enumer, &pload))
       		{
-      			if (payload->get_type(pload) == PLV2_NOTIFY)
+      			if (pload->get_type(pload) == PLV2_NOTIFY)
       			{
 			      	noti = (notify_payload_t*)pload;
       				switch (noti->get_notify_type(noti))
@@ -1616,7 +1711,7 @@ static status_t process_request(private_task_manager_t *this,
             }
           }
 				}
-    		enumer->destroy(enumerator);
+    		enumer->destroy(enumer);
         break;
 
 			case CREATE_CHILD_SA:
