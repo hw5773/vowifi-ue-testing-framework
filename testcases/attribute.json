@@ -869,38 +869,6 @@
                 {
                   "name": "at_mac",
                   "type": "string",
-                  "value": "random",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "at_mac",
-                  "type": "string",
                   "value": "min",
                   "op": "update"
                 }
@@ -933,7 +901,7 @@
                 {
                   "name": "at_mac",
                   "type": "string",
-                  "value": "max",
+                  "value": "mean",
                   "op": "update"
                 }
               ]
@@ -965,7 +933,39 @@
                 {
                   "name": "at_mac",
                   "type": "string",
-                  "value": "mean",
+                  "value": "random",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "at_mac",
+                  "type": "string",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -1639,7 +1639,7 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "edpg",
+          "sender": "epdg",
           "sub": [
             {
               "name": "sequence_number",
@@ -1666,34 +1666,7 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "edpg",
-          "sub": [
-            {
-              "name": "sequence_number",
-              "type": "uint32",
-              "value": "random",
-              "op": "update"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "sender": "edpg",
+          "sender": "epdg",
           "sub": [
             {
               "name": "sequence_number",
@@ -1720,12 +1693,12 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "edpg",
+          "sender": "epdg",
           "sub": [
             {
               "name": "sequence_number",
               "type": "uint32",
-              "value": "max",
+              "value": "mean",
               "op": "update"
             }
           ]
@@ -1747,12 +1720,39 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "edpg",
+          "sender": "epdg",
           "sub": [
             {
               "name": "sequence_number",
               "type": "uint32",
-              "value": "mean",
+              "value": "random",
+              "op": "update"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "sequence_number",
+              "type": "uint32",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -1783,38 +1783,6 @@
                   "name": "at_checkcode",
                   "type": "uint16",
                   "value": "median",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "at_checkcode",
-                  "type": "uint16",
-                  "value": "random",
                   "op": "update"
                 }
               ]
@@ -1878,7 +1846,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "max",
+                  "value": "mean",
                   "op": "update"
                 }
               ]
@@ -1910,7 +1878,39 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "mean",
+                  "value": "random",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "at_checkcode",
+                  "type": "uint16",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -3140,38 +3140,6 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "random",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "at_checkcode",
-                  "type": "uint16",
                   "value": "min",
                   "op": "update"
                 }
@@ -3204,7 +3172,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "max",
+                  "value": "mean",
                   "op": "update"
                 }
               ]
@@ -3236,7 +3204,39 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "mean",
+                  "value": "random",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "at_checkcode",
+                  "type": "uint16",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -3312,43 +3312,6 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "random",
-              "op": "update"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "message_authentication_code",
-              "type": "string",
               "value": "min",
               "op": "update"
             }
@@ -3386,7 +3349,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "max",
+              "value": "mean",
               "op": "update"
             }
           ]
@@ -3423,7 +3386,44 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "mean",
+              "value": "random",
+              "op": "update"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "message_authentication_code",
+              "type": "string",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -4295,61 +4295,7 @@
                 {
                   "name": "key_exchange_data",
                   "type": "string",
-                  "value": "random",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "key_exchange",
-              "sub": [
-                {
-                  "name": "key_exchange_data",
-                  "type": "string",
                   "value": "min",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "key_exchange",
-              "sub": [
-                {
-                  "name": "key_exchange_data",
-                  "type": "string",
-                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -4395,6 +4341,60 @@
         {
           "receiver": "epdg",
           "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "key_exchange",
+              "sub": [
+                {
+                  "name": "key_exchange_data",
+                  "type": "string",
+                  "value": "random",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "key_exchange",
+              "sub": [
+                {
+                  "name": "key_exchange_data",
+                  "type": "string",
+                  "value": "max",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
           "sender": "epdg"
         },
         {
@@ -4580,33 +4580,6 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "random",
-              "op": "update"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "message_authentication_code",
-              "type": "string",
               "value": "min",
               "op": "update"
             }
@@ -4634,7 +4607,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "max",
+              "value": "mean",
               "op": "update"
             }
           ]
@@ -4661,7 +4634,34 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "mean",
+              "value": "random",
+              "op": "update"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "message_authentication_code",
+              "type": "string",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -4921,38 +4921,6 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "random",
-              "op": "update"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "message_authentication_code",
-              "type": "string",
               "value": "min",
               "op": "update"
             }
@@ -4985,7 +4953,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "max",
+              "value": "mean",
               "op": "update"
             }
           ]
@@ -5017,7 +4985,39 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "mean",
+              "value": "random",
+              "op": "update"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "message_authentication_code",
+              "type": "string",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -5121,7 +5121,7 @@
                 {
                   "name": "at_mac",
                   "type": "string",
-                  "value": "mean",
+                  "value": "max",
                   "op": "drop"
                 }
               ]
@@ -5246,12 +5246,12 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "edpg",
+          "sender": "epdg",
           "sub": [
             {
               "name": "sequence_number",
               "type": "uint32",
-              "value": "mean",
+              "value": "max",
               "op": "drop"
             }
           ]
@@ -5281,7 +5281,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "mean",
+                  "value": "max",
                   "op": "drop"
                 }
               ]
@@ -5399,7 +5399,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "mean",
+                  "value": "max",
                   "op": "drop"
                 }
               ]
@@ -5438,7 +5438,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "mean",
+              "value": "max",
               "op": "drop"
             }
           ]
@@ -5532,7 +5532,7 @@
                 {
                   "name": "key_exchange_data",
                   "type": "string",
-                  "value": "mean",
+                  "value": "max",
                   "op": "drop"
                 }
               ]
@@ -5598,7 +5598,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "mean",
+              "value": "max",
               "op": "drop"
             }
           ]
@@ -5679,7 +5679,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "mean",
+              "value": "max",
               "op": "drop"
             }
           ]

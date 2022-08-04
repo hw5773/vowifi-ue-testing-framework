@@ -955,10 +955,6 @@ public class LogExecutor {
           print += "  ";
         }
 
-        if (sockIn == null) {
-          logger.error("sockIn should not be null");
-        }
-
         while (true) {
         	result = sockIn.readLine();
           len = result.length();
