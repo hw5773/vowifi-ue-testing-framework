@@ -10,79 +10,23 @@
         {
           "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "message_size",
-              "type": "uint16",
-              "value": 1000,
-              "op": "update"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
           "sender": "epdg"
         },
         {
           "receiver": "epdg",
-          "name": "ike_sa_init_response",
+          "name": "ike_auth_1_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "message_size",
-              "type": "uint16",
-              "value": 2000,
-              "op": "update"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "message_size",
-              "type": "uint16",
-              "value": 3000,
-              "op": "update"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "sender": "epdg",
-          "sub": [
-            {
-              "name": "message_size",
-              "type": "uint16",
-              "value": 4000,
-              "op": "update"
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "at_checkcode",
+                  "type": "uint16",
+                  "value": "median",
+                  "op": "update"
+                }
+              ]
             }
           ]
         }

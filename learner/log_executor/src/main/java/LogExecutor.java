@@ -182,6 +182,7 @@ public class LogExecutor {
     Testcases livenessTestcase = null;
     int r1;
     boolean r2;
+    boolean needReboot;
 
     rpath = config.getLivenessTestcasePath();
     try (FileReader reader = new FileReader(rpath)) {
@@ -206,6 +207,7 @@ public class LogExecutor {
 
     for (Testcases testcase: testcases) {
       testcaseNum ++;
+      needReboot = false;
       logger.info("Starting Testcase #" + testcaseNum);
       if (testcaseNum < startNumber) {
         logger.info("Skipping Testcase #" + testcaseNum);
@@ -234,7 +236,17 @@ public class LogExecutor {
       }
       qrLogger.addLivenessOracleResult(r2);
       logger.info("  Liveness Oracle Result: " + r2);
-      if (r2 == true) {
+
+      iter = pairs.iterator();
+      while (iter.hasNext()) {
+        QueryReplyPair tmp = (QueryReplyPair) iter.next();
+        if (tmp.getReplyName().contains("client_error")) {
+          needReboot = true;
+          break;
+        }
+      }
+
+      if (r2 == true || needReboot == true) {
         logExecutor.rebootUE();
         sleep(UE_REBOOT_SLEEP_TIME);
       }
@@ -574,16 +586,9 @@ public class LogExecutor {
       }
 
       startTime = System.currentTimeMillis();
-      while (true) {
-        pair = logExecutor.step(message);
-
-        if (pair.getQueryName().contains("client_error")) {
-          logExecutor.rebootUE();
-        } else {
-          break;
-        }
-      }
+      pair = logExecutor.step(message);
       endTime = System.currentTimeMillis();
+
       logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
       duration = (endTime - startTime);
       insec = duration/1000.0;

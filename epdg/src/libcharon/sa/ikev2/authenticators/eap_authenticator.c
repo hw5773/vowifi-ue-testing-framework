@@ -747,14 +747,12 @@ METHOD(authenticator_t, process_client, status_t,
 
 	eap_payload = (eap_payload_t*)message->get_payload(message,
 													PLV2_EAP);
-  printf("\n\n\nI am here!\n\n\n\n");
 	if (eap_payload)
 	{
 		switch (eap_payload->get_code(eap_payload))
 		{
 			case EAP_REQUEST:
 			{
-  printf("\n\n\nI am here!: EAP_REQUEST\n\n\n\n");
 				this->eap_payload = client_process_eap(this, eap_payload);
 				if (this->eap_payload)
 				{
@@ -764,7 +762,6 @@ METHOD(authenticator_t, process_client, status_t,
 			}
 			case EAP_SUCCESS:
 			{
-  printf("\n\n\nI am here!: EAP_SUCCESS\n\n\n\n");
 				eap_type_t type;
 				uint32_t vendor;
 				auth_cfg_t *cfg;

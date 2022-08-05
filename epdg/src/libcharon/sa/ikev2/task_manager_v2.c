@@ -1311,6 +1311,142 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
       }
     }
 
+#define AKA_TYPE_AT_RAND 1
+#define AKA_TYPE_AT_AUTN 2
+#define AKA_TYPE_AT_RES 3
+#define AKA_TYPE_AT_MAC 11
+#define AKA_TYPE_AT_CHECKCODE 134
+
+    eap_payload_t *epload;
+    ehdr_t *ehdr;
+    int i, plen, tlen, vtype;
+    uint8_t *p, *tmp;
+    uint8_t alen, abytes, type;
+
+    printf("\n\n\n[VoWiFi] before get_query()\n\n\n");
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_auth_1_response")
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "at_mac")))
+    {
+      epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
+      if (epload)
+      {
+        p = (uint8_t *)epload->get_data(epload).ptr;
+        plen = (int) epload->get_data(epload).len;
+        p += sizeof(ehdr_t);
+        plen -= sizeof(ehdr_t);
+    for (i=0; i<plen; i++)
+    {
+      printf("%02x ", p[i]);
+    }
+    printf("\n");
+
+        while (plen > 0)
+        {
+          type = *(p++);
+          plen--;
+          alen = *(p++);
+          plen--;
+          abytes = 2 + 4 * (alen - 1);
+          
+          if (type != AKA_TYPE_AT_MAC)
+          {
+            p += abytes;
+            plen -= abytes;
+            continue;
+          }
+          else {
+            break;
+          }
+        }
+
+        if (plen > 0)
+        {
+          vtype = get_query_value_type(query);
+          op = get_query_operator(query);
+          if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE) 
+          {
+            tmp = get_query_value(query, &tlen);
+            if (!strncmp(tmp, "min", strlen("min")))
+            {
+              for (i=2; i<abytes; i++)
+                p[i] = 0x00;
+            }
+            else if (!strncmp(tmp, "max", strlen("max")))
+            {
+              for (i=2; i<abytes; i++)
+                p[i] = 0xff;
+            }
+            else if (!strncmp(tmp, "median", strlen("median")))
+            {
+              for (i=2; i<abytes; i++)
+                p[i] = 0x88;
+            }
+          }
+        }
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_auth_1_response")
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "at_checkcode")))
+    {
+      epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
+      if (epload)
+      {
+        p = (uint8_t *)epload->get_data(epload).ptr;
+        plen = (int) epload->get_data(epload).len;
+        p += sizeof(ehdr_t);
+        plen -= sizeof(ehdr_t);
+
+        while (plen > 0)
+        {
+          type = *(p++);
+          plen--;
+          alen = *(p++);
+          plen--;
+          abytes = 2 + 4 * (alen - 1);
+          
+          if (type != AKA_TYPE_AT_CHECKCODE)
+          {
+            p += abytes;
+            plen -= abytes;
+            continue;
+          }
+          else {
+            break;
+          }
+        }
+
+        if (plen > 0)
+        {
+          vtype = get_query_value_type(query);
+          op = get_query_operator(query);
+          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE) 
+          {
+            tmp = get_query_value(query, &tlen);
+            if (!strncmp(tmp, "min", strlen("min")))
+            {
+              for (i=0; i<abytes; i++)
+                p[i] = 0x00;
+            }
+            else if (!strncmp(tmp, "max", strlen("max")))
+            {
+              for (i=0; i<abytes; i++)
+                p[i] = 0xff;
+            }
+            else if (!strncmp(tmp, "median", strlen("median")))
+            {
+              for (i=0; i<abytes; i++)
+                p[i] = 0x88;
+            }
+          }
+        }
+      }
+    }
+
     msg = init_message(instance, MSG_TYPE_BLOCK_END, 
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
