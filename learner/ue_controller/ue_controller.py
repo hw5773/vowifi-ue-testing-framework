@@ -204,6 +204,9 @@ def check_device_model():
     elif "moto_e5_plus" in output:
         device = "moto_e5_plus"
         logging.info("Device model: Motorola Moto E5 Plus")
+    elif "moto_g_power" in output:
+        device = "moto_g_power"
+        logging.info("Device model: Motorola Moto G Power")
     elif "LM_G900TM" in output:
         device = "LM_G900TM"
         logging.info("Device model: LG Velvet 5G")
