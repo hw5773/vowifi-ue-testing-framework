@@ -12,9 +12,15 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
- /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h sa/ike_sa_instance.h \
- /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h /usr/include/stdlib.h \
- /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd.h sa/ike_sa_instance.h \
+ /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
@@ -100,9 +106,23 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 
-sa/ike_sa_instance.h:
+/usr/include/unistd.h:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
+/usr/include/x86_64-linux-gnu/bits/environments.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h:
+
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
+
+/usr/include/x86_64-linux-gnu/bits/unistd.h:
+
+sa/ike_sa_instance.h:
 
 /usr/include/stdlib.h:
 

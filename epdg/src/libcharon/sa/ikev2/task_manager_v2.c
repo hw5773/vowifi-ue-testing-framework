@@ -1318,7 +1318,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 #define AKA_TYPE_AT_CHECKCODE 134
 
     eap_payload_t *epload;
-    ehdr_t *ehdr;
     int i, plen, tlen, vtype;
     uint8_t *p, *tmp;
     uint8_t alen, abytes, type;
@@ -2311,6 +2310,19 @@ METHOD(task_manager_t, process_message, status_t,
 	uint32_t mid;
 	bool schedule_delete_job = FALSE;
 
+  ///// Added for VoWiFi /////
+  ike_sa_id_t *id;
+  instance_t *instance;
+  msg_t *m;
+  uint64_t ispi, rspi;
+  const uint8_t *symbol;
+
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  id = this->ike_sa->get_id(this->ike_sa);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
+
 	charon->bus->message(charon->bus, msg, TRUE, FALSE);
 	status = parse_message(this, msg);
 	if (status != SUCCESS)
@@ -2402,6 +2414,73 @@ METHOD(task_manager_t, process_message, status_t,
 				}
 				return status;
 			}
+
+      ///// Added for VoWiFi /////
+      if (check_instance(instance, ispi, rspi, NON_UPDATE))
+      {
+		    switch (msg->get_exchange_type(msg)) 
+        {
+          case IKE_SA_INIT:
+            symbol = "ike_sa_init_request";
+            instance->rprev = "ike_sa_init_request";
+            break;
+
+          case IKE_AUTH:
+            if (!strncmp(instance->rprev, "ike_sa_init_request", 
+                  strlen("ike_sa_init_request")))
+            {
+              symbol = "ike_auth_1_request";
+              instance->rprev = "ike_auth_1_request";
+            }
+            else if (!strncmp(instance->rprev, "ike_auth_1_request", 
+                  strlen("ike_auth_1_request")))
+            {
+              symbol = "ike_auth_2_request";
+              instance->rprev = "ike_auth_2_request";
+            }
+            else if (!strncmp(instance->rprev, "ike_auth_2_request", 
+                  strlen("ike_auth_2_request")))
+            {
+              symbol = "ike_auth_3_request";
+              instance->rprev = "ike_auth_3_request";
+            }
+            else if (!strncmp(instance->rprev, "ike_auth_3_request", \
+                  strlen("ike_auth_3_request")))
+            {
+              symbol = "ike_auth_4_request";
+              instance->rprev = "ike_auth_4_request";
+            }
+            else if (!strncmp(instance->rprev, "ike_auth_4_request", 
+                  strlen("ike_auth_4_request")))
+            {
+              symbol = "ike_auth_5_request";
+              instance->rprev = "ike_auth_5_request";
+            }
+            else
+            {
+              symbol = "error in ike_auth";
+              instance->rprev = "error";
+            }
+            break;
+
+    			case INFORMATIONAL:
+			    case CREATE_CHILD_SA:
+          default:
+            symbol = "error in exchange_type";
+            instance->rprev = "error";
+        }
+        /*
+        m = init_message(instance, MSG_TYPE_BLOCK_START,
+            symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, m);
+        m = init_message(instance, MSG_TYPE_BLOCK_END, 
+            NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, m);
+        printf("have added the message to the send queue\n");
+        */
+      }
+      ////////////////////////////
+      
 			DBG1(DBG_IKE, "received retransmit of request with ID %d, "
 				 "retransmitting response", mid);
 			this->ike_sa->set_statistic(this->ike_sa, STAT_INBOUND,

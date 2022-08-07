@@ -1470,6 +1470,9 @@ static uint64_t get_spi(private_ike_sa_manager_t *this)
 static bool get_init_hash(hasher_t *hasher, message_t *message, chunk_t *hash)
 {
 	host_t *src;
+  chunk_t tmp;
+  int i, len;
+  uint8_t *p;
 
 	if (message->get_first_payload_type(message) == PLV1_FRAGMENT)
 	{	/* only hash the source IP, port and SPI for fragmented init messages */
@@ -1499,6 +1502,22 @@ static bool get_init_hash(hasher_t *hasher, message_t *message, chunk_t *hash)
 			return FALSE;
 		}
 	}
+
+  tmp = message->get_packet_data(message);
+  len = tmp.len;
+  p = tmp.ptr;
+
+  /*
+  printf("\n\n\n[VoWiFi] packet data (to be hashed):\n");
+  for (i=0; i<len; i++)
+  {
+    printf("%02x ", p[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n\n\n");
+  */
+
 	return hasher->allocate_hash(hasher, message->get_packet_data(message), hash);
 }
 
@@ -1714,6 +1733,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
   ///// Added for VoWiFi /////
   instance_t *instance;
   int asock;
+	uint64_t ispi, rspi;
   ////////////////////////////
 
 	id = message->get_ike_sa_id(message);
@@ -1770,10 +1790,25 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 		hasher->destroy(hasher);
 
 		/* ensure this is not a retransmit of an already handled init message */
+    uint8_t *hptr;
+    int i, hlen;
+    hptr = hash.ptr;
+    hlen = hash.len;
+
+    printf("[VoWiFi] hash value (ispi: %.16"PRIx64":\n", id->get_initiator_spi(id));
+    for (i=0; i<hlen; i++)
+    {
+      printf("%02x ", hptr[i]);
+      if (i % 16 == 15)
+        printf("\n");
+    }
+    printf("\n");
+
 		switch (check_and_put_init_hash(this, hash, &our_spi))
 		{
 			case NOT_FOUND:
 			{	/* we've not seen this packet yet, create a new IKE_SA */
+        printf("\n\n[VoWiFi] Not Found\n\n\n");
 				if (!this->ikesa_limit ||
 					this->public.get_count(&this->public) < this->ikesa_limit)
 				{
@@ -1788,10 +1823,9 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 						entry->init_hash = hash;
 
             ///// Added for VoWiFi /////
-	          uint64_t ispi, rspi;
             ispi = id->get_initiator_spi(id);
             rspi = id->get_responder_spi(id);
-            
+
             printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
                 ike_sa, ispi, rspi);
 
@@ -1879,6 +1913,26 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	{
 		charon->bus->alert(charon->bus, ALERT_INVALID_IKE_SPI, message);
 	}
+
+  ///// Added for VoWiFi /////        
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+
+  printf("\n\n[VoWiFi] Already_done\n\n\n");
+  ike_sa = entry->ike_sa;
+  printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
+    ike_sa, ispi, rspi);
+
+  if (check_instance(this->instance, ispi, rspi, UPDATE))
+  {
+    ike_sa->set_instance(ike_sa, this->instance);
+    instance = ike_sa->get_instance(ike_sa);
+    asock = -1;
+    if (instance)
+      asock = instance->asock;
+  }
+  ////////////////////////////
+
 	id->destroy(id);
 
 out:

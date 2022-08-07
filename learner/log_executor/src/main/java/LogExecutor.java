@@ -44,6 +44,7 @@ public class LogExecutor {
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
   private static final int COOLING_TIME = 1*1000;
+  private static final int LIVENESS_SLEEP_TIME = 5*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
@@ -180,8 +181,7 @@ public class LogExecutor {
     Iterator iter;
     String rpath;
     Testcases livenessTestcase = null;
-    int r1;
-    boolean r2;
+    int r1, r2;
     boolean needReboot;
 
     rpath = config.getLivenessTestcasePath();
@@ -196,6 +196,7 @@ public class LogExecutor {
       e.printStackTrace();
     }
     
+    /*
     if (livenessTestcase != null) {
       livenessTestcase.resetIterator();
       pairs = executeTestcase(logExecutor, livenessTestcase);
@@ -204,6 +205,8 @@ public class LogExecutor {
         sleep(UE_REBOOT_SLEEP_TIME);
       }
     }
+    sleep(TESTCASE_SLEEP_TIME);
+    */
 
     for (Testcases testcase: testcases) {
       testcaseNum ++;
@@ -214,25 +217,48 @@ public class LogExecutor {
         continue;
       }
 
-      pairs = executeTestcase(logExecutor, testcase);
-
+      pairs = null;
       while (pairs == null) {
         pairs = executeTestcase(logExecutor, testcase);
+
+        logger.debug("pairs: " + pairs);
+        if (pairs != null)
+          logger.debug("pairs.size(): " + pairs.size());
+        if (pairs != null) {
+          if (pairs.size() > 0) {
+            QueryReplyPair tmp = pairs.get(0);
+            logger.debug("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
+            if (tmp.getQueryName().contains("enable_vowifi") 
+                && tmp.getReplyName().contains("timeout")) {
+              pairs = null;
+              testcase.resetIterator();
+              logExecutor.rebootUE();
+            }
+          } else {
+            pairs = null;
+            testcase.resetIterator();
+            logExecutor.rebootUE();
+          }
+        }
+        logger.debug("pairs: " + pairs);
       }
 
       logger.info("Finished Testcase #" + testcaseNum);
       logger.info("Test Result #" + testcaseNum);
       qrLogger.addLog(testcase, pairs);
+      logger.info("Pairs.size(): " + pairs.size());
       r1 = oracle.getFunctionalOracleResult(pairs);
       qrLogger.addFunctionalOracleResult(r1);
       logger.info("  Functional Oracle Result: " + r1);
 
+      sleep(LIVENESS_SLEEP_TIME);
+
       if (livenessTestcase != null) {
         livenessTestcase.resetIterator();
         pairs = executeTestcase(logExecutor, livenessTestcase);
-        r2 = oracle.getLivenessOracleResult(pairs.get(0));
+        r2 = oracle.getLivenessOracleResult(pairs);
       } else {
-        r2 = false;
+        r2 = 0;
       }
       qrLogger.addLivenessOracleResult(r2);
       logger.info("  Liveness Oracle Result: " + r2);
@@ -246,7 +272,7 @@ public class LogExecutor {
         }
       }
 
-      if (r2 == true || needReboot == true) {
+      if (r2 > 0 || needReboot == true) {
         logExecutor.rebootUE();
         sleep(UE_REBOOT_SLEEP_TIME);
       }

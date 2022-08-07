@@ -16,7 +16,7 @@ class QueryReplyLogger {
   private List<Testcases> testcases = null;
   private List<List<QueryReplyPair>> pairs = null;
   private List<Integer> functionalOracleResults = null;
-  private List<Boolean> livenessOracleResults = null;
+  private List<Integer> livenessOracleResults = null;
   private String outputRootDir;
   private String outputDir;
   private String ueModel;
@@ -45,8 +45,8 @@ class QueryReplyLogger {
     Testcases tcs;
     List<QueryReplyPair> plst;
     QueryReplyPair tmp = null;
-    int r1result;
-    boolean r2result;
+    int r1result; // 0: normal, 1: error, 2: maybe
+    int r2result; // 0: normal, 1: not sending IKE_SA_INIT, 2: EAP-AKA error
 
     String filename = this.outputDir + "/result." + num;
     BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
@@ -69,7 +69,7 @@ class QueryReplyLogger {
     }
 
     r1result = (int) this.functionalOracleResults.get(this.functionalOracleResults.size()-1);
-    r2result = (boolean) this.livenessOracleResults.get(this.livenessOracleResults.size()-1);
+    r2result = (int) this.livenessOracleResults.get(this.livenessOracleResults.size()-1);
 
     writer.write("Result:\n");
     if (r1result == 0) {
@@ -82,10 +82,12 @@ class QueryReplyLogger {
       writer.write("  Functional Oracle: error\n");
     }
 
-    if (r2result == false) {
+    if (r2result == 0) {
       writer.write("  Liveness Oracle: negative\n");
-    } else { 
-      writer.write("  Liveness Oracle: positive\n");
+    } else if (r2result == 1) {
+      writer.write("  Liveness Oracle: positive (not sending IKE_SA_INIT\n");
+    } else if (r2result == 2) {
+      writer.write("  Liveness Oracle: positive (eap-aka client error\n");
     }
     writer.close();
   }
@@ -114,7 +116,7 @@ class QueryReplyLogger {
     this.functionalOracleResults.add(deviated);
   }
 
-  public void addLivenessOracleResult(boolean unreliable) {
+  public void addLivenessOracleResult(int unreliable) {
     this.livenessOracleResults.add(unreliable);
   }
 
