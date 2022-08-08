@@ -85,9 +85,9 @@ class QueryReplyLogger {
     if (r2result == 0) {
       writer.write("  Liveness Oracle: negative\n");
     } else if (r2result == 1) {
-      writer.write("  Liveness Oracle: positive (not sending IKE_SA_INIT\n");
+      writer.write("  Liveness Oracle: positive (not sending IKE_SA_INIT)\n");
     } else if (r2result == 2) {
-      writer.write("  Liveness Oracle: positive (eap-aka client error\n");
+      writer.write("  Liveness Oracle: positive (eap-aka client error)\n");
     }
     writer.close();
   }
