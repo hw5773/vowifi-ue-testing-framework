@@ -63,6 +63,7 @@ METHOD(aead_t, encrypt, bool,
 
 	if (encrypted)
 	{
+    printf("\n\n\n[VoWiFi] here 1\n\n\n");
 		if (!this->crypter->encrypt(this->crypter, plain, iv, &encr))
 		{
 			return FALSE;
@@ -76,6 +77,7 @@ METHOD(aead_t, encrypt, bool,
 	}
 	else
 	{
+    printf("\n\n\n[VoWiFi] here 2\n\n\n");
 		if (!this->crypter->encrypt(this->crypter, plain, iv, NULL) ||
 			!this->signer->get_signature(this->signer,
 										 plain, plain.ptr + plain.len))

@@ -944,6 +944,10 @@ struct private_message_t {
 	 * Data used to reassemble a fragmented message
 	 */
 	fragment_data_t *frag;
+
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 };
 
 /**
@@ -1809,8 +1813,20 @@ static status_t finalize_message(private_message_t *this, keymat_t *keymat,
 	chunk_t chunk;
 	uint32_t *lenpos;
 
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  aead_t *aead;
+  instance = this->instance;
+  ////////////////////////////
+
 	if (encrypted)
 	{
+    if (instance)
+    {
+  		aead = keymat->get_aead(keymat, FALSE);
+      aead->set_instance(aead, instance);
+    }
+
 		if (this->is_encrypted)
 		{	/* for IKEv1 instead of associated data we provide the IV */
 			if (!keymat_v1->get_iv(keymat_v1, this->message_id, &chunk))
@@ -1871,7 +1887,10 @@ METHOD(message_t, generate, status_t,
 		DESTROY_IF(generator);
 		return status;
 	}
+
+  printf("\n\n\n[VoWiFi] before finalize_message()\n\n\n");
 	status = finalize_message(this, keymat, generator, encrypted);
+  printf("\n\n\n[VoWiFi] after finalize_message()\n\n\n");
 	if (status != SUCCESS)
 	{
 		return status;

@@ -152,6 +152,11 @@ struct signer_t {
 	 * Destroys a signer_t object.
 	 */
 	void (*destroy)(signer_t *this);
+
+  ///// Added for VoWiFi /////
+  void (*set_instance)(signer_t *this, void *instance);
+  void *(*get_instance)(signer_t *this);
+  ////////////////////////////
 };
 
 #endif /** SIGNER_H_ @}*/

@@ -17,6 +17,10 @@
 
 #include "mac_signer.h"
 
+///// Added for VoWiFi /////
+#include "../../../libcharon/sa/ike_sa_instance.h"
+////////////////////////////
+
 typedef struct private_signer_t private_signer_t;
 
 /**
@@ -38,11 +42,17 @@ struct private_signer_t {
 	 * Truncation of MAC output
 	 */
 	size_t truncation;
+
+  ///// Added for VoWiFi /////
+  void *instance;
+  ////////////////////////////
 };
 
 METHOD(signer_t, get_signature, bool,
 	private_signer_t *this, chunk_t data, uint8_t *buffer)
 {
+  printf("\n\n\n[VoWiFi] (get_signature()) This is a mac signer\n\n\n");
+
 	if (buffer)
 	{
 		uint8_t mac[this->mac->get_mac_size(this->mac)];
@@ -51,7 +61,9 @@ METHOD(signer_t, get_signature, bool,
 		{
 			return FALSE;
 		}
+
 		memcpy(buffer, mac, this->truncation);
+
 		return TRUE;
 	}
 	return this->mac->get_mac(this->mac, data, NULL);
@@ -60,6 +72,7 @@ METHOD(signer_t, get_signature, bool,
 METHOD(signer_t, allocate_signature, bool,
 	private_signer_t *this, chunk_t data, chunk_t *chunk)
 {
+  printf("\n\n\n[VoWiFi] (allocate_signature()) This is a mac signer\n\n\n");
 	if (chunk)
 	{
 		uint8_t mac[this->mac->get_mac_size(this->mac)];
@@ -112,6 +125,20 @@ METHOD(signer_t, destroy, void,
 	this->mac->destroy(this->mac);
 	free(this);
 }
+
+///// Added for VoWiFi /////
+METHOD(signer_t, set_instance, void,
+	private_signer_t *this, void *instance)
+{
+  this->instance = instance;
+}
+
+METHOD(signer_t, get_instance, void *,
+	private_signer_t *this)
+{
+  return this->instance;
+}
+////////////////////////////
 
 /*
  * Described in header

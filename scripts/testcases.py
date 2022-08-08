@@ -7,6 +7,7 @@ class Testcases:
         self.targets = []
         self.possible_values = {}
         self.correct_values = {}
+        self.pnum = int(fname.split("/")[-1].split(".")[0])
         target = None
 
         with open(fname, "r") as f:
@@ -90,3 +91,6 @@ class Testcases:
 
     def get_correct_values(self, target):
         return self.correct_values[target]
+
+    def get_property_number(self):
+        return self.pnum

@@ -333,6 +333,7 @@ static void send_packets(private_task_manager_t *this, array_t *packets,
 		{
 			clone->set_destination(clone, dst->clone(dst));
 		}
+
 		charon->sender->send(charon->sender, clone);
 	}
 }
@@ -726,7 +727,6 @@ METHOD(task_manager_t, initiate, status_t,
 /**
  * handle an incoming response message
  */
-// TODO: Need to check this function
 static status_t process_response(private_task_manager_t *this,
 								 message_t *message)
 {
@@ -1064,31 +1064,36 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
           case IKE_AUTH:
             printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
             if (is_query_name(query, "ike_auth_1_response")
-                && (!strncmp(instance->sprev, "ike_sa_init_response", strlen("ike_sa_init_response"))))
+                && (!strncmp(instance->sprev, "ike_sa_init_response", 
+                    strlen("ike_sa_init_response"))))
             {
               symbol = "ike_auth_1_response";
               instance->sprev = "ike_auth_1_response";
             }
             else if (is_query_name(query, "ike_auth_2_response")
-                && (!strncmp(instance->sprev, "ike_auth_1_response", strlen("ike_auth_1_response"))))
+                && (!strncmp(instance->sprev, "ike_auth_1_response", 
+                    strlen("ike_auth_1_response"))))
             {
               symbol = "ike_auth_2_response";
               instance->sprev = "ike_auth_2_response";
             }
             else if (is_query_name(query, "ike_auth_3_response")
-                && (!strncmp(instance->sprev, "ike_auth_2_response", strlen("ike_auth_2_response"))))
+                && (!strncmp(instance->sprev, "ike_auth_2_response", 
+                    strlen("ike_auth_2_response"))))
             {
               symbol = "ike_auth_3_response";
               instance->sprev = "ike_auth_3_response";
             }
             else if (is_query_name(query, "ike_auth_4_response")
-                && (!strncmp(instance->sprev, "ike_auth_3_response", strlen("ike_auth_3_response"))))
+                && (!strncmp(instance->sprev, "ike_auth_3_response", 
+                    strlen("ike_auth_3_response"))))
             {
               symbol = "ike_auth_4_response";
               instance->sprev = "ike_auth_4_response";
             }
             else if (is_query_name(query, "ike_auth_5_response")
-                && (!strncmp(instance->sprev, "ike_auth_4_response", strlen("ike_auth_4_response"))))
+                && (!strncmp(instance->sprev, "ike_auth_4_response", 
+                    strlen("ike_auth_4_response"))))
             {
               symbol = "ike_auth_5_response";
               instance->sprev = "ike_auth_5_response";
@@ -1114,7 +1119,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
       if (failed)
       {
-        //uint8_t type = 0;
         msg = init_message(instance, MSG_TYPE_BLOCK_END, 
           NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
         instance->add_message_to_send_queue(instance, msg);
@@ -1493,7 +1497,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 /**
  * handle an incoming request message
  */
-// TODO: Need to check this function
 static status_t process_request(private_task_manager_t *this,
 								message_t *message)
 {

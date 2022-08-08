@@ -843,6 +843,8 @@ METHOD(crypter_t, encrypt, bool,
 	const uint32_t *iv_i;
 	uint8_t *in, *out;
 
+  printf("\n\n\n[VoWiFi] this is aes-cbc\n\n\n");
+
 	in  = data.ptr;
 	out = data.ptr;
 	if (encrypted)

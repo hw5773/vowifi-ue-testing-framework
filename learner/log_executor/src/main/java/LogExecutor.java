@@ -80,7 +80,7 @@ public class LogExecutor {
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
 
-    Option argNumber = new Option("n", "number", true, "Starting testcase number");
+    Option argNumber = new Option("i", "id", true, "Starting testcase ID");
     options.addOption(argNumber);
 
     CommandLineParser parser = new DefaultParser();
@@ -98,8 +98,7 @@ public class LogExecutor {
 
     String testcaseFilePath = cmd.getOptionValue("file");
     String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
-    String startNumberString = cmd.getOptionValue("number", "0");
-    int startNumber = Integer.parseInt(startNumberString);
+    String startID = cmd.getOptionValue("id");
 
     if (testcaseFilePath == null) {
       logger.error("Query File should be inserted");
@@ -175,7 +174,8 @@ public class LogExecutor {
     logger.info("# of Testcases: " + testcases.size());
 
     Boolean timeoutOccured = false;
-    int testcaseNum = 0;
+    String testcaseID;
+    int testcaseNum;
     List<QueryReplyPair> pairs;
     QueryReplyPair pair;
     Iterator iter;
@@ -183,6 +183,11 @@ public class LogExecutor {
     Testcases livenessTestcase = null;
     int r1, r2;
     boolean needReboot;
+    boolean matched = false;
+
+    testcaseNum = 0;
+    if (startID == null)
+      matched = true;
 
     rpath = config.getLivenessTestcasePath();
     try (FileReader reader = new FileReader(rpath)) {
@@ -196,34 +201,25 @@ public class LogExecutor {
       e.printStackTrace();
     }
     
-    /*
-    if (livenessTestcase != null) {
-      livenessTestcase.resetIterator();
-      pairs = executeTestcase(logExecutor, livenessTestcase);
-      if (pairs.get(0).getReplyName().contains("timeout")) {
-        logExecutor.rebootUE();
-        sleep(UE_REBOOT_SLEEP_TIME);
-      }
-    }
-    sleep(TESTCASE_SLEEP_TIME);
-    */
-
     for (Testcases testcase: testcases) {
-      testcaseNum ++;
       needReboot = false;
-      logger.info("Starting Testcase #" + testcaseNum);
-      if (testcaseNum < startNumber) {
-        logger.info("Skipping Testcase #" + testcaseNum);
-        continue;
+      testcaseNum++;
+      testcaseID = testcase.getID();
+      logger.info("Starting Testcase #" + testcaseNum + " (" + testcaseID + ")");
+      if (matched == false) {
+        if (testcaseID.equals(startID)) {
+          matched = true;
+        }
+        else {
+          logger.info("Skipping Testcase #" + testcaseNum + " (" + testcaseID + ")");
+          continue;
+        }
       }
 
       pairs = null;
       while (pairs == null) {
         pairs = executeTestcase(logExecutor, testcase);
 
-        logger.debug("pairs: " + pairs);
-        if (pairs != null)
-          logger.debug("pairs.size(): " + pairs.size());
         if (pairs != null) {
           if (pairs.size() > 0) {
             QueryReplyPair tmp = pairs.get(0);
@@ -243,10 +239,9 @@ public class LogExecutor {
         logger.debug("pairs: " + pairs);
       }
 
-      logger.info("Finished Testcase #" + testcaseNum);
-      logger.info("Test Result #" + testcaseNum);
+      logger.info("Finished Testcase #" + testcaseNum + " (" + testcaseID + ")");
+      logger.info("Test Result #" + testcaseNum + " (" + testcaseID + ")");
       qrLogger.addLog(testcase, pairs);
-      logger.info("Pairs.size(): " + pairs.size());
       r1 = oracle.getFunctionalOracleResult(pairs);
       qrLogger.addFunctionalOracleResult(r1);
       logger.info("  Functional Oracle Result: " + r1);
@@ -277,7 +272,7 @@ public class LogExecutor {
         sleep(UE_REBOOT_SLEEP_TIME);
       }
 
-      qrLogger.storeLog(testcaseNum);
+      qrLogger.storeLog(testcaseID, testcaseNum);
       sleep(TESTCASE_SLEEP_TIME);
     }
 

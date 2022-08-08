@@ -491,12 +491,18 @@ static status_t encrypt_content(char *label, aead_t *aead, uint64_t mid,
 	DBG3(DBG_ENC, "padding %B", &padding);
 	DBG3(DBG_ENC, "assoc %B", &assoc);
 
+  printf("\n\n\n[VoWiFi] encrypt is done here\n\n\n");
 	if (!aead->encrypt(aead, crypt, assoc, iv, NULL))
 	{
 		return FAILED;
 	}
 	DBG3(DBG_ENC, "encrypted %B", &crypt);
 	DBG3(DBG_ENC, "ICV %B", &icv);
+
+  ///// Added for VoWiFi /////
+  //TODO: to drop the mac, this is the place
+  ////////////////////////////
+
 	return SUCCESS;
 }
 
@@ -519,6 +525,7 @@ METHOD(encrypted_payload_t, encrypt, status_t,
 	assoc = append_header(this, assoc);
 	/* lower 32-bits are for fragment number, if used */
 	mid <<= 32;
+  printf("\n\n\n[VoWiFi] encryption/integrity is done here\n\n\n");
 	status = encrypt_content("encrypted payload", this->aead, mid, plain, assoc,
 							 &this->encrypted);
 	generator->destroy(generator);

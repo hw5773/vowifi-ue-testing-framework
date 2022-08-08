@@ -37,7 +37,7 @@ class QueryReplyLogger {
     this.ueModel = null;
   }
 
-  public void storeLog(int num) throws IOException {
+  public void storeLog(String id, int num) throws IOException {
     Iterator i;
     Iterator r1 = this.functionalOracleResults.iterator();
     Iterator r2 = this.livenessOracleResults.iterator();
@@ -48,13 +48,13 @@ class QueryReplyLogger {
     int r1result; // 0: normal, 1: error, 2: maybe
     int r2result; // 0: normal, 1: not sending IKE_SA_INIT, 2: EAP-AKA error
 
-    String filename = this.outputDir + "/result." + num;
+    String filename = this.outputDir + "/result." + id + "." + num;
     BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 
     tcs = (Testcases) this.testcases.get(this.testcases.size()-1);
     plst = (List<QueryReplyPair>) this.pairs.get(this.pairs.size()-1);
 
-    logger.info("Testcase #" + num);
+    logger.info("Testcase #" + id);
     logger.info("Testcase: " + tcs.getOriginalTestcase());
 
     writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");

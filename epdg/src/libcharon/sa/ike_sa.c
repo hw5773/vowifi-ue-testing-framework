@@ -1256,6 +1256,12 @@ METHOD(ike_sa_t, generate_message, status_t,
 	private_ike_sa_t *this, message_t *message, packet_t **packet)
 {
 	status_t status;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  uint64_t ispi, rspi;
+  instance = this->instance;
+  message->set_instance(message, instance);
+  ////////////////////////////
 
 	if (message->is_encoded(message))
 	{	/* already encoded in task, but set DSCP value */

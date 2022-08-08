@@ -34,6 +34,10 @@ typedef struct message_t message_t;
 #include <networking/packet.h>
 #include <collections/linked_list.h>
 
+///// Added for VoWiFi /////
+#include <sa/ike_sa_instance.h>
+////////////////////////////
+
 /**
  * This class is used to represent an IKE-Message.
  *
@@ -425,6 +429,11 @@ struct message_t {
 	 * Destroys a message and all including objects.
 	 */
 	void (*destroy) (message_t *this);
+
+  ///// Added for VoWiFi /////
+  void (*set_instance)(message_t *this, instance_t *instance);
+  instance_t (*get_instance)(message_t *this);
+  ////////////////////////////
 };
 
 /**

@@ -28,10 +28,11 @@ def substitution(ptcs, ename):
     emsgs = json.loads(errors)["errors"]
     cnt = 0
 
-    for tc in ptcs:
-        obj = tc.get_default_object()
+    for ptc in ptcs:
+        obj = ptc.get_default_object()
         testcases = obj["testcases"]
 
+        tnum = 0
         for testcase in testcases:
             tc = testcase["testcase"]
 
@@ -39,6 +40,8 @@ def substitution(ptcs, ename):
                 t = {}
                 t["testcase"] = copy.deepcopy(tc[:-1])
                 t["testcase"].append(emsg)
+                tnum += 1
+                t["testcase"][0]["id"] = "{}-{}".format(ptc.get_property_number(), tnum)
                 ret["testcases"].append(t)
                 cnt += 1
 
@@ -51,10 +54,11 @@ def replay(ptcs):
 
     cnt = 0
 
-    for tc in ptcs:
-        obj = tc.get_default_object()
+    for ptc in ptcs:
+        obj = ptc.get_default_object()
         testcases = obj["testcases"]
 
+        tnum = 0
         for testcase in testcases:
             tc = testcase["testcase"]
 
@@ -70,6 +74,9 @@ def replay(ptcs):
             r["sub"].append(s)
 
             t["testcase"].append(r)
+            tnum += 1
+            t["testcase"][0]["id"] = "{}-{}".format(ptc.get_property_number(), tnum)
+
             ret["testcases"].append(t)
             cnt += 1
 
@@ -99,7 +106,7 @@ def update_values(ptcs):
         targets = tc.get_targets()
 
         testcases = obj["testcases"]
-
+        tnum = 0
         for testcase in testcases:
             for target in targets:
                 pvals = tc.get_possible_values(target)
@@ -119,6 +126,9 @@ def update_values(ptcs):
                         msg["value"] = val
                         msg["op"] = "update"
                         t = copy.deepcopy(testcase)
+                        tnum += 1
+                        t["testcase"][0]["id"] = "{}-{}".format(tc.get_property_number(), tnum)
+
                         ret["testcases"].append(t)
                         msg.pop("op", None)
                         cnt += 1
@@ -144,9 +154,10 @@ def drop_payloads(ptcs):
     ret["testcases"] = []
     cnt = 0
 
-    for tc in ptcs:
-        obj = tc.get_default_object()
+    for ptc in ptcs:
+        obj = ptc.get_default_object()
         testcases = obj["testcases"]
+        tnum = 0
 
         for testcase in testcases:
             targets = _make_targets(testcase["testcase"])
@@ -155,6 +166,9 @@ def drop_payloads(ptcs):
                 if msg != None:
                     msg["op"] = "drop"
                     t = copy.deepcopy(testcase)
+                    tnum += 1
+                    t["testcase"][0]["id"] = "{}-{}".format(ptc.get_property_number(), tnum)
+
                     ret["testcases"].append(t)
                     msg.pop("op", None)
                     cnt += 1
