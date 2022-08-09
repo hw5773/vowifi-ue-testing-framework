@@ -115,6 +115,7 @@ def update_values(ptcs):
                 msg = _find_target(testcase["testcase"], target)
                 if msg != None:
                     for val in avals:
+                        '''
                         if val == "min":
                             msg["value"] = 0
                         elif val == "max":
@@ -123,6 +124,7 @@ def update_values(ptcs):
                             msg["value"] = 0xaaaa
                         elif val == "random":
                             msg["value"] = int(random.random())
+                        '''
                         msg["value"] = val
                         msg["op"] = "update"
                         t = copy.deepcopy(testcase)

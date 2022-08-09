@@ -9831,7 +9831,7 @@
                 {
                   "name": "at_mac",
                   "type": "string",
-                  "value": "min",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -9864,7 +9864,7 @@
                 {
                   "name": "at_mac",
                   "type": "string",
-                  "value": "max",
+                  "value": "min",
                   "op": "update"
                 }
               ]
@@ -10663,7 +10663,7 @@
             {
               "name": "sequence_number",
               "type": "uint32",
-              "value": "min",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -10691,7 +10691,7 @@
             {
               "name": "sequence_number",
               "type": "uint32",
-              "value": "max",
+              "value": "min",
               "op": "update"
             }
           ]
@@ -10806,7 +10806,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "min",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -10839,7 +10839,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "max",
+                  "value": "min",
                   "op": "update"
                 }
               ]
@@ -12180,7 +12180,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "min",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -12213,7 +12213,7 @@
                 {
                   "name": "at_checkcode",
                   "type": "uint16",
-                  "value": "max",
+                  "value": "min",
                   "op": "update"
                 }
               ]
@@ -12352,7 +12352,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "min",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -12390,7 +12390,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "max",
+              "value": "min",
               "op": "update"
             }
           ]
@@ -13375,7 +13375,7 @@
                 {
                   "name": "key_exchange_data",
                   "type": "string",
-                  "value": "min",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -13403,7 +13403,7 @@
                 {
                   "name": "key_exchange_data",
                   "type": "string",
-                  "value": "max",
+                  "value": "min",
                   "op": "update"
                 }
               ]
@@ -13669,7 +13669,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "min",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -13697,7 +13697,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "max",
+              "value": "min",
               "op": "update"
             }
           ]
@@ -14018,7 +14018,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "min",
+              "value": "max",
               "op": "update"
             }
           ]
@@ -14051,7 +14051,7 @@
             {
               "name": "message_authentication_code",
               "type": "string",
-              "value": "max",
+              "value": "min",
               "op": "update"
             }
           ]

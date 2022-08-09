@@ -280,7 +280,7 @@
 /* #undef HAVE_SYS_CAPABILITY_H */
 
 /* have syscall(SYS_gettid) */
-/* #undef HAVE_SYS_GETTID */
+#define HAVE_SYS_GETTID /**/
 
 /* Define to 1 if you have the <sys/param.h> header file. */
 #define HAVE_SYS_PARAM_H 1

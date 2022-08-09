@@ -1235,7 +1235,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         tmp = get_query_value(query, &tlen);
         size = (uint16_t) char_to_int(tmp, tlen, 10);
         nnoti = size / 8;      
-        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
 
         ntype = 10000;
         for (i=0; i<nnoti; i++)
@@ -1258,7 +1257,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         tmp = get_query_value(query, &tlen);
         size = (uint16_t) char_to_int(tmp, tlen, 10);
         nnoti = size / 8;      
-        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
 
         ntype = 10000;
         for (i=0; i<nnoti; i++)
@@ -1281,7 +1279,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         tmp = get_query_value(query, &tlen);
         size = (uint16_t) char_to_int(tmp, tlen, 10);
         nnoti = size / 8;      
-        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
 
         ntype = 10000;
         for (i=0; i<nnoti; i++)
@@ -1304,7 +1301,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         tmp = get_query_value(query, &tlen);
         size = (uint16_t) char_to_int(tmp, tlen, 10);
         nnoti = size / 8;      
-        printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
 
         ntype = 10000;
         for (i=0; i<nnoti; i++)
@@ -1326,7 +1322,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     uint8_t *p, *tmp;
     uint8_t alen, abytes, type;
 
-    printf("\n\n\n[VoWiFi] before get_query()\n\n\n");
     if ((query = get_query(instance))
         && is_query_name(query, "ike_auth_1_response")
         && (query = get_sub_query_by_name(query, "extensible_authentication"))

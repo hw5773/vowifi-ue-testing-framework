@@ -51,7 +51,7 @@ struct private_signer_t {
 METHOD(signer_t, get_signature, bool,
 	private_signer_t *this, chunk_t data, uint8_t *buffer)
 {
-  printf("\n\n\n[VoWiFi] (get_signature()) This is a mac signer\n\n\n");
+  //printf("\n\n\n[VoWiFi] (get_signature()) This is a mac signer\n\n\n");
 
 	if (buffer)
 	{
@@ -72,7 +72,7 @@ METHOD(signer_t, get_signature, bool,
 METHOD(signer_t, allocate_signature, bool,
 	private_signer_t *this, chunk_t data, chunk_t *chunk)
 {
-  printf("\n\n\n[VoWiFi] (allocate_signature()) This is a mac signer\n\n\n");
+  //printf("\n\n\n[VoWiFi] (allocate_signature()) This is a mac signer\n\n\n");
 	if (chunk)
 	{
 		uint8_t mac[this->mac->get_mac_size(this->mac)];

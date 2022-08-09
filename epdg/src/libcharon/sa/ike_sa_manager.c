@@ -1808,7 +1808,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 		{
 			case NOT_FOUND:
 			{	/* we've not seen this packet yet, create a new IKE_SA */
-        printf("\n\n[VoWiFi] Not Found\n\n\n");
+        //printf("\n\n[VoWiFi] Not Found\n\n\n");
 				if (!this->ikesa_limit ||
 					this->public.get_count(&this->public) < this->ikesa_limit)
 				{
@@ -1828,9 +1828,11 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 
             printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
                 ike_sa, ispi, rspi);
+            printf("[VoWiFi] this->instance: %p\n", this->instance);
 
             if (check_instance(this->instance, ispi, rspi, UPDATE))
             {
+              printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 1: setting the instance\n\n");
               ike_sa->set_instance(ike_sa, this->instance);
               instance = ike_sa->get_instance(ike_sa);
               asock = -1;
@@ -1918,13 +1920,17 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
   ispi = id->get_initiator_spi(id);
   rspi = id->get_responder_spi(id);
 
-  printf("\n\n[VoWiFi] Already_done\n\n\n");
+  //printf("\n\n[VoWiFi] Already_done\n\n\n");
   ike_sa = entry->ike_sa;
+  this->instance = ike_sa->get_instance(ike_sa);
   printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
     ike_sa, ispi, rspi);
+  printf("[VoWiFi] this->instance: %p\n", this->instance);
+
 
   if (check_instance(this->instance, ispi, rspi, UPDATE))
   {
+    printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n\n");
     ike_sa->set_instance(ike_sa, this->instance);
     instance = ike_sa->get_instance(ike_sa);
     asock = -1;

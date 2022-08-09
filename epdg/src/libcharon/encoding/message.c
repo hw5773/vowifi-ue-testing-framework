@@ -1817,21 +1817,23 @@ static status_t finalize_message(private_message_t *this, keymat_t *keymat,
   instance_t *instance;
   aead_t *aead;
   instance = this->instance;
+
+  //printf("\n\n[VoWiFi] check instance to set the instance and ike_sa_id\n\n");
+  if (instance)
+  {
+    //printf("\n\n[VoWiFi] setting the instance and ike_sa_id\n\n");
+  	aead = keymat->get_aead(keymat, FALSE);
+    if (aead)
+    {
+      //printf("\n\n\n[VoWiFi] this->ike_sa_id: %p\n\n\n", this->ike_sa_id);
+      aead->set_ike_sa_id(aead, this->ike_sa_id);
+      aead->set_instance(aead, instance);
+    }
+  }
   ////////////////////////////
 
 	if (encrypted)
 	{
-    if (instance)
-    {
-  		aead = keymat->get_aead(keymat, FALSE);
-      if (aead)
-      {
-        printf("\n\n\n[VoWiFi] this->ike_sa_id: %p\n\n\n", this->ike_sa_id);
-        aead->set_ike_sa_id(aead, this->ike_sa_id);
-        aead->set_instance(aead, instance);
-      }
-    }
-
 		if (this->is_encrypted)
 		{	/* for IKEv1 instead of associated data we provide the IV */
 			if (!keymat_v1->get_iv(keymat_v1, this->message_id, &chunk))
@@ -1893,9 +1895,9 @@ METHOD(message_t, generate, status_t,
 		return status;
 	}
 
-  printf("\n\n\n[VoWiFi] before finalize_message()\n\n\n");
+  //printf("\n\n\n[VoWiFi] before finalize_message()\n\n\n");
 	status = finalize_message(this, keymat, generator, encrypted);
-  printf("\n\n\n[VoWiFi] after finalize_message()\n\n\n");
+  //printf("\n\n\n[VoWiFi] after finalize_message()\n\n\n");
 	if (status != SUCCESS)
 	{
 		return status;
