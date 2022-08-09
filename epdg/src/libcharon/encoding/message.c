@@ -1824,7 +1824,12 @@ static status_t finalize_message(private_message_t *this, keymat_t *keymat,
     if (instance)
     {
   		aead = keymat->get_aead(keymat, FALSE);
-      aead->set_instance(aead, instance);
+      if (aead)
+      {
+        printf("\n\n\n[VoWiFi] this->ike_sa_id: %p\n\n\n", this->ike_sa_id);
+        aead->set_ike_sa_id(aead, this->ike_sa_id);
+        aead->set_instance(aead, instance);
+      }
     }
 
 		if (this->is_encrypted)
@@ -2992,6 +2997,20 @@ METHOD(message_t, destroy, void,
 	free(this);
 }
 
+///// Added for VoWiFi /////
+METHOD(message_t, set_instance, void,
+	private_message_t *this, void *instance)
+{
+  this->instance = instance;
+}
+
+METHOD(message_t, get_instance, void,
+	private_message_t *this)
+{
+  return this->instance;
+}
+////////////////////////////
+
 /*
  * Described in header.
  */
@@ -3043,6 +3062,10 @@ message_t *message_create_from_packet(packet_t *packet)
 			.get_metadata = _get_metadata,
 			.set_metadata = _set_metadata,
 			.destroy = _destroy,
+      ///// Added for VoWiFi /////
+      .set_instance = _set_instance,
+      .get_instance = _get_instance,
+      ////////////////////////////
 		},
 		.exchange_type = EXCHANGE_TYPE_UNDEFINED,
 		.is_request = TRUE,

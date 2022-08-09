@@ -47,6 +47,11 @@ struct private_aead_t {
 	 * IV generator
 	 */
 	iv_gen_t *iv_gen;
+
+  ///// Added for VoWiFi /////
+  void *ike_sa_id;
+  void *instance;
+  ////////////////////////////
 };
 
 METHOD(aead_t, encrypt, bool,
@@ -171,6 +176,32 @@ METHOD(aead_t, destroy, void,
 	free(this);
 }
 
+///// Added for VoWiFi /////
+METHOD(aead_t, set_ike_sa_id, void,
+	private_aead_t *this, void *id)
+{
+  this->ike_sa_id = id;
+}
+
+METHOD(aead_t, get_ike_sa_id, void *,
+	private_aead_t *this)
+{
+  return this->ike_sa_id;
+}
+
+METHOD(aead_t, set_instance, void,
+	private_aead_t *this, void *instance)
+{
+  this->instance = instance;
+}
+
+METHOD(aead_t, get_instance, void *,
+	private_aead_t *this)
+{
+  return this->instance;
+}
+////////////////////////////
+
 /**
  * See header
  */
@@ -189,6 +220,12 @@ aead_t *aead_create(crypter_t *crypter, signer_t *signer, iv_gen_t *iv_gen)
 			.get_key_size = _get_key_size,
 			.set_key = _set_key,
 			.destroy = _destroy,
+      ///// Added for VoWiFi /////
+      .set_ike_sa_id = _set_ike_sa_id,
+      .get_ike_sa_id = _get_ike_sa_id,
+      .set_instance = _set_instance,
+      .get_instance = _get_instance,
+      ////////////////////////////
 		},
 		.crypter = crypter,
 		.signer = signer,

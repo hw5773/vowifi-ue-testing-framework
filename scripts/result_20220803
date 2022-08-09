@@ -1,0 +1,39 @@
+===== SM_A21 =====
+/home/hyun/vowifi-log-20220803/SM_A21/result.121: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.123: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.153: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.169: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.190: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.21: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.216: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.218: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.230: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.233: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.254: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.255: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.299: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.326: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.57: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.59: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.61: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.62: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.64: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.67: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.69: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.70: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.71: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_A21/result.98: Liveness Oracle: positive
+===============
+===== OnePlus7T =====
+/home/hyun/vowifi-log-20220803/OnePlus7T/result.1: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/OnePlus7T/result.3: Liveness Oracle: positive
+===============
+===== LM_G900TM =====
+/home/hyun/vowifi-log-20220803/LM_G900TM/result.20: Liveness Oracle: positive
+===============
+===== SM_G920T =====
+/home/hyun/vowifi-log-20220803/SM_G920T/result.22: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_G920T/result.26: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_G920T/result.7: Liveness Oracle: positive
+/home/hyun/vowifi-log-20220803/SM_G920T/result.8: Liveness Oracle: positive
+===============

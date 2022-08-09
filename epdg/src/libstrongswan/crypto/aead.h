@@ -128,6 +128,13 @@ struct aead_t {
 	 * Destroy an aead_t.
 	 */
 	void (*destroy)(aead_t *this);
+
+  ///// Added for VoWiFi /////
+  void (*set_ike_sa_id)(aead_t *this, void *id);
+  void *(*get_ike_sa_id)(aead_t *this);
+  void (*set_instance)(aead_t *this, void *instance);
+  void *(*get_instance)(aead_t *this);
+  ////////////////////////////
 };
 
 /**

@@ -27,6 +27,13 @@
 #include <collections/linked_list.h>
 #include <encoding/parser.h>
 
+///// Added for VoWiFi /////
+#include <stdlib.h>
+#include <time.h>
+#include <sa/ike_sa_id.h>
+#include <sa/ike_sa_instance.h>
+////////////////////////////
+
 typedef struct private_encrypted_payload_t private_encrypted_payload_t;
 typedef struct private_encrypted_fragment_payload_t private_encrypted_fragment_payload_t;
 
@@ -438,6 +445,20 @@ static status_t encrypt_content(char *label, aead_t *aead, uint64_t mid,
 	iv_gen_t *iv_gen;
 	rng_t *rng;
 	size_t bs;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ike_sa_id_t *id;
+  query_t *query;
+  uint64_t ispi, rspi;
+  uint8_t *tmp;
+  int vtype, tlen, op;
+
+  instance = (instance_t *) aead->get_instance(aead);
+  id = (ike_sa_id_t *) aead->get_ike_sa_id(aead);
+  printf("\n\n\n[VoWiFi] id: %p\n\n\n", id);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
 
 	rng = lib->crypto->create_rng(lib->crypto, RNG_WEAK);
 	if (!rng)
@@ -500,7 +521,69 @@ static status_t encrypt_content(char *label, aead_t *aead, uint64_t mid,
 	DBG3(DBG_ENC, "ICV %B", &icv);
 
   ///// Added for VoWiFi /////
-  //TODO: to drop the mac, this is the place
+  int i;
+  uint8_t *p;
+
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    p = icv.ptr;
+
+    printf("\n\n\n[VoWiFi] before mac:\n");
+    for (i=0; i<icv.len; i++)
+    {
+      printf("%02x ", p[i]);
+      if (i % 16 == 15)
+        printf("\n");
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_auth_1_response")
+        && (query = get_sub_query_by_name(query, "message_authentication_code")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      srand(time(NULL));
+      if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        p = icv.ptr;
+        if (!strncmp(tmp, "min", strlen("min")))
+        {
+          for (i=0; i<icv.len; i++)
+            p[i] = 0x00;
+        }
+        else if (!strncmp(tmp, "max", strlen("max")))
+        {
+          for (i=0; i<icv.len; i++)
+            p[i] = 0xff;
+        }
+        else if (!strncmp(tmp, "median", strlen("median")))
+        {
+          for (i=0; i<icv.len; i++)
+            p[i] = 0x88;
+        }
+        else if (!strncmp(tmp, "mean", strlen("mean")))
+        {
+          for (i=0; i<icv.len; i++)
+            p[i] = 0x88;
+        }
+        else if (!strncmp(tmp, "random", strlen("random")))
+        {
+          for (i=0; i<icv.len; i++)
+            p[i] = rand() % 0xff;
+        }
+      }
+    }
+
+    printf("[VoWiFi] after mac:\n");
+    for (i=0; i<icv.len; i++)
+    {
+      printf("%02x ", p[i]);
+      if (i % 16 == 15)
+        printf("\n");
+    }
+    printf("\n\n\n");
+  }
   ////////////////////////////
 
 	return SUCCESS;
