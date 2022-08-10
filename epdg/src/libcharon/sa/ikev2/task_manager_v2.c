@@ -1719,6 +1719,7 @@ static status_t process_request(private_task_manager_t *this,
 	payload_t *pload;
   eap_payload_t *epload;
   ehdr_t *ehdr;
+  symbol = "unknown";
 
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
@@ -1774,8 +1775,12 @@ static status_t process_request(private_task_manager_t *this,
 	      {
       		enumer = message->create_payload_enumerator(message);
       		while (enumer->enumerate(enumer, &pload))
-      		{
-      			if (pload->get_type(pload) == PLV2_NOTIFY)
+      		{      			
+            if (pload->get_type(pload) == PLV2_DELETE)
+      			{
+              symbol = "delete";
+            }
+            else if (pload->get_type(pload) == PLV2_NOTIFY)
       			{
 			      	noti = (notify_payload_t*)pload;
       				switch (noti->get_notify_type(noti))

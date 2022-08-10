@@ -1927,15 +1927,17 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
     ike_sa, ispi, rspi);
   printf("[VoWiFi] this->instance: %p\n", this->instance);
 
-
   if (check_instance(this->instance, ispi, rspi, UPDATE))
   {
     printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n\n");
+    /*
     ike_sa->set_instance(ike_sa, this->instance);
     instance = ike_sa->get_instance(ike_sa);
+    printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message(): instance: %p\n\n", instance);
     asock = -1;
     if (instance)
       asock = instance->asock;
+    */
   }
   ////////////////////////////
 

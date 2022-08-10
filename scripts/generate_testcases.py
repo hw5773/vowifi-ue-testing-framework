@@ -10,7 +10,7 @@ from testcases import Testcases
 
 def abstract_testcases(pname):
     ret = []
-    lst = ["{}/{}".format(pname, f) for f in os.listdir(pname) if "swp" not in f]
+    lst = ["{}/{}".format(pname, f) for f in os.listdir(pname) if "swp" not in f and not os.path.isdir("{}/{}".format(pname, f))]
     cnt = 0
 
     for fname in lst:

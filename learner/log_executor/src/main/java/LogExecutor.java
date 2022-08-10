@@ -80,8 +80,8 @@ public class LogExecutor {
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
 
-    Option argNumber = new Option("i", "id", true, "Starting testcase ID");
-    options.addOption(argNumber);
+    Option argID = new Option("i", "id", true, "Starting testcase ID");
+    options.addOption(argID);
 
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
@@ -246,6 +246,7 @@ public class LogExecutor {
       qrLogger.addFunctionalOracleResult(r1);
       logger.info("  Functional Oracle Result: " + r1);
 
+      logger.debug(">>>>> Liveness Test <<<<<");
       sleep(LIVENESS_SLEEP_TIME);
 
       if (livenessTestcase != null) {
