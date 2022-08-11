@@ -1,5 +1,6 @@
 ///// Added for VoWiFi /////
 #include <inttypes.h>
+#include <unistd.h>
 #include "ike_sa_instance.h"
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
@@ -17,8 +18,12 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
     {
       instance->ispi = ispi;
       instance->rspi = rspi;
+      ret = 1;
     }
-    ret = 1;
+    else
+    {
+      ret = 0;
+    }
   }
   else if (instance->ispi == ispi && instance->rspi == rspi)
     ret = 1;
@@ -290,6 +295,16 @@ void set_query_name(query_t *query, uint8_t *name)
   query->nlen = nlen;
 }
 
+int get_query_operator(query_t *query)
+{
+  return query->op;
+}
+
+void set_query_operator(query_t *query, int op)
+{
+  query->op = op;
+}
+
 int get_query_value_type(query_t *query)
 {
   return query->vtype;
@@ -346,7 +361,6 @@ bool is_query_finished(instance_t *instance)
 query_t *get_query(instance_t *instance)
 {
   query_t *ret;
-  query_t *query;
 
   ret = NULL;
   if (instance->initiated && !instance->finished)

@@ -318,11 +318,14 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
     {
       LM_ERR("[VoWiFi] error in shmget()\n");
     }
-    instance = (instance_t *)shmat(shmid, NULL, 0);
-    LM_INFO("received buffer (len: %d bytes): %s\n", len, buf);
-    if (instance)
+    else
     {
-      parse_sip_message(instance, buf, len);
+      instance = (instance_t *)shmat(shmid, NULL, 0);
+      LM_INFO("received buffer (len: %d bytes): %s\n", len, buf);
+      if (instance)
+      {
+        parse_sip_message(instance, buf, len);
+      }
     }
   }
   ////////////////////////////

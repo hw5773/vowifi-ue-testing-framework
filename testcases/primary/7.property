@@ -1,4 +1,4 @@
-# All IKEv2 implementations MUST be able to send, receive, and process IKE messages that are up to 1280 octets long, and they SHOULD be able to send, receive, and process messages that are up to 3000 octets long.
+# In eap-aka, AT_MAC is based on a keyed message authentication code.
 
 {
   "testcases": [
@@ -14,30 +14,20 @@
           "name": "ike_sa_init_response",
           "sender": "epdg"
         },
-        {
-          "receiver": "epdg",
+        { 
+          "receiver": "epdg", 
           "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_4_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "message_size",
-              "type": "uint16",
-              "value": VALUE([1000, 2000, 3000, 4000, 5000], [1000])
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "at_checkcode",
+                  "type": "uint16",
+                  "value": VALUE
+                }
+              ]
             }
           ]
         }

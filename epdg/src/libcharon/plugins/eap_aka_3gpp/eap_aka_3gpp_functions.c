@@ -115,6 +115,12 @@ void eap_aka_3gpp_get_sqn(uint8_t sqn[AKA_SQN_LEN], int offset)
 	//memcpy(sqn + 4, &time.tv_usec, 2);
   // Check
   memset(sqn, 0, AKA_SQN_LEN);
+  sqn[0] = 0x11;
+  sqn[1] = 0x22;
+  sqn[2] = 0x33;
+  sqn[3] = 0x44;
+  sqn[4] = 0x55;
+  sqn[5] = 0x66;
 }
 
 static bool f1andf1star(private_eap_aka_3gpp_functions_t *this,

@@ -744,7 +744,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
     uint32_t nc_parsed = 0; /* the numerical representation of nc */
 	
     LM_WARN("authenticate(): AUTH_ERROR: %d\n", AUTH_ERROR);
-	LM_DBG("Running authenticate, is_proxy_auth=%d\n", is_proxy_auth);
+	  LM_DBG("Running authenticate, is_proxy_auth=%d\n", is_proxy_auth);
 
     ret = AUTH_ERROR;
 
@@ -809,7 +809,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         return AUTH_NO_CREDENTIALS;
     }
 
-    LM_WARN("authenticate(): 10\n");
+    LM_WARN("authenticate(): 10: ret: %d\n", ret);
     if (!get_nonce_response(msg, &username, realm, &nonce, &response16, &qop, &qop_str, &nc, &cnonce, &uri, is_proxy_auth) ||
             !nonce.len) {
             //!nonce.len || !response16.len) {
@@ -818,13 +818,13 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         return AUTH_ERROR;
     }
 
-    LM_WARN("authenticate(): 11\n");
+    LM_WARN("authenticate(): 11: ret: %d\n", ret);
     if (qop == QOP_AUTHINT) {
         body = ims_get_body(msg);
         calc_H(&body, hbody);
     }
 
-    LM_WARN("authenticate(): 12\n");
+    LM_WARN("authenticate(): 12: ret: %d\n", ret);
     /* first, look for an already used vector (if nonce reuse is enabled) */
     if (max_nonce_reuse > 0) {
         LM_DBG("look for an already used vector for %.*s\n",
@@ -832,7 +832,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         av = get_auth_vector(private_identity, public_identity, AUTH_VECTOR_USED, &nonce, &aud_hash);
     }
 
-    LM_WARN("authenticate(): 13\n");
+    LM_WARN("authenticate(): 13: ret: %d\n", ret);
     if (!av) {
         /* if none found, or nonce reuse is disabled, look for a fresh vector
          * We should also drop every other used vector at this point
@@ -867,7 +867,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
             cnonce.len, cnonce.s,
             32, hbody);
 
-    LM_WARN("authenticate(): 14\n");
+    LM_WARN("authenticate(): 14: ret: %d\n", ret);
     if (!av) {
         LM_DBG("no matching auth vector found - maybe timer expired\n");
 
@@ -879,7 +879,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         goto end;
     }
 
-    LM_WARN("authenticate(): 15\n");
+    LM_WARN("authenticate(): 15: ret: %d\n", ret);
     if (qop != QOP_UNSPEC) {
         /* if QOP is sent, nc must be specified */
         /* the expected nc is the last used one plus 1 */
@@ -904,7 +904,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         }
 	}
 
-    LM_WARN("authenticate(): 16\n");
+    LM_WARN("authenticate(): 16: ret: %d\n", ret);
     switch (av->type) {
         case AUTH_AKAV1_MD5:
         case AUTH_AKAV2_MD5:
@@ -945,10 +945,10 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
             goto cleanup; /* release aud before returning */
     }
 
-    LM_WARN("authenticate(): 17\n");
+    LM_WARN("authenticate(): 17: ret: %d\n", ret);
     expires = cscf_get_max_expires(msg, 0);
 
-    LM_WARN("authenticate(): 18\n");
+    LM_WARN("authenticate(): 18: ret: %d\n", ret);
     if (response16.len == expected_len && strncasecmp(response16.s, expected, response16.len) == 0) {
         if (max_nonce_reuse > 0 && av->status == AUTH_VECTOR_SENT) {
             /* first use of a reusable vector */
@@ -1041,13 +1041,13 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
 		}
     }
 
-    LM_WARN("authenticate(): 19\n");
+    LM_WARN("authenticate(): 19: ret: %d\n", ret);
     if (ignore_failed_auth) {
         LM_WARN("NB: Ignoring all failed auth - check your config if you don't expect this\n");
         ret = AUTH_OK;
     }
 
-    LM_WARN("authenticate(): 20\n");
+    LM_WARN("authenticate(): 20: ret: %d\n", ret);
 cleanup:
     auth_data_unlock(aud_hash);
 end:

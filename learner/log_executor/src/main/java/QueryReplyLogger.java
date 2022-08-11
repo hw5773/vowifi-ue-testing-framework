@@ -16,7 +16,7 @@ class QueryReplyLogger {
   private List<Testcases> testcases = null;
   private List<List<QueryReplyPair>> pairs = null;
   private List<Integer> functionalOracleResults = null;
-  private List<Boolean> reliableOracleResults = null;
+  private List<Integer> livenessOracleResults = null;
   private String outputRootDir;
   private String outputDir;
   private String ueModel;
@@ -32,76 +32,64 @@ class QueryReplyLogger {
     this.testcases = new ArrayList<>();
     this.pairs = new ArrayList<>();
     this.functionalOracleResults = new ArrayList<>();
-    this.reliableOracleResults = new ArrayList<>();
+    this.livenessOracleResults = new ArrayList<>();
     this.outputRootDir = outputDir;
     this.ueModel = null;
   }
 
-  public void storeLog() throws IOException {
-    Iterator i = this.testcases.iterator();
-    Iterator j = this.pairs.iterator();
-    Iterator k;
+  public void storeLog(String id, int num) throws IOException {
+    Iterator i;
     Iterator r1 = this.functionalOracleResults.iterator();
-    Iterator r2 = this.reliableOracleResults.iterator();
-    int num = 0;
-
+    Iterator r2 = this.livenessOracleResults.iterator();
+ 
     Testcases tcs;
     List<QueryReplyPair> plst;
     QueryReplyPair tmp = null;
+    int r1result; // 0: normal, 1: error, 2: maybe
+    int r2result; // 0: normal, 1: not sending IKE_SA_INIT, 2: EAP-AKA error
 
+    String filename = this.outputDir + "/result." + id + "." + num;
+    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+    tcs = (Testcases) this.testcases.get(this.testcases.size()-1);
+    plst = (List<QueryReplyPair>) this.pairs.get(this.pairs.size()-1);
+
+    logger.info("Testcase #" + id);
+    logger.info("Testcase: " + tcs.getOriginalTestcase());
+
+    writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");
+    writer.write("Message:\n");
+
+    i = plst.iterator();
     while (i.hasNext()) {
-      num++;
-      String filename = this.outputDir + "/result." + num;
-      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-
-      tcs = (Testcases) i.next();
-      if (j.hasNext())
-        plst = (List<QueryReplyPair>) j.next();
-      else {
-        logger.error("Should not happen");
-        break;
-      }
-
-      logger.info("Testcase #" + num);
-      logger.info("Testcase: " + tcs.getOriginalTestcase());
-
-      writer.write("Testcase: " + tcs.getOriginalTestcase() + "\n");
-      writer.write("Message:\n");
-
-      k = plst.iterator();
-      while (k.hasNext()) {
-        tmp = (QueryReplyPair) k.next();
-        logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
-        writer.write("  Query: " + tmp.getQueryName() + "\n");
-        writer.write("  Reply: " + tmp.getReplyName() + "\n");
-      }
-
-      if (r1.hasNext() && r2.hasNext()) {
-        int r1result = (int) r1.next();
-        boolean r2result = (boolean) r2.next();
-
-        writer.write("Result:\n");
-        if (r1result == 0) {
-          writer.write("  Functional Oracle: negative\n");
-        } else if (r1result == 1) {
-          writer.write("  Functional Oracle: maybe\n");
-        } else if (r1result == 2) {
-          writer.write("  Functional Oracle: positive\n");
-        } else {
-          writer.write("  Functional Oracle: error\n");
-        }
-
-        if (r2result == false) {
-          writer.write("  Reliable Oracle: negative\n");
-        } else { 
-          writer.write("  Reliable Oracle: positive\n");
-        }
-      }
-      else {
-        logger.error("error in results");
-      }
-      writer.close();
+      tmp = (QueryReplyPair) i.next();
+      logger.info("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
+      writer.write("  Query: " + tmp.getQueryName() + "\n");
+      writer.write("  Reply: " + tmp.getReplyName() + "\n");
     }
+
+    r1result = (int) this.functionalOracleResults.get(this.functionalOracleResults.size()-1);
+    r2result = (int) this.livenessOracleResults.get(this.livenessOracleResults.size()-1);
+
+    writer.write("Result:\n");
+    if (r1result == 0) {
+      writer.write("  Functional Oracle: negative\n");
+    } else if (r1result == 1) {
+      writer.write("  Functional Oracle: maybe\n");
+    } else if (r1result == 2) {
+      writer.write("  Functional Oracle: positive\n");
+    } else {
+      writer.write("  Functional Oracle: error\n");
+    }
+
+    if (r2result == 0) {
+      writer.write("  Liveness Oracle: negative\n");
+    } else if (r2result == 1) {
+      writer.write("  Liveness Oracle: positive (not sending IKE_SA_INIT)\n");
+    } else if (r2result == 2) {
+      writer.write("  Liveness Oracle: positive (eap-aka client error)\n");
+    }
+    writer.close();
   }
 
   public void setUEModel(String ueModel) {
@@ -128,8 +116,8 @@ class QueryReplyLogger {
     this.functionalOracleResults.add(deviated);
   }
 
-  public void addReliableOracleResult(boolean unreliable) {
-    this.reliableOracleResults.add(unreliable);
+  public void addLivenessOracleResult(int unreliable) {
+    this.livenessOracleResults.add(unreliable);
   }
 
   public List<Testcases> getTestcases() {
@@ -147,7 +135,6 @@ class QueryReplyPair {
   private MessageLog reply;
   static Log logger;
   private int deviated;
-  private boolean unreliable;
 
   QueryReplyPair(Testcase testcase, MessageLog query, MessageLog reply, Log logger) {
     setLogger(logger);

@@ -44,11 +44,13 @@ public class LogExecutor {
   private static final String[] OS_LINUX_RUNTIME = { "/bin/bash", "-l", "-c" };
 
   private static final int COOLING_TIME = 1*1000;
+  private static final int LIVENESS_SLEEP_TIME = 5*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int IMS_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 5*1000;
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 15*1000;
+  private static final int UE_REBOOT_TIMEOUT_VALUE = 60*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
   private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
@@ -60,7 +62,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    initIMSConnection();
+    //initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -78,6 +80,9 @@ public class LogExecutor {
     Option argConfig = new Option("c", "config", true, "Configuration file");
     options.addOption(argConfig);
 
+    Option argID = new Option("i", "id", true, "Starting testcase ID");
+    options.addOption(argID);
+
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
     CommandLine cmd = null;
@@ -93,6 +98,7 @@ public class LogExecutor {
 
     String testcaseFilePath = cmd.getOptionValue("file");
     String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
+    String startID = cmd.getOptionValue("id");
 
     if (testcaseFilePath == null) {
       logger.error("Query File should be inserted");
@@ -168,14 +174,20 @@ public class LogExecutor {
     logger.info("# of Testcases: " + testcases.size());
 
     Boolean timeoutOccured = false;
-    int testcaseNum = 1;
+    String testcaseID;
+    int testcaseNum;
     List<QueryReplyPair> pairs;
     QueryReplyPair pair;
     Iterator iter;
     String rpath;
-    Testcases reliabilityTestcase = null;
-    int r1;
-    boolean r2;
+    Testcases livenessTestcase = null;
+    int r1, r2;
+    boolean needReboot;
+    boolean matched = false;
+
+    testcaseNum = 0;
+    if (startID == null)
+      matched = true;
 
     rpath = config.getLivenessTestcasePath();
     try (FileReader reader = new FileReader(rpath)) {
@@ -183,47 +195,89 @@ public class LogExecutor {
       JSONArray jsonArr = (JSONArray) jsonObject.get("testcases");
       Iterator i = jsonArr.iterator();
       JSONObject rtc = (JSONObject) i.next();
-      reliabilityTestcase = new Testcases(rtc, logger);
+      livenessTestcase = new Testcases(rtc, logger);
     } catch (Exception e) {
-      logger.error("Error happened while processing the reliability file");
+      logger.error("Error happened while processing the liveness testcase file");
       e.printStackTrace();
     }
     
     for (Testcases testcase: testcases) {
-      logger.info("Starting Testcase #" + testcaseNum);
-
-      pairs = executeTestcase(logExecutor, testcase);
-
-      while (pairs == null) {
-        pairs = executeTestcase(logExecutor, testcase);
+      needReboot = false;
+      testcaseNum++;
+      testcaseID = testcase.getID();
+      logger.info("Starting Testcase #" + testcaseNum + " (" + testcaseID + ")");
+      if (matched == false) {
+        if (testcaseID.equals(startID)) {
+          matched = true;
+        }
+        else {
+          logger.info("Skipping Testcase #" + testcaseNum + " (" + testcaseID + ")");
+          continue;
+        }
       }
 
-      logger.info("Finished Testcase #" + testcaseNum);
-      logger.info("Test Result #" + testcaseNum);
+      pairs = null;
+      while (pairs == null) {
+        pairs = executeTestcase(logExecutor, testcase);
+
+        if (pairs != null) {
+          if (pairs.size() > 0) {
+            QueryReplyPair tmp = pairs.get(0);
+            logger.debug("Query: " + tmp.getQueryName() + " / Reply: " + tmp.getReplyName());
+            if (tmp.getQueryName().contains("enable_vowifi") 
+                && tmp.getReplyName().contains("timeout")) {
+              pairs = null;
+              testcase.resetIterator();
+              logExecutor.rebootUE();
+            }
+          } else {
+            pairs = null;
+            testcase.resetIterator();
+            logExecutor.rebootUE();
+          }
+        }
+        logger.debug("pairs: " + pairs);
+      }
+
+      logger.info("Finished Testcase #" + testcaseNum + " (" + testcaseID + ")");
+      logger.info("Test Result #" + testcaseNum + " (" + testcaseID + ")");
       qrLogger.addLog(testcase, pairs);
       r1 = oracle.getFunctionalOracleResult(pairs);
       qrLogger.addFunctionalOracleResult(r1);
       logger.info("  Functional Oracle Result: " + r1);
 
-      if (reliabilityTestcase != null) {
-        reliabilityTestcase.resetIterator();
-        pairs = executeTestcase(logExecutor, reliabilityTestcase);
-        r2 = oracle.getReliableOracleResult(pairs.get(0));
+      logger.debug(">>>>> Liveness Test <<<<<");
+      sleep(LIVENESS_SLEEP_TIME);
+
+      if (livenessTestcase != null) {
+        livenessTestcase.resetIterator();
+        pairs = executeTestcase(logExecutor, livenessTestcase);
+        r2 = oracle.getLivenessOracleResult(pairs);
       } else {
-        r2 = false;
+        r2 = 0;
       }
-      qrLogger.addReliableOracleResult(r2);
-      logger.info("  Reliable Oracle Result: " + r2);
-      if (r2 == true) {
+      qrLogger.addLivenessOracleResult(r2);
+      logger.info("  Liveness Oracle Result: " + r2);
+
+      iter = pairs.iterator();
+      while (iter.hasNext()) {
+        QueryReplyPair tmp = (QueryReplyPair) iter.next();
+        if (tmp.getReplyName().contains("client_error")) {
+          needReboot = true;
+          break;
+        }
+      }
+
+      if (r2 > 0 || needReboot == true) {
         logExecutor.rebootUE();
         sleep(UE_REBOOT_SLEEP_TIME);
       }
 
-      testcaseNum ++;
+      qrLogger.storeLog(testcaseID, testcaseNum);
       sleep(TESTCASE_SLEEP_TIME);
     }
 
-    qrLogger.storeLog();
+    //qrLogger.storeLog();
   }
 
   public void restartEPDG() throws InterruptedException {
@@ -300,6 +354,8 @@ public class LogExecutor {
       msg += name;
 
       if (testcase.hasValue()) {
+        msg += ":";
+        msg += testcase.getOperator();
         msg += ":";
         msg += testcase.getValueType().getValueTypeAsInteger();
         msg += ":";
@@ -554,6 +610,7 @@ public class LogExecutor {
       startTime = System.currentTimeMillis();
       pair = logExecutor.step(message);
       endTime = System.currentTimeMillis();
+
       logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
       duration = (endTime - startTime);
       insec = duration/1000.0;
@@ -753,7 +810,10 @@ public class LogExecutor {
     logger.debug("START: rebootUE()");
     String result = "";
     
+    sendDisableWiFi();
+
     try {
+			ueSocket.setSoTimeout(UE_REBOOT_TIMEOUT_VALUE);
       sleep(COOLING_TIME);
       ueOut.write("ue_reboot\n");
       ueOut.flush();
@@ -919,22 +979,26 @@ public class LogExecutor {
 
     depth = 0;
     try {
-      if (reporter.startsWith("epdg")) {
+      if (reporter.contains("epdg")) {
   		  epdgSocket.setSoTimeout(EPDG_SOCKET_TIMEOUT_VALUE);
         sockIn = epdgIn;
-      } else if (reporter.startsWith("ims")) {
+      } else if (reporter.contains("ims")) {
         imsSocket.setSoTimeout(IMS_SOCKET_TIMEOUT_VALUE);
         sockIn = imsIn;
       }
       do {
         print = "";
-        for (int i=0; i<depth; i++)
-        {
+        for (int i=0; i<depth; i++) {
           print += "  ";
         }
-      	result = sockIn.readLine();
+
+        while (true) {
+        	result = sockIn.readLine();
+          len = result.length();
+          if (len > 16)
+            break;
+        }
         logger.debug("Result from " + reporter + ": " + result);
-        len = result.length();
         idx = 0;
         rcvd = result.getBytes();
         type = (char) rcvd[idx++];
@@ -1019,8 +1083,8 @@ public class LogExecutor {
       mlog.setName("timeout");
     } catch (Exception e) {
 			e.printStackTrace();
-			logger.info("Attempting to restart device, and reset ePDG and IMS Server. Also restarting testcase.");
-			handleEPDGIMSFailure();
+			logger.info("Some error happened. Restart UE.");
+			rebootUE();
 			mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       mlog.setName("null_action");
 		}
@@ -1067,6 +1131,21 @@ public class LogExecutor {
           e.printStackTrace();
         }
 			}while(resetDone == false);
+
+      if (ueSocket != null) {
+        ueIn = new BufferedReader(new InputStreamReader(ueSocket.getInputStream()));
+        ueOut.flush();
+      }
+
+      if (epdgSocket != null) {
+        epdgIn = new BufferedReader(new InputStreamReader(epdgSocket.getInputStream()));
+        epdgOut.flush();
+      }
+
+      if (imsSocket != null) {
+        imsIn = new BufferedReader(new InputStreamReader(imsSocket.getInputStream()));
+        imsOut.flush();
+      }
 
 			logger.debug("---- RESET DONE ----");
 		} catch (Exception e) {
@@ -1168,23 +1247,29 @@ public class LogExecutor {
       epdgOut.write("Hello\n");
       epdgOut.flush();
       logger.debug("Sent the hello message to ePDG");
-      result = epdgIn.readLine();
-      logger.debug("Received the hello message from ePDG in isEPDGAlive() = " + result);
-      epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+
+      while (true) {
+        result = epdgIn.readLine();
+        logger.debug("Received the hello message from ePDG in isEPDGAlive() = " + result);
+        epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+
+        if(result.contains("ACK")) {
+          logger.debug("PASSED: Testing the connection between the statelearner and ePDG");
+          return true;
+        } 
+        /*
+        else {
+          logger.error("FAILED: Testing the connection between the statelearner and ePDG");
+          return false;
+        }
+        */
+      }
     } catch(SocketTimeoutException e) {
       logger.error("Timeout in Socket with ePDG");
       e.printStackTrace();
       return false;
     } catch (Exception e) {
       e.printStackTrace();
-      return false;
-    }
-
-    if(result.contains("ACK")) {
-      logger.debug("PASSED: Testing the connection between the statelearner and ePDG");
-      return true;
-    } else {
-      logger.error("FAILED: Testing the connection between the statelearner and ePDG");
       return false;
     }
   }

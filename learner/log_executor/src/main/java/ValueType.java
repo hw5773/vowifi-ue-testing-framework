@@ -11,12 +11,17 @@ enum ValueType {
       logger.info("The value type is an integer");
     }
   },
-  UINT16(3) {
+  UINT8(3) {
+    public void printValueType(Log logger) {
+      logger.info("The value type is unsigned 8 bit integer");
+    }
+  },
+  UINT16(4) {
     public void printValueType(Log logger) {
       logger.info("The value type is unsigned 16 bit integer");
     }
   },
-  STRING(4) {
+  STRING(5) {
     public void printValueType(Log logger) {
       logger.info("The value type is String");
     }

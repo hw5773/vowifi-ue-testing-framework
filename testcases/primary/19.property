@@ -17,7 +17,7 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "edpg",
+          "sender": "epdg",
           "sub": [
             {
               "name": "sequence_number",

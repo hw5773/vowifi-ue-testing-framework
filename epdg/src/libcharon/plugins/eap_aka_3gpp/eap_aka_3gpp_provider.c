@@ -104,13 +104,14 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 	DBG4(DBG_IKE, "EAP key found for id %Y, using K %b and OPc %b", id, k,
 		 AKA_K_LEN, opc, AKA_OPC_LEN);
 
-  //int i;
-  //printf("!!!!! SQN Value !!!!!\n");
-  //for (i=0; i<AKA_SQN_LEN; i++)
-  //{
-  //  printf("%02x ", (this->sqn)[i]);
-  //}
-  //printf("\n");
+  int i;
+  printf("!!!!! SQN Value !!!!!\n");
+  for (i=0; i<AKA_SQN_LEN; i++)
+  {
+    //this->sqn[i] = 0x00;
+    printf("%02x ", (this->sqn)[i]);
+  }
+  printf("\n");
 
 	/* generate MAC and XRES, CK, IK, AK */
 	if (!this->f->f1(this->f, k, opc, rand, this->sqn, amf, maca) ||

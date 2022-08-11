@@ -25,9 +25,14 @@
           "sender": "epdg",
           "sub": [
             {
-              "name": "code",
-              "type": "uint8",
-              "value": VALUE([1, 2, 3], [3])
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "code",
+                  "type": "uint8",
+                  "value": VALUE([1, 2, 3], [3])
+                }
+              ]
             }
           ]
         }

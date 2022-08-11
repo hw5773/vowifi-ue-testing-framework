@@ -944,6 +944,10 @@ struct private_message_t {
 	 * Data used to reassemble a fragmented message
 	 */
 	fragment_data_t *frag;
+
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 };
 
 /**
@@ -1809,6 +1813,25 @@ static status_t finalize_message(private_message_t *this, keymat_t *keymat,
 	chunk_t chunk;
 	uint32_t *lenpos;
 
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  aead_t *aead;
+  instance = this->instance;
+
+  //printf("\n\n[VoWiFi] check instance to set the instance and ike_sa_id\n\n");
+  if (instance)
+  {
+    //printf("\n\n[VoWiFi] setting the instance and ike_sa_id\n\n");
+  	aead = keymat->get_aead(keymat, FALSE);
+    if (aead)
+    {
+      //printf("\n\n\n[VoWiFi] this->ike_sa_id: %p\n\n\n", this->ike_sa_id);
+      aead->set_ike_sa_id(aead, this->ike_sa_id);
+      aead->set_instance(aead, instance);
+    }
+  }
+  ////////////////////////////
+
 	if (encrypted)
 	{
 		if (this->is_encrypted)
@@ -1871,7 +1894,10 @@ METHOD(message_t, generate, status_t,
 		DESTROY_IF(generator);
 		return status;
 	}
+
+  //printf("\n\n\n[VoWiFi] before finalize_message()\n\n\n");
 	status = finalize_message(this, keymat, generator, encrypted);
+  //printf("\n\n\n[VoWiFi] after finalize_message()\n\n\n");
 	if (status != SUCCESS)
 	{
 		return status;
@@ -2973,6 +2999,20 @@ METHOD(message_t, destroy, void,
 	free(this);
 }
 
+///// Added for VoWiFi /////
+METHOD(message_t, set_instance, void,
+	private_message_t *this, void *instance)
+{
+  this->instance = instance;
+}
+
+METHOD(message_t, get_instance, void,
+	private_message_t *this)
+{
+  return this->instance;
+}
+////////////////////////////
+
 /*
  * Described in header.
  */
@@ -3024,6 +3064,10 @@ message_t *message_create_from_packet(packet_t *packet)
 			.get_metadata = _get_metadata,
 			.set_metadata = _set_metadata,
 			.destroy = _destroy,
+      ///// Added for VoWiFi /////
+      .set_instance = _set_instance,
+      .get_instance = _get_instance,
+      ////////////////////////////
 		},
 		.exchange_type = EXCHANGE_TYPE_UNDEFINED,
 		.is_request = TRUE,

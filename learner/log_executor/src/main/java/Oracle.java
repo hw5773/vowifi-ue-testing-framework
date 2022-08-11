@@ -52,18 +52,29 @@ public class Oracle {
     return ret;
   }
 
-  public boolean getReliableOracleResult(QueryReplyPair pair) {
+  public int getLivenessOracleResult(List<QueryReplyPair> pairs) {
     logger.debug("Tagging if the behavior is unreliable");
-    boolean ret;
+    int ret;
+    QueryReplyPair pair;
     String query, reply;
+    Iterator i;
 
-    ret = true;
-    query = pair.getQueryName();
-    reply = pair.getReplyName();
+    ret = 1;
 
-    if (query.contains("enable_vowifi")
-        && reply.contains("ike_sa_init_request"))
-      ret = false;
+    i = pairs.iterator();
+
+    while (i.hasNext()) {
+      pair = (QueryReplyPair) i.next();
+      query = pair.getQueryName();
+      reply = pair.getReplyName();
+
+      if (query.contains("enable_vowifi")
+          && reply.contains("ike_sa_init_request"))
+        ret = 0;
+
+      if (query.contains("client_error"))
+        ret = 2;
+    }
 
     return ret;
   }

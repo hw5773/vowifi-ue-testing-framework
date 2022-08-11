@@ -425,6 +425,11 @@ struct message_t {
 	 * Destroys a message and all including objects.
 	 */
 	void (*destroy) (message_t *this);
+
+  ///// Added for VoWiFi /////
+  void (*set_instance)(message_t *this, void *instance);
+  void *(*get_instance)(message_t *this);
+  ////////////////////////////
 };
 
 /**

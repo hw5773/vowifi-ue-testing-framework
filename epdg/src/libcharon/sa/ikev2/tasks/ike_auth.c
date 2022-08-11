@@ -1081,8 +1081,8 @@ METHOD(task_t, build_r, status_t,
 	}
 
 	/* add a PPK_IDENTITY notify and derive new keys and clear the PPK */
-	if (this->ppk.ptr)
-	{
+	if (this->ppk.ptr) {
+	
 		message->add_notify(message, FALSE, PPK_IDENTITY, chunk_empty);
 		if (!apply_ppk(this))
 		{

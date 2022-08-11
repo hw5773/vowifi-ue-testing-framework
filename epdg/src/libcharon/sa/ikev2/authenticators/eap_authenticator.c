@@ -22,6 +22,21 @@
 #include <encoding/payloads/auth_payload.h>
 #include <encoding/payloads/eap_payload.h>
 
+///// Added for VoWiFi /////
+#include <sa/ike_sa_instance.h>
+
+typedef struct eap_header_t ehdr_t;
+struct eap_header_t 
+{
+  uint8_t code;
+  uint8_t identifier;
+  uint16_t length;
+  uint8_t type;
+  uint8_t subtype;
+  uint16_t reserved;
+} __attribute__((__packed__));
+////////////////////////////
+
 typedef struct private_eap_authenticator_t private_eap_authenticator_t;
 
 /**
@@ -175,6 +190,7 @@ static eap_payload_t* server_initiate_eap(private_eap_authenticator_t *this,
 						DBG1(DBG_IKE, "initiating %N method (id 0x%02X)",
 							 eap_type_names, EAP_IDENTITY,
 							 this->method->get_identifier(this->method));
+
 						return out;
 					}
 					this->method->destroy(this->method);
@@ -331,6 +347,7 @@ static eap_payload_t* server_process_eap(private_eap_authenticator_t *this,
 			this->ike_sa->set_condition(this->ike_sa, COND_EAP_AUTHENTICATED,
 										TRUE);
 			this->eap_complete = TRUE;
+      printf("[VoWiFi] server_process_eap() return\n");
 			return eap_payload_create_code(EAP_SUCCESS, in->get_identifier(in));
 		case FAILED:
 		default:
@@ -605,13 +622,92 @@ METHOD(authenticator_t, process_server, status_t,
 METHOD(authenticator_t, build_server, status_t,
 	private_eap_authenticator_t *this, message_t *message)
 {
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ike_sa_id_t *sa_id;
+  uint64_t ispi, rspi;
+  uint8_t *tmp;
+  uint8_t c;
+  int vtype, tlen, op;
+  query_t *query;
+  ehdr_t *ehdr;
+
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  sa_id = this->ike_sa->get_id(this->ike_sa);
+
+  ispi = sa_id->get_initiator_spi(sa_id);
+  rspi = sa_id->get_responder_spi(sa_id);
+  ////////////////////////////
+
 	if (this->eap_payload)
 	{
 		eap_code_t code;
 
+    ///// Added for VoWiFi /////
+    printf("[VoWiFi] before processing the query\n");
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_auth_1_response")
+          && (query = get_sub_query_by_name(query, "extensible_authentication"))
+          && (query = get_sub_query_by_name(query, "code")))
+      {
+        ehdr = (ehdr_t *) (this->eap_payload->get_data(this->eap_payload)).ptr;
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          c = (uint8_t) char_to_int(tmp, tlen, 10);
+          printf("[VoWiFi] before modification: eap_code: %d\n", this->eap_payload->get_code(this->eap_payload));
+          printf("[VoWiFi] using the data: eap_code: %d\n", ehdr->code);
+          ehdr->code = c;
+          printf("[VoWiFi] after modification: eap_code: %d\n", this->eap_payload->get_code(this->eap_payload));
+        }
+      }
+
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_auth_1_response")
+          && (query = get_sub_query_by_name(query, "extensible_authentication"))
+          && (query = get_sub_query_by_name(query, "eap_aka_subtype")))
+      {
+        ehdr = (ehdr_t *) (this->eap_payload->get_data(this->eap_payload)).ptr;
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          c = (uint8_t) char_to_int(tmp, tlen, 10);
+          printf("[VoWiFi] before modification: subtype: %d\n", ehdr->subtype);
+          ehdr->subtype = c;
+          printf("[VoWiFi] after modification: subtype: %d\n", ehdr->subtype);
+        }
+      }
+
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_auth_2_response")
+          && (query = get_sub_query_by_name(query, "extensible_authentication"))
+          && (query = get_sub_query_by_name(query, "code")))
+      {
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          c = (uint8_t ) char_to_int(tmp, tlen, 10);
+          printf("[VoWiFi] before modification: eap_code: %d\n", this->eap_payload->get_code(this->eap_payload));
+          ehdr->code = c;
+          printf("[VoWiFi] after modification: eap_code: %d\n", this->eap_payload->get_code(this->eap_payload));
+        }
+      }
+    }
+    printf("[VoWiFi] after processing the query\n");
+    ////////////////////////////
+
 		code = this->eap_payload->get_code(this->eap_payload);
 		message->add_payload(message, (payload_t*)this->eap_payload);
 		this->eap_payload = NULL;
+
 		if (code == EAP_FAILURE)
 		{
 			return FAILED;

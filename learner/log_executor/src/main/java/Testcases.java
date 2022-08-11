@@ -15,6 +15,7 @@ class Testcases {
   List<Testcase> messages;
   Iterator iter;
   static Log logger = null;
+  String id;
 
   Testcases(JSONObject testcaseObj, Log logger) {
     setLogger(logger);
@@ -27,6 +28,11 @@ class Testcases {
     JSONArray testcaseArr = (JSONArray) testcaseObj.get("testcase");
     parseTestcases(testcaseArr);
     iter = messages.iterator();
+
+    if (messages.get(0).hasID())
+      this.id = messages.get(0).getID();
+    else
+      this.id = null;
   }
 
   Testcases(JSONObject testcaseObj) {
@@ -64,6 +70,10 @@ class Testcases {
   Testcase getNextMessage() {
     return (Testcase) iter.next();
   }
+
+  String getID() {
+    return this.id;
+  }
 }
 
 class Testcase {
@@ -71,6 +81,8 @@ class Testcase {
   private String name;
   private String receiver;
   private String sender;
+  private String id = null;
+  private String op = null;
   private String value = null;
   private Testcase parent;
   private TestcaseType type;
@@ -91,23 +103,35 @@ class Testcase {
     this.receiver = (String) testcase.get("receiver");
     this.sender = (String) testcase.get("sender");
     this.name = (String) testcase.get("name");
+    this.id = (String) testcase.get("id");
 
     logger.debug("name: " + name);
     if (testcase.get("value") != null) {
       String vt;
       vt = (String) testcase.get("type");
-      if (vt.equals("integer")) {
-        this.vtype = ValueType.INTEGER;
-      } else if (vt.equals("uint16")) {
-        this.vtype = ValueType.UINT16;
-      } else if (vt.equals("string")) {
-        this.vtype = ValueType.STRING;
-      } else {
+      if (vt != null) {
+        if (vt.equals("integer")) {
+          this.vtype = ValueType.INTEGER;
+        } else if (vt.equals("uint8")) {
+          this.vtype = ValueType.UINT8;
+        } else if (vt.equals("uint16")) {
+          this.vtype = ValueType.UINT16;
+        } else if (vt.equals("string")) {
+          this.vtype = ValueType.STRING;
+        } else {
+          this.vtype = ValueType.STRING;
+        }
+      }
+      else {
         this.vtype = ValueType.STRING;
       }
       this.value = testcase.get("value").toString();
       logger.debug("type: " + this.vtype);
       logger.debug("value: " + this.value);
+    }
+
+    if (testcase.get("op") != null) {
+      this.op = (String) testcase.get("op");
     }
     
     JSONArray testcaseArr = (JSONArray) testcase.get("sub");
@@ -182,6 +206,30 @@ class Testcase {
 
   void setReplySender(String sender) {
     this.sender = sender;
+  }
+
+  boolean hasID() {
+    return this.id != null;
+  }
+
+  String getID() {
+    return this.id;
+  }
+
+  void setID(String id) {
+    this.id = id;
+  }
+
+  boolean hasOperator() {
+    return this.op != null;
+  }
+
+  String getOperator() {
+    return this.op;
+  }
+
+  void setOperator(String op) {
+    this.op = op;
   }
 
   ValueType getValueType() {

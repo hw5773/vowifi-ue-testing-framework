@@ -1,0 +1,10 @@
+===== moto_g_power =====
+===============
+===== HTC_U11 =====
+/home/hyun/vowifi-log-20220804/HTC_U11/result.111: Functional Oracle: maybe
+/home/hyun/vowifi-log-20220804/HTC_U11/result.164: Functional Oracle: positive
+/home/hyun/vowifi-log-20220804/HTC_U11/result.59: Functional Oracle: positive
+/home/hyun/vowifi-log-20220804/HTC_U11/result.61: Liveness Oracle: positive
+===============
+===== SM_G920T =====
+===============

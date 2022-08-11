@@ -17,25 +17,31 @@ def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "disable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus":
+    elif device == "moto_e5_plus" or device == "HTC_U11":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
-        if "enabled" in result.stdout:
+        if "enabled" in result.stdout.decode():
             logging.info("WiFi is enabled: need to toggle the WiFi button")
-            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
-            subprocess.run(cmd)
-            time.sleep(1)
+            ue_wakeup(device)
 
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
-            subprocess.run(cmd)
+            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
+            output = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(1)
 
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             subprocess.run(cmd)
-            time.sleep(1)
+            time.sleep(5)
+
+            cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
+            output = subprocess.run(cmd, stdout=subprocess.PIPE)
+
+            if "enabled" in output.stdout.decode():
+                cmd = ["adb", "shell", "input", "keyevent", "23"]
+                subprocess.run(cmd)
+                time.sleep(5)
         else:
-            logging.info("WiFi is enabled: need not to toggle the WiFi button")
+            logging.info("WiFi is disabled: need not to toggle the WiFi button")
     else:
         cmd = ["adb", "shell", "svc", "wifi", "disable"]
         subprocess.run(cmd)
@@ -45,23 +51,29 @@ def handle_turn_on_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "enable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus":
+    elif device == "moto_e5_plus" or device == "HTC_U11":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
-        if "disabled" in result.stdout:
+        if "disabled" in result.stdout.decode():
             logging.info("WiFi is disabled: need to toggle the WiFi button")
-            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
-            subprocess.run(cmd)
-            time.sleep(1)
+            ue_wakeup(device)
 
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
             subprocess.run(cmd)
             time.sleep(1)
 
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             subprocess.run(cmd)
             time.sleep(1)
+
+            cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
+            output = subprocess.run(cmd, stdout=subprocess.PIPE)
+
+            if "disabled" in output.stdout.decode():
+                cmd = ["adb", "shell", "input", "keyevent", "23"]
+                subprocess.run(cmd)
+                time.sleep(1)
         else:
             logging.info("WiFi is enabled: need not to toggle the WiFi button")
     else:
@@ -71,9 +83,9 @@ def handle_turn_on_wifi_interface(device):
 
 def ue_wakeup(device):
     cmd = ["adb", "shell", "input", "keyevent", "224"]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+    result = subprocess.run(cmd, stdout=subprocess.PIPE)
     cmd = ["adb", "shell", "input", "keyevent", "82"]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+    result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
@@ -115,8 +127,8 @@ def handle_ue_reboot(client, device):
     start = int(time.time())
     while True:
         cmd = ["adb", "devices", "-l"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
-        if device in result.stdout:
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        if device in result.stdout.decode():
             logging.info("UE reboot success")
             client.send(ACK)
             break
@@ -164,7 +176,6 @@ def handle_client_connection(client, server, device):
                 client.send(ACK)
             else:
                 logging.info("Invalid opcode: {}".format(opcode))
-
     except KeyboardInterrupt:
         logging.info("Keyboard Interrupt")
         logging.info("Closing the connecting socket ...")
@@ -178,8 +189,8 @@ def handle_client_connection(client, server, device):
         handle_turn_off_wifi_interface(device)
 
 def check_device_model():
-    result = subprocess.run(['adb', 'devices', '-l'], stdout=subprocess.PIPE, text=True)
-    output = result.stdout
+    result = subprocess.run(['adb', 'devices', '-l'], stdout=subprocess.PIPE)
+    output = result.stdout.decode()
 
     if "G920T" in output:
         device = "SM_G920T"
@@ -193,9 +204,18 @@ def check_device_model():
     elif "moto_e5_plus" in output:
         device = "moto_e5_plus"
         logging.info("Device model: Motorola Moto E5 Plus")
+    elif "moto_g_power" in output:
+        device = "moto_g_power"
+        logging.info("Device model: Motorola Moto G Power")
     elif "LM_G900TM" in output:
         device = "LM_G900TM"
         logging.info("Device model: LG Velvet 5G")
+    elif "OnePlus7T" in output:
+        device = "OnePlus7T"
+        logging.info("Device model: OnePlus7T")
+    elif "HTC_U11" in output:
+        device = "HTC_U11"
+        logging.info("Device model: HTC U11")
     else:
         device = "others"
         logging.info("Device model: Others")
@@ -230,7 +250,7 @@ def main():
     server.listen(5)
     device = check_device_model()
     handle_turn_off_wifi_interface(device)
-    ue_reboot(device)
+    #ue_reboot(device)
 
     try:
         client, address = server.accept()
