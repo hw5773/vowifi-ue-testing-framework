@@ -52,7 +52,8 @@
 #include "sem.h"
 
 
-#define MSG_REG_SUBSCRIBE_OK "Subscription to REG saved"
+//#define MSG_REG_SUBSCRIBE_OK "Subscription to REG saved"
+#define MSG_REG_SUBSCRIBE_OK "OK"
 #define MSG_REG_UNSUBSCRIBE_OK "Subscription to REG dropped"
 #define MSG_REG_PUBLISH_OK "Publish to REG saved"
 

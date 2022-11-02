@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "bento/ubuntu-20.04"
   config.vm.network "public_network", ip: "fdad:dabb:ed::2", netmask: "64"
-  config.vm.network "forwarded_port", guest: 8080, host: 8888
+  config.vm.network "forwarded_port", guest: 8080, host: 8210
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
