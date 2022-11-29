@@ -1745,6 +1745,11 @@ identification_t * identification_create_from_data(chunk_t data)
 	{
 		/* use string constructor */
 		snprintf(buf, sizeof(buf), "%.*s", (int)data.len, data.ptr);
+    int i;
+    printf("ID (%d bytes):\n", (int)data.len);
+    for (i=0; i<data.len; i++)
+      printf("%c", data.ptr[i]);
+    printf("\n");
 		return identification_create_from_string(buf);
 	}
 }
