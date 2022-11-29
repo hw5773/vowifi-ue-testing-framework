@@ -116,6 +116,15 @@ struct private_eap_aka_server_t {
 	 * Did the client send a synchronize request?
 	 */
 	bool synchronized;
+
+  ///// Added for VoWiFi /////
+  uint8_t *id_req;
+  size_t id_req_len;
+  uint8_t *id_resp;
+  size_t id_resp_len;
+  uint8_t *cc;
+  size_t cc_len;
+  ////////////////////////////
 };
 
 /**
@@ -145,12 +154,19 @@ static status_t identity(private_eap_aka_server_t *this, eap_payload_t **out)
 
 	message = simaka_message_create(TRUE, this->identifier++, EAP_AKA,
 									AKA_IDENTITY, this->crypto);
+  DBG1(DBG_IKE, "identity() 1: this->use_reauth: %d, this->use_pseudonym: %d, this->use_permanent: %d", 
+      this->use_reauth, this->use_pseudonym, this->use_permanent);
+  this->use_pseudonym = 1;
+  DBG1(DBG_IKE, "identity() 2: this->use_reauth: %d, this->use_pseudonym: %d, this->use_permanent: %d", 
+      this->use_reauth, this->use_pseudonym, this->use_permanent);
+
 	if (this->use_reauth)
 	{
 		message->add_attribute(message, AT_ANY_ID_REQ, chunk_empty);
 	}
 	else if (this->use_pseudonym)
 	{
+    DBG1(DBG_IKE, "AT_FULLAUTH_ID_REQ is added");
 		message->add_attribute(message, AT_FULLAUTH_ID_REQ, chunk_empty);
 	}
 	else if (this->use_permanent)
@@ -161,6 +177,41 @@ static status_t identity(private_eap_aka_server_t *this, eap_payload_t **out)
 	{
 		return FAILED;
 	}
+
+  ///// Added for VoWiFi /////
+  chunk_t data;
+  uint8_t *d;
+  int i; 
+  size_t dl;
+
+  data = (*out)->get_data(*out);
+  d = data.ptr;
+  dl = data.len;
+  DBG1(DBG_IKE, "EAP-AKA/Request/Identity");
+  for (i=0; i<dl; i++)
+  {
+    printf("%02x ", d[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n");
+
+  this->id_req_len = dl;
+  this->id_req = (uint8_t *)malloc(sizeof(uint8_t) * dl);
+  memcpy(this->id_req, d, dl);
+
+  d = this->id_req;
+  dl = this->id_req_len;
+  DBG1(DBG_IKE, "EAP-AKA/Request/Identity (private) in identity() (length: %d bytes)", dl);
+  for (i=0; i<dl; i++)
+  {
+    printf("%02x ", d[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n");
+  ////////////////////////////
+  
 	this->pending = AKA_IDENTITY;
 	return NEED_MORE;
 }
@@ -181,6 +232,10 @@ static status_t challenge(private_eap_aka_server_t *this, eap_payload_t **out)
 	if (!this->mgr->provider_get_quintuplet(this->mgr, this->permanent,
 										rand, xres, &xres_len, ck, ik, autn))
 	{
+    ///// Added for VoWiFi /////
+    this->use_pseudonym = 1;
+    ////////////////////////////
+
 		if (this->use_pseudonym)
 		{
 			/* probably received a pseudonym/reauth id we couldn't map */
@@ -212,6 +267,9 @@ static status_t challenge(private_eap_aka_server_t *this, eap_payload_t **out)
 									AKA_CHALLENGE, this->crypto);
 	message->add_attribute(message, AT_RAND, this->rand);
 	message->add_attribute(message, AT_AUTN, chunk_create(autn, AKA_AUTN_LEN));
+  ///// Added for VoWiFi /////
+  message->add_attribute(message, AT_CHECKCODE, chunk_create(this->cc, this->cc_len));
+  ////////////////////////////
 	id = this->mgr->provider_gen_reauth(this->mgr, this->permanent, mk.ptr);
 	free(mk.ptr);
 	if (id)
@@ -288,10 +346,10 @@ static status_t reauthenticate(private_eap_aka_server_t *this,
 METHOD(eap_method_t, initiate, status_t,
 	private_eap_aka_server_t *this, eap_payload_t **out)
 {
-	DBG1(DBG_IKE, "METHOD function()");
   DBG1(DBG_IKE, "this->use_permanent: %d, this->use_pseudonym: %d, this->use_reauth: %d",
       this->use_permanent, this->use_pseudonym, this->use_reauth);
 	if (this->use_permanent || this->use_pseudonym || this->use_reauth)
+	//if (1)
 	{
 		return identity(this, out);
 	}
@@ -316,12 +374,71 @@ static status_t process_identity(private_eap_aka_server_t *this,
 		return FAILED;
 	}
 
+  ///// Added for VoWiFi /////
+  int i;
+  uint8_t *d;
+  size_t dl;
+  hasher_t *hasher;
+  chunk_t input, hash;
+
+  d = this->id_req;
+  dl = this->id_req_len;
+  DBG1(DBG_IKE, "EAP-AKA/Request/Identity (private) in process_identity() (length: %d bytes)", dl);
+  for (i=0; i<dl; i++)
+  {
+    printf("%02x ", d[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n");
+
+  d = this->id_resp;
+  dl = this->id_resp_len;
+  DBG1(DBG_IKE, "EAP-AKA/Response/Identity (private) in process_identity() (length: %d bytes)", dl);
+  for (i=0; i<dl; i++)
+  {
+    printf("%02x ", d[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n");
+
+  //hasher = lib->crypto->create_hasher(lib->crypto, HASH_SHA1);
+  hasher = lib->crypto->create_hasher(lib->crypto, HASH_SHA256);
+  hash = chunk_alloca(hasher->get_hash_size(hasher));
+  dl = this->id_req_len + this->id_resp_len;
+  d = (uint8_t *)malloc(dl);
+  memcpy(d, this->id_req, this->id_req_len);
+  memcpy(d + this->id_req_len, this->id_resp, this->id_resp_len);
+  input = chunk_create(d, dl);
+
+  hasher->get_hash(hasher, input, hash.ptr);
+
+  DBG1(DBG_IKE, "Hash");
+  for (i=0; i<hash.len; i++)
+  {
+    printf("%02x ", hash.ptr[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n");
+
+  this->cc_len = hash.len;
+  this->cc = (uint8_t *)malloc(hash.len);
+  DBG1(DBG_IKE, "Hash Length: %d bytes", hash.len);
+  
+  memcpy(this->cc, hash.ptr, hash.len);
+
+  ////////////////////////////
+
 	enumerator = in->create_attribute_enumerator(in);
 	while (enumerator->enumerate(enumerator, &type, &data))
 	{
 		switch (type)
 		{
 			case AT_IDENTITY:
+        DBG1(DBG_IKE, "\n\nAT_IDENTITY\n\n");
+        printf("ID (%d bytes): %.*s\n", (int)data.len, (int)data.len, data.ptr);
 				identity = data;
 				break;
 			default:
@@ -341,13 +458,25 @@ static status_t process_identity(private_eap_aka_server_t *this,
 		return FAILED;
 	}
 
+  DBG1(DBG_IKE, "before identification_create_from_data(identity)");
 	id = identification_create_from_data(identity);
+  DBG1(DBG_IKE, "after identification_create_from_data(identity)");
+  DBG1(DBG_IKE, "process_identity(): this->use_reauth: %d, this->use_pseudonym: %d, this->use_permanent: %d", 
+      this->use_reauth, this->use_pseudonym, this->use_permanent);
 	if (this->use_reauth)
 	{
+    DBG1(DBG_IKE, "process this->use_reauth");
 		char mk[HASH_SIZE_SHA1];
 		uint16_t counter;
 
 		permanent = this->mgr->provider_is_reauth(this->mgr, id, mk, &counter);
+    ///// Added for VoWiFi (for iPhone) /////
+    DBG1(DBG_IKE, "before identification_create_from_string()");
+    permanent = identification_create_from_string("0310210248416120@nai.epc.mnc210.mcc310.3gppnetwork.org");
+    DBG1(DBG_IKE, "after identification_create_from_string()");
+    DBG1(DBG_IKE, "permanent ID: '%Y'", permanent);
+    ////////////////////////////
+
 		if (permanent)
 		{
 			this->permanent->destroy(this->permanent);
@@ -361,7 +490,14 @@ static status_t process_identity(private_eap_aka_server_t *this,
 	}
 	if (this->use_pseudonym)
 	{
+    DBG1(DBG_IKE, "process this->use_pseudonym");
 		permanent = this->mgr->provider_is_pseudonym(this->mgr, id);
+    ///// Added for VoWiFi (for iPhone) /////
+    DBG1(DBG_IKE, "before identification_create_from_string()");
+    permanent = identification_create_from_string("0310210248416120@nai.epc.mnc210.mcc310.3gppnetwork.org");
+    DBG1(DBG_IKE, "after identification_create_from_string()");
+    DBG1(DBG_IKE, "permanent ID: '%Y'", permanent);
+    ////////////////////////////
 		if (permanent)
 		{
 			this->permanent->destroy(this->permanent);
@@ -610,9 +746,32 @@ METHOD(eap_method_t, process, status_t,
 		message->destroy(message);
 		return FAILED;
 	}
+  ///// Added for VoWiFi /////
+  uint8_t *d;
+  size_t dl;
+  int i;
+  chunk_t data;
+  ////////////////////////////
 	switch (message->get_subtype(message))
 	{
 		case AKA_IDENTITY:
+      ///// Added for VoWiFi /////
+      data = in->get_data(in);
+      d = data.ptr;
+      dl = data.len;
+      this->id_resp_len = dl;
+      this->id_resp = (uint8_t *)malloc(sizeof(uint8_t)*dl);
+      memcpy(this->id_resp, d, dl);
+
+      DBG1(DBG_IKE, "EAP-AKA/Response/Identity (private) in process() (length: %d bytes)", dl);
+      for (i=0; i<dl; i++)
+      {
+        printf("%02x ", d[i]);
+        if (i % 16 == 15)
+          printf("\n");
+      }
+      printf("\n");
+      ////////////////////////////
 			status = process_identity(this, message, out);
 			break;
 		case AKA_CHALLENGE:

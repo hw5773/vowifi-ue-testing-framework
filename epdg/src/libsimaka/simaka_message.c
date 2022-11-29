@@ -736,6 +736,18 @@ METHOD(simaka_message_t, generate, bool,
 				*target = chunk_skip(*target, data.len + 4);
 				break;
 			}
+      /*
+			case AT_CHECKCODE:
+			{
+        printf("\nGenerate the payload with AT_CHECKCODE\n");
+        printf("data.ptr: %p, data.len: %d\n\n", data.ptr, data.len);
+  			hdr->length = 1 + data.len / 4;
+	  		memset(target->ptr + 2, 0, 2);
+  		  memcpy(target->ptr + 4, data.ptr, data.len);
+			  *target = chunk_skip(*target, data.len + 4);
+        break;
+			}
+      */
 			/* attributes with no reserved bytes, 14 bytes length */
 			case AT_AUTS:
 			{
@@ -834,21 +846,24 @@ METHOD(simaka_message_t, generate, bool,
 			break;
 	}
 
+  /*
   ///// Added for VoWiFi /////
-  printf("try to add AT_CHECKCODE to the EAP-AKA/AKA-Challenge message\n");
   switch (this->hdr->subtype)
   {
     case AKA_CHALLENGE:
       printf("this is the EAP-AKA/AKA-Challenge message\n");
+      printf("try to add AT_CHECKCODE to the EAP-AKA/AKA-Challenge message\n");
       hdr = (attr_hdr_t*)out.ptr;
       hdr->type = AT_CHECKCODE;
       hdr->length = 1;
       memset(out.ptr + 2, 0, 2);
       out = chunk_skip(out, 4);
+      break;
     default:
       break;
   }
   ////////////////////////////
+  */
 
 	/* calculate message length */
 	out = chunk_create(out_buf, sizeof(out_buf) - out.len);
@@ -864,6 +879,30 @@ METHOD(simaka_message_t, generate, bool,
 			return FALSE;
 		}
 	}
+
+
+  ///// Added for VoWiFi /////
+  int i;
+
+  switch (this->hdr->subtype)
+  {
+    case AKA_IDENTITY:
+      if (this->hdr->code == EAP_REQUEST)
+        printf("this is the EAP-AKA/AKA-Identity/Request message\n");
+      else if (this->hdr->code == EAP_RESPONSE)
+        printf("this is the EAP-AKA/AKA-Identity/Response message\n");
+      for (i=0; i<out.len; i++)
+      {
+        printf("%02x ", out.ptr[i]);
+        if (i % 16 == 15)
+          printf("\n");
+      }
+      printf("\n");
+      break;
+    default:
+      break;
+  }
+  ////////////////////////////
 
 	call_hook(this, FALSE, FALSE);
 

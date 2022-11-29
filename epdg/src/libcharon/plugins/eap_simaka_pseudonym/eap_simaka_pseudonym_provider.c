@@ -67,6 +67,7 @@ METHOD(simaka_provider_t, is_pseudonym, identification_t*,
 {
 	identification_t *permanent;
 
+  printf("\n\nis_pseudonym() in eap_simaka_pseudonym_provider.c\n\n\n");
 	permanent = this->permanent->get(this->permanent, id);
 	if (permanent)
 	{

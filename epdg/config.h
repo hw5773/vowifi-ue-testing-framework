@@ -280,7 +280,7 @@
 /* #undef HAVE_SYS_CAPABILITY_H */
 
 /* have syscall(SYS_gettid) */
-#define HAVE_SYS_GETTID /**/
+/* #undef HAVE_SYS_GETTID */
 
 /* Define to 1 if you have the <sys/param.h> header file. */
 #define HAVE_SYS_PARAM_H 1
@@ -415,7 +415,7 @@
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
-#define YYTEXT_POINTER 1
+/* #undef YYTEXT_POINTER */
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 /* #undef size_t */

@@ -1,0 +1,53 @@
+2: {'activated': True, 'description': 'Fixed Dialling Numbers (FDN)'}
+3: {'activated': True, 'description': 'Extension 2'}
+8: {'activated': True, 'description': 'Outgoing Call Information (OCI and OCT)'}
+9: {'activated': True, 'description': 'Incoming Call Information (ICI and ICT)'}
+10: {'activated': True, 'description': 'Short Message Storage (SMS)'}
+11: {'activated': True, 'description': 'Short Message Status Reports (SMSR)'}
+12: {'activated': True, 'description': 'Short Message Service Parameters (SMSP)'}
+14: {'activated': True, 'description': 'Capability Configuration Parameters 2 (CCP2)'}
+15: {'activated': True, 'description': 'Cell Broadcast Message Identifier'}
+16: {'activated': True, 'description': 'Cell Broadcast Message Identifier Ranges'}
+17: {'activated': True, 'description': 'Group Identifier Level 1'}
+21: {'activated': True, 'description': 'MSISDN'}
+27: {'activated': True, 'description': 'GSM Access'}
+28: {'activated': True, 'description': 'Data download via SMS-PP'}
+30: {'activated': True, 'description': 'Call Control by USIM'}
+33: {'activated': True, 'description': 'shall be set to 1'}
+34: {'activated': True, 'description': 'Enabled Services Table'}
+35: {'activated': True, 'description': 'APN Control List (ACL)'}
+38: {'activated': True, 'description': 'GSM security context'}
+42: {'activated': True, 'description': 'Operator controlled PLMN selector with Access Technology'}
+43: {'activated': True, 'description': 'HPLMN selector with Access Technology'}
+44: {'activated': True, 'description': 'Extension 5'}
+45: {'activated': True, 'description': 'PLMN Network Name'}
+46: {'activated': True, 'description': 'Operator PLMN List'}
+47: {'activated': True, 'description': 'Mailbox Dialling Numbers'}
+48: {'activated': True, 'description': 'Message Waiting Indication Status'}
+49: {'activated': True, 'description': 'Call Forwarding Indication Status'}
+59: {'activated': True, 'description': 'Pseudonym'}
+61: {'activated': True, 'description': 'Operator Controlled PLMN selector for I-WLAN access'}
+62: {'activated': True, 'description': 'User controlled WSID list'}
+63: {'activated': True, 'description': 'Operator controlled WSID list'}
+66: {'activated': True, 'description': 'WLAN Reauthentication Identity'}
+81: {'activated': True, 'description': 'Home I-WLAN Specific Identifier List'}
+82: {'activated': True, 'description': 'I-WLAN Equivalent HPLMN Presentation Indication'}
+83: {'activated': True, 'description': 'I-WLAN HPLMN Priority Indication'}
+84: {'activated': True, 'description': 'I-WLAN Last Registered PLMN'}
+85: {'activated': True, 'description': 'EPS Mobility Management Information'}
+86: {'activated': True, 'description': 'Allowed CSG Lists and corresponding indications'}
+87: {'activated': True, 'description': 'Call control on EPS PDN connection by USIM'}
+88: {'activated': True, 'description': 'HPLMN Direct Access'}
+89: {'activated': True, 'description': 'eCall Data'}
+91: {'activated': True, 'description': 'Support for SM-over-IP'}
+97: {'activated': True, 'description': 'PWS configuration by USIM'}
+122: {'activated': True, 'description': '5GS Mobility Management Information'}
+123: {'activated': True, 'description': '5G Security Parameters'}
+124: {'activated': True, 'description': 'Subscription identifier privacy support'}
+129: {'activated': True, 'description': '5GS Operator PLMN List'}
+
+2: {'activated': True, 'description': 'Generic Bootstrapping Architecture (GBA)'}
+6: {'activated': True, 'description': 'Short Message Storage (SMS)'}
+7: {'activated': True, 'description': 'Short Message Status Reports (SMSR)'}
+8: {'activated': True, 'description': 'Support for SM-over-IP including data download via SMS-PP as defined in TS 31.111 [31]'}
+

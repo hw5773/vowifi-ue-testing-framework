@@ -4,22 +4,26 @@ import argparse
 import logging
 import time
 
-def extract_isakmp_keys(fname, last_line):
+def extract_keys(fname, last_line):
     nline = 0
-    extract = False
+    extract_isakmp_keys = False
+    extract_esp_keys = False
+    display_esp_keys = False
+    tkey = ""
+
     with open(fname, "r") as f:
         for line in f:
             nline += 1
             if nline <= last_line:
                 continue
 
-            if extract:
+            if extract_isakmp_keys:
                 tmp = line.strip().split("]")[1].strip().split(":")[1].strip().split("  ")[0].strip().split(" ")
                 key += ''.join(tmp)
                 nbytes -= 16
                 if nbytes <= 0:
                     print (key)
-                    extract = False
+                    extract_isakmp_keys = False
             elif "Initiator SPI" in line or "Responder SPI" in line:
                 key, tmp = line.strip().split("] ")[1].split(": ")
                 val = ""
@@ -33,12 +37,45 @@ def extract_isakmp_keys(fname, last_line):
                 ktype = line.strip().split("] ")[1].strip().split("=>")[0].strip()
                 nbytes = int(line.strip().split("=>")[1].strip().split("bytes")[0].strip())
                 logging.debug("ktype: {}, nbytes: {}".format(ktype, nbytes))
-                extract = True
+                extract_isakmp_keys = True
                 key = "{}: ".format(ktype)
+
+            elif extract_esp_keys:
+                tmp = line.strip().split("]")[1].strip().split(":")[1].strip().split("  ")[0].strip().split(" ")
+                key += ''.join(tmp)
+                nbytes -= 16
+                if nbytes <= 0:
+                    tkey = key
+                    print (tkey)
+                    extract_esp_keys = False
+
+            elif "encryption initiator key" in line:
+                ktype = line.strip().split("] ")[1].strip().split("=>")[0].strip()
+                nbytes = int(line.strip().split("=>")[1].strip().split("bytes")[0].strip())
+                logging.debug("ktype: {}, nbytes: {}".format(ktype, nbytes))
+                extract_esp_keys = True
+                key = "{}: ".format(ktype)
+
+            elif "encryption responder key" in line:
+                ktype = line.strip().split("] ")[1].strip().split("=>")[0].strip()
+                nbytes = int(line.strip().split("=>")[1].strip().split("bytes")[0].strip())
+                logging.debug("ktype: {}, nbytes: {}".format(ktype, nbytes))
+                extract_esp_keys = True
+                key += "\n{}: ".format(ktype)
+
+            elif display_esp_keys:
+                spi = line.strip().split("] ")[1].strip()
+                print (spi)
+                display_esp_keys = False
+
+            elif "adding inbound ESP SA" in line or "adding outbound ESP SA" in line:
+                ktype = line.strip().split("] ")[1].strip()
+                print (ktype)
+                display_esp_keys = True
 
     if nline < last_line:
         logging.debug("nline: {}, last_line: {}".format(nline, last_line))
-        extract_isakmp_keys(fname, 0)
+        extract_keys(fname, 0)
 
     return nline
 
@@ -60,7 +97,7 @@ def main():
 
     last_line = 0
     while True:
-        last_line = extract_isakmp_keys(args.file, last_line)
+        last_line = extract_keys(args.file, last_line)
         time.sleep(1)
 
 if __name__ == "__main__":

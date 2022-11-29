@@ -99,6 +99,7 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 	if (!eap_aka_3gpp_get_k_opc(id, k, opc))
 	{
 		DBG1(DBG_IKE, "no EAP key found for %Y to authenticate with AKA", id);
+    DBG1(DBG_IKE, "is here a problem 1?");
 		return FALSE;
 	}
 	DBG4(DBG_IKE, "EAP key found for id %Y, using K %b and OPc %b", id, k,
@@ -144,6 +145,7 @@ METHOD(simaka_provider_t, resync, bool,
 	if (!eap_aka_3gpp_get_k_opc(id, k, opc))
 	{
 		DBG1(DBG_IKE, "no EAP key found for %Y to authenticate with AKA", id);
+    DBG1(DBG_IKE, "is here a problem 2?");
 		return FALSE;
 	}
 	DBG4(DBG_IKE, "EAP key found for id %Y, using K %b and OPc %b", id, k,
