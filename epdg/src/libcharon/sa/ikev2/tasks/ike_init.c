@@ -554,7 +554,13 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
       }
     }
 	}
+
+  ///// Added for VoWiFi (sa test) /////
+  // Comment out if you want to drop the sa payload
+  //printf("before dropping the sa payload\n");
 	message->add_payload(message, (payload_t*)sa_payload);
+  //printf("after dropping the sa payload\n");
+  //////////////////////////////////////
 
 	ke_payload = ke_payload_create_from_diffie_hellman(PLV2_KEY_EXCHANGE,
 													   this->dh);
@@ -573,8 +579,19 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	}
 	else
 	{
-		message->add_payload(message, (payload_t*)ke_payload);
+    ///// Added for VoWiFi (ke test) /////
+    // Comment out if you want to drop the ke payload
+    printf("before dropping the ke payload\n");
+		//message->add_payload(message, (payload_t*)ke_payload);
+    printf("after dropping the ke payload\n");
+    //////////////////////////////////////
+
+    ///// Added for VoWiFi (nonce test) /////
+    // Comment out if you want to drop the nonce payload
+    //printf("before dropping the nonce payload\n");
 		message->add_payload(message, (payload_t*)nonce_payload);
+    //printf("after dropping the nonce payload\n");
+    /////////////////////////////////////////
 	}
 
 	/* negotiate fragmentation if we are not rekeying */
@@ -1341,6 +1358,12 @@ METHOD(task_t, build_r, status_t,
 		message->add_notify(message, TRUE, NO_PROPOSAL_CHOSEN, chunk_empty);
 		return FAILED;
 	}
+
+  ///// Added for VoWiFi (nonce test) /////
+  printf("\n\n\nthis->my_nonce (before): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
+  memset(this->my_nonce.ptr, 0, this->my_nonce.len);
+  printf("this->my_nonce (after): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
+  ///////////////////////////////////
 
 	if (!derive_keys(this, this->other_nonce, this->my_nonce))
 	{

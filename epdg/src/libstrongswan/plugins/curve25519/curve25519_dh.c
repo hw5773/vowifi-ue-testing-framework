@@ -113,6 +113,7 @@ METHOD(diffie_hellman_t, set_private_value, bool,
 METHOD(diffie_hellman_t, get_shared_secret, bool,
 	private_curve25519_dh_t *this, chunk_t *secret)
 {
+  printf("\n\n\ncurve25519_dh.c\n\n\n");
 	if (!this->computed)
 	{
 		return FALSE;

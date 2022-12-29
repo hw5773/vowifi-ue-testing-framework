@@ -255,6 +255,28 @@ ke_payload_t *ke_payload_create_from_diffie_hellman(payload_type_t type,
 		return NULL;
 	}
 	this = (private_ke_payload_t*)ke_payload_create(type);
+  ///// Added for VoWiFi (dh default value) /////
+  int i; 
+  size_t len;
+  len = value.len;
+  printf("\n\n\nbefore resetting the dh value (%lu bytes)\n", len);
+  for (i=0; i<len; i++)
+  {
+    printf("%02x ", value.ptr[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n");
+  printf("after resetting the dh value (%lu bytes)\n", len);
+  for (i=0; i<len; i++)
+  {
+    value.ptr[i] = 0;
+    printf("%02x ", value.ptr[i]);
+    if (i % 16 == 15)
+      printf("\n");
+  }
+  printf("\n");
+  
 	this->key_exchange_data = value;
 	this->dh_group_number = dh->get_dh_group(dh);
 	this->payload_length += this->key_exchange_data.len;

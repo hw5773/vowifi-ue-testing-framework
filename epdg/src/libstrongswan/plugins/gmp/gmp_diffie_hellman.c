@@ -174,6 +174,7 @@ METHOD(diffie_hellman_t, set_private_value, bool,
 METHOD(diffie_hellman_t, get_shared_secret, bool,
 	private_gmp_diffie_hellman_t *this, chunk_t *secret)
 {
+  printf("gmp_diffie_hellman.c: get_shared_secret()\n");
 	if (!this->computed)
 	{
 		return FALSE;
