@@ -281,26 +281,30 @@ int impu_registered(struct sip_msg* _m, char* _t, char* _s) {
     str impu;
     impu = cscf_get_public_identity(_m);
 
-    LM_DBG("Looking for IMPU <%.*s>\n", impu.len, impu.s);
+    LM_WARN("Looking for IMPU <%.*s>\n", impu.len, impu.s);
+    //LM_DBG("Looking for IMPU <%.*s>\n", impu.len, impu.s);
 
     ul.lock_udomain((udomain_t*) _t, &impu);
     res = ul.get_impurecord((udomain_t*) _t, &impu, &r);
 
     if (res < 0) {
         ul.unlock_udomain((udomain_t*) _t, &impu);
-        LM_ERR("failed to query usrloc for IMPU <%.*s>\n", impu.len, impu.s);
+        LM_WARN("failed to query usrloc for IMPU <%.*s>\n", impu.len, impu.s);
+        //LM_ERR("failed to query usrloc for IMPU <%.*s>\n", impu.len, impu.s);
         return ret;
     }
 
     if (res == 0) {
         if (r->reg_state == IMPU_REGISTERED) ret = 1;
         ul.unlock_udomain((udomain_t*) _t, &impu);
-        LM_DBG("'%.*s' found in usrloc\n", impu.len, ZSW(impu.s));
+        LM_WARN("'%.*s' found in usrloc\n", impu.len, ZSW(impu.s));
+        //LM_DBG("'%.*s' found in usrloc\n", impu.len, ZSW(impu.s));
         return ret;
     }
 
     ul.unlock_udomain((udomain_t*) _t, &impu);
-    LM_DBG("'%.*s' not found in usrloc\n", impu.len, ZSW(impu.s));
+    LM_WARN("'%.*s' not found in usrloc\n", impu.len, ZSW(impu.s));
+    //LM_DBG("'%.*s' not found in usrloc\n", impu.len, ZSW(impu.s));
     return ret;
 }
 

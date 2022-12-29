@@ -996,6 +996,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
             /* nextnonce is the current nonce */
             next_nonce = &nonce;
         }
+	LM_WARN("Return is set to AUTH_OK\n");
         ret = AUTH_OK;
 
         if (add_authinfo_hdr && expires != 0 /* don't add auth. info if de-registation */) {
@@ -1034,9 +1035,11 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
 		auts = ims_get_auts(msg, realm, is_proxy_auth);
 		if (auts.len) {
 			LM_DBG("IMS Auth Synchronization requested <%.*s>\n", auts.len, auts.s);
+			LM_WARN("Return is set to AUTH_RESYNC_REQUESTED\n");
 			ret = AUTH_RESYNC_REQUESTED;
 			av->status = AUTH_VECTOR_SENT;
 		} else {
+			LM_WARN("Return is set to AUTH_INVALID_PASSWORD\n");
 			ret = AUTH_INVALID_PASSWORD;
 		}
     }
