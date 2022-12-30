@@ -259,23 +259,54 @@ ke_payload_t *ke_payload_create_from_diffie_hellman(payload_type_t type,
   int i; 
   size_t len;
   len = value.len;
-  printf("\n\n\nbefore resetting the dh value (%lu bytes)\n", len);
+  printf("\n\n\ndh public value (%lu bytes)\n", len);
   for (i=0; i<len; i++)
   {
-    printf("%02x ", value.ptr[i]);
-    if (i % 16 == 15)
-      printf("\n");
+    printf("%02x", value.ptr[i]);
+    //if (i % 16 == 15)
+    //  printf("\n");
   }
   printf("\n");
-  printf("after resetting the dh value (%lu bytes)\n", len);
-  for (i=0; i<len; i++)
+
+  chunk_t private;
+  size_t plen;
+  if (!dh->get_my_private_value(dh, &private))
   {
-    value.ptr[i] = 0;
-    printf("%02x ", value.ptr[i]);
-    if (i % 16 == 15)
-      printf("\n");
+    printf("error\n");
   }
-  printf("\n");
+  else
+  {
+    plen = private.len;
+    printf("\n\n\ndh private value (%lu bytes)\n", plen);
+    for (i=0; i<plen; i++)
+    {
+      printf("%02x", private.ptr[i]);
+      //if (i % 16 == 15)
+      //  printf("\n");
+    }
+    printf("\n");
+  }
+
+  chunk_t other;
+  size_t olen;
+  if (!dh->get_other_public_value(dh, &other))
+  {
+    printf("error\n");
+  }
+  else
+  {
+    olen = other.len;
+    printf("\n\n\ndh other public value (%lu bytes)\n", olen);
+    for (i=0; i<olen; i++)
+    {
+      printf("%02x", other.ptr[i]);
+      //if (i % 16 == 15)
+      //  printf("\n");
+    }
+    printf("\n");
+  }
+
+  ////////////////////////////////////////////////
   
 	this->key_exchange_data = value;
 	this->dh_group_number = dh->get_dh_group(dh);

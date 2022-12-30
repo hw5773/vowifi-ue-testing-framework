@@ -153,6 +153,7 @@ METHOD(diffie_hellman_t, set_other_public_value, bool,
 METHOD(diffie_hellman_t, get_my_public_value, bool,
 	private_gmp_diffie_hellman_t *this,chunk_t *value)
 {
+  printf("\n\n\n[KE] gmp_diffie_hellman.c\n\n\n");
 	value->len = this->p_len;
 	value->ptr = mpz_export(NULL, NULL, 1, value->len, 1, 0, this->ya);
 	if (value->ptr == NULL)
@@ -161,6 +162,32 @@ METHOD(diffie_hellman_t, get_my_public_value, bool,
 	}
 	return TRUE;
 }
+
+///// Added for VoWiFi /////
+METHOD(diffie_hellman_t, get_other_public_value, bool,
+	private_gmp_diffie_hellman_t *this,chunk_t *value)
+{
+	value->len = this->p_len;
+	value->ptr = mpz_export(NULL, NULL, 1, value->len, 1, 0, this->yb);
+	if (value->ptr == NULL)
+	{
+		value->len = 0;
+	}
+	return TRUE;
+}
+
+METHOD(diffie_hellman_t, get_my_private_value, bool,
+	private_gmp_diffie_hellman_t *this,chunk_t *value)
+{
+	value->len = this->p_len;
+	value->ptr = mpz_export(NULL, NULL, 1, value->len, 1, 0, this->xa);
+	if (value->ptr == NULL)
+	{
+		value->len = 0;
+	}
+	return TRUE;
+}
+////////////////////////////
 
 METHOD(diffie_hellman_t, set_private_value, bool,
 	private_gmp_diffie_hellman_t *this, chunk_t value)
@@ -222,6 +249,10 @@ static gmp_diffie_hellman_t *create_generic(diffie_hellman_group_t group,
 				.get_shared_secret = _get_shared_secret,
 				.set_other_public_value = _set_other_public_value,
 				.get_my_public_value = _get_my_public_value,
+        ///// Added for VoWiFi /////
+        .get_other_public_value = _get_other_public_value,
+        .get_my_private_value = _get_my_private_value,
+        ////////////////////////////
 				.set_private_value = _set_private_value,
 				.get_dh_group = _get_dh_group,
 				.destroy = _destroy,

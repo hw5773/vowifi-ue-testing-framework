@@ -7,8 +7,7 @@
 #include <stdint.h>
 
 #include "debug.h"
-
-#define BUF_SIZE 16384
+#include "keymat.h"
 
 int dtype;
 
@@ -21,20 +20,26 @@ int usage(const char *pname)
   emsg("  -c, --inonce      Initiator's Nonce");
   emsg("  -d, --rnonce      Responder's Nonce");
   emsg("  -e, --idh         Initiator's DH Value");
-  emsg("  -f, --rdh         Responder's DH Value");
+  emsg("  -x, --rdh         Responder's DH Value (public)");
+  emsg("  -y, --rdhp        Responder's DH Value (private)");
   emsg("  -g, --group       EC Group");
+  emsg("  -i, --aklen       Authentication Key Length");
+  emsg("  -j, --eklen       Encryption Key Length");
+  emsg("  -k, --phlen       Hash Length");
   exit(1);
 }
 
 int main(int argc, char *argv[])
 {
   uint8_t buf[BUF_SIZE] = {0, };
-  uint8_t *ispi, *rspi, *inonce, *rnonce, *idh, *rdh, *rdhp, *group;
-  size_t ispi_len, rspi_len, inonce_len, rnonce_len, idh_len, rdh_len, rdhp_len, group_len;
+  uint8_t *ispi, *rspi, *inonce, *rnonce, *idh, *rdh, *rdhp, *group, *dh;
+  size_t ispi_len, rspi_len, inonce_len, rnonce_len, idh_len, rdh_len, rdhp_len, group_len, dh_len;
+  int ak_len, ek_len, ph_len;
   uint8_t eflag;
-  const char *pname, *gname;
-  int c;
+  const char *pname;
+  int c, i;
 
+  dtype = VOWIFI_DEBUG_KEYMAT;
   ispi = NULL;
   rspi = NULL;
   inonce = NULL;
@@ -45,6 +50,7 @@ int main(int argc, char *argv[])
   group = NULL;
   eflag = 0;
   pname = argv[0];
+  ak_len = ek_len = ph_len = 0;
 
   while (1)
   {
@@ -58,10 +64,13 @@ int main(int argc, char *argv[])
       {"rdh", required_argument, 0, 'x'},
       {"rdhp", required_argument, 0, 'y'},
       {"group", required_argument, 0, 'g'},
+      {"aklen", required_argument, 0, 'i'},
+      {"eklen", required_argument, 0, 'j'},
+      {"phlen", required_argument, 0, 'k'},
       {0, 0, 0, 0}
     };
 
-    const char *opt = "a:b:c:d:e:x:y:g:0";
+    const char *opt = "a:b:c:d:e:x:y:g:i:j:k:0";
 
     c = getopt_long(argc, argv, opt, long_options, &option_index);
 
@@ -71,51 +80,49 @@ int main(int argc, char *argv[])
     switch (c)
     {
       case 'a':
-        ispi_len = strlen(optarg);
-        ispi = (uint8_t *)malloc(ispi_len);
-        memcpy(ispi, optarg, ispi_len);
+        ispi = make_array(optarg, &ispi_len);
         break;
 
       case 'b':
-        rspi_len = strlen(optarg);
-        rspi = (uint8_t *)malloc(rspi_len);
-        memcpy(rspi, optarg, rspi_len);
+        rspi = make_array(optarg, &rspi_len);
         break;
 
       case 'c':
-        inonce_len = strlen(optarg);
-        inonce = (uint8_t *)malloc(inonce_len);
-        memcpy(inonce, optarg, inonce_len);
+        inonce = make_array(optarg, &inonce_len);
         break;
 
       case 'd':
-        rnonce_len = strlen(optarg);
-        rnonce = (uint8_t *)malloc(rnonce_len);
-        memcpy(rnonce, optarg, rnonce_len);
+        rnonce = make_array(optarg, &rnonce_len);
         break;
 
       case 'e':
-        idh_len = strlen(optarg);
-        idh = (uint8_t *)malloc(idh_len);
-        memcpy(idh, optarg, idh_len);
+        idh = make_array(optarg, &idh_len);
         break;
 
       case 'x':
-        rdh_len = strlen(optarg);
-        rdh = (uint8_t *)malloc(rdh_len);
-        memcpy(rdh, optarg, rdh_len);
+        rdh = make_array(optarg, &rdh_len);
         break;
 
       case 'y':
-        rdhp_len = strlen(optarg);
-        rdhp = (uint8_t *)malloc(rdhp_len);
-        memcpy(rdhp, optarg, rdhp_len);
+        rdhp = make_array(optarg, &rdhp_len);
         break;
 
       case 'g':
         group_len = strlen(optarg);
-        group = (uint8_t *)malloc(group_len);
+        group = (uint8_t *)calloc(1, group_len+1);
         memcpy(group, optarg, group_len);
+        break;
+
+      case 'i':
+        ak_len = atoi(optarg);
+        break;
+
+      case 'j':
+        ek_len = atoi(optarg);
+        break;
+
+      case 'k':
+        ph_len = atoi(optarg);
         break;
 
       default:
@@ -171,6 +178,24 @@ int main(int argc, char *argv[])
     eflag = 1;
   }
 
+  if (!ak_len)
+  {
+    emsg("Please specify the authentication key length");
+    eflag = 1;
+  }
+
+  if (!ek_len)
+  {
+    emsg("Please specify the encryption key length");
+    eflag = 1;
+  }
+
+  if (!ph_len)
+  {
+    emsg("Please specify the hash length");
+    eflag = 1;
+  }
+
   if (eflag)
   {
     exit(1);
@@ -183,7 +208,14 @@ int main(int argc, char *argv[])
   printf("Initiator's DH Value: %.*s\n", (int)idh_len, idh);
   printf("Responder's DH Value (public): %.*s\n", (int)rdh_len, rdh);
   printf("Responder's DH Value (private): %.*s\n", (int)rdhp_len, rdhp);
-  printf("DH Group Filename: %s\n", gname);
+  printf("DH Group Filename: %s\n", group);
+  printf("Authentication Key Length: %d\n", ak_len);
+  printf("Encryption Key Length: %d\n", ek_len);
+  printf("Hash Length: %d\n", ph_len);
+
+  printf("idh_len: %lu, rdh_len: %lu, rdhp_len: %lu\n", idh_len, rdh_len, rdhp_len);
+  dh = generate_dh_shared_secret(idh, idh_len, rdh, rdh_len, rdhp, rdhp_len, group, &dh_len);
+  generate_ike_shared_secrets(dh, dh_len, ispi, ispi_len, rspi, rspi_len, inonce, inonce_len, rnonce, rnonce_len, ak_len, ek_len, ph_len);
 
   return 0;
 }

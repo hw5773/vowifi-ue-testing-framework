@@ -331,6 +331,32 @@ METHOD(keymat_v2_t, derive_ike_keys, bool,
 		return FALSE;
 	}
 	DBG4(DBG_IKE, "shared Diffie Hellman secret %B", &secret);
+
+  ///// Added for VoWiFi /////
+  int idx;
+
+  printf("inonce (%lu bytes)\n", nonce_i.len);
+  for (idx=0; idx<nonce_i.len; idx++)
+  {
+    printf("%02x", nonce_i.ptr[idx]);
+  }
+  printf("\n");
+
+  printf("rnonce (%lu bytes)\n", nonce_r.len);
+  for (idx=0; idx<nonce_r.len; idx++)
+  {
+    printf("%02x", nonce_r.ptr[idx]);
+  }
+  printf("\n");
+
+  printf("dh shared secret (%lu bytes\n", secret.len);
+  for (idx=0; idx<secret.len; idx++)
+  {
+    printf("%02x", secret.ptr[idx]);
+  }
+  printf("\n");
+  ////////////////////////////
+  
 	/* full nonce is used as seed for PRF+ ... */
 	full_nonce = chunk_cat("cc", nonce_i, nonce_r);
 	/* but the PRF may need a fixed key which only uses the first bytes of
