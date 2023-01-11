@@ -255,6 +255,59 @@ ke_payload_t *ke_payload_create_from_diffie_hellman(payload_type_t type,
 		return NULL;
 	}
 	this = (private_ke_payload_t*)ke_payload_create(type);
+  ///// Added for VoWiFi (dh default value) /////
+  int i; 
+  size_t len;
+  len = value.len;
+  printf("\n\n\ndh public value (%lu bytes)\n", len);
+  for (i=0; i<len; i++)
+  {
+    printf("%02x", value.ptr[i]);
+    //if (i % 16 == 15)
+    //  printf("\n");
+  }
+  printf("\n");
+
+  chunk_t private;
+  size_t plen;
+  if (!dh->get_my_private_value(dh, &private))
+  {
+    printf("error\n");
+  }
+  else
+  {
+    plen = private.len;
+    printf("\n\n\ndh private value (%lu bytes)\n", plen);
+    for (i=0; i<plen; i++)
+    {
+      printf("%02x", private.ptr[i]);
+      //if (i % 16 == 15)
+      //  printf("\n");
+    }
+    printf("\n");
+  }
+
+  chunk_t other;
+  size_t olen;
+  if (!dh->get_other_public_value(dh, &other))
+  {
+    printf("error\n");
+  }
+  else
+  {
+    olen = other.len;
+    printf("\n\n\ndh other public value (%lu bytes)\n", olen);
+    for (i=0; i<olen; i++)
+    {
+      printf("%02x", other.ptr[i]);
+      //if (i % 16 == 15)
+      //  printf("\n");
+    }
+    printf("\n");
+  }
+
+  ////////////////////////////////////////////////
+  
 	this->key_exchange_data = value;
 	this->dh_group_number = dh->get_dh_group(dh);
 	this->payload_length += this->key_exchange_data.len;

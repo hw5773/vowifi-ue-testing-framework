@@ -137,6 +137,14 @@ struct diffie_hellman_t {
 	bool (*set_private_value)(diffie_hellman_t *this, chunk_t value)
 		__attribute__((warn_unused_result));
 
+  ///// Added for VoWiFi /////
+  bool (*get_other_public_value)(diffie_hellman_t *this, chunk_t *value)
+		__attribute__((warn_unused_result));
+
+	bool (*get_my_private_value)(diffie_hellman_t *this, chunk_t *value)
+		__attribute__((warn_unused_result));
+  ////////////////////////////
+
 	/**
 	 * Get the DH group used.
 	 *
