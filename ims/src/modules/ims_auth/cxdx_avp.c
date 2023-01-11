@@ -66,6 +66,7 @@ static str s_empty = {0, 0};
 static int cxdx_add_avp(AAAMessage *m,char *d,int len,int avp_code,
 	int flags,int vendorid,int data_do,const char *func)
 {
+  LM_INFO("cxdx_add_avp()\n");
 	AAA_AVP *avp;
 	if (vendorid!=0) flags |= AAA_AVP_FLAG_VENDOR_SPECIFIC;
 	avp = cdpb.AAACreateAVP(avp_code,flags,vendorid,d,len,data_do);
@@ -96,6 +97,7 @@ static int cxdx_add_avp(AAAMessage *m,char *d,int len,int avp_code,
 static int cxdx_add_avp_list(AAA_AVP_LIST *list,char *d,int len,int avp_code,
 	int flags,int vendorid,int data_do,const char *func)
 {
+  LM_INFO("cxdx_add_avp_list()\n");
 	AAA_AVP *avp;
 	if (vendorid!=0) flags |= AAA_AVP_FLAG_VENDOR_SPECIFIC;
 	avp = cdpb.AAACreateAVP(avp_code,flags,vendorid,d,len,data_do);
@@ -129,6 +131,7 @@ static int cxdx_add_avp_list(AAA_AVP_LIST *list,char *d,int len,int avp_code,
 static str cxdx_get_avp(AAAMessage *msg,int avp_code,int vendor_id,
 							const char *func)
 {
+  LM_INFO("cxdx_get_avp(): avp_code: %d\n", avp_code);
 	AAA_AVP *avp;
 	str r={0,0};
 	
@@ -149,6 +152,7 @@ static str cxdx_get_avp(AAAMessage *msg,int avp_code,int vendor_id,
  */
 int cxdx_add_destination_realm(AAAMessage *msg,str data)
 {
+  LM_INFO("cxdx_add_destination_realm()\n");
 	return 
 	cxdx_add_avp(msg,data.s,data.len,
 		AVP_Destination_Realm,
@@ -166,6 +170,7 @@ int cxdx_add_destination_realm(AAAMessage *msg,str data)
  */
 int cxdx_add_destination_host(AAAMessage *msg,str data)
 {
+  LM_INFO("cxdx_add_destination_host()\n");
 	return 
 	cxdx_add_avp(msg,data.s,data.len,
 		AVP_Destination_Host,
@@ -186,6 +191,7 @@ int cxdx_add_destination_host(AAAMessage *msg,str data)
 int cxdx_add_vendor_specific_appid(AAAMessage *msg,unsigned int vendor_id,
 	unsigned int auth_id,unsigned int acct_id)
 {
+  LM_INFO("cxdx_add_vendor_specific_appid()\n");
 	AAA_AVP_LIST list;
 	str group;
 	char x[4];
@@ -243,6 +249,7 @@ int cxdx_add_vendor_specific_appid(AAAMessage *msg,unsigned int vendor_id,
  */
 int cxdx_add_auth_session_state(AAAMessage *msg,unsigned int data)
 {
+  LM_INFO("cxdx_add_auth_session_state()\n");
 	char x[4];
 	set_4bytes(x,data);
 	return 
@@ -262,6 +269,7 @@ int cxdx_add_auth_session_state(AAAMessage *msg,unsigned int data)
  */
 int cxdx_add_user_name(AAAMessage *msg,str data)
 {
+  LM_INFO("cxdx_add_user_name()\n");
 	return 
 	cxdx_add_avp(msg,data.s,data.len,
 		AVP_User_Name,
@@ -279,6 +287,7 @@ int cxdx_add_user_name(AAAMessage *msg,str data)
  */
 int cxdx_add_public_identity(AAAMessage *msg,str data)
 {
+  LM_INFO("cxdx_add_public_identity()\n");
 	return 
 	cxdx_add_avp(msg,data.s,data.len,
 		AVP_IMS_Public_Identity,
@@ -296,6 +305,7 @@ int cxdx_add_public_identity(AAAMessage *msg,str data)
  */
 int cxdx_add_visited_network_id(AAAMessage *msg,str data)
 {
+  LM_INFO("cxdx_add_visited_network_id()\n");
 	return 
 	cxdx_add_avp(msg,data.s,data.len,
 		AVP_IMS_Visited_Network_Identifier,
@@ -313,7 +323,7 @@ int cxdx_add_visited_network_id(AAAMessage *msg,str data)
  */
 int cxdx_add_UAR_flags(AAAMessage *msg, unsigned int sos_reg)
 {
-
+  LM_INFO("cxdx_add_UAR_flags()\n");
 	char x[4];
 	/* optional AVP*/
 	if(!sos_reg)
@@ -337,6 +347,7 @@ int cxdx_add_UAR_flags(AAAMessage *msg, unsigned int sos_reg)
  */
 int cxdx_add_authorization_type(AAAMessage *msg,unsigned int data)
 {
+  LM_INFO("cxdx_add_authorization_type()\n");
 	char x[4];
 	set_4bytes(x,data);
 	return 
@@ -355,6 +366,7 @@ int cxdx_add_authorization_type(AAAMessage *msg,unsigned int data)
  */
 int cxdx_get_result_code(AAAMessage *msg, int *data)
 {
+  LM_INFO("cxdx_get_result_code()\n");
 	str s;
 	s = cxdx_get_avp(msg,
 		AVP_Result_Code,
@@ -372,6 +384,7 @@ int cxdx_get_result_code(AAAMessage *msg, int *data)
  */
 int cxdx_get_experimental_result_code(AAAMessage *msg, int *data)
 {
+  LM_INFO("cxdx_get_experimental_result_code()\n");
 	AAA_AVP_LIST list;
 	AAA_AVP *avp;
 	str grp;
@@ -402,6 +415,7 @@ int cxdx_get_experimental_result_code(AAAMessage *msg, int *data)
  */
 str cxdx_get_server_name(AAAMessage *msg)
 {	
+  LM_INFO("cxdx_get_server_name()\n");
 	return cxdx_get_avp(msg,
 		AVP_IMS_Server_Name,
 		IMS_vendor_id_3GPP,
@@ -420,6 +434,7 @@ str cxdx_get_server_name(AAAMessage *msg)
 int cxdx_get_capabilities(AAAMessage *msg,int **m,int *m_cnt,int **o,int *o_cnt,
 	str **p,int *p_cnt)
 {
+  LM_INFO("cxdx_get_capabilities()\n");
 	AAA_AVP_LIST list;
 	AAA_AVP *avp;
 	str grp;
@@ -496,6 +511,7 @@ error:
  */
 int cscf_reply_transactional(struct sip_msg *msg, int code, char *text)
 {
+  LM_INFO("cscf_reply_transactional()\n");
 	unsigned int hash,label;
 	if (tmb.t_get_trans_ident(msg,&hash,&label)<0){	
 	
@@ -513,6 +529,7 @@ int cscf_reply_transactional(struct sip_msg *msg, int code, char *text)
  */
 int cxdx_add_sip_number_auth_items(AAAMessage *msg,unsigned int data)
 {
+  LM_INFO("cxdx_add_sip_number_auth_items()\n");
 	char x[4];
 	set_4bytes(x,data);
 	return 
@@ -533,6 +550,7 @@ int cxdx_add_sip_number_auth_items(AAAMessage *msg,unsigned int data)
  */
 int cxdx_add_sip_auth_data_item_request(AAAMessage *msg, str auth_scheme, str auth, str username, str realm,str method, str server_name)
 {
+  LM_INFO("cxdx_add_sip_auth_data_item_request()\n");
 	AAA_AVP_LIST list;
 	str group;
 	str etsi_authorization = {0, 0};
@@ -594,6 +612,7 @@ int cxdx_add_sip_auth_data_item_request(AAAMessage *msg, str auth_scheme, str au
  */
 int cxdx_add_server_name(AAAMessage *msg,str data)
 {
+  LM_INFO("cxdx_add_server_name()\n");
 	return 
 	cxdx_add_avp(msg,data.s,data.len,
 		AVP_IMS_Server_Name,
@@ -610,6 +629,7 @@ int cxdx_add_server_name(AAAMessage *msg,str data)
  */
 int cxdx_get_sip_number_auth_items(AAAMessage *msg, int *data)
 {
+  LM_INFO("cxdx_get_sip_number_auth_items()\n");
 	str s;
 	s = cxdx_get_avp(msg,
 		AVP_IMS_SIP_Number_Auth_Items,
@@ -639,6 +659,7 @@ int cxdx_get_auth_data_item_answer(AAAMessage *msg, AAA_AVP **auth_data,
 	str *ha1, str *response_auth, str *digest_realm,
 	str *line_identifier)
 {
+  LM_INFO("cxdx_get_auth_data_item_answer()\n");
 	AAA_AVP_LIST list;
 	AAA_AVP_LIST list2;
 	AAA_AVP *avp;
@@ -819,6 +840,7 @@ int cxdx_get_auth_data_item_answer(AAAMessage *msg, AAA_AVP **auth_data,
  */
 str cxdx_ETSI_sip_authorization(str username, str realm, str nonce, str URI, str response, str algorithm, str method, str hash)
 {
+  LM_INFO("cxdx_ETSI_sip_authorization()\n");
 	AAA_AVP_LIST list;
 	str group = {0, 0};
 	list.head=0;list.tail=0;
@@ -919,6 +941,7 @@ str cxdx_ETSI_sip_authorization(str username, str realm, str nonce, str URI, str
 
 str cxdx_get_user_data(AAAMessage *msg)
 {	
+  LM_INFO("cxdx_get_user_data()\n");
 	return cxdx_get_avp(msg,
 		AVP_IMS_User_Data_Cx,
 		IMS_vendor_id_3GPP,
@@ -932,6 +955,7 @@ str cxdx_get_user_data(AAAMessage *msg)
  */
 int cxdx_get_charging_info(AAAMessage *msg,str *ccf1,str *ccf2,str *ecf1,str *ecf2)
 {		
+  LM_INFO("cxdx_get_charging_info()\n");
 	AAA_AVP_LIST list;
 	AAA_AVP *avp;
 	str grp;
@@ -977,6 +1001,7 @@ int cxdx_get_charging_info(AAAMessage *msg,str *ccf1,str *ccf2,str *ecf1,str *ec
  */
 int cxdx_add_server_assignment_type(AAAMessage *msg,unsigned int data)
 {
+  LM_INFO("cxdx_add_server_assignment_type()\n");
 	char x[4];
 	set_4bytes(x,data);
 	return 
@@ -996,6 +1021,7 @@ int cxdx_add_server_assignment_type(AAAMessage *msg,unsigned int data)
  */
 int cxdx_add_userdata_available(AAAMessage *msg,unsigned int data)
 {
+  LM_INFO("cxdx_add_userdata_available()\n");
 	char x[4];
 	set_4bytes(x,data);
 	return 
@@ -1018,6 +1044,7 @@ int cxdx_add_userdata_available(AAAMessage *msg,unsigned int data)
  */
 AAA_AVP* cxdx_get_next_public_identity(AAAMessage *msg,AAA_AVP* pos,int avp_code,int vendor_id,const char *func)
 {		
+  LM_INFO("cxdx_get_next_public_identity()\n");
 	AAA_AVP *avp;
 	
 	avp = cdpb.AAAFindMatchingAVP(msg,pos,avp_code,vendor_id,0);
@@ -1036,6 +1063,7 @@ AAA_AVP* cxdx_get_next_public_identity(AAAMessage *msg,AAA_AVP* pos,int avp_code
  */
 str cxdx_get_user_name(AAAMessage *msg)
 {
+  LM_INFO("cxdx_get_user_name()\n");
 	return cxdx_get_avp(msg,
 		AVP_User_Name,
 		0,
@@ -1050,6 +1078,7 @@ str cxdx_get_user_name(AAAMessage *msg)
  */
 int cxdx_add_result_code(AAAMessage *msg,unsigned int data)
 {
+  LM_INFO("cxdx_add_result_code()\n");
 	char x[4];
 	set_4bytes(x,data);
 	return 

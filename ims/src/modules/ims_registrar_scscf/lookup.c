@@ -287,12 +287,18 @@ int impu_registered(struct sip_msg* _m, char* _t, char* _s) {
     ul.lock_udomain((udomain_t*) _t, &impu);
     res = ul.get_impurecord((udomain_t*) _t, &impu, &r);
 
+    // TODO: VoWiFi: Need to check the above function to understand the value of 'res'
+
     if (res < 0) {
         ul.unlock_udomain((udomain_t*) _t, &impu);
         LM_WARN("failed to query usrloc for IMPU <%.*s>\n", impu.len, impu.s);
         //LM_ERR("failed to query usrloc for IMPU <%.*s>\n", impu.len, impu.s);
         return ret;
     }
+
+    ///// Added for VoWiFi (test code) /////
+    //res = 0;
+    ////////////////////////////
 
     if (res == 0) {
         if (r->reg_state == IMPU_REGISTERED) ret = 1;
@@ -301,6 +307,8 @@ int impu_registered(struct sip_msg* _m, char* _t, char* _s) {
         //LM_DBG("'%.*s' found in usrloc\n", impu.len, ZSW(impu.s));
         return ret;
     }
+
+    // TODO: VoWiFi: Need to check this point. What value does 'res' has? and why? Is it same to all the devices or not?
 
     ul.unlock_udomain((udomain_t*) _t, &impu);
     LM_WARN("'%.*s' not found in usrloc\n", impu.len, ZSW(impu.s));

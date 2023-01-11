@@ -429,7 +429,9 @@ int challenge(struct sip_msg* msg, char* str1, char* alg, int is_proxy_auth, cha
         if (is_proxy_auth) {
             stateful_request_reply(msg, 407, MSG_407_CHALLENGE);
         } else {
+            LM_INFO("before setting MSG_401_CHALLENGE");
             stateful_request_reply(msg, 401, MSG_401_CHALLENGE);
+            LM_INFO("after setting MSG_401_CHALLENGE");
         }
         auth_data_unlock(aud_hash);
 
@@ -858,7 +860,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
         av = get_auth_vector(private_identity, public_identity, AUTH_VECTOR_SENT, &nonce, &aud_hash);
     }
 
-    LM_INFO("uri=%.*s nonce=%.*s response=%.*s qop=%.*s nc=%.*s cnonce=%.*s hbody=%.*s\n",
+    LM_WARN("uri=%.*s nonce=%.*s response=%.*s qop=%.*s nc=%.*s cnonce=%.*s hbody=%.*s\n",
             uri.len, uri.s,
             nonce.len, nonce.s,
             response16.len, response16.s,
@@ -916,7 +918,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
                     &qop_str,
                     qop == QOP_AUTHINT,
                     &msg->first_line.u.request.method, &uri, hbody, expected);
-            LM_INFO("UE said: %.*s and we expect %.*s ha1 %.*s (%.*s)\n",
+            LM_WARN("AUTH_MD5> UE said: %.*s and we expect %.*s ha1 %.*s (%.*s)\n",
                     response16.len, response16.s, 
                     /*av->authorization.len,av->authorization.s,*/32, expected,
                     32, ha1,
@@ -932,7 +934,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
                     &qop_str,
                     qop == QOP_AUTHINT,
                     &msg->first_line.u.request.method, &uri, hbody, expected);
-            LM_INFO("UE said: %.*s and we expect %.*s ha1 %.*s (%.*s)\n",
+            LM_WARN("AUTH_DIGEST> UE said: %.*s and we expect %.*s ha1 %.*s (%.*s)\n",
                     response16.len, response16.s, 
                     32,expected, 
                     32,ha1, 
@@ -950,6 +952,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
 
     LM_WARN("authenticate(): 18: ret: %d\n", ret);
     if (response16.len == expected_len && strncasecmp(response16.s, expected, response16.len) == 0) {
+    LM_WARN("authenticate(): 18-1: ret: %d\n", ret);
         if (max_nonce_reuse > 0 && av->status == AUTH_VECTOR_SENT) {
             /* first use of a reusable vector */
             /* set the vector's new timeout */
@@ -1013,6 +1016,7 @@ int authenticate(struct sip_msg* msg, char* _realm, char* str2, int is_proxy_aut
 
 
     } else {
+    LM_WARN("authenticate(): 18-2: ret: %d\n", ret);
     	char authorise[200];
     	char authenticate_bin[200];
     	char authenticate_hex[200];
