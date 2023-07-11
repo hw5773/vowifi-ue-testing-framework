@@ -37,6 +37,15 @@
   - SIM writing and setting
     - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 210 --imsi=<IMSI> --msisdn=<Telephone Number> --ims-hdomain=msg.pc.t-mobile.com --impi=<IMSI>@msg.pc.t-mobile.com --impu=sip:<IMSI>@ims.mnc210.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k <key> -o <OPc>`
     - `sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/simcard/scripts/vowifi-setting.script`
+
+  - USIM/ISIM service change
+    - `sudo python3 pySim-shell.py -p 0 -a <ADM value>`
+    - (pySim-shell) `select ADF.ISIM`
+    - (pySim-shell) `select EF.IST`
+    - (pySim-shell) `edit_binary_decoded` (enable Service 2 - Generic Boostrapping Architecture (GBA))
+    - (pySim-shell) `select EF.ISIM_SQN` (disable sqn_check)
+    - (pySim-shell) `select ADF.USIM`
+    - (pySim-shell) `select EF.USIM_SQN` (disable sqn_check)
   
   ### Commands with an example value (you can just copy & paste the following command for the two SIM cards and only revise the ADM values)
     - SIM 1
