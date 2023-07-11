@@ -88,6 +88,11 @@ int main(int argc, char *argv[])
 
   iprint(VOWIFI_DEBUG_KEYGEN, "OPc", opc, 0, KEYLEN, KEYLEN);
 
+  printf("OPc:\n");
+  for (i=0; i<KEYLEN; i++)
+    printf("%02x", opc[i]);
+  printf("\n");
+
   free(ki);
   free(op);
   EVP_CIPHER_CTX_free(ctx);
