@@ -463,4 +463,6 @@
       - List of associated IMPIs: 310210123456782@msg.pc.t-mobile.com / 310210123456782@ims.mnc210.mcc310.3gppnetwork.org
 
 ## Turn on WiFi on UEs
+  ### Samsung Phone Settings
+    - 
 
