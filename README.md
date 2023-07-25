@@ -46,6 +46,12 @@
     - (pySim-shell) `select EF.ISIM_SQN` (disable sqn_check)
     - (pySim-shell) `select ADF.USIM`
     - (pySim-shell) `select EF.USIM_SQN` (disable sqn_check)
+    - (pySim-shell) `select ADF.USIM`
+    - (pySim-shell) `select EF.AD`
+    - (pySim-shell) `update_binary_decoded '{"ms_operation_mode": "type_approval", "additional_info": {"ciphering_indicator": false, "csg_display_control": false, "prose_services": false, "extended_drx": false}, "rfu": 0, "mnc_len": 3, "extensions": ""}'`
+    - (pySim-shell) `select DF.GSM`
+    - (pySim-shell) `select EF.AD`
+    - (pySim-shell) `update_binary_decoded '{"ms_operation_mode": "type_approval", "rfu1": 0, "rfu2": 0, "ofm": false, "extensions": {"rfu3": 0, "mnc_len": 3, "extensions": ""}}'`
   
   ### Commands with an example value (you can just copy & paste the following command for the two SIM cards and only revise the ADM values)
     - SIM 1
