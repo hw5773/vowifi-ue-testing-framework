@@ -43,13 +43,16 @@
     - (pySim-shell) `select ADF.ISIM`
     - (pySim-shell) `select EF.IST`
     - (pySim-shell) `edit_binary_decoded` (enable Service 2 - Generic Boostrapping Architecture (GBA))
+    - (pySim-shell) `select ADF.USIM`
+    - (pySim-shell) `select EF.UST`
+    - (pySim-shell) `edit_binary_decoded` (enable Service 68 - Generic Boostrapping Architecture (GBA))
     - (pySim-shell) `select EF.ISIM_SQN` (disable sqn_check)
     - (pySim-shell) `select ADF.USIM`
     - (pySim-shell) `select EF.USIM_SQN` (disable sqn_check)
-    - (pySim-shell) `select ADF.USIM`
+    - (pySim-shell) `select ADF.USIM` (change the length of MNC in IMSI to 3)
     - (pySim-shell) `select EF.AD`
     - (pySim-shell) `update_binary_decoded '{"ms_operation_mode": "type_approval", "additional_info": {"ciphering_indicator": false, "csg_display_control": false, "prose_services": false, "extended_drx": false}, "rfu": 0, "mnc_len": 3, "extensions": ""}'`
-    - (pySim-shell) `select DF.GSM`
+    - (pySim-shell) `select DF.GSM` (change the length of MNC in IMSI to 3)
     - (pySim-shell) `select EF.AD`
     - (pySim-shell) `update_binary_decoded '{"ms_operation_mode": "type_approval", "rfu1": 0, "rfu2": 0, "ofm": false, "extensions": {"rfu3": 0, "mnc_len": 3, "extensions": ""}}'`
   
