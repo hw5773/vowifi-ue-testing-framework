@@ -17,7 +17,7 @@ def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "disable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus" or device == "HTC_U11":
+    elif device == "moto_e5_plus" or device == "HTC_U11" or device == "Blackview_A55" or device == "OnePlus Nord N20":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
@@ -51,7 +51,7 @@ def handle_turn_on_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "enable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus" or device == "HTC_U11":
+    elif device == "moto_e5_plus" or device == "HTC_U11" or device == "Blackview_A55" or device =="OnePlus Nord N20":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
@@ -216,6 +216,12 @@ def check_device_model():
     elif "HTC_U11" in output:
         device = "HTC_U11"
         logging.info("Device model: HTC U11")
+    elif "Blackview_A55" in output:
+        device = "Blackview_A55"
+        logging.info("Device model: A55")
+    elif "OnePlus Nord N20" in output:
+        device = "OnePlus Nord N20"
+        logging.info("Device model: CPH2459")
     else:
         device = "others"
         logging.info("Device model: Others")
