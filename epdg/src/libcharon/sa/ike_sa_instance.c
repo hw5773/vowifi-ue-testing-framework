@@ -6,6 +6,7 @@
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
 {
   int ret;
+  printf("[check_instance] this->instance: %p\n", instance);
 
   if (instance)
     printf("[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", instance->ispi, instance->rspi, ispi, rspi);
@@ -302,6 +303,7 @@ int get_query_operator(query_t *query)
 
 void set_query_operator(query_t *query, int op)
 {
+  printf("set_query_operator()> name: %s, op: %d\n", query->name, op);
   query->op = op;
 }
 
@@ -365,7 +367,7 @@ query_t *get_query(instance_t *instance)
   ret = NULL;
   if (instance->initiated && !instance->finished)
   {
-    printf("[VoWiFi] before the while loop\n");
+    //printf("[VoWiFi] before the while loop\n");
     while (!instance->query)
     {
       //printf("[VoWiFi] instance->query: %p\n", instance->query);
@@ -375,7 +377,7 @@ query_t *get_query(instance_t *instance)
 
       sleep(1);
     }
-    printf("[VoWiFi] after the while loop\n");
+    //printf("[VoWiFi] after the while loop\n");
 
     if (instance->finished)
       ret = NULL;
@@ -442,7 +444,7 @@ query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
 {
   query_t *ret, *curr;
 
-  printf("[VoWiFi] ike_sa_instance.c: get_sub_query_by_name(): query: %p, name: %s\n", query, name);
+  //printf("[VoWiFi] ike_sa_instance.c: get_sub_query_by_name(): query: %p, name: %s\n", query, name);
   ret = NULL;
   curr = query->sub;
 

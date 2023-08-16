@@ -132,6 +132,7 @@ class Testcase {
 
     if (testcase.get("op") != null) {
       this.op = (String) testcase.get("op");
+      logger.debug("op: " + this.op);
     }
     
     JSONArray testcaseArr = (JSONArray) testcase.get("sub");

@@ -379,6 +379,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	else
 	{
     ///// Added for VoWiFi /////
+    printf("[check_instance] in ike_init.c 1\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       // encryption related
@@ -512,6 +513,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
       free(klen);
     }
 
+    printf("[check_instance] in ike_init.c 2\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -544,7 +546,10 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 			/* include SPI of new IKE_SA when we are rekeying */
 			this->proposal->set_spi(this->proposal, id->get_responder_spi(id));
 		}
+
 		sa_payload = sa_payload_create_from_proposal_v2(this->proposal);
+
+    printf("[check_instance] in ike_init.c 3\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -557,9 +562,27 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 
   ///// Added for VoWiFi (sa test) /////
   // Comment out if you want to drop the sa payload
-  //printf("before dropping the sa payload\n");
-	message->add_payload(message, (payload_t*)sa_payload);
-  //printf("after dropping the sa payload\n");
+  printf("[check_instance] in ike_init.c 4\n");
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "security_association"))
+        && (get_query_operator(query) == OP_TYPE_DROP))
+    {
+      printf("[VoWiFi] Drop the sa payload\n");
+    }
+    else
+    {
+      printf("[VoWiFi] Fail to drop the sa payload 1\n");
+      message->add_payload(message, (payload_t*)sa_payload);
+    }
+  }
+  else
+  {
+    printf("[VoWiFi] Fail to drop the sa payload 2\n");
+    message->add_payload(message, (payload_t*)sa_payload);
+  }
   //////////////////////////////////////
 
 	ke_payload = ke_payload_create_from_diffie_hellman(PLV2_KEY_EXCHANGE,
@@ -581,19 +604,58 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	{
     ///// Added for VoWiFi (ke test) /////
     // Comment out if you want to drop the ke payload
-    printf("before dropping the ke payload\n");
-		//message->add_payload(message, (payload_t*)ke_payload);
-    printf("after dropping the ke payload\n");
+    printf("[check_instance] in ike_init.c 5\n");
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "key_exchange"))
+          && (get_query_operator(query) == OP_TYPE_DROP))
+      {
+        printf("[VoWiFi] Drop the key exchange payload\n");
+      }
+      else
+      {
+        printf("[VoWiFi] Fail to drop the key payload 1\n");
+		    message->add_payload(message, (payload_t*)ke_payload);
+      }
+    }
+    else
+    {
+      printf("[VoWiFi] Fail to drop the key payload 2\n");
+		  message->add_payload(message, (payload_t*)ke_payload);
+    }
     //////////////////////////////////////
 
     ///// Added for VoWiFi (nonce test) /////
     // Comment out if you want to drop the nonce payload
     //printf("before dropping the nonce payload\n");
-		message->add_payload(message, (payload_t*)nonce_payload);
+    printf("[check_instance] in ike_init.c 6\n");
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "nonce"))
+          && (get_query_operator(query) == OP_TYPE_DROP))
+      {
+        printf("[VoWiFi] Drop the nonce payload\n");
+      }
+      else
+      {
+        printf("[VoWiFi] Fail to drop the nonce payload 1\n");
+        message->add_payload(message, (payload_t*)nonce_payload);
+      }
+    }
+    else
+    {
+      printf("[VoWiFi] Fail to drop the nonce payload 2\n");
+  		message->add_payload(message, (payload_t*)nonce_payload);
+    }
     //printf("after dropping the nonce payload\n");
     /////////////////////////////////////////
 	}
 
+  printf("[check_instance] in ike_init.c 7: instance: %p\n", instance);
 	/* negotiate fragmentation if we are not rekeying */
 	if (!this->old_sa &&
 		 ike_cfg->fragmentation(ike_cfg) != FRAGMENTATION_NO)
@@ -1360,9 +1422,9 @@ METHOD(task_t, build_r, status_t,
 	}
 
   ///// Added for VoWiFi (nonce test) /////
-  printf("\n\n\nthis->my_nonce (before): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
-  memset(this->my_nonce.ptr, 0, this->my_nonce.len);
-  printf("this->my_nonce (after): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
+  //printf("\n\n\nthis->my_nonce (before): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
+  //memset(this->my_nonce.ptr, 0, this->my_nonce.len);
+  //printf("this->my_nonce (after): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
   ///////////////////////////////////
 
 	if (!derive_keys(this, this->other_nonce, this->my_nonce))

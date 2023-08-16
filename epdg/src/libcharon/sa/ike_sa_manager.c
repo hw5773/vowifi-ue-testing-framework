@@ -812,6 +812,7 @@ void *listener_run(void *data)
 
           token = strtok(NULL, ":");
           idx++;
+          printf("idx: %d\n", idx);
         }
       }
 
@@ -1804,6 +1805,8 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
     }
     printf("\n");
 
+    printf("[VoWiFi] ike_sa_manager.c> this (private): %p, this->instance: %p\n", this, this->instance);
+
 		switch (check_and_put_init_hash(this, hash, &our_spi))
 		{
 			case NOT_FOUND:
@@ -1812,6 +1815,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 				if (!this->ikesa_limit ||
 					this->public.get_count(&this->public) < this->ikesa_limit)
 				{
+          printf("\n[VoWiFi] ike_sa_manager.c: NOT_FOUND\n\n");
 					id->set_responder_spi(id, our_spi);
 					ike_sa = ike_sa_create(id, FALSE, ike_version);
 					if (ike_sa)
@@ -1826,19 +1830,29 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
             ispi = id->get_initiator_spi(id);
             rspi = id->get_responder_spi(id);
 
-            printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
+            printf("\n\n[VoWiFi] checkout_by_message 1> ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
                 ike_sa, ispi, rspi);
-            printf("[VoWiFi] this->instance: %p\n", this->instance);
+            printf("[VoWiFi] checkout_by_message 1> this->instance: %p\n\n", this->instance);
 
             if (check_instance(this->instance, ispi, rspi, UPDATE))
             {
               printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 1: setting the instance\n\n");
+              //ike_sa->set_instance(ike_sa, this->instance);
+              //instance = ike_sa->get_instance(ike_sa);
+              //asock = -1;
+              //if (instance)
+              //  asock = instance->asock;
+            }
+
+            if (!(ike_sa->get_instance(ike_sa)))
+            {
               ike_sa->set_instance(ike_sa, this->instance);
               instance = ike_sa->get_instance(ike_sa);
-              asock = -1;
-              if (instance)
-                asock = instance->asock;
+              asock = instance->asock;
             }
+
+            if (!(ike_sa->get_instance(ike_sa)))
+              ike_sa->set_instance(ike_sa, this->instance);
             ////////////////////////////
 
 						segment = put_entry(this, entry);
@@ -1868,13 +1882,16 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 			}
 			case FAILED:
 			{	/* we failed to allocate an SPI */
+        printf("\n[VoWiFi] ike_sa_manager.c: FAILED\n\n");
 				chunk_free(&hash);
 				id->destroy(id);
 				DBG1(DBG_MGR, "ignoring message, failed to allocate SPI");
 				goto out;
 			}
 			case ALREADY_DONE:
+        printf("\n[VoWiFi] ike_sa_manager.c: ALREADY_DONE\n\n");
 			default:
+        printf("\n[VoWiFi] ike_sa_manager.c: DEFAULT\n\n");
 				break;
 		}
 		/* it looks like we already handled this init message to some degree */
@@ -1917,27 +1934,33 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	}
 
   ///// Added for VoWiFi /////        
-  ispi = id->get_initiator_spi(id);
-  rspi = id->get_responder_spi(id);
-
-  //printf("\n\n[VoWiFi] Already_done\n\n\n");
-  ike_sa = entry->ike_sa;
-  this->instance = ike_sa->get_instance(ike_sa);
-  printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
-    ike_sa, ispi, rspi);
-  printf("[VoWiFi] this->instance: %p\n", this->instance);
-
-  if (check_instance(this->instance, ispi, rspi, UPDATE))
+  printf("entry: %p\n", entry);
+  if (entry)
+    printf("entry->ike_sa: %p\n", entry->ike_sa);
+  if (entry 
+      && ((ike_sa = entry->ike_sa) > 0x1000000)
+      && (ispi = id->get_initiator_spi(id))
+      && (rspi = id->get_responder_spi(id)))
   {
-    printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n\n");
-    /*
-    ike_sa->set_instance(ike_sa, this->instance);
-    instance = ike_sa->get_instance(ike_sa);
-    printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message(): instance: %p\n\n", instance);
-    asock = -1;
-    if (instance)
-      asock = instance->asock;
-    */
+    printf("[VoWiFi] checkout_by_message 2> this: %p\n", this);
+    printf("[VoWiFi] checkout_by_message 2> ike_sa: %p\n", ike_sa);
+    this->instance = ike_sa->get_instance(ike_sa);
+    printf("[VoWiFi] checkout_by_message 2> ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
+      ike_sa, ispi, rspi);
+    printf("[VoWiFi] checkout_by_message 2> this->instance: %p\n", this->instance);
+
+    if (check_instance(this->instance, ispi, rspi, UPDATE))
+    {
+      printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n\n");
+      /*
+      ike_sa->set_instance(ike_sa, this->instance);
+      instance = ike_sa->get_instance(ike_sa);
+      printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message(): instance: %p\n\n", instance);
+      asock = -1;
+      if (instance)
+        asock = instance->asock;
+      */
+    }
   }
   ////////////////////////////
 

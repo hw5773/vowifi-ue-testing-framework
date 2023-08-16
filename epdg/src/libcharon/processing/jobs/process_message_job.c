@@ -63,8 +63,10 @@ METHOD(job_t, execute, job_requeue_t,
 	}
 #endif /* ME */
 
+  printf("\n[VoWiFi] charon->ike_sa_manager: %p\n\n", charon->ike_sa_manager);
 	ike_sa = charon->ike_sa_manager->checkout_by_message(charon->ike_sa_manager,
 														 this->message);
+
 	if (ike_sa)
 	{
     printf("private_process_message_job 1\n");
