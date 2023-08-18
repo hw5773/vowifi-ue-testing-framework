@@ -614,7 +614,7 @@ void *listener_run(void *data)
   this = (private_ike_sa_manager_t *)data;
   lsock = this->lsock;
 
-  printf("running the listener socket thread: this->lsock: %d\n", this->lsock);
+  printf("[VoWiFi] running the listener socket thread: this->lsock: %d\n", this->lsock);
 
   asock = accept(lsock, (struct sockaddr *)&addr, &len);
 
@@ -623,13 +623,13 @@ void *listener_run(void *data)
     perror("socket failure");
   }
 
-  printf("accept the socket: asock: %d\n", asock);
+  printf("[VoWiFi] accept the socket: asock: %d\n", asock);
 
   flags = fcntl(asock, F_GETFL);
   fcntl(asock, F_SETFL, flags | O_NONBLOCK);
 
   instance = this->instance = init_instance(asock);
-  printf("socket with LogExecutor is set: asock: %d\n", asock);
+  printf("[VoWiFi] socket with LogExecutor is set: asock: %d\n", asock);
 
   this->sender = (pthread_t *)calloc(1, sizeof(pthread_t));
   rc = pthread_create(this->sender, this->attr, sender_run, instance);
@@ -652,17 +652,17 @@ void *listener_run(void *data)
       }
       else if (rcvd == 0)
       {
-        printf("socket error happened()\n");
+        printf("[VoWiFi] Socket error happened()\n");
         goto out;
       }
     }
 
-    printf("received message (%d bytes): %s\n", offset, buf);
+    printf("[VoWiFi] Received message (%d bytes): %s\n", offset, buf);
 
     if (offset == strlen(HELLO_REQUEST) 
         && !strncmp(buf, HELLO_REQUEST, strlen(HELLO_REQUEST)))
     {
-      printf("received Hello from LogExecutor!\n");
+      printf("[VoWiFi] Received Hello from LogExecutor!\n");
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -674,12 +674,12 @@ void *listener_run(void *data)
         if (sent > 0)
           offset += sent;
       }
-      printf("sent ACK to LogExecutor\n");
+      printf("[VoWiFi] Sent ACK to LogExecutor\n");
     }
     else if (offset == strlen(RESET_REQUEST)
         && !strncmp(buf, RESET_REQUEST, strlen(RESET_REQUEST)))
     {
-      printf("received reset from LogExecutor!\n");
+      printf("[VoWiFi] Received reset from LogExecutor!\n");
       instance->ispi = 0;
       instance->rspi = 0;
       if (instance->query)
@@ -700,12 +700,12 @@ void *listener_run(void *data)
         if (sent > 0)
           offset += sent;
       }
-      printf("sent ACK to LogExecutor\n");
+      printf("[VoWiFi] Sent ACK to LogExecutor\n");
     }
     else if (offset == strlen(FIN_REQUEST)
         && !strncmp(buf, FIN_REQUEST, strlen(FIN_REQUEST)))
     {
-      printf("received fin from LogExecutor!\n");
+      printf("[VoWiFi] Received fin from LogExecutor!\n");
       instance->finished = true;
       instance->query = NULL;
       instance->ispi = -1;
@@ -783,12 +783,12 @@ void *listener_run(void *data)
           switch (idx)
           {
             case 0:
-              printf("query: %p, name: %s\n", query, token);
+              printf("[VoWiFi] query: %p, name: %s\n", query, token);
               set_query_name(query, token);
               break;
 
             case 1:
-              printf("operator: %s\n", token);
+              printf("[VoWiFi] operator: %s\n", token);
               if (strlen(token) >= 6 && !strncmp(token, "update", 6))
                 set_query_operator(query, OP_TYPE_UPDATE);
               else if (strlen(token) >= 4 && !strncmp(token, "drop", 4))
@@ -797,12 +797,12 @@ void *listener_run(void *data)
               break;
 
             case 2:
-              printf("value type: %s\n", token);
+              printf("[VoWiFi] value type: %s\n", token);
               set_query_value_type(query, token);
               break;
 
             case 3:
-              printf("value: %s\n", token);
+              printf("[VoWiFi] value: %s\n", token);
               set_query_value(query, token);
               break;
 
@@ -831,10 +831,10 @@ void *listener_run(void *data)
         }
         printf("sent ACK to LogExecutor\n");
         */
-        printf(">>>>> before set_query()\n");
+        //printf(">>>>> before set_query()\n");
         instance->set_query(instance, query);
         query = NULL;
-        printf(">>>>> after set_query()\n");
+        //printf(">>>>> after set_query()\n");
       }
     }
   }
@@ -1795,7 +1795,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
     hptr = hash.ptr;
     hlen = hash.len;
 
-    printf("[VoWiFi] hash value (ispi: %.16"PRIx64":\n", id->get_initiator_spi(id));
+    printf("[VoWiFi] hash value (ispi: %.16"PRIx64"):\n", id->get_initiator_spi(id));
     for (i=0; i<hlen; i++)
     {
       printf("%02x ", hptr[i]);
@@ -1826,19 +1826,25 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
             ispi = id->get_initiator_spi(id);
             rspi = id->get_responder_spi(id);
 
-            printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
-                ike_sa, ispi, rspi);
-            printf("[VoWiFi] this->instance: %p\n", this->instance);
-
             if (check_instance(this->instance, ispi, rspi, UPDATE))
             {
-              printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 1: setting the instance\n\n");
+              printf("[VoWiFi] ike_sa_manager.c: checkout_by_message(): setting the instance\n");
+              //ike_sa->set_instance(ike_sa, this->instance);
+              //instance = ike_sa->get_instance(ike_sa);
+              //asock = -1;
+              //if (instance)
+              //  asock = instance->asock;
+            }
+
+            if (!(ike_sa->get_instance(ike_sa)))
+            {
               ike_sa->set_instance(ike_sa, this->instance);
               instance = ike_sa->get_instance(ike_sa);
-              asock = -1;
-              if (instance)
-                asock = instance->asock;
+              asock = instance->asock;
             }
+
+            if (!(ike_sa->get_instance(ike_sa)))
+              ike_sa->set_instance(ike_sa, this->instance);
             ////////////////////////////
 
 						segment = put_entry(this, entry);
@@ -1917,27 +1923,27 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	}
 
   ///// Added for VoWiFi /////        
-  ispi = id->get_initiator_spi(id);
-  rspi = id->get_responder_spi(id);
-
-  //printf("\n\n[VoWiFi] Already_done\n\n\n");
-  ike_sa = entry->ike_sa;
-  this->instance = ike_sa->get_instance(ike_sa);
-  printf("[VoWiFi] ike_sa: %p (ispi: %.16"PRIx64"/ rspi: %.16"PRIx64")\n",
-    ike_sa, ispi, rspi);
-  printf("[VoWiFi] this->instance: %p\n", this->instance);
-
-  if (check_instance(this->instance, ispi, rspi, UPDATE))
+  if (entry)
+    printf("entry->ike_sa: %p\n", entry->ike_sa);
+  if (entry 
+      && ((ike_sa = entry->ike_sa) > 0x1000000)
+      && (ispi = id->get_initiator_spi(id))
+      && (rspi = id->get_responder_spi(id)))
   {
-    printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n\n");
-    /*
-    ike_sa->set_instance(ike_sa, this->instance);
-    instance = ike_sa->get_instance(ike_sa);
-    printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message(): instance: %p\n\n", instance);
-    asock = -1;
-    if (instance)
-      asock = instance->asock;
-    */
+    this->instance = ike_sa->get_instance(ike_sa);
+
+    if (check_instance(this->instance, ispi, rspi, UPDATE))
+    {
+      printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n");
+      /*
+      ike_sa->set_instance(ike_sa, this->instance);
+      instance = ike_sa->get_instance(ike_sa);
+      printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message(): instance: %p\n\n", instance);
+      asock = -1;
+      if (instance)
+        asock = instance->asock;
+      */
+    }
   }
   ////////////////////////////
 
@@ -1980,7 +1986,6 @@ METHOD(ike_sa_manager_t, checkout_by_config, ike_sa_t*,
 
 	if (!this->reuse_ikesa && peer_cfg->get_ike_version(peer_cfg) != IKEV1)
 	{	/* IKE_SA reuse disabled by config (not possible for IKEv1) */
-    printf("ike_sa_manager.c:1504: create_new()\n");
 		ike_sa = create_new(this, peer_cfg->get_ike_version(peer_cfg), TRUE);
 		if (ike_sa)
 		{
@@ -2056,7 +2061,6 @@ METHOD(ike_sa_manager_t, checkout_by_config, ike_sa_t*,
 
 	if (!ike_sa)
 	{
-    printf("ike_sa_manager.c:1580: create_new()\n");
 		ike_sa = create_new(this, peer_cfg->get_ike_version(peer_cfg), TRUE);
 		if (ike_sa)
 		{
@@ -2935,14 +2939,12 @@ METHOD(ike_sa_manager_t, destroy, void,
 METHOD(ike_sa_manager_t, get_instance, instance_t *,
     private_ike_sa_manager_t *this)
 {
-  printf("get_instance()\n");
   return this->instance;
 }
 
 METHOD(ike_sa_manager_t, get_accepted_socket, int,
     private_ike_sa_manager_t *this)
 {
-  printf("get_accepted_socket()\n");
   return this->instance->asock;
 }
 ////////////////////////////
@@ -3078,7 +3080,7 @@ ike_sa_manager_t *ike_sa_manager_create()
 											"%s.reuse_ikesa", TRUE, lib->ns);
 
   ///// Added for VoWiFi /////
-  printf("making the listening socket\n");
+  printf("[VoWiFi] making the listening socket\n");
   int rc, sock, flags;
   struct sockaddr_in addr;
   sock = socket(PF_INET, SOCK_STREAM, 0);
@@ -3108,9 +3110,9 @@ ike_sa_manager_t *ike_sa_manager_create()
   }
 
   this->lsock = sock;
-  printf("sock: %d, this->lsock: %d\n", sock, this->lsock);
+  printf("[VoWiFi] sock: %d, this->lsock: %d\n", sock, this->lsock);
 
-  printf("preparing to run the thread\n");
+  printf("[VoWiFi] preparing to run the thread\n");
   this->attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
   pthread_attr_init(this->attr);
   pthread_attr_setdetachstate(this->attr, PTHREAD_CREATE_JOINABLE);

@@ -928,122 +928,123 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
   ///// Added for VoWiFi /////
   const uint8_t *symbol;
-  int failed;
+  int failed, send;
 	notify_type_t ntype;
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    failed = 0;
+    failed = 0; send = 0;
     if ((query = get_next_query(instance)))
     {
       printf("[VoWiFi] query name: %s, instance->sprev: %s\n", query->name, instance->sprev);
-      if (is_query_name(query, "unsupported_critical_payload"))
+      if (get_sub_query_by_name(query, "unsupported_critical_payload"))
       {
         symbol = "unsupported_critical_payload";
         ntype = UNSUPPORTED_CRITICAL_PAYLOAD;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_ike_spi"))
+      else if (get_sub_query_by_name(query, "invalid_ike_spi"))
       {
         symbol = "invalid_ike_spi";
         ntype = INVALID_IKE_SPI;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_major_version"))
+      else if (get_sub_query_by_name(query, "invalid_major_version"))
       {
         symbol = "invalid_major_version";
         ntype = INVALID_MAJOR_VERSION;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_syntax"))
+      else if (get_sub_query_by_name(query, "invalid_syntax"))
       {
         symbol = "invalid_syntax";
         ntype = INVALID_SYNTAX;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_message_id"))
+      else if (get_sub_query_by_name(query, "invalid_message_id"))
       {
         symbol = "invalid_message_id";
         ntype = INVALID_MESSAGE_ID;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_spi"))
+      else if (get_sub_query_by_name(query, "invalid_spi"))
       {
         symbol = "invalid_spi";
         ntype = INVALID_SPI;
         failed = 1;
       }
-      else if (is_query_name(query, "no_proposal_chosen"))
+      else if (get_sub_query_by_name(query, "no_proposal_chosen"))
       {
         symbol = "no_proposal_chosen";
         ntype = NO_PROPOSAL_CHOSEN;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_ke_payload"))
+      else if (get_sub_query_by_name(query, "invalid_ke_payload"))
       {
         symbol = "invalid_ke_payload";
         ntype = INVALID_KE_PAYLOAD;
         failed = 1;
       }
-      else if (is_query_name(query, "authentication_failed"))
+      else if (get_sub_query_by_name(query, "authentication_failed"))
       {
         symbol = "authentication_failed";
         ntype = AUTHENTICATION_FAILED;
         failed = 1;
       }
-      else if (is_query_name(query, "single_pair_required"))
+      else if (get_sub_query_by_name(query, "single_pair_required"))
       {
         symbol = "single_pair_required";
         ntype = SINGLE_PAIR_REQUIRED;
         failed = 1;
       }
-      else if (is_query_name(query, "no_additional_sas"))
+      else if (get_sub_query_by_name(query, "no_additional_sas"))
       {
         symbol = "no_additional_sas";
         ntype = NO_ADDITIONAL_SAS;
         failed = 1;
       }
-      else if (is_query_name(query, "internal_address_failure"))
+      else if (get_sub_query_by_name(query, "internal_address_failure"))
       {
         symbol = "internal_address_failure";
         ntype = INTERNAL_ADDRESS_FAILURE;
         failed = 1;
       }
-      else if (is_query_name(query, "failed_cp_required"))
+      else if (get_sub_query_by_name(query, "failed_cp_required"))
       {
         symbol = "failed_cp_required";
         ntype = FAILED_CP_REQUIRED;
         failed = 1;
       }
-      else if (is_query_name(query, "ts_unacceptable"))
+      else if (get_sub_query_by_name(query, "ts_unacceptable"))
       {
         symbol = "ts_unacceptable";
         ntype = TS_UNACCEPTABLE;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_selectors"))
+      else if (get_sub_query_by_name(query, "invalid_selectors"))
       {
         symbol = "invalid_selectors";
         ntype = INVALID_SELECTORS;
         failed = 1;
       }
-      else if (is_query_name(query, "temporary_failure"))
+      else if (get_sub_query_by_name(query, "temporary_failure"))
       {
         symbol = "temporary_failure";
         ntype = TEMPORARY_FAILURE;
         failed = 1;
       }
-      else if (is_query_name(query, "child_sa_not_found"))
+      else if (get_sub_query_by_name(query, "child_sa_not_found"))
       {
         symbol = "child_sa_not_found";
         ntype = CHILD_SA_NOT_FOUND;
         failed = 1;
       }
-      else if (is_query_name(query, "invalid_cert_authority"))
+      else if (get_sub_query_by_name(query, "invalid_cert_authority"))
       {
         symbol = "invalid_cert_authority";
         ntype = INVALID_CERT_AUTHORITY;
         failed = 1;
       }
+      /*
       else 
       {
   		  switch (message->get_exchange_type(message)) 
@@ -1112,11 +1113,13 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
             instance->sprev = "error";
         }
       }
+      */
 
       msg = init_message(instance, MSG_TYPE_BLOCK_START, 
         symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, msg);
 
+      //printf("[VoWiFi] 1: failed: %d, instance: %p\n", failed, instance);
       if (failed)
       {
         msg = init_message(instance, MSG_TYPE_BLOCK_END, 
@@ -1153,20 +1156,81 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	        case CHILD_SA_NOT_FOUND:
           default:
 				    //send_notify_response(this, message, ntype, chunk_from_thing(type));
-				    send_notify_response(this, message, ntype, chunk_empty);
+
+				    //send_notify_response(this, message, ntype, chunk_empty);
+            printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
+            if (is_query_name(query, "ike_auth_1_response")
+                && (!strncmp(instance->sprev, "ike_sa_init_response", 
+                    strlen("ike_sa_init_response"))))
+            {
+              symbol = "ike_auth_1_response";
+              instance->sprev = "ike_auth_1_response";
+              send = 1;
+            }
+            else if (is_query_name(query, "ike_auth_2_response")
+                && (!strncmp(instance->sprev, "ike_auth_1_response", 
+                    strlen("ike_auth_1_response"))))
+            {
+              symbol = "ike_auth_2_response";
+              instance->sprev = "ike_auth_2_response";
+              send = 1;
+            }
+            else if (is_query_name(query, "ike_auth_3_response")
+                && (!strncmp(instance->sprev, "ike_auth_2_response", 
+                    strlen("ike_auth_2_response"))))
+            {
+              symbol = "ike_auth_3_response";
+              instance->sprev = "ike_auth_3_response";
+              send = 1;
+            }
+            else if (is_query_name(query, "ike_auth_4_response")
+                && (!strncmp(instance->sprev, "ike_auth_3_response", 
+                    strlen("ike_auth_3_response"))))
+            {
+              symbol = "ike_auth_4_response";
+              instance->sprev = "ike_auth_4_response";
+              send = 1;
+            }
+            else if (is_query_name(query, "ike_auth_5_response")
+                && (!strncmp(instance->sprev, "ike_auth_4_response", 
+                    strlen("ike_auth_4_response"))))
+            {
+              symbol = "ike_auth_5_response";
+              instance->sprev = "ike_auth_5_response";
+              send = 1;
+            }
+            else
+            {
+              symbol = "error in ike_auth";
+              instance->sprev = "error";
+            }
+
+            if (send)
+            {
+              printf("[VoWiFi/IKE_AUTH] Before sending the notify payload\n");
+              send_notify_response(this, message, ntype, chunk_empty);
+              printf("[VoWiFi/IKE_AUTH] After sending the notify payload\n");
+              send = 0;
+            }
+
             break;
         }
 
 		    this->responding.mid++;
+
         return FAILED;
       }
     }
   }
   ///////////////////////////
 
+  printf("[VoWiFi] 2\n");
 	enumerator = array_create_enumerator(this->passive_tasks);
 	while (enumerator->enumerate(enumerator, (void*)&task))
 	{
+  //printf("[VoWiFi] 2-2: task: %p\n", task);
+  //printf("[VoWiFi] 2-2-1: task->get_type: %p\n", task->get_type);
+  //printf("[VoWiFi] 2-2-2: task->get_type(task): %p\n", task->get_type(task));
 		if (task->get_type(task) == TASK_IKE_MID_SYNC)
 		{
 			mid_sync = TRUE;
@@ -1207,6 +1271,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		}
 	}
 	enumerator->destroy(enumerator);
+  printf("[VoWiFi] 3\n");
 
 	/* RFC 5996, section 2.6 mentions that in the event of a failure during
 	 * IKE_SA_INIT the responder's SPI will be 0 in the response, while it
@@ -1223,6 +1288,8 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
+    /*
+    printf("[VoWiFi] task start\n");
     if ((query = get_query(instance))
         && is_query_name(query, "ike_auth_1_response")
         && (query = get_sub_query_by_name(query, "message_size")))
@@ -1318,9 +1385,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 #define AKA_TYPE_AT_CHECKCODE 134
 
     eap_payload_t *epload;
+    chunk_t payload;
     int i, plen, tlen, vtype;
-    uint8_t *p, *tmp;
-    uint8_t alen, abytes, type;
+    uint8_t *p, *tmp, *e;
+    uint8_t alen, abytes, type, clen;
 
     if ((query = get_query(instance))
         && is_query_name(query, "ike_auth_1_response")
@@ -1330,15 +1398,16 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
       epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
       if (epload)
       {
-        p = (uint8_t *)epload->get_data(epload).ptr;
-        plen = (int) epload->get_data(epload).len;
+        payload = epload->get_data(epload);
+        e = p = (uint8_t *) payload.ptr;
+        plen = (int) payload.len;
         p += sizeof(ehdr_t);
         plen -= sizeof(ehdr_t);
-    for (i=0; i<plen; i++)
-    {
-      printf("%02x ", p[i]);
-    }
-    printf("\n");
+        for (i=0; i<plen; i++)
+        {
+          printf("%02x ", p[i]);
+        }
+        printf("\n");
 
         while (plen > 0)
         {
@@ -1346,7 +1415,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
           plen--;
           alen = *(p++);
           plen--;
-          abytes = 2 + 4 * (alen - 1);
+          abytes = 4 * alen - 2;
           
           if (type != AKA_TYPE_AT_MAC)
           {
@@ -1361,26 +1430,38 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
         if (plen > 0)
         {
-          vtype = get_query_value_type(query);
           op = get_query_operator(query);
-          if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE) 
+          if (op == OP_TYPE_UPDATE) 
           {
-            tmp = get_query_value(query, &tlen);
-            if (!strncmp(tmp, "min", strlen("min")))
+            vtype = get_query_value_type(query);
+            if (vtype == VAL_TYPE_STRING)
             {
-              for (i=2; i<abytes; i++)
-                p[i] = 0x00;
+              tmp = get_query_value(query, &tlen);
+              if (!strncmp(tmp, "min", strlen("min")))
+              {
+                for (i=2; i<abytes; i++)
+                  p[i] = 0x00;
+              }
+              else if (!strncmp(tmp, "max", strlen("max")))
+              {
+                for (i=2; i<abytes; i++)
+                  p[i] = 0xff;
+              }
+              else if (!strncmp(tmp, "median", strlen("median")))
+              {
+                for (i=2; i<abytes; i++)
+                  p[i] = 0x88;
+              }
             }
-            else if (!strncmp(tmp, "max", strlen("max")))
-            {
-              for (i=2; i<abytes; i++)
-                p[i] = 0xff;
-            }
-            else if (!strncmp(tmp, "median", strlen("median")))
-            {
-              for (i=2; i<abytes; i++)
-                p[i] = 0x88;
-            }
+          }
+          else if (op == OP_TYPE_DROP)
+          {
+            clen = payload.len - alen * 4;
+            printf("[VoWiFi] at_mac drop: change from %d to %d\n", payload.len, clen);
+            e += 2;
+            e[0] = (clen >> 8) & 0xff;
+            e[1] = clen & 0xff;
+            payload.len = clen;
           }
         }
       }
@@ -1444,10 +1525,11 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         }
       }
     }
-
+    */
     msg = init_message(instance, MSG_TYPE_BLOCK_END, 
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
+    printf("[VoWiFi] task end\n");
   }
   ////////////////////////////
 
@@ -2418,72 +2500,6 @@ METHOD(task_manager_t, process_message, status_t,
 				return status;
 			}
 
-      ///// Added for VoWiFi /////
-      if (check_instance(instance, ispi, rspi, NON_UPDATE))
-      {
-		    switch (msg->get_exchange_type(msg)) 
-        {
-          case IKE_SA_INIT:
-            symbol = "ike_sa_init_request";
-            instance->rprev = "ike_sa_init_request";
-            break;
-
-          case IKE_AUTH:
-            if (!strncmp(instance->rprev, "ike_sa_init_request", 
-                  strlen("ike_sa_init_request")))
-            {
-              symbol = "ike_auth_1_request";
-              instance->rprev = "ike_auth_1_request";
-            }
-            else if (!strncmp(instance->rprev, "ike_auth_1_request", 
-                  strlen("ike_auth_1_request")))
-            {
-              symbol = "ike_auth_2_request";
-              instance->rprev = "ike_auth_2_request";
-            }
-            else if (!strncmp(instance->rprev, "ike_auth_2_request", 
-                  strlen("ike_auth_2_request")))
-            {
-              symbol = "ike_auth_3_request";
-              instance->rprev = "ike_auth_3_request";
-            }
-            else if (!strncmp(instance->rprev, "ike_auth_3_request", \
-                  strlen("ike_auth_3_request")))
-            {
-              symbol = "ike_auth_4_request";
-              instance->rprev = "ike_auth_4_request";
-            }
-            else if (!strncmp(instance->rprev, "ike_auth_4_request", 
-                  strlen("ike_auth_4_request")))
-            {
-              symbol = "ike_auth_5_request";
-              instance->rprev = "ike_auth_5_request";
-            }
-            else
-            {
-              symbol = "error in ike_auth";
-              instance->rprev = "error";
-            }
-            break;
-
-    			case INFORMATIONAL:
-			    case CREATE_CHILD_SA:
-          default:
-            symbol = "error in exchange_type";
-            instance->rprev = "error";
-        }
-        /*
-        m = init_message(instance, MSG_TYPE_BLOCK_START,
-            symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        instance->add_message_to_send_queue(instance, m);
-        m = init_message(instance, MSG_TYPE_BLOCK_END, 
-            NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        instance->add_message_to_send_queue(instance, m);
-        printf("have added the message to the send queue\n");
-        */
-      }
-      ////////////////////////////
-      
 			DBG1(DBG_IKE, "received retransmit of request with ID %d, "
 				 "retransmitting response", mid);
 			this->ike_sa->set_statistic(this->ike_sa, STAT_INBOUND,

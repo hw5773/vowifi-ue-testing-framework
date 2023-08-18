@@ -11,18 +11,11 @@
         {
           "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "message_size",
-              "type": "uint16",
-              "value": 3000,
-              "op": "update"
+              "name": "nonce",
+              "op": "drop"
             }
           ]
         }

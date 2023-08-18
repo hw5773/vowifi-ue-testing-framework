@@ -335,21 +335,21 @@ METHOD(keymat_v2_t, derive_ike_keys, bool,
   ///// Added for VoWiFi /////
   int idx;
 
-  printf("inonce (%lu bytes)\n", nonce_i.len);
+  printf("[VoWiFi] inonce (%lu bytes)\n", nonce_i.len);
   for (idx=0; idx<nonce_i.len; idx++)
   {
     printf("%02x", nonce_i.ptr[idx]);
   }
   printf("\n");
 
-  printf("rnonce (%lu bytes)\n", nonce_r.len);
+  printf("[VoWiFi] rnonce (%lu bytes)\n", nonce_r.len);
   for (idx=0; idx<nonce_r.len; idx++)
   {
     printf("%02x", nonce_r.ptr[idx]);
   }
   printf("\n");
 
-  printf("dh shared secret (%lu bytes\n", secret.len);
+  printf("[VoWiFi] dh shared secret (%lu bytes)\n", secret.len);
   for (idx=0; idx<secret.len; idx++)
   {
     printf("%02x", secret.ptr[idx]);

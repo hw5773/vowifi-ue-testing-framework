@@ -5,39 +5,24 @@
         { 
           "receiver": "ue", 
           "name": "enable_vowifi",
-          "sender": "epdg"
-        }
-      ]
-    },
-    {
-      "testcase": [
+          "sender": "epdg",
+          "id": "1"
+        },
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
           "sender": "epdg"
-        }
-      ]
-    },
-    {
-      "testcase": [
+        },
         { 
           "receiver": "epdg", 
           "name": "ike_auth_1_response",
           "sender": "epdg"
-        }
-      ]
-    },
-    {
-      "testcase": [
+        },
         { 
           "receiver": "epdg", 
           "name": "ike_auth_2_response",
           "sender": "epdg"
-        }
-      ]
-    },
-    {
-      "testcase": [
+        },
         { 
           "receiver": "epdg", 
           "name": "ike_auth_3_response",

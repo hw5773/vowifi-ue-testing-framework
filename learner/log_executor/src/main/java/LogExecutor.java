@@ -246,6 +246,8 @@ public class LogExecutor {
       qrLogger.addFunctionalOracleResult(r1);
       logger.info("  Functional Oracle Result: " + r1);
 
+      logExecutor.sendDisableWiFi();
+
       logger.debug(">>>>> Liveness Test <<<<<");
       sleep(LIVENESS_SLEEP_TIME);
 
@@ -352,15 +354,20 @@ public class LogExecutor {
       msg += ispi;
       msg += rspi;
       msg += name;
+      logger.debug("msg 1: " + msg);
+      logger.debug("getOperator(): " + testcase.getOperator());
 
-      if (testcase.hasValue()) {
+      if (testcase.hasOperator()) {
         msg += ":";
         msg += testcase.getOperator();
-        msg += ":";
-        msg += testcase.getValueType().getValueTypeAsInteger();
-        msg += ":";
-        msg += testcase.getValue();
+        if (testcase.hasValue()) {
+          msg += ":";
+          msg += testcase.getValueType().getValueTypeAsInteger();
+          msg += ":";
+          msg += testcase.getValue();
+        }
       }
+      logger.debug("msg 2: " + msg);
 
       msg += "\n";
       if (receiver.startsWith("epdg")) {

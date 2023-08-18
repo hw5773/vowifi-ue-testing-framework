@@ -153,7 +153,7 @@ METHOD(diffie_hellman_t, set_other_public_value, bool,
 METHOD(diffie_hellman_t, get_my_public_value, bool,
 	private_gmp_diffie_hellman_t *this,chunk_t *value)
 {
-  printf("\n\n\n[KE] gmp_diffie_hellman.c\n\n\n");
+  //printf("\n\n\n[KE] gmp_diffie_hellman.c\n\n\n");
 	value->len = this->p_len;
 	value->ptr = mpz_export(NULL, NULL, 1, value->len, 1, 0, this->ya);
 	if (value->ptr == NULL)

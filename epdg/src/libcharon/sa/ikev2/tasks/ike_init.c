@@ -526,7 +526,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
           tmp = get_query_value(query, &tlen);
           size = (uint16_t) char_to_int(tmp, tlen, 10);
           nnoti = size / 8 - 10;
-          printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
+          printf("[VoWiFi] size: %d, nnoti: %d\n", size, nnoti);
 
           ntype = 10000;
           for (i=0; i<nnoti; i++)
@@ -544,7 +544,9 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 			/* include SPI of new IKE_SA when we are rekeying */
 			this->proposal->set_spi(this->proposal, id->get_responder_spi(id));
 		}
+
 		sa_payload = sa_payload_create_from_proposal_v2(this->proposal);
+
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -557,9 +559,24 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 
   ///// Added for VoWiFi (sa test) /////
   // Comment out if you want to drop the sa payload
-  //printf("before dropping the sa payload\n");
-	message->add_payload(message, (payload_t*)sa_payload);
-  //printf("after dropping the sa payload\n");
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "security_association"))
+        && (get_query_operator(query) == OP_TYPE_DROP))
+    {
+      printf("[VoWiFi] Drop the sa payload\n");
+    }
+    else
+    {
+      message->add_payload(message, (payload_t*)sa_payload);
+    }
+  }
+  else
+  {
+    message->add_payload(message, (payload_t*)sa_payload);
+  }
   //////////////////////////////////////
 
 	ke_payload = ke_payload_create_from_diffie_hellman(PLV2_KEY_EXCHANGE,
@@ -581,15 +598,47 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	{
     ///// Added for VoWiFi (ke test) /////
     // Comment out if you want to drop the ke payload
-    printf("before dropping the ke payload\n");
-		//message->add_payload(message, (payload_t*)ke_payload);
-    printf("after dropping the ke payload\n");
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "key_exchange"))
+          && (get_query_operator(query) == OP_TYPE_DROP))
+      {
+        printf("[VoWiFi] Drop the key exchange payload\n");
+      }
+      else
+      {
+		    message->add_payload(message, (payload_t*)ke_payload);
+      }
+    }
+    else
+    {
+		  message->add_payload(message, (payload_t*)ke_payload);
+    }
     //////////////////////////////////////
 
     ///// Added for VoWiFi (nonce test) /////
     // Comment out if you want to drop the nonce payload
     //printf("before dropping the nonce payload\n");
-		message->add_payload(message, (payload_t*)nonce_payload);
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "nonce"))
+          && (get_query_operator(query) == OP_TYPE_DROP))
+      {
+        printf("[VoWiFi] Drop the nonce payload\n");
+      }
+      else
+      {
+        message->add_payload(message, (payload_t*)nonce_payload);
+      }
+    }
+    else
+    {
+  		message->add_payload(message, (payload_t*)nonce_payload);
+    }
     //printf("after dropping the nonce payload\n");
     /////////////////////////////////////////
 	}
@@ -1360,9 +1409,9 @@ METHOD(task_t, build_r, status_t,
 	}
 
   ///// Added for VoWiFi (nonce test) /////
-  printf("\n\n\nthis->my_nonce (before): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
-  memset(this->my_nonce.ptr, 0, this->my_nonce.len);
-  printf("this->my_nonce (after): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
+  //printf("\n\n\nthis->my_nonce (before): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
+  //memset(this->my_nonce.ptr, 0, this->my_nonce.len);
+  //printf("this->my_nonce (after): %.*s\n", this->my_nonce.len, this->my_nonce.ptr);
   ///////////////////////////////////
 
 	if (!derive_keys(this, this->other_nonce, this->my_nonce))
