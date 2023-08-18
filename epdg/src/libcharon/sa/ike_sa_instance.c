@@ -6,10 +6,10 @@
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
 {
   int ret;
-  printf("[check_instance] this->instance: %p\n", instance);
+  //printf("[check_instance] this->instance: %p\n", instance);
 
-  if (instance)
-    printf("[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", instance->ispi, instance->rspi, ispi, rspi);
+  //if (instance)
+  //  printf("[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", instance->ispi, instance->rspi, ispi, rspi);
 
   if (!instance) 
     ret = 0;
@@ -128,7 +128,7 @@ instance_t *init_instance(int asock)
   ret->finished = false;
   if (pthread_mutex_init(&(ret->slock), NULL) != 0)
   {
-    printf("initializing a mutex for the send queue failed\n");
+    printf("[VoWiFi] initializing a mutex for the send queue failed\n");
   }
 
   ret->running = 1;
@@ -289,10 +289,10 @@ void set_query_name(query_t *query, uint8_t *name)
   int nlen = (int) strlen(name);
   if (name[nlen-1] == '\n')
     nlen -= 1;
-  printf("set_query_name()> name: %s, nlen: %d\n", name, nlen);
+  printf("[VoWiFi] set_query_name()> name: %s, nlen: %d\n", name, nlen);
   query->name = (uint8_t *)calloc(nlen+1, sizeof(uint8_t));
   memcpy(query->name, name, nlen);
-  printf("set_query_name()> query->name: %s\n", query->name);
+  printf("[VoWiFi] set_query_name()> query->name: %s\n", query->name);
   query->nlen = nlen;
 }
 
@@ -303,7 +303,7 @@ int get_query_operator(query_t *query)
 
 void set_query_operator(query_t *query, int op)
 {
-  printf("set_query_operator()> name: %s, op: %d\n", query->name, op);
+  printf("[VoWiFi] set_query_operator()> name: %s, op: %d\n", query->name, op);
   query->op = op;
 }
 
@@ -327,7 +327,7 @@ uint8_t *get_query_value(query_t *query, int *vlen)
 void set_query_value(query_t *query, uint8_t *value)
 {
   int vlen = (int) strlen(value);
-  printf("set_query_value()> value: %s, vlen: %d\n", value, vlen);
+  printf("[VoWiFi] set_query_value()> value: %s, vlen: %d\n", value, vlen);
   if (value[vlen-1] == '\n')
     vlen -= 1;
   query->value = (uint8_t *)calloc(vlen+1, sizeof(uint8_t));

@@ -17,7 +17,7 @@ def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "disable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus" or device == "HTC_U11" or device == "Blackview_A55" or device == "OnePlus Nord N20":
+    elif device == "moto_e5_plus" or device == "HTC_U11" or device == "Blackview_A55" or device =="OnePlus_Nord_N20" or device == "T-mobile_Revvl4":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
@@ -51,7 +51,7 @@ def handle_turn_on_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "enable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus" or device == "HTC_U11" or device == "Blackview_A55" or device =="OnePlus Nord N20":
+    elif device == "moto_e5_plus" or device == "HTC_U11" or device == "Blackview_A55" or device =="OnePlus_Nord_N20" or device == "T-mobile_Revvl4":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
@@ -199,7 +199,7 @@ def check_device_model():
         device = "SM_A21"
         logging.info("Device model: Samsung Galaxy A21")
     elif "5062W" in output:
-        device = "5062W"
+        device = "T-mobile_Revvl4"
         logging.info("Device model: T-mobile Revvl4")
     elif "moto_e5_plus" in output:
         device = "moto_e5_plus"
@@ -220,8 +220,11 @@ def check_device_model():
         device = "Blackview_A55"
         logging.info("Device model: A55")
     elif "OnePlus Nord N20" in output:
-        device = "OnePlus Nord N20"
+        device = "OnePlus_Nord_N20"
         logging.info("Device model: CPH2459")
+    elif "Z8850K" in output:
+        device = "ZTE_State_5G"
+        logging.info("Device model: ZTE STAGE 5G")
     else:
         device = "others"
         logging.info("Device model: Others")

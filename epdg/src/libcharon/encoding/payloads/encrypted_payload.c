@@ -531,7 +531,7 @@ static status_t encrypt_content(char *label, aead_t *aead, uint64_t mid,
   {
     p = icv.ptr;
 
-    printf("\n\n\n[VoWiFi] before mac:\n");
+    printf("[VoWiFi] before mac:\n");
     for (i=0; i<icv.len; i++)
     {
       printf("%02x ", p[i]);
@@ -664,7 +664,7 @@ static status_t encrypt_content(char *label, aead_t *aead, uint64_t mid,
       if (i % 16 == 15)
         printf("\n");
     }
-    printf("\n\n\n");
+    printf("\n");
   }
   ////////////////////////////
 

@@ -379,7 +379,6 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	else
 	{
     ///// Added for VoWiFi /////
-    printf("[check_instance] in ike_init.c 1\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       // encryption related
@@ -513,7 +512,6 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
       free(klen);
     }
 
-    printf("[check_instance] in ike_init.c 2\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -528,7 +526,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
           tmp = get_query_value(query, &tlen);
           size = (uint16_t) char_to_int(tmp, tlen, 10);
           nnoti = size / 8 - 10;
-          printf("\n\n[VoWiFi] size: %d, nnoti: %d\n\n\n", size, nnoti);
+          printf("[VoWiFi] size: %d, nnoti: %d\n", size, nnoti);
 
           ntype = 10000;
           for (i=0; i<nnoti; i++)
@@ -549,7 +547,6 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 
 		sa_payload = sa_payload_create_from_proposal_v2(this->proposal);
 
-    printf("[check_instance] in ike_init.c 3\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -562,7 +559,6 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 
   ///// Added for VoWiFi (sa test) /////
   // Comment out if you want to drop the sa payload
-  printf("[check_instance] in ike_init.c 4\n");
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     if ((query = get_query(instance))
@@ -574,13 +570,11 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
     }
     else
     {
-      printf("[VoWiFi] Fail to drop the sa payload 1\n");
       message->add_payload(message, (payload_t*)sa_payload);
     }
   }
   else
   {
-    printf("[VoWiFi] Fail to drop the sa payload 2\n");
     message->add_payload(message, (payload_t*)sa_payload);
   }
   //////////////////////////////////////
@@ -604,7 +598,6 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	{
     ///// Added for VoWiFi (ke test) /////
     // Comment out if you want to drop the ke payload
-    printf("[check_instance] in ike_init.c 5\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -616,13 +609,11 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
       }
       else
       {
-        printf("[VoWiFi] Fail to drop the key payload 1\n");
 		    message->add_payload(message, (payload_t*)ke_payload);
       }
     }
     else
     {
-      printf("[VoWiFi] Fail to drop the key payload 2\n");
 		  message->add_payload(message, (payload_t*)ke_payload);
     }
     //////////////////////////////////////
@@ -630,7 +621,6 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
     ///// Added for VoWiFi (nonce test) /////
     // Comment out if you want to drop the nonce payload
     //printf("before dropping the nonce payload\n");
-    printf("[check_instance] in ike_init.c 6\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -642,20 +632,17 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
       }
       else
       {
-        printf("[VoWiFi] Fail to drop the nonce payload 1\n");
         message->add_payload(message, (payload_t*)nonce_payload);
       }
     }
     else
     {
-      printf("[VoWiFi] Fail to drop the nonce payload 2\n");
   		message->add_payload(message, (payload_t*)nonce_payload);
     }
     //printf("after dropping the nonce payload\n");
     /////////////////////////////////////////
 	}
 
-  printf("[check_instance] in ike_init.c 7: instance: %p\n", instance);
 	/* negotiate fragmentation if we are not rekeying */
 	if (!this->old_sa &&
 		 ike_cfg->fragmentation(ike_cfg) != FRAGMENTATION_NO)
