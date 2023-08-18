@@ -213,9 +213,10 @@ def check_device_model():
     elif "OnePlus7T" in output:
         device = "OnePlus7T"
         logging.info("Device model: OnePlus7T")
-    elif "HTC_U11" in output:
-        device = "HTC_U11"
+    elif "HTC_U11_life" in output:
+        device = "HTC_U11_life"
         logging.info("Device model: HTC U11")
+<<<<<<< HEAD
     elif "Blackview_A55" in output:
         device = "Blackview_A55"
         logging.info("Device model: A55")
@@ -225,6 +226,32 @@ def check_device_model():
     elif "Z8850K" in output:
         device = "ZTE_State_5G"
         logging.info("Device model: ZTE STAGE 5G")
+=======
+    elif "A55" in output:
+        device = "A55"
+        logging.info("Device model: Blackview_A55")
+    elif "CPH2459" in output:
+        device = "CPH2459"
+        logging.info("Device model: OnePlus Nord N20")
+    elif "A13_Pro" in output:
+        device = "A13_Pro"
+        logging.info("Device model: UMIDIGI A13 Pro")
+    elif "A2020N3" in output:
+        device = "A2020N3"
+        logging.info("Device model: ZTE Stage 5G")
+    elif "Pixel_6a" in output:
+        device = "Pixel_6a"
+        logging.info("Device model: Pixel 6a Android 12")
+    elif "SOV41" in output:
+        device = "SOV41"
+        logging.info("Device model: Xperia 5")
+    elif "2201117TG" in output:
+        device = "2201117TG"
+        logging.info("Device model: Redmi Note 2")
+    elif "LG_Q730" in output:
+        device = "LG_Q730"
+        logging.info("Device model: LG Stylo 6")
+>>>>>>> 2a81fd95d01c7ec288b7230c880b90cbd6b6cc6d
     else:
         device = "others"
         logging.info("Device model: Others")
