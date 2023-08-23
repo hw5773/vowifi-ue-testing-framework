@@ -132,6 +132,8 @@ instance_t *init_instance(int asock)
   }
 
   ret->running = 1;
+  ret->imid = -1;
+  ret->rmid = -1;
 
   return ret;
 }

@@ -6,7 +6,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "sender": "epdg",
-          "id": "1-1"
+          "id": "drop-1"
         },
         {
           "receiver": "epdg",
@@ -27,7 +27,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "sender": "epdg",
-          "id": "1-2"
+          "id": "drop-2"
         },
         {
           "receiver": "epdg",
@@ -48,7 +48,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "sender": "epdg",
-          "id": "1-3"
+          "id": "drop-3"
         },
         {
           "receiver": "epdg",

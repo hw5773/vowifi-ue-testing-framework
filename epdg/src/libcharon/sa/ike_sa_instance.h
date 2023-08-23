@@ -94,6 +94,9 @@ typedef struct instance_st
 
   const uint8_t *rprev;
   const uint8_t *sprev;
+
+  int imid;
+  int rmid;
 } instance_t;
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
