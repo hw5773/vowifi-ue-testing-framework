@@ -1923,8 +1923,6 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	}
 
   ///// Added for VoWiFi /////        
-  if (entry)
-    printf("entry->ike_sa: %p\n", entry->ike_sa);
   if (entry 
       && ((ike_sa = entry->ike_sa) > 0x1000000)
       && (ispi = id->get_initiator_spi(id))
@@ -2504,7 +2502,24 @@ METHOD(ike_sa_manager_t, checkin_and_destroy, void,
 			remove_init_hash(this, entry->init_hash);
 		}
 
-		entry_destroy(entry);
+    ///// Added for VoWiFi /////
+    instance_t *instance;
+    uint64_t ispi, rspi;
+    instance = ike_sa->get_instance(ike_sa);
+    ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
+    rspi = ike_sa_id->get_responder_spi(ike_sa_id);
+
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      // We commented out the following statement to avoid segmentation faults
+      //
+		  //entry_destroy(entry);
+    }
+    else
+    {
+      //entry_destroy(entry);
+    }
+    ////////////////////////////
 
 		DBG2(DBG_MGR, "checkin and destroy of IKE_SA successful");
 	}

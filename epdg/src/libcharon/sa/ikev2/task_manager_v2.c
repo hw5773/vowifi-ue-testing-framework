@@ -1223,13 +1223,9 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   }
   ///////////////////////////
 
-  printf("[VoWiFi] 2\n");
 	enumerator = array_create_enumerator(this->passive_tasks);
 	while (enumerator->enumerate(enumerator, (void*)&task))
 	{
-  //printf("[VoWiFi] 2-2: task: %p\n", task);
-  //printf("[VoWiFi] 2-2-1: task->get_type: %p\n", task->get_type);
-  //printf("[VoWiFi] 2-2-2: task->get_type(task): %p\n", task->get_type(task));
 		if (task->get_type(task) == TASK_IKE_MID_SYNC)
 		{
 			mid_sync = TRUE;
@@ -1270,7 +1266,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		}
 	}
 	enumerator->destroy(enumerator);
-  printf("[VoWiFi] 3\n");
 
 	/* RFC 5996, section 2.6 mentions that in the event of a failure during
 	 * IKE_SA_INIT the responder's SPI will be 0 in the response, while it
@@ -1287,8 +1282,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    ///// this point 2
-    printf("[VoWiFi] task start\n");
     if ((query = get_query(instance))
         && is_query_name(query, "ike_auth_1_response")
         && (query = get_sub_query_by_name(query, "message_size")))
@@ -1524,11 +1517,9 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         }
       }
     }
-    ///// by here
     msg = init_message(instance, MSG_TYPE_BLOCK_END, 
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
-    printf("[VoWiFi] task end\n");
   }
   ////////////////////////////
 
@@ -1972,7 +1963,6 @@ static status_t process_request(private_task_manager_t *this,
           symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, msg);
     }
-    printf("\n\n\n[VoWiFi] retransmission: %d, symbol: %s, block start\n\n", retransmission, symbol);
   }
   ///////////////////////////
 
@@ -2045,13 +2035,11 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    printf("\n\n\nretransmission: %d, block end\n\n", retransmission);
     if (!retransmission)
     {
       msg = init_message(instance, MSG_TYPE_BLOCK_END, 
           NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, msg);
-      printf("have added the message to the send queue\n");
     }
   }
   ////////////////////////////

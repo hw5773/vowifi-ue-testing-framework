@@ -1,0 +1,71 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-1"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "op": "drop"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-2"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "key_exchange",
+              "op": "drop"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "op": "drop"
+            },
+            {
+              "name": "key_exchange",
+              "op": "drop"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
