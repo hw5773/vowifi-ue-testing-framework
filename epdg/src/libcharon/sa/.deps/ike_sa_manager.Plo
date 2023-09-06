@@ -247,7 +247,8 @@ sa/ike_sa_manager.lo: sa/ike_sa_manager.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
- /usr/include/x86_64-linux-gnu/bits/fcntl2.h
+ /usr/include/x86_64-linux-gnu/bits/fcntl2.h \
+ ../libsimaka/simaka_message.h ../libsimaka/simaka_crypto.h
 
 /usr/include/stdc-predef.h:
 
@@ -858,3 +859,7 @@ processing/jobs/delete_ike_sa_job.h:
 /usr/include/x86_64-linux-gnu/bits/stat.h:
 
 /usr/include/x86_64-linux-gnu/bits/fcntl2.h:
+
+../libsimaka/simaka_message.h:
+
+../libsimaka/simaka_crypto.h:

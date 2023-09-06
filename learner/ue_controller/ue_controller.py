@@ -11,7 +11,7 @@ import signal
 ACK = "ACK\n".encode()
 FAIL = "Fail\n".encode()
 REBOOT_TIMEOUT = 120
-REBOOT_WAIT_TIME = 5
+REBOOT_WAIT_TIME = 15
 
 def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
@@ -139,11 +139,26 @@ def handle_ue_reboot(client, device):
             break
         time.sleep(5)
     time.sleep(REBOOT_WAIT_TIME)
+    handle_init_config(device)
 
 def handle_adb_server_restart(client):
     adb_server_restart()
     time.sleep(1)
     client.send(ACK)
+
+def handle_init_config(device):
+    if device == "ZTE_State_5G":
+        logging.debug("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+
+        logging.debug("Toggle the WiFi Calling button")
+        for _ in range(3):
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+        logging.debug("Finish toggling the WiFi Calling button")
 
 def handle_client_connection(client, server, device):
     logging.info("Client handler initiated")
@@ -286,6 +301,7 @@ def main():
     server.listen(5)
     device = check_device_model()
     handle_turn_off_wifi_interface(device)
+    handle_init_config(device)
     #ue_reboot(device)
 
     try:

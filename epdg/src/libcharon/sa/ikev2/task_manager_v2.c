@@ -1272,12 +1272,28 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	 * actually explicitly allows it to be non-zero.  Since we use the responder
 	 * SPI to create hashes in the IKE_SA manager we can only set the SPI to
 	 * zero temporarily, otherwise checking the SA in would fail. */
-	if (delete && request->get_exchange_type(request) == IKE_SA_INIT)
-	{
-		id = this->ike_sa->get_id(this->ike_sa);
-		responder_spi = id->get_responder_spi(id);
-		id->set_responder_spi(id, 0);
-	}
+	//if (delete && request->get_exchange_type(request) == IKE_SA_INIT)
+	//{
+	//	id = this->ike_sa->get_id(this->ike_sa);
+	//	responder_spi = id->get_responder_spi(id);
+	//	id->set_responder_spi(id, 0);
+	//}
+
+  ///// Added for VoWiFi /////
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    printf("[VoWiFi] erronous message is generated\n");
+  }
+  else
+  {
+  	if (delete && request->get_exchange_type(request) == IKE_SA_INIT)
+	  {
+		  id = this->ike_sa->get_id(this->ike_sa);
+  		responder_spi = id->get_responder_spi(id);
+	  	id->set_responder_spi(id, 0);
+  	}
+  }
+  ////////////////////////////
 
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))

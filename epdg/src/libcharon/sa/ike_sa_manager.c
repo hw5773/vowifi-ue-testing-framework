@@ -48,6 +48,8 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <sa/ike_sa_instance.h>
+#include "../libsimaka/simaka_message.h"
+
 #define DEFAULT_EPDG_PORT 7778
 #define MAX_CLNT_SIZE 10
 #define VAR_TO_PTR_4BYTES(v, p) \
@@ -65,6 +67,17 @@
   v |= ((p[2] & 0xff) << 40); v |= ((p[3] & 0xff) << 32); \
   v |= ((p[4] & 0xff) << 24); v |= ((p[5] & 0xff) << 16); \
   v |= ((p[6] & 0xff) << 8); v |= (p[7] & 0xff);
+
+typedef struct eap_header_t ehdr_t;
+struct eap_header_t
+{
+  uint8_t code;
+  uint8_t identifier;
+  uint16_t length;
+  uint8_t type;
+  uint8_t subtype;
+  uint16_t reserved;
+} __attribute__((__packed__));
 ////////////////////////////
 
 
@@ -1731,9 +1744,19 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	bool is_init = FALSE;
 
   ///// Added for VoWiFi /////
+  const uint8_t *symbol;
+  enumerator_t *enumer;
+  notify_payload_t *noti;
+  payload_t *pload;
+  eap_payload_t *epload;
+  ehdr_t *ehdr;
   instance_t *instance;
+  msg_t *msg;
   int asock;
 	uint64_t ispi, rspi;
+  int retransmission = 0;
+
+  symbol = "unknown";
   ////////////////////////////
 
 	id = message->get_ike_sa_id(message);
@@ -1829,11 +1852,17 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
             if (check_instance(this->instance, ispi, rspi, UPDATE))
             {
               printf("[VoWiFi] ike_sa_manager.c: checkout_by_message(): setting the instance\n");
+
               //ike_sa->set_instance(ike_sa, this->instance);
               //instance = ike_sa->get_instance(ike_sa);
               //asock = -1;
               //if (instance)
               //  asock = instance->asock;
+              printf("\n\n[VoWiFi] this->instance: %p\n\n", this->instance);
+              printf("[VoWiFi] ispi: %.16"PRIx64": \n", id->get_initiator_spi(id));
+              printf("[VoWiFi] instance->ispi: %.16"PRIx64": \n", this->instance->ispi);
+              printf("[VoWiFi] rspi: %.16"PRIx64": \n", id->get_responder_spi(id));
+              printf("[VoWiFi] instance->rspi: %.16"PRIx64": \n", this->instance->rspi);
             }
 
             if (!(ike_sa->get_instance(ike_sa)))
@@ -1923,7 +1952,8 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	}
 
   ///// Added for VoWiFi /////        
-  if (entry 
+  printf("\n\n[VoWiFi] entry: %p\n", entry);
+  if (entry > 0x7f0000000000
       && ((ike_sa = entry->ike_sa) > 0x1000000)
       && (ispi = id->get_initiator_spi(id))
       && (rspi = id->get_responder_spi(id)))
@@ -1943,6 +1973,187 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
       */
     }
   }
+  /*
+  else
+  {
+    instance = this->instance;
+    printf("\n\n[VoWiFi] this->instance: %p\n", this->instance);
+    printf("[VoWiFi] instance->imid: %d\n", instance->imid);
+    printf("[VoWiFi] message->get_message_id(message): %d\n", message->get_message_id(message));
+    if (instance->imid > 0
+        && instance->imid == message->get_message_id(message))
+      retransmission = 1;
+    else
+      instance->imid++;
+
+    printf("[VoWiFi] instance->ispi: %.16"PRIx64"): \n", instance->ispi);
+    printf("[VoWiFi] instance->rspi: %.16"PRIx64"): \n", instance->rspi);
+    printf("[VoWiFi] instance->rprev: %s\n", instance->rprev);
+
+    if (!retransmission)
+    {
+      switch (message->get_exchange_type(message)) 
+      {
+        case IKE_SA_INIT:
+          symbol = "ike_sa_init_request";
+          instance->rprev = "ike_sa_init_request";
+          instance->imid = 0;
+          break;
+
+        case IKE_AUTH:
+          if (!strncmp(instance->rprev, "ike_sa_init_request", strlen("ike_sa_init_request")))
+          {
+            symbol = "ike_auth_1_request";
+            instance->rprev = "ike_auth_1_request";
+          }
+          else if (!strncmp(instance->rprev, "ike_auth_1_request", strlen("ike_auth_1_request")))
+          {
+            symbol = "ike_auth_2_request";
+            instance->rprev = "ike_auth_2_request";
+          }
+          else if (!strncmp(instance->rprev, "ike_auth_2_request", strlen("ike_auth_2_request")))
+          {
+            symbol = "ike_auth_3_request";
+            instance->rprev = "ike_auth_3_request";
+          }
+          else if (!strncmp(instance->rprev, "ike_auth_3_request", strlen("ike_auth_3_request")))
+          {
+            symbol = "ike_auth_4_request";
+            instance->rprev = "ike_auth_4_request";
+          }
+          else if (!strncmp(instance->rprev, "ike_auth_4_request", strlen("ike_auth_4_request")))
+          {
+            symbol = "ike_auth_5_request";
+            instance->rprev = "ike_auth_5_request";
+          }
+          else
+          {
+            symbol = "error in ike_auth";
+            instance->rprev = "error";
+          }
+          epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
+          if (epload)
+          {
+            ehdr = (ehdr_t *)epload->get_data(epload).ptr;
+            if (ehdr->subtype == AKA_CLIENT_ERROR)
+              symbol = "client_error";
+          }
+          break;
+
+      	case INFORMATIONAL:
+          enumer = message->create_payload_enumerator(message);
+        	while (enumer->enumerate(enumer, &pload))
+          {      			
+            if (pload->get_type(pload) == PLV2_DELETE)
+        	  {
+              symbol = "delete";
+            }
+            else if (pload->get_type(pload) == PLV2_NOTIFY)
+          	{
+		  	      noti = (notify_payload_t*)pload;
+        	  	switch (noti->get_notify_type(noti))
+        	  	{
+        	      case UNSUPPORTED_CRITICAL_PAYLOAD:
+                  symbol = "unsupported_critical_payload";
+                  break;
+    	          case INVALID_IKE_SPI:
+                  symbol = "invalid_ike_spi";
+                  break;
+                case INVALID_MAJOR_VERSION:
+                  symbol = "invalid_major_version";
+                  break;
+                case INVALID_SYNTAX:
+                  symbol = "invalid_syntax";
+                  break;
+        	      case INVALID_MESSAGE_ID:
+                  symbol = "invalid_message_id";
+                  break;
+          	    case INVALID_SPI:
+                  symbol = "invalid_spi";
+                  break;
+          	    case ATTRIBUTES_NOT_SUPPORTED:
+                  symbol = "attributes_not_supported";
+                  break;
+        	      case NO_PROPOSAL_CHOSEN:
+                  symbol = "no_proposal_chosen";
+                  break;
+          	    case INVALID_KE_PAYLOAD:
+                  symbol = "invalid_ke_payload";
+                  break;
+          	    case INVALID_CERT_ENCODING:
+                  symbol = "invalid_cert_encoding";
+                  break;
+        	      case INVALID_CERTIFICATE:
+                  symbol = "invalid_certificate";
+                  break;
+          	    case CERT_TYPE_UNSUPPORTED:
+                  symbol = "cert_type_unsupported";
+                  break;
+          	    case INVALID_CERT_AUTHORITY:
+                  symbol = "invalid_cert_authority";
+                  break;
+        	      case INVALID_HASH_INFORMATION:
+                  symbol = "invalid_hash_information";
+                  break;
+            	  case AUTHENTICATION_FAILED:
+                  symbol = "authentication_failed";
+                  break;
+          	    case SINGLE_PAIR_REQUIRED:
+                  symbol = "single_pair_required";
+                  break;
+          	    case NO_ADDITIONAL_SAS:
+                  symbol = "no_additional_sas";
+                  break;
+            	  case INTERNAL_ADDRESS_FAILURE:
+                  symbol = "internal_address_failure";
+                  break;
+          	    case FAILED_CP_REQUIRED:
+                  symbol = "failed_cp_required";
+                  break;
+          	    case TS_UNACCEPTABLE:
+                  symbol = "ts_unacceptable";
+                  break;
+        	      case INVALID_SELECTORS:
+                  symbol = "invalid_selectors";
+                  break;
+          	    case UNACCEPTABLE_ADDRESSES:
+                  symbol = "unacceptable_addresses";
+                  break;
+          	    case UNEXPECTED_NAT_DETECTED:
+                  symbol = "unexpected_nat_detected";
+                  break;
+        	      case USE_ASSIGNED_HoA:
+                  symbol = "use_assigned_hoa";
+                  break;
+          	    case TEMPORARY_FAILURE:
+                  symbol = "temporary_failure";
+                  break;
+          	    case CHILD_SA_NOT_FOUND:
+                  symbol = "chile_sa_not_found";
+                  break;
+			  		    default:
+                  symbol = "unknown";
+					  	    break;
+              }
+		    		}
+    	    	enumer->destroy(enumer);
+            break;
+
+    			case CREATE_CHILD_SA:
+          default:
+            symbol = "error in exchange_type";
+            instance->rprev = "error";
+        }
+        msg = init_message(instance, MSG_TYPE_BLOCK_START,
+            symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+        msg = init_message(instance, MSG_TYPE_BLOCK_END,
+            NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, msg);
+      }
+    }
+  }
+  */
   ////////////////////////////
 
 	id->destroy(id);
