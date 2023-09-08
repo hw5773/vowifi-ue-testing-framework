@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +49,8 @@ class QueryReplyLogger {
     int r1result; // 0: normal, 1: error, 2: maybe
     int r2result; // 0: normal, 1: not sending IKE_SA_INIT, 2: EAP-AKA error
 
-    String filename = this.outputDir + "/result." + id + "." + num;
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    String filename = this.outputDir + "/result." + id + "." + num + "." + timestamp;
     BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 
     tcs = (Testcases) this.testcases.get(this.testcases.size()-1);

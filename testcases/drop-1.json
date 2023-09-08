@@ -6,7 +6,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "sender": "epdg",
-          "id": "1-1"
+          "id": "init-drop-nonce"
         },
         {
           "receiver": "epdg",

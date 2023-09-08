@@ -247,6 +247,7 @@ public class LogExecutor {
       logger.info("  Functional Oracle Result: " + r1);
 
       logExecutor.sendDisableWiFi();
+      sleep(TESTCASE_SLEEP_TIME);
 
       logger.debug(">>>>> Liveness Test <<<<<");
       sleep(LIVENESS_SLEEP_TIME);
@@ -577,7 +578,7 @@ public class LogExecutor {
     logger.debug("FINISH: initIMSConnection()");
   }
 
-  public static List<QueryReplyPair> executeTestcase(LogExecutor logExecutor, Testcases testcase) {
+  public static List<QueryReplyPair> executeTestcase(LogExecutor logExecutor, Testcases testcase) throws InterruptedException {
     logger.debug("START: executeTestcase()");
 
     boolean timeoutOccured = false;
@@ -649,6 +650,7 @@ public class LogExecutor {
 
       logger.info("RESULT: " + pair.getReplyName());
     }
+    sleep(TESTCASE_SLEEP_TIME);
     logExecutor.post();
 
     if (exceptionOccured)

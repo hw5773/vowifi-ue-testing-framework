@@ -72,7 +72,7 @@ public class Oracle {
           && reply.contains("ike_sa_init_request"))
         ret = 0;
 
-      if (query.contains("client_error"))
+      if (reply.contains("client_error"))
         ret = 2;
     }
 
