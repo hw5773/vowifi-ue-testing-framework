@@ -50,7 +50,7 @@ class QueryReplyLogger {
     int r2result; // 0: normal, 1: not sending IKE_SA_INIT, 2: EAP-AKA error
 
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    String filename = this.outputDir + "/result." + id + "." + num + "." + timestamp;
+    String filename = this.outputDir + "/result." + id + "." + num + "." + timestamp.getTime();
     BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 
     tcs = (Testcases) this.testcases.get(this.testcases.size()-1);
