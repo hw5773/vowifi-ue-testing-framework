@@ -124,6 +124,7 @@ def handle_reset(client, device):
 def handle_ue_reboot(client, device):
     ue_reboot(device)
     time.sleep(5)
+    cnt = 0
     start = int(time.time())
     while True:
         cmd = ["adb", "devices", "-l"]
@@ -134,9 +135,13 @@ def handle_ue_reboot(client, device):
             break
         curr = int(time.time())
         if curr - start >= REBOOT_TIMEOUT:
-            logging.info("UE reboot failure: timeout")
-            client.send(FAIL)
-            break
+            if cnt < 3:
+                ue_reboot(device)
+                start = int(time.time())
+            else:
+                logging.info("UE reboot failure: timeout")
+                client.send(FAIL)
+                break
         time.sleep(5)
     time.sleep(REBOOT_WAIT_TIME)
     handle_init_config(device)
@@ -150,6 +155,18 @@ def handle_init_config(device):
     if device == "ZTE_State_5G":
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+
+        logging.debug("Toggle the WiFi Calling button")
+        for _ in range(3):
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+        logging.debug("Finish toggling the WiFi Calling button")
+    elif device == "A13_Pro":
+        logging.debug("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
 
@@ -229,7 +246,7 @@ def check_device_model():
         device = "OnePlus7T"
         logging.info("Device model: OnePlus7T")
     elif "HTC_U11_life" in output:
-        device = "HTC_U11_life"
+        device = "HTC_U11"
         logging.info("Device model: HTC U11")
     elif "CPH2459" in output:
         device = "OnePlusN20"
