@@ -245,6 +245,9 @@ def check_device_model():
     elif "OnePlus7T" in output:
         device = "OnePlus7T"
         logging.info("Device model: OnePlus7T")
+    elif "OnePlus9R" in output:
+        device = "OnePlus7T"
+        logging.info("Device model: OnePlus9R")
     elif "HTC_U11_life" in output:
         device = "HTC_U11"
         logging.info("Device model: HTC U11")
