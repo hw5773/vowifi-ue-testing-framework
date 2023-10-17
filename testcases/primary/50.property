@@ -1,0 +1,44 @@
+# RFC3261 Section 10.3: A registrar MUST not generate 6xx responses
+# RFC3261 Section 10.3: A registrar MUST NOT include a Record-Route header field in any response to a REGISTER request
+# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC
+# RFC3261 Section 10.3: If the authenticated user is not authorized to modify bindings, the registrar MUST return a 403 and skip the remaining step
+# RFC3261 Section 10.3: If the authenticated user is not authorized to modify bindings, the registrar MUST return a 403 and skip the remaining step
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "sender": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "sender": "ims"
+        }
+      ]
+    }
+  ]
+}
