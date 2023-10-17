@@ -1,0 +1,194 @@
+{
+  "ike_errors": [
+    { 
+      "receiver": "ims", 
+      "name": "400_bad_request",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "401_unauthorized",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "402_payment_required",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "403_forbidden",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "404_not_found",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "405_method_not_allowed",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "406_not_acceptable",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "407_proxy_authentication_required",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "408_request_timeout",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "410_gone",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "413_request_entity_too_large",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "414_request_uri_too_long",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "415_unsupported_media_type",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "416_unsupported_uri_scheme",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "420_bad_extension",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "423_interval_too_brief",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "480_temporarily_unavailable",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "481_call_transaction_does_not_exist",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "482_loop_detected",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "483_too_many_hops",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "484_address_incomplete",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "485_ambiguous",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "486_busy_here",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "487_request_terminated",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "488_not_acceptable_here",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "491_request_pending",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "493_undecipherable",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "500_server_internal_error",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "501_not_implemented",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "502_bad_gateway",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "503_service_unavailable",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "504_server_timeout",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "505_version_not_supported",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "513_message_too_large",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "600_busy_everywhere",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "603_decline",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "604_does_not_exist_anywhere",
+      "sender": "ims"
+    },
+    { 
+      "receiver": "ims", 
+      "name": "606_not_acceptable",
+      "sender": "ims"
+    }
+  ]
+}
