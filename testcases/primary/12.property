@@ -1,4 +1,4 @@
-# With a UE has transmitted an IKE_AUTH request message containing an EAP-Response/AKA-Challenge, when a UE receives an IKE_AUTH Response message including EAP-Success, then a UE transmits an IKE_AUTH Request message with Authentication payload
+# RFC 5996 11 (page 82): If the initiator guesses wrong (a DH group), the responder will respond with a notify payload of the type INVALID\_KE\_PAYLOAD indicating the selected group. In this case, the initiator MUST retry the IKE\_SA\_INIT with the corrected DH group
 
 {
   "testcases": [
@@ -12,25 +12,20 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication",
+              "name": "security_association",
               "sub": [
                 {
-                  "name": "code",
-                  "type": "uint8",
-                  "value": VALUE([1, 2, 3], [3])
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "diffie_hellman_group",
+                      "type": "uint16",
+                      "value": VALUE([0, 1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 65535], [2])
+                    }
+                  ]
                 }
               ]
             }

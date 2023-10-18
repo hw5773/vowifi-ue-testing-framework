@@ -1,4 +1,4 @@
-# With a UE has transmitted an IKE_AUTH request message containing an EAP-Response/AKA-Challenge, when a UE receives an IKE_AUTH Response message including EAP-Success, then a UE transmits an IKE_AUTH Request message with Authentication payload
+# RFC 5996 (page 10, figure): the IKE_SA_INIT response MUST contain the key exchange payload
 
 {
   "testcases": [
@@ -12,27 +12,10 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "code",
-                  "type": "uint8",
-                  "value": VALUE([1, 2, 3], [3])
-                }
-              ]
+              "name": "key_exchange"
             }
           ]
         }

@@ -1,4 +1,4 @@
-# RFC 5996 1 (page 5): All IKE_SA_INIT exchanges MUST complete before any other exchange type, then all IKE_AUTH exchanges MUST complete
+# RFC 5996: Both parities in the third IKE_AUTH exchange MUST verify that all signatures and Message Authentication Codes (MACs) are computed correctly.
 
 {
   "testcases": [
@@ -24,10 +24,17 @@
           "name": "ike_auth_2_response",
           "sender": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_auth_3_response",
-          "sender": "epdg"
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "message_authentication_code",
+              "type": "string",
+              "value": VALUE
+            }
+          ]
         }
       ]
     }

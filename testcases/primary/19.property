@@ -1,4 +1,4 @@
-# The UE should not accept the same sequence number
+# RFC 5996 (page 24): The UE should accept the same message id only if the message is retransmitted
 
 {
   "testcases": [
@@ -20,7 +20,7 @@
           "sender": "epdg",
           "sub": [
             {
-              "name": "sequence_number",
+              "name": "message_id",
               "type": "uint32",
               "value": VALUE
             }

@@ -1,4 +1,4 @@
-# Both parities in the IKE_AUTH exchange MUST verify that all signatures and Message Authentication Codes (MACs) are computed correctly.
+# RFC5996 (page 9): Both parities in the IKE_AUTH exchange MUST verify that all signatures and Message Authentication Codes (MACs) are computed correctly.
 
 {
   "testcases": [
@@ -14,14 +14,9 @@
           "name": "ike_sa_init_response",
           "sender": "epdg"
         },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
         {
           "receiver": "epdg",
-          "name": "ike_auth_2_response",
+          "name": "ike_auth_1_response",
           "sender": "epdg",
           "sub": [
             {

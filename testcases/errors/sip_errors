@@ -1,5 +1,5 @@
 {
-  "ike_errors": [
+  "sip_errors": [
     { 
       "receiver": "ims", 
       "name": "400_bad_request",

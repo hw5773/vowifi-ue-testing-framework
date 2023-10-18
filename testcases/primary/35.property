@@ -1,4 +1,4 @@
-# RFC 5996 1 (page 5): All IKE_SA_INIT exchanges MUST complete before any other exchange type, then all IKE_AUTH exchanges MUST complete
+# RFC3261 Section 10.3: A registrar MUST not generate 6xx responses
 
 {
   "testcases": [
@@ -19,15 +19,20 @@
           "name": "ike_auth_1_response",
           "sender": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_auth_2_response",
           "sender": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_auth_3_response",
-          "sender": "epdg"
+          "sender": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "sender": "ims"
         }
       ]
     }

@@ -1,4 +1,4 @@
-# In eap-aka, AT_MAC is based on a keyed message authentication code.
+# RFC5996 6 (page 81): The IKE_SA_INIT response message should include an encryption algorithm that is supported by the peer
 
 {
   "testcases": [
@@ -12,20 +12,20 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication",
+              "name": "security_association",
               "sub": [
                 {
-                  "name": "at_checkcode",
-                  "type": "uint16",
-                  "value": VALUE
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "encryption_algorithm",
+                      "type": "uint16",
+                      "value": VALUE([0, 3, 6, 7, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 65535], [12])
+                    }
+                  ]
                 }
               ]
             }

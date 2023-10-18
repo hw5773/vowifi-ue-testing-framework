@@ -1,4 +1,4 @@
-# The IKE_SA_INIT response message should include an integrity algorithm that is supported by the peer
+# RFC 5996 (page 96): the size of the nonce value MUST be between 16 and 256 octets
 
 {
   "testcases": [
@@ -15,17 +15,12 @@
           "sender": "epdg",
           "sub": [
             {
-              "name": "security_association",
+              "name": "nonce",
               "sub": [
                 {
-                  "name": "transform",
-                  "sub": [
-                    {
-                      "name": "integrity_algorithm",
-                      "type": "uint16",
-                      "value": VALUE([1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1024], [2])
-                    }
-                  ]
+                  "name": "nonce_length",
+                  "type": "uint16",
+                  "value": VALUE([0, 20, 260, 1000, 65535], [20])
                 }
               ]
             }

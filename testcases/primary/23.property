@@ -1,4 +1,4 @@
-# RFC 5996 12 (page 87): the IKE_SA_INIT response message should include a valid diffie-hellman key exchange data in a negotiated DH group
+# RFC 4187 (page 49): In EAP-Request/AKA-Challenge delivered by the first IKE AUTH message, AT_MAC MUST be included
 
 {
   "testcases": [
@@ -12,13 +12,18 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
           "sender": "epdg",
           "sub": [
             {
-              "name": "key_exchange",
+              "name": "extensible_authentication",
               "sub": [
                 {
-                  "name": "key_exchange_data",
+                  "name": "at_mac",
                   "type": "string",
                   "value": VALUE
                 }

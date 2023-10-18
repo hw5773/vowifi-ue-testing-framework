@@ -1,4 +1,4 @@
-# with a UE has transmitted an IKE_SA_INIT Request message addressed to the ePDG to initiate security association establishmemt, when a UE should receive an IKE_SA_INIT response message
+# RFC 5996 8: (page 81): The IKE_SA_INIT response message should include an integrity algorithm that is supported by the peer
 
 {
   "testcases": [
@@ -12,7 +12,24 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg"
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "integrity_algorithm",
+                      "type": "uint16",
+                      "value": VALUE([0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1024, 65535], [2])
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     }

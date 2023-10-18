@@ -1,4 +1,4 @@
-# In eap-aka, AT_MAC is based on a keyed message authentication code.
+# TS 33.402 (page 35, figure): The IKE_AUTH response message includes the EAP-Request/AKA-Challenge message to start the EAP procedure over IKEv2
 
 {
   "testcases": [
@@ -20,14 +20,7 @@
           "sender": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "at_mac",
-                  "type": "string",
-                  "value": VALUE
-                }
-              ]
+              "name": "extensible_authentication"
             }
           ]
         }
