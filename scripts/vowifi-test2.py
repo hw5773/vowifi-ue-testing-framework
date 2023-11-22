@@ -2,7 +2,9 @@ import re
 import pandas as pd
 
 
-def extract_information(log_text):
+# PATH를 계속 바뀌도록 설정 #log_text는 따로
+def extract_information(PATH, log_text):
+    PATH
     # 1. 휴대폰 device 이름 추출
     device_name_matches = re.findall(r"vowifi-log/([^/]+)/", log_text)
     device_names = device_name_matches if device_name_matches else None
@@ -15,7 +17,7 @@ def extract_information(log_text):
         )
         experiment_information = (
             experiment_information_matches if experiment_information_matches else None
-        )
+        )  # name과 id점으로 나누기
 
         # 3. 각 experiment_information에 대한 Functional Oracle과 Liveness Oracle 추출
         functional_oracles = []
@@ -38,8 +40,8 @@ def extract_information(log_text):
             {
                 "device_name": device_name,
                 "experiment_information": experiment_information,
-                "functional_oracles": functional_oracles,
-                "liveness_oracles": liveness_oracles,
+                "functional_oracles": functional_oracles,  # 얘만 뽑을 수 있도록 추가
+                "liveness_oracles": liveness_oracles,  # 예만 뽑을 수 있도록 추가
             }
         )
 
