@@ -1,8 +1,9 @@
 import os
+import sys
 import pandas as pd
 
 path = os.getcwd()
-device_names = os.listdir(path)
+device_names = [d for d in os.listdir(path) if os.path.isdir(d)]
 
 vowifi_data = []
 
@@ -15,7 +16,7 @@ for device_name in device_names:  # device이름 순서대로 하나씩 진행
 
         with open(file_path, "r") as file:
             lines = file.readlines()  # result.init의 각 줄을 읽음,list형태
-
+        print(experiment_file)
         experiment_name = experiment_file.split(".")[1]
         experiment_id = experiment_file.split(".")[2]
 
@@ -41,6 +42,7 @@ for device_name in device_names:  # device이름 순서대로 하나씩 진행
 df = pd.DataFrame(vowifi_data)
 
 print(df)
+df.to_csv('vowifi_data.csv')
 
 while True:
     selected_device = input("Select a device name (type 'exit' to quit): ")
