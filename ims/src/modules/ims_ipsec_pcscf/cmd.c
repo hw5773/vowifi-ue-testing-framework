@@ -707,11 +707,27 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
 
         ipsec_t* s = NULL;
 
+        LM_INFO("before cscf_get_security\n");
         // Parse security parameters from the REGISTER request and get some data for the tunnels
         if((sec_params = cscf_get_security(req)) == NULL) {
             LM_CRIT("No security parameters in REGISTER request\n");
             goto cleanup;
         }
+
+        ///// Added for VoWiFi /////
+        shm_free(sec_params->data.ipsec->r_ealg.s);
+        sec_params->data.ipsec->r_ealg.s = shm_malloc(4);
+        memcpy(sec_params->data.ipsec->r_ealg.s, "null", 4);
+        sec_params->data.ipsec->r_ealg.len = 4;
+
+        shm_free(sec_params->data.ipsec->r_alg.s);
+        sec_params->data.ipsec->r_alg.s = shm_malloc(11);
+        memcpy(sec_params->data.ipsec->r_alg.s, "hmac-md5-96", 11);
+        sec_params->data.ipsec->r_alg.len = 11;
+
+        LM_INFO("ealg: %.*s\n", STR_FMT(&(sec_params->data.ipsec->r_ealg)));
+        LM_INFO("alg: %.*s\n", STR_FMT(&(sec_params->data.ipsec->r_alg)));
+        ////////////////////////////
 
         if (sec_params->data.ipsec->port_uc != pcontact->security_temp->data.ipsec->port_uc ||
             sec_params->data.ipsec->port_us != pcontact->security_temp->data.ipsec->port_us ||
@@ -766,7 +782,8 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
             }
         } else {
 
-            s = pcontact->security_temp->data.ipsec;
+            //s = pcontact->security_temp->data.ipsec;
+            s = sec_params->data.ipsec;
 
             if(update_contact_ipsec_params(s, m, 1) != 0) {
                 goto cleanup;
@@ -790,7 +807,7 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
         if(add_supported_secagree_header(m) != 0) {
             goto cleanup;
         }
-
+        LM_INFO("add_security_server_header 1\n");
         if(add_security_server_header(m, s) != 0) {
             goto cleanup;
         }
@@ -820,14 +837,17 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
         req_sec_params->data.ipsec->port_ps = pcontact->security_temp->data.ipsec->port_ps;
         req_sec_params->data.ipsec->port_pc = pcontact->security_temp->data.ipsec->port_pc;
 
+        LM_INFO("before create_ipsec_tunnel 2: ealg: %.*s\n", STR_FMT(&(req_sec_params->data.ipsec->r_ealg)));
         if(create_ipsec_tunnel(&req->rcv.src_ip, req_sec_params->data.ipsec) != 0){
             goto cleanup;
         }
+        LM_INFO("after create_ipsec_tunnel 2: ealg: %.*s\n", STR_FMT(&(req_sec_params->data.ipsec->r_ealg)));
 
         if(add_supported_secagree_header(m) != 0) {
             goto cleanup;
         }
 
+        LM_INFO("add_security_server_header 2\n");
         if(add_security_server_header(m, req_sec_params->data.ipsec) != 0) {
             goto cleanup;
         }
@@ -1034,6 +1054,7 @@ int ipsec_forward(struct sip_msg* m, udomain_t* d)
             goto cleanup;
         }
 
+        LM_INFO("add_security_server_header 3\n");
         if(add_security_server_header(m, s) != 0) {
             goto cleanup;
         }

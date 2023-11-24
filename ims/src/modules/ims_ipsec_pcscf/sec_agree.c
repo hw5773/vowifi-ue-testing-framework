@@ -25,6 +25,9 @@
 #include "../../core/parser/msg_parser.h"
 #include "../../core/mem/mem.h"
 
+extern str ipsec_preferred_alg;
+extern str ipsec_preferred_ealg;
+
 static uint32_t parse_digits(str value)
 {
     uint32_t ret = 0;
@@ -68,13 +71,18 @@ static void trim_whitespaces(str* string) {
         DST.len = SRC.len;
 
 
-static int process_sec_agree_param(str name, str value, ipsec_t *ret)
+static int process_sec_agree_param(str name, str value, ipsec_t *ret, char *alg_found, char *ealg_found)
 {
     trim_whitespaces(&name);
     trim_whitespaces(&value);
 
     if(strncasecmp(name.s, "alg", name.len) == 0) {
         SEC_COPY_STR_PARAM(ret->r_alg, value);
+
+        LM_INFO("ipsec_preferred_alg: %.*s\n", STR_FMT(&ipsec_preferred_alg));
+        if (ipsec_preferred_alg.len && STR_EQ(value, ipsec_preferred_alg)) {
+            *alg_found = 1;
+        }
     }
     else if(strncasecmp(name.s, "prot", name.len) == 0) {
         SEC_COPY_STR_PARAM(ret->prot, value);
@@ -84,6 +92,11 @@ static int process_sec_agree_param(str name, str value, ipsec_t *ret)
     }
     else if(strncasecmp(name.s, "ealg", name.len) == 0) {
         SEC_COPY_STR_PARAM(ret->r_ealg, value);
+
+        LM_INFO("ipsec_preferred_ealg: %.*s\n", STR_FMT(&ipsec_preferred_ealg));
+        if (ipsec_preferred_ealg.len && STR_EQ(value, ipsec_preferred_ealg)) {
+            *ealg_found = 1;
+        }
     }
     else if(strncasecmp(name.s, "spi-c", name.len) == 0) {
         ret->spi_uc = parse_digits(value);
@@ -157,6 +170,9 @@ static security_t* parse_sec_agree(struct hdr_field* h)
     body.s=body.s+i+1;
     body.len=body.len-i-1;
 
+    char preferred_alg_found = 0;
+    char preferred_ealg_found = 0;
+
     // get the rest of the parameters
     i = 0;
     while(i <= body.len) {
@@ -176,8 +192,26 @@ static security_t* parse_sec_agree(struct hdr_field* h)
             i=0;
 
             if(name.len && value.len) {
-                if(process_sec_agree_param(name, value, params->data.ipsec)) {
+                if (strncasecmp(name.s, "alg", name.len) == 0) {
+                    if (preferred_alg_found && preferred_ealg_found) {
+                        break;
+                    }
+                    preferred_alg_found = 0;
+                    preferred_ealg_found = 0;
+                }
+
+                char alg_found = 0;
+                char ealg_found = 0;
+
+                if(process_sec_agree_param(name, value, params->data.ipsec, &alg_found, &ealg_found)) {
                     goto cleanup;
+                }
+
+                if (alg_found) {
+                    preferred_alg_found = 1;
+                }
+                if (ealg_found) {
+                    preferred_ealg_found = 1;
                 }
             }
             //else - something's wrong. Ignore!
@@ -203,6 +237,7 @@ static security_t* parse_sec_agree(struct hdr_field* h)
         }
     }
 
+    LM_INFO("params->data.ipsec->r_ealg: %.*s\n", STR_FMT(&(params->data.ipsec->r_ealg)));
     return params;
 
 cleanup:
@@ -243,15 +278,18 @@ security_t* cscf_get_security(struct sip_msg *msg)
 
     if (!msg) return NULL;
 
+    LM_INFO("here in cscf_get_security 1\n");
     if (parse_headers(msg, HDR_EOH_F, 0)<0) {
         return NULL;
     }
+    LM_INFO("here in cscf_get_security 2\n");
 
     h = msg->headers;
     while(h)
     {
         if (h->name.len == s_security_client.len && strncasecmp(h->name.s, s_security_client.s, s_security_client.len)==0)
         {
+            LM_INFO("before parse_sec_agree\n");
             return parse_sec_agree(h);
         }
 

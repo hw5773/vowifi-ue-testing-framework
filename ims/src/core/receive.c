@@ -62,9 +62,9 @@
 ///// Added for VoWiFi /////
 #include "sip_instance.h"
 #include <sys/shm.h>
-#define SHARED_MEMORY_INSTANCE_KEY 1234
-#define SHARED_MEMORY_MESSAGE_KEY 1235
-#define SHARED_MEMORY_QUERY_KEY 1236
+//#define SHARED_MEMORY_INSTANCE_KEY 1234
+//#define SHARED_MEMORY_MESSAGE_KEY 1235
+//#define SHARED_MEMORY_QUERY_KEY 1236
 ////////////////////////////
 
 int _sr_ip_free_bind = 0;
