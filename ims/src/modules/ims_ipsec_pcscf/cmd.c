@@ -59,6 +59,10 @@
 
 #include <arpa/inet.h>
 
+///// Added for VoWiFi /////
+#include "../../core/sip_instance.h"
+#include <sys/shm.h>
+////////////////////////////
 
 extern str ipsec_listen_addr;
 extern str ipsec_listen_addr6;
@@ -661,6 +665,12 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
     pcontact_t* pcontact = NULL;
     struct pcontact_info ci;
     int ret = IPSEC_CMD_FAIL;   // FAIL by default
+    ///// Added for VoWiFi /////
+    instance_t *instance = NULL;
+    query_t *query;
+    uint8_t *tmp;
+    int vtype, tlen, op;
+    ////////////////////////////
 
     // Find the contact
     if(fill_contact(&ci, m) != 0) {
@@ -715,18 +725,56 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
         }
 
         ///// Added for VoWiFi /////
-        shm_free(sec_params->data.ipsec->r_ealg.s);
-        sec_params->data.ipsec->r_ealg.s = shm_malloc(4);
-        memcpy(sec_params->data.ipsec->r_ealg.s, "null", 4);
-        sec_params->data.ipsec->r_ealg.len = 4;
+        if (vowifi)
+        {
+          int shmid;
 
-        shm_free(sec_params->data.ipsec->r_alg.s);
-        sec_params->data.ipsec->r_alg.s = shm_malloc(11);
-        memcpy(sec_params->data.ipsec->r_alg.s, "hmac-md5-96", 11);
-        sec_params->data.ipsec->r_alg.len = 11;
+          shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666);
+          if (shmid == -1)
+          {
+            LM_ERR("[VoWiFi] error in shmget()\n");
+          }
+          else
+          {
+            instance = (instance_t *)shmat(shmid, NULL, 0);
+            if ((query = get_query(instance))
+                && is_query_name(query, "401_unauthorized")
+                && (query = get_sub_query_by_name(query, "security_server"))
+                && (query = get_sub_query_by_name(query, "ealg")))
+            {
+              vtype = get_query_value_type(query);
+              op = get_query_operator(query);
+              if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+              {
+                tmp = get_query_value(query, &tlen);
+                shm_free(sec_params->data.ipsec->r_ealg.s);
+                sec_params->data.ipsec->r_ealg.s = shm_malloc(tlen);
+                memcpy(sec_params->data.ipsec->r_ealg.s, tmp, tlen);
+                sec_params->data.ipsec->r_ealg.len = tlen;
+              }
+            }
 
-        LM_INFO("ealg: %.*s\n", STR_FMT(&(sec_params->data.ipsec->r_ealg)));
-        LM_INFO("alg: %.*s\n", STR_FMT(&(sec_params->data.ipsec->r_alg)));
+            if ((query = get_query(instance))
+                && is_query_name(query, "401_unauthorized")
+                && (query = get_sub_query_by_name(query, "security_server"))
+                && (query = get_sub_query_by_name(query, "alg")))
+            {
+              vtype = get_query_value_type(query);
+              op = get_query_operator(query);
+              if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+              {
+                tmp = get_query_value(query, &tlen);
+                shm_free(sec_params->data.ipsec->r_alg.s);
+                sec_params->data.ipsec->r_alg.s = shm_malloc(tlen);
+                memcpy(sec_params->data.ipsec->r_alg.s, tmp, tlen);
+                sec_params->data.ipsec->r_alg.len = tlen;
+              }
+            }
+
+            LM_INFO("ealg: %.*s\n", STR_FMT(&(sec_params->data.ipsec->r_ealg)));
+            LM_INFO("alg: %.*s\n", STR_FMT(&(sec_params->data.ipsec->r_alg)));
+          }
+        }
         ////////////////////////////
 
         if (sec_params->data.ipsec->port_uc != pcontact->security_temp->data.ipsec->port_uc ||

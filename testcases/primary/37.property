@@ -35,7 +35,7 @@
           "sender": "ims",
           "sub": [
             {
-              "name": "WWW-Authenticate",
+              "name": "www_authenticate",
               "sub": [
                 {
                   "name": "algorithm",

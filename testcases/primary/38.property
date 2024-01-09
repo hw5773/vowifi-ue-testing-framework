@@ -1,0 +1,52 @@
+# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the algorithm should be specified)
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "sender": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "sender": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "alg",
+                  "type": "string",
+                  "value": VALUE
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
