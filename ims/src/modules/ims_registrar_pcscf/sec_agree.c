@@ -255,6 +255,7 @@ security_t* cscf_get_security(struct sip_msg *msg)
     {
         if (h->name.len == s_security_client.len && strncasecmp(h->name.s, s_security_client.s, s_security_client.len)==0)
         {
+            LM_INFO("before parse_sec_agree() in cscf_get_security() in ims_registrar_pcscf 1\n");
             return parse_sec_agree(h);
         }
 
@@ -287,6 +288,7 @@ security_t* cscf_get_security_verify(struct sip_msg *msg)
     {
         if (h->name.len == s_security_verify.len && strncasecmp(h->name.s, s_security_verify.s, s_security_verify.len)==0)
         {
+            LM_INFO("before parse_sec_agree() in cscf_get_security() in ims_registrar_pcscf 2\n");
             return parse_sec_agree(h);
         }
 

@@ -78,10 +78,11 @@ static int process_sec_agree_param(str name, str value, ipsec_t *ret, char *alg_
 
     if(strncasecmp(name.s, "alg", name.len) == 0) {
         SEC_COPY_STR_PARAM(ret->r_alg, value);
-
-        LM_INFO("ipsec_preferred_alg: %.*s\n", STR_FMT(&ipsec_preferred_alg));
+        LM_INFO("ipsec_preferred_alg (%d bytes): %.*s, value (%d bytes): %.*s\n", 
+            ipsec_preferred_alg.len, ipsec_preferred_alg.len, ipsec_preferred_alg.s,
+            value.len, value.len, value.s);
         if (ipsec_preferred_alg.len && STR_EQ(value, ipsec_preferred_alg)) {
-            *alg_found = 1;
+          *alg_found = 1;
         }
     }
     else if(strncasecmp(name.s, "prot", name.len) == 0) {
@@ -92,10 +93,11 @@ static int process_sec_agree_param(str name, str value, ipsec_t *ret, char *alg_
     }
     else if(strncasecmp(name.s, "ealg", name.len) == 0) {
         SEC_COPY_STR_PARAM(ret->r_ealg, value);
+        LM_INFO("ipsec_preferred_ealg: %.*s, value: %.*s\n", ipsec_preferred_ealg.len, ipsec_preferred_ealg.s,
+            value.len, value.s);
 
-        LM_INFO("ipsec_preferred_ealg: %.*s\n", STR_FMT(&ipsec_preferred_ealg));
         if (ipsec_preferred_ealg.len && STR_EQ(value, ipsec_preferred_ealg)) {
-            *ealg_found = 1;
+          *ealg_found = 1;
         }
     }
     else if(strncasecmp(name.s, "spi-c", name.len) == 0) {
@@ -177,7 +179,7 @@ static security_t* parse_sec_agree(struct hdr_field* h)
     i = 0;
     while(i <= body.len) {
         //look for end of buffer or parameter separator
-        if(i == body.len || body.s[i] == ';' ) {
+        if(i == body.len || body.s[i] == ';' || body.s[i] == ',' || body.s[i] == ' ') {
             if(name.len) {
                 // if(name.len) => a param name is parsed
                 // and now i points to the end of its value
@@ -192,26 +194,27 @@ static security_t* parse_sec_agree(struct hdr_field* h)
             i=0;
 
             if(name.len && value.len) {
+                char alg_found = 0;
+                char ealg_found = 0;
+                if(process_sec_agree_param(name, value, params->data.ipsec, &alg_found, &ealg_found)) {
+                    goto cleanup;
+                }
+                if (alg_found) {
+                    LM_INFO("preferred_alg_found is set to 1\n");
+                    preferred_alg_found = 1;
+                }
+                if (ealg_found) {
+                    LM_INFO("preferred_ealg_found is set to 1\n");
+                    preferred_ealg_found = 1;
+                }
                 if (strncasecmp(name.s, "alg", name.len) == 0) {
+                    LM_INFO("preferred_alg_found: %d, preferred_ealg_found: %d\n", 
+                        preferred_alg_found, preferred_ealg_found);
                     if (preferred_alg_found && preferred_ealg_found) {
                         break;
                     }
                     preferred_alg_found = 0;
                     preferred_ealg_found = 0;
-                }
-
-                char alg_found = 0;
-                char ealg_found = 0;
-
-                if(process_sec_agree_param(name, value, params->data.ipsec, &alg_found, &ealg_found)) {
-                    goto cleanup;
-                }
-
-                if (alg_found) {
-                    preferred_alg_found = 1;
-                }
-                if (ealg_found) {
-                    preferred_ealg_found = 1;
                 }
             }
             //else - something's wrong. Ignore!
@@ -237,7 +240,8 @@ static security_t* parse_sec_agree(struct hdr_field* h)
         }
     }
 
-    LM_INFO("params->data.ipsec->r_ealg: %.*s\n", STR_FMT(&(params->data.ipsec->r_ealg)));
+    LM_INFO("alg in params: %.*s\n", params->data.ipsec->r_alg.len, params->data.ipsec->r_alg.s);
+    LM_INFO("ealg in params: %.*s\n", params->data.ipsec->r_ealg.len, params->data.ipsec->r_ealg.s);
     return params;
 
 cleanup:
@@ -278,18 +282,16 @@ security_t* cscf_get_security(struct sip_msg *msg)
 
     if (!msg) return NULL;
 
-    LM_INFO("here in cscf_get_security 1\n");
     if (parse_headers(msg, HDR_EOH_F, 0)<0) {
         return NULL;
     }
-    LM_INFO("here in cscf_get_security 2\n");
 
     h = msg->headers;
     while(h)
     {
         if (h->name.len == s_security_client.len && strncasecmp(h->name.s, s_security_client.s, s_security_client.len)==0)
         {
-            LM_INFO("before parse_sec_agree\n");
+            LM_INFO("before parse_sec_agree() in cscf_get_security() in ims_ipsec_pcscf\n");
             return parse_sec_agree(h);
         }
 

@@ -782,8 +782,13 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
             }
         } else {
 
+            ///// Commented out for VoWiFi /////
             //s = pcontact->security_temp->data.ipsec;
+            ////////////////////////////////////
+
+            ///// Added for VoWiFi /////
             s = sec_params->data.ipsec;
+            ////////////////////////////
 
             if(update_contact_ipsec_params(s, m, 1) != 0) {
                 goto cleanup;
