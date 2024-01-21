@@ -6,7 +6,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "sender": "epdg",
-          "id": "init-drop-nonce"
+          "id": "init-drop-kex"
         },
         {
           "receiver": "epdg",
@@ -14,7 +14,7 @@
           "sender": "epdg",
           "sub": [
             {
-              "name": "nonce",
+              "name": "key_exchange",
               "op": "drop"
             }
           ]

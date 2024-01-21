@@ -282,11 +282,14 @@ def check_device_model():
         device = "SOV41"
         logging.info("Device model: Xperia 5")
     elif "2201117TG" in output:
-        device = "2201117TG"
+        device = "Redmi_Note2"
         logging.info("Device model: Redmi Note 2")
     elif "LG_Q730" in output:
         device = "LG_Q730"
         logging.info("Device model: LG Stylo 6")
+    elif "T608M" in output:
+        device = "TCL40XL"
+        logging.info("Device model: TCL 40XL")
     else:
         device = "others"
         logging.info("Device model: Others")

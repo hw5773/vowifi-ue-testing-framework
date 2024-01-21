@@ -62,7 +62,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    //initIMSConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -83,6 +83,9 @@ public class LogExecutor {
     Option argID = new Option("i", "id", true, "Starting testcase ID");
     options.addOption(argID);
 
+    Option argNum = new Option("n", "num", true, "Starting testcase Num");
+    options.addOption(argNum);
+
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
     CommandLine cmd = null;
@@ -99,6 +102,10 @@ public class LogExecutor {
     String testcaseFilePath = cmd.getOptionValue("file");
     String configFilePath = cmd.getOptionValue("config", DEFAULT_CONF_FILE);
     String startID = cmd.getOptionValue("id");
+    String tmpNum = cmd.getOptionValue("num");
+    int startNum = 0;
+    if (tmpNum != null)
+      startNum = Integer.parseInt(tmpNum);
 
     if (testcaseFilePath == null) {
       logger.error("Query File should be inserted");
@@ -186,7 +193,7 @@ public class LogExecutor {
     boolean matched = false;
 
     testcaseNum = 0;
-    if (startID == null)
+    if (startID == null && startNum == 0)
       matched = true;
 
     rpath = config.getLivenessTestcasePath();
@@ -209,8 +216,9 @@ public class LogExecutor {
       if (matched == false) {
         if (testcaseID.equals(startID)) {
           matched = true;
-        }
-        else {
+        } else if (testcaseNum == startNum) {
+          matched = true;
+        } else {
           logger.info("Skipping Testcase #" + testcaseNum + " (" + testcaseID + ")");
           continue;
         }
@@ -1139,7 +1147,7 @@ public class LogExecutor {
         } catch (Exception e) {
           e.printStackTrace();
         }
-			}while(resetDone == false);
+			} while(resetDone == false);
 
       if (ueSocket != null) {
         ueIn = new BufferedReader(new InputStreamReader(ueSocket.getInputStream()));
@@ -1274,11 +1282,14 @@ public class LogExecutor {
         */
       }
     } catch(SocketTimeoutException e) {
-      logger.error("Timeout in Socket with ePDG");
-      e.printStackTrace();
+      logger.error("Timeout in Socket with ePDG. Reconnecting to the ePDG");
+      //e.printStackTrace();
+      initEPDGConnection();
       return false;
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error("Socket error. Reconnecting to the ePDG");
+      //e.printStackTrace();
+      initEPDGConnection();
       return false;
     }
   }

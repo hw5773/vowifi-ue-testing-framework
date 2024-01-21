@@ -472,7 +472,7 @@ static status_t process_identity(private_eap_aka_server_t *this,
 		permanent = this->mgr->provider_is_reauth(this->mgr, id, mk, &counter);
     ///// Added for VoWiFi (for iPhone) /////
     DBG1(DBG_IKE, "before identification_create_from_string()");
-    permanent = identification_create_from_string("0310210248416120@nai.epc.mnc210.mcc310.3gppnetwork.org");
+    permanent = identification_create_from_string("0310210123456787@nai.epc.mnc210.mcc310.3gppnetwork.org");
     DBG1(DBG_IKE, "after identification_create_from_string()");
     DBG1(DBG_IKE, "permanent ID: '%Y'", permanent);
     ////////////////////////////
@@ -494,7 +494,7 @@ static status_t process_identity(private_eap_aka_server_t *this,
 		permanent = this->mgr->provider_is_pseudonym(this->mgr, id);
     ///// Added for VoWiFi (for iPhone) /////
     DBG1(DBG_IKE, "before identification_create_from_string()");
-    permanent = identification_create_from_string("0310210248416120@nai.epc.mnc210.mcc310.3gppnetwork.org");
+    permanent = identification_create_from_string("0310210123456787@nai.epc.mnc210.mcc310.3gppnetwork.org");
     DBG1(DBG_IKE, "after identification_create_from_string()");
     DBG1(DBG_IKE, "permanent ID: '%Y'", permanent);
     ////////////////////////////

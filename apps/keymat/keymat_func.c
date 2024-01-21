@@ -131,23 +131,16 @@ void generate_ike_shared_secrets(uint8_t *dh, size_t dh_len, uint8_t *ispi, size
   memcpy(key, inonce, inonce_len);
   memcpy(key + inonce_len, rnonce, rnonce_len);
 
-  ///// test /////
-  for (i=0; i<dh_len; i++)
-  {
-    dh[i] = 0;
-  }
-  ////////////////
-
   HMAC_Init_ex(sctx, key, key_len, evp, NULL);
   HMAC_Update(sctx, dh, dh_len);
   HMAC_Final(sctx, skeyseed, &seed_len);
   HMAC_CTX_free(sctx);
 
-  ikprint(VOWIFI_DEBUG_KEYMAT, "SKEYSEED", skeyseed, 0, seed_len, seed_len);
-  ikprint(VOWIFI_DEBUG_KEYMAT, "inonce", inonce, 0, inonce_len, inonce_len);
-  ikprint(VOWIFI_DEBUG_KEYMAT, "rnonce", rnonce, 0, rnonce_len, rnonce_len);
-  ikprint(VOWIFI_DEBUG_KEYMAT, "ispi", ispi, 0, ispi_len, ispi_len);
-  ikprint(VOWIFI_DEBUG_KEYMAT, "rspi", rspi, 0, rspi_len, rspi_len);
+  ikprint(VOWIFI_DEBUG_KEYMAT, "SKEYSEED", skeyseed, 0, (int)seed_len, (int)seed_len);
+  ikprint(VOWIFI_DEBUG_KEYMAT, "inonce", inonce, 0, (int)inonce_len, (int)inonce_len);
+  ikprint(VOWIFI_DEBUG_KEYMAT, "rnonce", rnonce, 0, (int)rnonce_len, (int)rnonce_len);
+  ikprint(VOWIFI_DEBUG_KEYMAT, "ispi", ispi, 0, (int)ispi_len, (int)ispi_len);
+  ikprint(VOWIFI_DEBUG_KEYMAT, "rspi", rspi, 0, (int)rspi_len, (int)rspi_len);
 
   tmp = inonce_len + rnonce_len + ispi_len + rspi_len;
   s = (uint8_t *)malloc(tmp);

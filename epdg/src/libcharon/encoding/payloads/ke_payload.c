@@ -255,7 +255,7 @@ ke_payload_t *ke_payload_create_from_diffie_hellman(payload_type_t type,
 		return NULL;
 	}
 	this = (private_ke_payload_t*)ke_payload_create(type);
-  /*
+  
   ///// Added for VoWiFi (dh default value) /////
   int i; 
   size_t len;
@@ -308,7 +308,6 @@ ke_payload_t *ke_payload_create_from_diffie_hellman(payload_type_t type,
   }
 
   ////////////////////////////////////////////////
-  */
 
 	this->key_exchange_data = value;
 	this->dh_group_number = dh->get_dh_group(dh);

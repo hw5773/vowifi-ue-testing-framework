@@ -1,16 +1,19 @@
 CC=gcc
 RM=rm
 
-BIN=keymat
-SRC=keymat.c keymat_func.c
+BIN=keymat extract
+SRC=keymat.c keymat_func.c extract.c
 OBJ=$(SRC:.c=.o)
 CFLAGS=
 LDFLAGS=-lcrypto
 
-all: $(BIN)
+all: keymat extract
 
-$(BIN): $(OBJ)
-	$(CC) -o $@ $(OBJ) $(LDFLAGS)
+keymat: $(OBJ)
+	$(CC) -o $@ keymat.o keymat_func.o $(LDFLAGS)
+
+extract: $(OBJ)
+	$(CC) -o $@ extract.o keymat_func.o $(LDFLAGS)
 
 .c.o: 
 	$(CC) $(CFLAGS) -c $< -o $@

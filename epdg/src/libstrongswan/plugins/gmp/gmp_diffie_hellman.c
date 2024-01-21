@@ -173,6 +173,7 @@ METHOD(diffie_hellman_t, get_other_public_value, bool,
 	{
 		value->len = 0;
 	}
+
 	return TRUE;
 }
 
