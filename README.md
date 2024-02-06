@@ -13,7 +13,10 @@
     - P-CSCF forwards the registration message to I-CSCF.
     - Again, I-CSCF forwards the message to S-CSCF. (In our scenario, there is no special task for I-CSCF. I-CSCF is responsible for managing roaming.)
     - S-CSCF refers to HSS to authenticate the UE
-    - Finally, UE establishes the IPsec channel with P-CSCF and is registered to the IMS server (that is, S-CSCF for the UE is alive and provides the service) 
+    - Finally, UE establishes the IPsec channel with P-CSCF and is registered to the IMS server (that is, S-CSCF for the UE is alive and provides the service)
+
+## Machines
+  - I recommend having **a laptop with two network interfaces**: one is to communicate with the VoWiFi phones and the other is used to access the Internet. Note that some VoWiFi phones do not initiate the VoWiFi protocol if there is no Internet connection.
 
 ## Kernel settings
   - forwarding ipv6 packets should be enabled
@@ -25,7 +28,7 @@
 
 ## VoWiFi network topology
   -      UE -------- [WiFi AP/DNS] ------ [ePDG] -- [IMS]
-  -  (Smartphone) ----- (laptop) ------- (desktop) - (VM)
+  -  (Smartphone) ---(laptop/desktop) ---(laptop/desktop) - (VM)
 
 ## VoWiFi SIM card setting
   - H/W: sysmoISIM-SJA2 (ISIM card), SIM card reader/writer
@@ -64,6 +67,9 @@
     - SIM 2
       - `sudo python3 pySim-prog.py -p 0 -a <ADM value> -n "T-Mobile" -x 310 -y 210 --imsi=310210123456782 --msisdn=17657751235 --ims-hdomain=msg.pc.t-mobile.com --impi=310210123456782@msg.pc.t-mobile.com --impu=sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org --iccid=8901260245784161215 --smsp 542d4d6f62696c65fffffffffffffffff1ffffffffffffffffffffffff07912160130300f4ffffffff0000ff --smsc 12063130004 --opmode 80 --acc 0010 -k 22222222222222222222222222222222 -o 99999999999999999999999999999999`
       - `sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script`
+
+  ### List of SIM card settings preset in the repository (within the sql file for the HSS)
+  (TBD)
   
 ## WiFi AP
   - S/W: wifi-ap (or hostapd + dnsmasq)
