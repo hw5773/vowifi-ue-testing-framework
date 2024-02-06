@@ -114,7 +114,20 @@
   - `sudo vi /etc/dnsmasq.conf`
   - Type (or copy) the following in (or to)
   ```
-  interface 
+  interface=<the name of the wlan interface>
+  listen-address=172.24.1.1
+  bind-interfaces
+  server=1.1.1.1
+  domain-needed
+  bogus-priv
+  dhcp-range=172.24.1.2,172.24.1.254,12h
+  ```
+  - `sudo dnsmasq -C /etc/dnsmasq.conf`
+  - `sudo hostapd -B /etc/hostapd/hostapd.conf`
+  - `sudo sysctl -w net.ipv4.ip_forward=1`
+  - `sudo iptables -t nat -A POSTROUTING -o <the name of the other interface> -j MASQUERADE`
+  - `sudo iptables -A FORWARD -i <the name of the other interface> -o <the name of the wlan interface> -m state --state RELATED,ESTABLISHED -j ACCEPT`
+  - `sudo iptables -A FORWARD -i <the name of the wlan interface> -o <the name of the other interface> -j ACCEPT`
 
 ## ePDG address setting
   - sudo vi /etc/hosts (on the WiFi AP machine)
@@ -149,9 +162,6 @@
   - Configuration - strongswan.conf
     - The values in "attr" are provided to UE for the networking information. T-mobile uses 16386 to indicate the IPv6 address of the IMS server (in detail, it is the address of P-CSCF).
  
-  - Running Strongswan
-    - sudo ipsec restart
-
   ### Settings with an example value (you can revise the addresses)
     - attr {
         16386 = fdad:dabb:ed::2
@@ -164,31 +174,36 @@
   ### Settings with an example value
     - `310210123456781@nai.epc.mnc210.mcc310.3gppnetwork.org : EAP 0x1111111111111111111111111111111199999999999999999999999999999999`
     - `310210123456782@nai.epc.mnc210.mcc310.3gppnetwork.org : EAP 0x2222222222222222222222222222222299999999999999999999999999999999`
+
+  ### Running Strongswan to do our experiment
+    - `cd VOWIFI_ROOT/epdg`
+    - `./310260.sh` or `./310210.sh` (depending on the MCC/MNC that you want to run)
  
 ## IMS server installation and configuration
+  - We are going to make two different core networks, one with MCC 310 and MNC 260, and the other with MCC 310 and MNC 210
+  - The following example is for 310260. You should do the same things for 310210 as well.
+  - The reason why we set up two different IMS network is because there are some VoWiFi phones that work in only one of them (there are some mutual exclusions, unfortunately).
 
   - [Host] Install VirtualBox and Vagrant
     - `sudo apt-get install virtualbox`
     - `sudo apt-get install vagrant`
  
   - [Host] Create the bridge
-    - `sudo ip link add vowifi-gw type bridge`
-    - `sudo ip link set vowifi-gw up`
-    - `sudo ip address add fdad:dabb:ed::1 dev vowifi-gw`
-    - `sudo route -A inet6 add fdad:dabb:ed::/64 dev vowifi-gw`
+    - `cd VOWIFI_ROOT/scripts`
+    - `./host.sh`
+    - The above script generates two bridge interfaces, called vowifi-310210 and vowifi-310260, each of which connects its corresponding IMS network.
  
   - [Host] Initiate the VM
-    - `cd VOWIFI_ROOT/vagrant`
+    - `cd VOWIFI_ROOT/vagrant/310260`
     - `vagrant up`
-    - select vowifi-gw for the bridge
+    - select vowifi-310260 for the bridge
     - `vagrant ssh` (to get the shell of VM)
  
-  - [Guest] Network setting in the VM
-    - `sudo apt-get install net-tools`
-    - `sudo route -A inet6 add default gw fdad:dabb:ed::1 dev eth1` (the interface name might be different)
-
-  - [Guest] Downlod the Setting files for the IMS Server
+  - [Guest] Download the Setting files for the IMS server and setting the network interface in the VM
     - `git clone https://github.com/hw5773/vowifi-core-network.git`
+    - `sudo apt-get install net-tools`
+    - `cd VOWIFI_ROOT/scripts`
+    - `./guest-310260.sh`
  
   - [Guest] mysql Installation
     - `sudo apt-get install mysql-client mysql-server`
@@ -205,7 +220,7 @@
   - [Guest] Kamailio mysql Configuration
     - `sudo vi /usr/local/etc/kamailio/kamctlrc`
     - uncomment DBENGINE=MYSQL
-    - uncommant and revise SIP_DOMAIN=ims.mnc210.mcc310.3gppnetwork.org
+    - uncomment and revise the `SIP_DOMAIN` to `SIP_DOMAIN=ims.mnc260.mcc310.3gppnetwork.org`
     - `kamdbctl create` (Enter 'ascii' for the charater set name if you are asked)
 
   - [Guest] Database for P-CSCF, I-CSCF, and S-CSCF
@@ -359,24 +374,24 @@
     ```
 
   - [Guest] Copy the configuration file of the Diameter protocol
-    - `cp VOWIFI_ROOT/settings/hss/DiameterPeerHSS.xml ~/FHoSS/deploy`
+    - `cp VOWIFI_ROOT/settings/hss/310260/DiameterPeerHSS.xml ~/FHoSS/deploy`
 
   - [Guest] Change the domain names
     - `chmod +x configurator.sh`
     - `vi webapps/hss.web.console/WEB-INF/web.xml`
-    - Change all the "open-ims" to "ims.mnc210.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
 
     - `cp configurator.sh VOWIFI_ROOT/settings/hss`
     - `cd VOWIFI_ROOT/settings/hss`
     - `./configurator.sh`
     - Domain Name: ims.mnc210.mcc310.3gppnetwork.org
     - IP Address: 127.0.0.1
-    - Change all the "open-ims" to "ims.mnc210.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
+    - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
 
     - `cp configurator.sh ~/FHoSS/config/`
     - `cd ~/FHoSS/config`
     - `./configurator.sh`
-    - Domain Name: ims.mnc210.mcc310.3gppnetwork.org
+    - Domain Name: ims.mnc260.mcc310.3gppnetwork.org
     - IP Address: 127.0.0.1
     - Change all the "open-ims" to "ims.mnc210.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
 
@@ -390,33 +405,29 @@
     - `create database hss_db;`
     - `quit;`
 
-    - `cd VOWIFI_ROOT/settings/hss`
-    - `mysql -u root -p hss_db < hss_db.sql`
-    - `mysql -u root -p hss_db < userdata.sql`
+    - `cd VOWIFI_ROOT/settings/hss/310260`
+    - `mysql -u root -p < 310260.sql`
 
 ## Running P-CSCF, I-CSCF, S-CSCF, and HSS
   - Open four terminals
 
   ### Terminal 1 - P-CSCF
-    - [Host] `cd VOWIFI_ROOT/vagrant`
+    - [Host] `cd VOWIFI_ROOT/vagrant/310260`
     - [Host] `vagrant ssh`
-    - [Guest] `cd VOWIFI_ROOT/settings/ims/pcscf`
-    - [Guest] `sudo mkdir -p /var/run/kamailio_pcscf`
-    - [Guest] `sudo kamailio -f kamailio.cfg -P /kamailio_pcscf.pid -DDeE`
+    - [Guest] `cd VOWIFI_ROOT/settings/ims/310260/pcscf`
+    - [Guest] `./run.sh`
 
   ### Terminal 2 - I-CSCF
-    - [Host] `cd VOWIFI_ROOT/vagrant`
+    - [Host] `cd VOWIFI_ROOT/vagrant/310260`
     - [Host] `vagrant ssh`
-    - [Guest] `cd VOWIFI_ROOT/settings/ims/icscf`
-    - [Guest] `sudo mkdir -p /var/run/kamailio_icscf`
-    - [Guest] `sudo kamailio -f kamailio.cfg -P /kamailio_icscf.pid -DDeE`
+    - [Guest] `cd VOWIFI_ROOT/settings/ims/310260/icscf`
+    - [Guest] `./run.sh`
 
   ### Terminal 3 - S-CSCF
-    - [Host] `cd VOWIFI_ROOT/vagrant`
+    - [Host] `cd VOWIFI_ROOT/vagrant/310260`
     - [Host] `vagrant ssh`
-    - [Guest] `cd VOWIFI_ROOT/settings/ims/scscf`
-    - [Guest] `sudo mkdir -p /var/run/kamailio_scscf`
-    - [Guest] `sudo kamailio -f kamailio.cfg -P /kamailio_scscf.pid -DDeE`
+    - [Guest] `cd VOWIFI_ROOT/settings/ims/310260/scscf`
+    - [Guest] `./run.sh`
 
   ### Terminal 4 - HSS
     - [Host] `cd VOWIFI_ROOT/vagrant`
@@ -432,15 +443,15 @@
   - Login with ID: hssAdmin / Password: hss
   
   ### Subscription with an example value
-  - UE1: IMSI 310210123456781
+  - UE1: IMSI 310260123456781
     - Click [Create] under [IMS Subscription]
-    - Name: `310210123456781`
+    - Name: `310260123456781`
     - Capabilities Set: cap_set1
     - Preferred S-CSCF: scscf1
     - Click [Save]
 
     - Click [Create & Bind new IMPI]
-    - Identity: `310210123456781@msg.pc.t-mobile.com`
+    - Identity: `310260123456781@msg.pc.t-mobile.com`
     - Secret Key: 11111111111111111111111111111111
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
@@ -448,39 +459,39 @@
     - Click [Save]
 
     - Click [Create & Bind new IMPU]
-    - Identity: `sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org`
+    - Identity: `sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
     - Service Profile: default_sp
     - Charging-Info Set: default_charging_set
     - Check "Can Register"
     - Click [Save]
 
     - Click [Search] under [IMS Subscription]
-    - Name: 310210123456781
+    - Name: 310260123456781
     - Click [Create & Bind new IMPI]
-    - Identity: `310210123456781@ims.mnc210.mcc310.3gppnetwork.org`
+    - Identity: `310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
     - Secret Key: 11111111111111111111111111111111
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
     - OPc: 99999999999999999999999999999999
-    - Associate IMPU: `sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org`
+    - Associate IMPU: `sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org`
     - Click [Add]
     - Click [Save]
    
-    - Select "ims.mnc210.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
+    - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
     - Check if the followings are correct
-      - List of Visitied Networks: ims.mnc210.mcc310.3gppnetwork.org
-      - List IMPUs from Implicit-Set: sip:310210123456781@ims.mnc210.mcc310.3gppnetwork.org
-      - List of associated IMPIs: 310210123456781@msg.pc.t-mobile.com / 310210123456781@ims.mnc210.mcc310.3gppnetwork.org
+      - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
+      - List IMPUs from Implicit-Set: sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org
+      - List of associated IMPIs: 310260123456781@msg.pc.t-mobile.com / 310260123456781@ims.mnc260.mcc310.3gppnetwork.org
 
-  - UE2: IMSI 310210123456782
+  - UE2: IMSI 310260123456782
     - Click [Create] under [IMS Subscription]
-    - Name: 310210123456782
+    - Name: 310260123456782
     - Capabilities Set: cap_set1
     - Preferred S-CSCF: scscf1
     - Click [Save]
 
     - Click [Create & Bind new IMPI]
-    - Identity: 310210123456782@msg.pc.t-mobile.com
+    - Identity: 310260123456782@msg.pc.t-mobile.com
     - Secret Key: 22222222222222222222222222222222
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
@@ -488,29 +499,29 @@
     - Click [Save]
 
     - Click [Create & Bind new IMPU]
-    - Identity: `sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org`
+    - Identity: `sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
     - Service Profile: default_sp
     - Charging-Info Set: default_charging_set
     - Check "Can Register"
     - Click [Save]
 
     - Click [Search] under [IMS Subscription]
-    - Name: 310210123456782
+    - Name: 310260123456782
     - Click [Create & Bind new IMPI]
-    - Identity: `310210123456782@ims.mnc210.mcc310.3gppnetwork.org`
+    - Identity: `310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
     - Secret Key: 11111111111111111111111111111111
     - Check Digest-AKAv1
     - Default: Digest-AKAv1-MD5
     - OPc: 99999999999999999999999999999999
-    - Associate IMPU: `sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org`
+    - Associate IMPU: `sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org`
     - Click [Add]
     - Click [Save]
 
-    - Select "ims.mnc210.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
+    - Select "ims.mnc260.mcc310.3gppnetwork.org" from the dropdown menu under [Add Visitied-Networks] and Click [Add]
     - Check if the followings are correct
-      - List of Visitied Networks: ims.mnc210.mcc310.3gppnetwork.org
-      - List IMPUs from Implicit-Set: sip:310210123456782@ims.mnc210.mcc310.3gppnetwork.org
-      - List of associated IMPIs: 310210123456782@msg.pc.t-mobile.com / 310210123456782@ims.mnc210.mcc310.3gppnetwork.org
+      - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
+      - List IMPUs from Implicit-Set: sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org
+      - List of associated IMPIs: 310260123456782@msg.pc.t-mobile.com / 310260123456782@ims.mnc260.mcc310.3gppnetwork.org
 
 ## Turn on WiFi on UEs
   ### Samsung Phone Settings
