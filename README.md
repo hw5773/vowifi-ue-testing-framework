@@ -443,7 +443,7 @@
   - Login with ID: hssAdmin / Password: hss
   
   ### Subscription with an example value
-  - UE1: IMSI 310260123456781
+  - UE1: IMSI 310260123456781 (with the phone number 17657751111
     - Click [Create] under [IMS Subscription]
     - Name: `310260123456781`
     - Capabilities Set: cap_set1
