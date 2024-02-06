@@ -17,6 +17,7 @@
 
 ## Machines
   - I recommend having **a laptop with two network interfaces**: one is to communicate with the VoWiFi phones and the other is used to access the Internet. Note that some VoWiFi phones do not initiate the VoWiFi protocol if there is no Internet connection.
+  - I will say the **wlan** interface for the interface used to communicate with the phones and the **other** interface for the interface accessed to the Internet. Note that the other interface can be any type (e.g., WiFi, LTE, ethernet, and so on) of an interface.
 
 ## Kernel settings
   - forwarding ipv6 packets should be enabled
@@ -71,26 +72,60 @@
   ### List of SIM card settings preset in the repository (within the sql file for the HSS)
   (TBD)
   
-## WiFi AP
+## WiFi AP (deprecated)
+  - **(we found that the wifi-ap application is deprecated and no longer provided. Please refer to the next one if you cannot install wifi-ap.)**
   - S/W: wifi-ap (or hostapd + dnsmasq)
   - `sudo apt-get install snapd`
   - `snap install wifi-ap`
   - `sudo wifi-ap.config set wifi.interface=<wifi interface name>` (e.g., wlan0)
   - `sudo wifi-ap.config set wifi.ssid=VoWiFi`
   - `sudo wifi-ap.config set wifi.security-passphrase=vowifiaccess`
-  - `sudo wifi-ap.config set wifi.address=10.0.60.1`
-  - `sudo wifi-ap.config set dhcp.range-start=10.0.60.2`
-  - `sudo wifi-ap.config set dhcp.range-stop=10.0.60.254`
+  - `sudo wifi-ap.config set wifi.address=172.24.1.1`
+  - `sudo wifi-ap.config set dhcp.range-start=172.24.1.2`
+  - `sudo wifi-ap.config set dhcp.range-stop=172.24.1.254`
   - `sudo wifi-ap.config set disabled=false`
   - `sudo wifi-ap.status restart-ap`
+
+## WiFi AP
+  - I will assume that the laptop (or the desktop) has two network interfaces: the wlan interface and the other interface
+  - `sudo apt-get update && sudo apt-get install git dnsmasq hostapd net-tools`
+  - `sudo ifconfig <the name of the wlan interface (e.g., wlan0)> 172.24.1.1 netmask 255.255.255.0`
+  - (Please make sure that 172.24.1.1 does not collide with other IP networks around the laptop)
+  - `sudo vi /etc/hostapd/hostapd.conf`
+  - Type (or copy) the following in (or to) the hostapd.conf file
+  ```
+  interface=<the name of the wlan interface>
+  driver=nl80211
+  ssid=vowifi
+  hw_mode=g
+  channel=11
+  ieee80211n=1
+  wmm_enabled=1
+  ht_capab=[HT40][SHORT-GI-20][DSSS_CKK-40]
+  macaddr_acl=0
+  auth_algs=1
+  ignore_broadcast_ssid=0
+  wpa=2
+  wpa_key_mgmt=WPA-PSK
+  wpa_passphrase=vowifipassword
+  rsn_pairwise=CCMP
+  ```
+  - `sudo rm /etc/dnsmasq.conf`
+  - `sudo vi /etc/dnsmasq.conf`
+  - Type (or copy) the following in (or to)
+  ```
+  interface 
 
 ## ePDG address setting
   - sudo vi /etc/hosts (on the WiFi AP machine)
   - add the following record
-  `<ePDG's IP address> epdg.epc.mnc210.mcc310.pub.3gppnetwork.org`
+    ```
+    <ePDG's IP address> epdg.epc.mnc210.mcc310.pub.3gppnetwork.org
+    <ePDG's IP address> epdg.epc.mnc260.mcc310.pub.3gppnetwork.org
+    ```
 
   ### With one laptop
-  Add the record `10.0.60.1 epdg.epc.mnc210.mcc310.pub.3gppnetwork.org` to /etc/hosts
+  Add the record `172.24.1.1 epdg.epc.mnc210.mcc310.pub.3gppnetwork.org` and `172.24.1.1 epdg.epc.mnc260.mcc310.pub.3gppnetwork.org` to /etc/hosts
  
 ## ePDG installation and configuration
   - Installation
