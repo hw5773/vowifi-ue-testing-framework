@@ -3,6 +3,7 @@
 if [[ "$#" -ne 2 ]]; then
   echo "Illegal number of parameters"
   echo "./wifi-ap.sh <up/down> <wifi interface name>"
+  exit 1
 fi
 
 if [[ "$1" == "up" ]]; then
