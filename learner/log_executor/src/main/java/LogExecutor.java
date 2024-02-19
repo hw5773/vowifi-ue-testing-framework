@@ -197,6 +197,7 @@ public class LogExecutor {
       matched = true;
 
     rpath = config.getLivenessTestcasePath();
+    logger.info("Load the liveness testcase from: " + rpath);
     try (FileReader reader = new FileReader(rpath)) {
       JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
       JSONArray jsonArr = (JSONArray) jsonObject.get("testcases");
@@ -738,16 +739,16 @@ public class LogExecutor {
   public boolean initIMS() {
     logger.debug("START: initIMS()");
     String result = "";
+    boolean ret = false;
 
-    /*
-    System.out.println("Sending symbol: init to IMS Server");
+    logger.info("Sending symbol: init to ePDG");
     try {
-      sleep(1*1000);
-      imsOut.write("RESET " + initIMSCount + "\n");
-      imsOut.flush();
-      result = imsIn.readLine();
+      sleep(COOLING_TIME);
+      epdgOut.write("init\n");
+      epdgOut.flush();
+      initEPDGCount++;
+      result = epdgIn.readLine();
       logger.info("ACK for initIMS(): " + result);
-      initIMSCount++;
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -755,7 +756,15 @@ public class LogExecutor {
     } catch(Exception e) {
       e.printStackTrace();
     }
-    */
+
+    if(result.contains("ACK")) {
+      logger.info("PASSED: Initializing the ePDG is succeeded");
+      ret = true;
+    } else {
+      logger.error("FAILED: Initializing the ePDG is failed");
+      ret = false;
+    }
+
     logger.debug("FINISH: initIMS()");
     return true;
   }
@@ -1046,6 +1055,9 @@ public class LogExecutor {
             depth--;
             stack.pop();
             break;
+
+          default:
+            logger.error("Unknown type: " + type);
         }
 
         len -= 1;
