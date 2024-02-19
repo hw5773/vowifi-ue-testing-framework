@@ -264,8 +264,8 @@ static int mod_init(void) {
 	bind_usrloc_t bind_usrloc;
 
   ///// Added for VoWiFi /////
-  vowifi = 0;
-  LM_INFO("The variable vowifi of P-CSCF is set to 0\n");
+  vowifi = 1;
+  LM_INFO("The variable vowifi of P-CSCF is set to 1\n");
   ////////////////////////////
   
 	bind_usrloc = (bind_usrloc_t) find_export("ul_bind_ims_usrloc_pcscf", 1, 0);

@@ -2022,7 +2022,7 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
     const char *str2 = "5";
     uint8_t *val, *res;
     int vlen, rlen;
-    LM_INFO("tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
+    LM_DBG("tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
 
     /*
     FILE *fp;

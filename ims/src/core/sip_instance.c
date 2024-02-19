@@ -10,7 +10,7 @@
 #include "io_wait.h"
 #include "dprint.h"
 
-int vowifi = 0;
+int vowifi = 1;
 
 void *sender_run(void *data)
 {
@@ -39,11 +39,12 @@ void *sender_run(void *data)
       if (shmid == -1)
       {
         LM_ERR("[VoWiFi] error in shmid\n");
+        continue;
       }
       msg = (msg_t *)shmat(shmid, NULL, 0);
       if (msg)
       {
-        LM_INFO("[sender_run()] kid: %d, mtype: %d\n", kid, msg->mtype);
+        LM_INFO("[VoWiFi] (sender_run()) kid: %d, mtype: %d\n", kid, msg->mtype);
         // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) 
         // || key || ":" (if there is a value) || value type || ":" || value (until \n)
         p = buf;
@@ -68,20 +69,26 @@ void *sender_run(void *data)
         }
         LM_INFO("[VoWiFi] after key: %s\n", msg->key);
 
+        LM_INFO("[VoWiFi] sender_run 1\n");
         if (msg->vlen > 0)
         {
+        LM_INFO("[VoWiFi] sender_run 2\n");
           memcpy(p, ":", 1);
           p += 1;
 
+        LM_INFO("[VoWiFi] sender_run 3\n");
           tlen = int_to_char(msg->vtype, tmp, 10);
           memcpy(p, tmp, tlen);
           p += tlen;
 
+        LM_INFO("[VoWiFi] sender_run 4\n");
           memcpy(p, ":", 1);
           p += 1;
 
+        LM_INFO("[VoWiFi] sender_run 5\n");
           if (msg->vtype == VAL_TYPE_INTEGER)
           {
+        LM_INFO("[VoWiFi] sender_run 6\n");
             tint = *((int *)(msg->val));
             tlen = int_to_char(tint, tmp, 10);
             memcpy(p, tmp, tlen);
@@ -89,6 +96,7 @@ void *sender_run(void *data)
           }
           else if (msg->vtype == VAL_TYPE_UINT16)
           {
+        LM_INFO("[VoWiFi] sender_run 7\n");
             tint = *((uint16_t *)(msg->val));
             tlen = int_to_char(tint, tmp, 10);
             //printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
@@ -98,17 +106,22 @@ void *sender_run(void *data)
           }
           else if (msg->vtype == VAL_TYPE_STRING)
           {
+        LM_INFO("[VoWiFi] sender_run 8\n");
             memcpy(p, msg->val, msg->vlen);
             p += msg->vlen;
           }
+        LM_INFO("[VoWiFi] sender_run 9\n");
         }
+        LM_INFO("[VoWiFi] sender_run 10\n");
 
         memcpy(p, "\n", 1);
         p += 1;
 
+        LM_INFO("[VoWiFi] sender_run 11\n");
         tbs = p - buf;
         offset = 0;
 
+        LM_INFO("[VoWiFi] sender_run 12\n");
         LM_INFO("[VoWiFi] To be sent: %d bytes\n", tbs);
         while (offset < tbs)
         {
@@ -389,12 +402,12 @@ int add_message_to_send_queue(instance_t *instance, key_t kid)
     ret = 1;
   }
   int i;
-  LM_INFO(">>>>> Queue (after adding) <<<<<\n");
+  LM_DBG(">>>>> Queue (after adding) <<<<<\n");
   for (i=0; i<MAX_QUEUE_LEN; i++)
   {
-    LM_INFO("  %d: %d\n", i, instance->sendq[i]);
+    LM_DBG("  %d: %d\n", i, instance->sendq[i]);
   }
-  LM_INFO("=================\n");
+  LM_DBG("=================\n");
   pthread_mutex_unlock(&(instance->slock));
 
   return ret;
@@ -420,12 +433,12 @@ int fetch_message_from_send_queue(instance_t *instance)
 
   if (ret > 0)
   {
-    LM_INFO(">>>>> Queue (after fetch) <<<<<\n");
+    LM_DBG(">>>>> Queue (after fetch) <<<<<\n");
     for (i=0; i<MAX_QUEUE_LEN; i++)
     {
-      LM_INFO("  %d: %d\n", i, instance->sendq[i]);
+      LM_DBG("  %d: %d\n", i, instance->sendq[i]);
     }
-    LM_INFO("=================\n");
+    LM_DBG("=================\n");
   }
 
   pthread_mutex_unlock(&(instance->slock));

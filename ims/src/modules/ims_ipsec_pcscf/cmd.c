@@ -725,9 +725,12 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
         }
 
         ///// Added for VoWiFi /////
+        LM_ERR("\n\n\n[VoWiFi] Before changing the algorithms\n\n\n\n");
         if (vowifi)
         {
           int shmid;
+          int trial;
+          int i;
 
           shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666);
           if (shmid == -1)
@@ -736,7 +739,26 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
           }
           else
           {
+            LM_ERR("[VoWiFi] get instance from the shared memory\n");
+            trial = 0;
             instance = (instance_t *)shmat(shmid, NULL, 0);
+
+            query = NULL;
+
+            for (i=0; i<3; i++)
+            {
+              query = get_query(instance);
+              if (query)
+                break;
+              else
+                sleep(1);
+            }
+
+            if (!query)
+            {
+              LM_ERR("\n\n[VoWiFi] Fail to get a query\n\n");
+            }
+
             if ((query = get_query(instance))
                 && is_query_name(query, "401_unauthorized")
                 && (query = get_sub_query_by_name(query, "security_server"))
@@ -835,6 +857,14 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
             ////////////////////////////////////
 
             ///// Added for VoWiFi /////
+            ///// Test Code to check how to change the algorithm /////
+            //shm_free(sec_params->data.ipsec->r_alg.s);
+            //sec_params->data.ipsec->r_alg.s = shm_malloc(11);
+            //memcpy(sec_params->data.ipsec->r_alg.s, "hmac-md5-96", 11);
+            //sec_params->data.ipsec->r_alg.len = 11;
+            ////////////////
+
+            LM_INFO("vowifi: %d\n", vowifi);
             s = sec_params->data.ipsec;
             ////////////////////////////
 
