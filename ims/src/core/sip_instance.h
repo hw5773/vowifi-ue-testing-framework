@@ -14,6 +14,10 @@
 #define MAX_QUEUE_LEN 10
 #endif /* MAX_QUEUE_LEN */
 
+#ifndef MAX_NAME_LEN
+#define MAX_NAME_LEN 256
+#endif /* MAX_NAME_LEN */
+
 #define MSG_TYPE_ATTRIBUTE 1
 #define MSG_TYPE_BLOCK_START 2
 #define MSG_TYPE_BLOCK_END 3
@@ -42,10 +46,9 @@
 #define DEFAULT_IMS_PORT 7779
 #define MAX_CLNT_SIZE 10
 
-#define SHARED_MEMORY_INSTANCE_KEY 1234
-#define SHARED_MEMORY_MESSAGE_KEY 1235
-#define SHARED_MEMORY_QUERY_KEY 1236
-#define SHARED_MEMORY_MESSAGE_BASE 3000
+#define SHARED_MEMORY_INSTANCE_KEY 3000
+#define SHARED_MEMORY_QUERY_KEY 4000
+#define SHARED_MEMORY_MESSAGE_BASE 5000
 
 #include <stdint.h>
 #include <stddef.h>
@@ -70,13 +73,13 @@ typedef struct msg_st
 
 typedef struct query_st
 {
-  uint8_t *name;
+  uint8_t name[MAX_NAME_LEN];
   int nlen;
 
   int op;
   int vtype;
 
-  uint8_t *value;
+  uint8_t value[MAX_VALUE_LEN];
   int vlen;
 
   struct query_st *parent;
@@ -92,7 +95,7 @@ typedef struct instance_st
   uint64_t rspi;
 
   int slast;
-  key_t sendq[MAX_QUEUE_LEN];
+  msg_t *sendq[MAX_QUEUE_LEN];
   pthread_mutex_t slock;
 
   query_t *query;
@@ -112,17 +115,18 @@ typedef struct arg_st
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
 
-int add_message_to_send_queue(instance_t *instance, key_t kid);
-int fetch_message_from_send_queue(instance_t *instance);
+msg_t *add_message_to_send_queue(instance_t *instance, msg_t *msg);
+msg_t *fetch_message_from_send_queue(instance_t *instance);
 void set_query(instance_t *instance, query_t *query);
-key_t init_message(instance_t *instance, int mtype, const uint8_t *key, 
+msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
     int vtype, uint8_t *val, int vlen);
-void free_message(key_t kid);
+void free_message(msg_t *msg);
 instance_t *init_instance(int asock);
+instance_t *get_instance(void);
 void free_instance(instance_t *instance);
 int int_to_char(int num, uint8_t *str, int base);
 
-query_t *init_query(void);
+query_t *init_query();
 void free_query(query_t *query);
 void print_query(query_t *query);
 

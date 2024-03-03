@@ -732,17 +732,9 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
           int trial;
           int i;
 
-          shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666);
-          if (shmid == -1)
+          instance = get_instance();
+          if (instance)
           {
-            LM_ERR("[VoWiFi] error in shmget()\n");
-          }
-          else
-          {
-            LM_ERR("[VoWiFi] get instance from the shared memory\n");
-            trial = 0;
-            instance = (instance_t *)shmat(shmid, NULL, 0);
-
             query = NULL;
 
             for (i=0; i<3; i++)
@@ -759,6 +751,7 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
               LM_ERR("\n\n[VoWiFi] Fail to get a query\n\n");
             }
 
+            LM_INFO("[VoWiFi] Check if the query contains ealg\n");
             if ((query = get_query(instance))
                 && is_query_name(query, "401_unauthorized")
                 && (query = get_sub_query_by_name(query, "security_server"))
@@ -773,9 +766,11 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
                 sec_params->data.ipsec->r_ealg.s = shm_malloc(tlen);
                 memcpy(sec_params->data.ipsec->r_ealg.s, tmp, tlen);
                 sec_params->data.ipsec->r_ealg.len = tlen;
+                LM_INFO("[VoWiFi] ealg (%d bytes): %s\n", tlen, tmp);
               }
             }
 
+            LM_INFO("[VoWiFi] Check if the query contains alg\n");
             if ((query = get_query(instance))
                 && is_query_name(query, "401_unauthorized")
                 && (query = get_sub_query_by_name(query, "security_server"))
@@ -790,6 +785,7 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
                 sec_params->data.ipsec->r_alg.s = shm_malloc(tlen);
                 memcpy(sec_params->data.ipsec->r_alg.s, tmp, tlen);
                 sec_params->data.ipsec->r_alg.len = tlen;
+                LM_INFO("[VoWiFi] alg (%d bytes): %s\n", tlen, tmp);
               }
             }
 

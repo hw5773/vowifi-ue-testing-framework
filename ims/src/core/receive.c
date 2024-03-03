@@ -324,7 +324,9 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
       LM_DBG("received buffer (len: %d bytes): %s\n", len, buf);
       if (instance)
       {
+        LM_INFO("before parse_sip_message()\n");
         parse_sip_message(instance, buf, len);
+        LM_INFO("after parse_sip_message()\n");
       }
     }
   }

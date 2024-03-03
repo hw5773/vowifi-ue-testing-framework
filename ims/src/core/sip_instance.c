@@ -4,8 +4,8 @@
 //#include <fcntl.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include <sys/shm.h>
 
+#include "mem/shm.h"
 #include "sip_instance.h"
 #include "io_wait.h"
 #include "dprint.h"
@@ -15,8 +15,6 @@ int vowifi = 1;
 void *sender_run(void *data)
 {
   instance_t *instance;
-  key_t kid; 
-  int shmid;
   msg_t *msg;
   size_t tbs;
   int asock, offset, sent, tint, tlen;
@@ -32,109 +30,86 @@ void *sender_run(void *data)
 
   while (instance->running)
   {
-    kid = fetch_message_from_send_queue(instance);
-    if (kid >= SHARED_MEMORY_MESSAGE_BASE)
+    msg = fetch_message_from_send_queue(instance);
+    if (msg)
     {
-      shmid = shmget((key_t)kid, sizeof(msg_t), 0666);
-      if (shmid == -1)
+      LM_INFO("[VoWiFi] (sender_run()) msg: %p, mtype: %d\n", msg, msg->mtype);
+      // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) 
+      // || key || ":" (if there is a value) || value type || ":" || value (until \n)
+      p = buf;
+
+      LM_INFO("[VoWiFi] before mtype\n");
+      *(p++) = msg->mtype;
+      LM_INFO("[VoWiFi] after mtype: %d\n", msg->mtype);
+
+  	  //printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
+	    //printf(">>>>> Responder SPI: 0x%.16"PRIx64"\n", msg->rspi);
+
+      snprintf((char *)p, 17, "%.16"PRIx64, msg->ispi); 
+      p += 16;
+      snprintf((char *)p, 17, "%.16"PRIx64, msg->rspi); 
+      p += 16;
+
+      LM_INFO("[VoWiFi] before key\n");
+      if (msg->klen > 0)
       {
-        LM_ERR("[VoWiFi] error in shmid\n");
-        continue;
+        memcpy(p, msg->key, msg->klen);
+        p += msg->klen;
       }
-      msg = (msg_t *)shmat(shmid, NULL, 0);
-      if (msg)
+      LM_INFO("[VoWiFi] after key: %s\n", msg->key);
+
+      if (msg->vlen > 0)
       {
-        LM_INFO("[VoWiFi] (sender_run()) kid: %d, mtype: %d\n", kid, msg->mtype);
-        // type (1 byte) || ispi (16 bytes) || rspi (16 bytes) 
-        // || key || ":" (if there is a value) || value type || ":" || value (until \n)
-        p = buf;
-
-        LM_INFO("[VoWiFi] before mtype\n");
-        *(p++) = msg->mtype;
-        LM_INFO("[VoWiFi] after mtype: %d\n", msg->mtype);
-
-  	    //printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
-	      //printf(">>>>> Responder SPI: 0x%.16"PRIx64"\n", msg->rspi);
-
-        snprintf((char *)p, 17, "%.16"PRIx64, msg->ispi); 
-        p += 16;
-        snprintf((char *)p, 17, "%.16"PRIx64, msg->rspi); 
-        p += 16;
-
-        LM_INFO("[VoWiFi] before key\n");
-        if (msg->klen > 0)
-        {
-          memcpy(p, msg->key, msg->klen);
-          p += msg->klen;
-        }
-        LM_INFO("[VoWiFi] after key: %s\n", msg->key);
-
-        LM_INFO("[VoWiFi] sender_run 1\n");
-        if (msg->vlen > 0)
-        {
-        LM_INFO("[VoWiFi] sender_run 2\n");
-          memcpy(p, ":", 1);
-          p += 1;
-
-        LM_INFO("[VoWiFi] sender_run 3\n");
-          tlen = int_to_char(msg->vtype, tmp, 10);
-          memcpy(p, tmp, tlen);
-          p += tlen;
-
-        LM_INFO("[VoWiFi] sender_run 4\n");
-          memcpy(p, ":", 1);
-          p += 1;
-
-        LM_INFO("[VoWiFi] sender_run 5\n");
-          if (msg->vtype == VAL_TYPE_INTEGER)
-          {
-        LM_INFO("[VoWiFi] sender_run 6\n");
-            tint = *((int *)(msg->val));
-            tlen = int_to_char(tint, tmp, 10);
-            memcpy(p, tmp, tlen);
-            p += tlen;
-          }
-          else if (msg->vtype == VAL_TYPE_UINT16)
-          {
-        LM_INFO("[VoWiFi] sender_run 7\n");
-            tint = *((uint16_t *)(msg->val));
-            tlen = int_to_char(tint, tmp, 10);
-            //printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
-            //    *((uint16_t *)(msg->val)), tint, tlen);
-            memcpy(p, tmp, tlen);
-            p += tlen;
-          }
-          else if (msg->vtype == VAL_TYPE_STRING)
-          {
-        LM_INFO("[VoWiFi] sender_run 8\n");
-            memcpy(p, msg->val, msg->vlen);
-            p += msg->vlen;
-          }
-        LM_INFO("[VoWiFi] sender_run 9\n");
-        }
-        LM_INFO("[VoWiFi] sender_run 10\n");
-
-        memcpy(p, "\n", 1);
+        memcpy(p, ":", 1);
         p += 1;
 
-        LM_INFO("[VoWiFi] sender_run 11\n");
-        tbs = p - buf;
-        offset = 0;
+        tlen = int_to_char(msg->vtype, tmp, 10);
+        memcpy(p, tmp, tlen);
+        p += tlen;
 
-        LM_INFO("[VoWiFi] sender_run 12\n");
-        LM_INFO("[VoWiFi] To be sent: %d bytes\n", tbs);
-        while (offset < tbs)
+        memcpy(p, ":", 1);
+        p += 1;
+
+        if (msg->vtype == VAL_TYPE_INTEGER)
         {
-          sent = write(asock, buf + offset, tbs - offset);
-          if (sent > 0)
-            offset += sent;
+          tint = *((int *)(msg->val));
+          tlen = int_to_char(tint, tmp, 10);
+          memcpy(p, tmp, tlen);
+          p += tlen;
         }
-        LM_INFO("[VoWiFi] Sent bytes: %d bytes\n", offset);
-
-        shmdt(msg);
-        free_message(kid);
-        msg = NULL;
+        else if (msg->vtype == VAL_TYPE_UINT16)
+        {
+          tint = *((uint16_t *)(msg->val));
+          tlen = int_to_char(tint, tmp, 10);
+          //printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
+          //    *((uint16_t *)(msg->val)), tint, tlen);
+          memcpy(p, tmp, tlen);
+          p += tlen;
+        }
+        else if (msg->vtype == VAL_TYPE_STRING)
+        {
+          memcpy(p, msg->val, msg->vlen);
+          p += msg->vlen;
+        }
       }
+
+      memcpy(p, "\n", 1);
+      p += 1;
+
+      tbs = p - buf;
+      offset = 0;
+
+      LM_INFO("[VoWiFi] To be sent: %d bytes\n", tbs);
+      while (offset < tbs)
+      {
+        sent = write(asock, buf + offset, tbs - offset);
+        if (sent > 0)
+          offset += sent;
+      }
+      LM_INFO("[VoWiFi] Sent bytes: %d bytes\n", offset);
+
+      free_message(msg);
+      msg = NULL;
     }
   }
 
@@ -250,6 +225,7 @@ void *listener_run(void *data)
     }
     else if (offset > 0)
     {
+      LM_INFO("The offset is larger than 0\n");
       p = buf;
       mtype = char_to_int((char *)p, 1, 10);
       p++;
@@ -262,7 +238,7 @@ void *listener_run(void *data)
 
         case MSG_TYPE_BLOCK_START:
           if (!query)
-            query = init_query();
+            query = init_query(SHARED_MEMORY_QUERY_KEY);
           else
             query = add_query_sub_message(query, ptype, mtype);
           depth++;
@@ -299,6 +275,7 @@ void *listener_run(void *data)
       // if offset == 1, it means that there is only '\n'
       if (offset > 1)
       {
+        LM_INFO("Block Start: offset > 1\n");
         token = (uint8_t *)strtok((char *)p, ":");
         idx = 0;
         while (token)
@@ -337,10 +314,12 @@ void *listener_run(void *data)
           token = (uint8_t *)strtok(NULL, ":");
           idx++;
         }
+        LM_INFO("Block Finish: offset > 1\n");
       }
 
       if (!depth)
       {
+        LM_INFO("Block Start: depth == 0\n");
         print_query(query);
         /*
         tbs = strlen(ACK_RESPONSE);
@@ -356,6 +335,12 @@ void *listener_run(void *data)
         printf("sent ACK to LogExecutor\n");
         */
         set_query(instance, query);
+        LM_INFO("Block Finish: depth == 0\n");
+      }
+      else
+      {
+        LM_INFO("Block Start: depth != 0\n");
+        LM_INFO("Block Finish: depth != 0\n");
       }
     }
   }
@@ -390,7 +375,7 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   return ret;
 }
 
-int add_message_to_send_queue(instance_t *instance, key_t kid)
+msg_t *add_message_to_send_queue(instance_t *instance, msg_t *msg)
 {
   int ret;
   ret = -1;
@@ -398,7 +383,7 @@ int add_message_to_send_queue(instance_t *instance, key_t kid)
   pthread_mutex_lock(&(instance->slock));
   if (instance->slast < MAX_QUEUE_LEN)
   {
-    instance->sendq[instance->slast++] = kid;
+    instance->sendq[instance->slast++] = msg;
     ret = 1;
   }
   int i;
@@ -413,12 +398,12 @@ int add_message_to_send_queue(instance_t *instance, key_t kid)
   return ret;
 }
 
-int fetch_message_from_send_queue(instance_t *instance)
+msg_t *fetch_message_from_send_queue(instance_t *instance)
 {
   int i;
-  key_t ret;
-  ret = 0;
+  msg_t *ret;
 
+  ret = NULL;
   pthread_mutex_lock(&(instance->slock));
   if (instance->slast > 0)
   {
@@ -451,54 +436,58 @@ void set_query(instance_t *instance, query_t *query)
   instance->query = query;
 }
 
-key_t init_message(instance_t *instance, int mtype, const uint8_t *key, 
+msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key, 
     int vtype, uint8_t *val, int vlen)
 {
-  int shmid;
-  key_t ret;
   uint64_t ispi, rspi;
-  msg_t *msg;
+  msg_t *ret;
 
   ispi = instance->ispi;
   rspi = instance->rspi;
 
-  ret = SHARED_MEMORY_MESSAGE_BASE + instance->num;
-  instance->num++;
-  shmid = shmget((key_t)ret, sizeof(msg_t), 0666 | IPC_CREAT);
-  if (shmid == -1)
+  ret = (msg_t *)shm_malloc(sizeof(msg_t));
+  if (!ret)
   {
-    perror("shmget failed");
+    perror("shm_malloc() failed");
     exit(1);
   }
+  memset(ret, 0, sizeof(msg_t));
 
-  msg = (msg_t *)shmat(shmid, NULL, 0);
-  if (msg == (msg_t *)-1)
-  {
-    perror("shmat failed");
-    exit(1);
-  }
-  msg->mtype = mtype;
-  msg->ispi = ispi;
-  msg->rspi = rspi;
+  ret->mtype = mtype;
+  ret->ispi = ispi;
+  ret->rspi = rspi;
+  ret->vtype = vtype;
+  memcpy(ret->val, val, vlen);
+  ret->vlen = vlen;
 
-  if (key)
-  {
-    memcpy(msg->key, key, strlen((const char *)key));
-    msg->klen = strlen((const char *)key);
-  }
-
-  msg->vtype = vtype;
-  memcpy(msg->val, val, vlen);
-  msg->vlen = vlen;
-
-  LM_INFO("[init_message()] kid: %d, mtype: %d\n", ret, mtype);
+  LM_INFO("[init_message()] ret: %p, mtype: %d\n", ret, mtype);
 
   return ret;
 }
 
-void free_message(key_t kid)
+void free_message(msg_t *msg)
 {
-  shmctl(kid, IPC_RMID, NULL);
+  shm_free(msg);
+}
+
+instance_t *get_instance()
+{
+  int shmid;
+  instance_t *ret;
+
+  ret = NULL;
+  shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666);
+  if (shmid == -1)
+  {
+    LM_ERR("[VoWiFi] error in shmget() at get_instance()\n");
+  }
+  else
+  {
+    ret = (instance_t *)shmat(shmid, NULL, 0);
+    LM_DBG("[VoWiFi] instance at: %p\n", ret);
+  }
+
+  return ret;
 }
 
 instance_t *init_instance(int asock)
@@ -506,22 +495,19 @@ instance_t *init_instance(int asock)
   int shmid;
   instance_t *ret;
 
-  ret = (instance_t *)calloc(1, sizeof(instance_t));
-
   shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666 | IPC_CREAT);
   if (shmid == -1)
   {
     perror("shmget failed");
     exit(0);
   }
-
+  
   ret = (instance_t *)shmat(shmid, NULL, 0);
-  if (ret == (instance_t *)-1)
+  if (ret == -1)
   {
     perror("shmat failed");
     exit(0);
   }
-
   LM_INFO("[VoWiFi] address of instance: %p\n", ret);
 
   ret->asock = asock;
@@ -542,19 +528,20 @@ void free_instance(instance_t *instance)
   shmctl(SHARED_MEMORY_INSTANCE_KEY, IPC_RMID, NULL);
 }
 
-query_t *init_query(void)
+query_t *init_query()
 {
-  int shmid;
+  LM_INFO("Start: init_query()\n");
   query_t *ret;
 
-  shmid = shmget((key_t)SHARED_MEMORY_QUERY_KEY, sizeof(query_t), 0666 | IPC_CREAT);
-  if (shmid == -1)
+  ret = (query_t *)shm_malloc(sizeof(query_t));
+  if (!ret)
   {
-    perror("shmget failed");
-    exit(0);
+    perror("shm_malloc() failed");
+    exit(1);
   }
-  ret = (query_t *) shmat(shmid, NULL, 0);
+  memset(ret, 0, sizeof(query_t));
 
+  LM_INFO("Finish: init_query()\n");
   return ret;
 }
 
@@ -564,12 +551,6 @@ void free_query(query_t *query)
 
   if (query)
   {
-    if (query->name)
-      free(query->name);
-
-    if (query->value)
-      free(query->value);
-    
     curr = query->sub;
     
     while (curr)
@@ -579,39 +560,39 @@ void free_query(query_t *query)
       curr = next;
     }
 
-    free(query);
+    shm_free(query);
   }
 }
 
 void _print_query(query_t *query, int depth)
 {
+  LM_INFO("Start: _print_query(): query: %p, depth: %d\n", query, depth);
   query_t *sub;
   int i, tlen;
   uint8_t buf[MAX_MESSAGE_LEN] = {0, };
   uint8_t *p, *tmp;
   uint8_t *val;
 
-  for (i=0; i<depth; i++)
-    printf("  ");
-  
   p = buf;
+  for (i=0; i<depth; i++)
+    p += 2;
+  
   tmp = get_query_name(query, &tlen);
   if (tlen > 0)
   {
-    snprintf((char *)p, tlen+1, "%s", tmp);
+    snprintf(p, tlen + 1, "%s", tmp);
     p += tlen;
   }
 
   val = get_query_value(query, &tlen);
   if (tlen > 0)
   {
-    memcpy(p, ":", 1);
-    p += 1;
-    snprintf((char *)p, tlen+1, "%s", val);
+    *(p++) = ':';
+    snprintf(p, tlen + 1, "%s", val);
     p += tlen;
   }
 
-  printf("%s\n", buf);
+  LM_INFO("%s\n", buf);
 
   depth += 1;
   sub = query->sub;
@@ -622,21 +603,28 @@ void _print_query(query_t *query, int depth)
   }
   depth -= 1;
 
+  memset(buf, 0, MAX_MESSAGE_LEN);
+  p = buf;
   for (i=0; i<depth; i++)
-    printf("  ");
-  printf("end\n");
+    p += 2;
+  *(p++) = 'e';
+  *(p++) = 'n';
+  *(p++) = 'd';
+  LM_INFO("%s\n", buf);
+  LM_INFO("Finish: _print_query()\n");
 }
 
 void print_query(query_t *query)
 {
-  printf(">>>>> print_query() <<<<<\n");
+  LM_INFO(">>>>> print_query() <<<<<\n");
   _print_query(query, 0);
-  printf(">>>>>>>>>>>>><<<<<<<<<<<<\n");
+  LM_INFO(">>>>>>>>>>>>><<<<<<<<<<<<\n");
 }
 
 query_t *add_query_sub_message(query_t *query, int ptype, int ctype)
 {
   query_t *sub;
+
   if (ctype == MSG_TYPE_ATTRIBUTE && ptype == MSG_TYPE_ATTRIBUTE)
   {
     if (has_query_parent(query))
@@ -690,7 +678,6 @@ void set_query_name(query_t *query, uint8_t *name)
   if (name[nlen-1] == '\n')
     nlen -= 1;
   LM_INFO("set_query_name()> name: %s, nlen: %d\n", name, nlen);
-  query->name = (uint8_t *)calloc(nlen+1, sizeof(uint8_t));
   memcpy(query->name, name, nlen);
   LM_INFO("set_query_name()> query->name: %s\n", query->name);
   query->nlen = nlen;
@@ -729,7 +716,6 @@ void set_query_value(query_t *query, uint8_t *value)
   LM_INFO("set_query_value()> value: %s, vlen: %d\n", value, vlen);
   if (value[vlen-1] == '\n')
     vlen -= 1;
-  query->value = (uint8_t *)calloc(vlen+1, sizeof(uint8_t));
   memcpy(query->value, value, vlen);
   query->vlen = vlen;
 }
@@ -761,8 +747,8 @@ bool is_query_finished(instance_t *instance)
 
 query_t *get_query(instance_t *instance)
 {
-  LM_INFO("[VoWiFi] ike_sa_instance.c: instance: %p\n", instance);
-  LM_INFO("[VoWiFi] ike_sa_instance.c: instance->query: %p\n", instance->query);
+  LM_INFO("[VoWiFi] instance: %p\n", instance);
+  LM_INFO("[VoWiFi] instance->query: %p\n", instance->query);
   return instance->query;
 }
 
@@ -817,7 +803,6 @@ void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len)
   uint8_t key[1024] = {0, };
   uint8_t mem[1024] = {0, };
   msg_t *msg;
-  key_t kid;
 
   int receiver_set;
   int attr_set;
@@ -890,9 +875,9 @@ void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len)
         }
 
         LM_INFO("[VoWiFi] before init_message() type 2 (block start)\n");
-        kid = init_message(instance, MSG_TYPE_BLOCK_START, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        add_message_to_send_queue(instance, kid);
-        LM_INFO("[VoWiFi] after init_message() type 2 (block start): kid: %d\n", kid);
+        msg = init_message(instance, MSG_TYPE_BLOCK_START, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        add_message_to_send_queue(instance, msg);
+        LM_INFO("[VoWiFi] after init_message() type 2 (block start): msg: %p\n", msg);
         memset(mem, 0, 1024);
 
         first_line = 0;
@@ -992,9 +977,9 @@ void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len)
   LM_INFO("[VoWiFi] after parsing the message\n");
 
   LM_INFO("[VoWiFi] before init_message() type 3 (block end)\n");
-  kid = init_message(instance, MSG_TYPE_BLOCK_END, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-  add_message_to_send_queue(instance, kid);
-  LM_INFO("[VoWiFi] after init_message() type 3 (block end): kid: %d\n", kid);
+  msg = init_message(instance, MSG_TYPE_BLOCK_END, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+  add_message_to_send_queue(instance, msg);
+  LM_INFO("[VoWiFi] after init_message() type 3 (block end): msg: %p\n", msg);
 }
 
 int int_to_char(int num, uint8_t *str, int base)
