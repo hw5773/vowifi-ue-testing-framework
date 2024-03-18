@@ -236,28 +236,15 @@ def write_testcases(ofname, mtcs, atcs):
     with open(ofname, "w") as of:
         of.write(json.dumps(testcases, indent=2))
 
-def generate_testcases(dname, cname, ename, fname, ofname):
-    logging.info("dname: {}".format(dname))
-    logging.info("cname: {}".format(cname))
-
-    d = None
-    with open(dname, "r") as f:
-        d = f.read()
-
-    default = json.loads(d)
-    print (default)
-    ret = []
-
-    with open(cname, "r") as f:
-        for line in f:
-            tc = make_drop_tc(default, line)
-            
-            tcs = make_update_tc(default, line)
+def generate_testcases(pname, ename, fname, ofname):
+    ptcs = abstract_testcases(pname)
+    mtcs = message_level_manipulation(ptcs, ename, fname)
+    atcs = attribute_level_manipulation(ptcs)
+    write_testcases(ofname, mtcs, atcs)
 
 def command_line_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--default", metavar="<default message>", help="Default message", type=str, default="default.json")
-    parser.add_argument("-c", "--critical-fields", metavar="<critical fields>", help="Critical field", type=str, default="critical-fields")
+    parser.add_argument("-p", "--primary", metavar="<directory of primary properties>", help="Directory of Primary Properties", type=str, default="../testcases/primary")
     parser.add_argument("-e", "--ike-errors", metavar="<ike error messages file>", help="IKE Error Message File", type=str, default="../testcases/errors/ike_errors")
     parser.add_argument("-f", "--sip-errors", metavar="<sip error messages file>", help="SIP Error Message File", type=str, default="../testcases/errors/sip_errors")
     parser.add_argument("-d", "--output-directory", metavar="<output directory>", help="Output directory", type=str, default="../testcases")
@@ -271,12 +258,8 @@ def main():
     log_level = args.log
     logging.basicConfig(level=log_level)
 
-    if not os.path.exists(args.default):
-        logging.error("No default message file exists: {}".format(args.default))
-        sys.exit(1)
-
-    if not os.path.exists(args.critical_fields):
-        logging.error("No critical field file exists: {}".format(args.critical_fields))
+    if not os.path.exists(args.primary):
+        logging.error("No directory exists: {}".format(args.primary))
         sys.exit(1)
 
     if not os.path.exists(args.ike_errors):
@@ -293,7 +276,7 @@ def main():
     ofname = "{}/{}".format(args.output_directory, args.output)
     logging.info(">>>> Output filename would be {}".format(ofname))
 
-    generate_testcases(args.default, args.critical_fields, args.ike_errors, args.sip_errors, ofname)
+    generate_testcases(args.primary, args.ike_errors, args.sip_errors, ofname)
 
 if __name__ == "__main__":
     main()
