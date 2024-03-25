@@ -9,9 +9,24 @@ def load_default(dname):
 def load_critical_fields(fname):
     pass
 
+def generate_testcase(pair, dobj):
+    pass
+
+def save_output(ofname, output):
+    pass
+
 def generate_testcases(default, fields, ike_errors, sip_errors, ofname):
     dobj = load_default(default)
     flst = load_critical_fields(fields)
+    output = {}
+    output["testcases"] = []
+
+    for pair in flst:
+        tcs = generate_testcase(pair, dobj)
+        for tc in tcs:
+            output["testcases"].append(tc)
+
+    save_output(ofname, output)
 
 
 def command_line_args():
