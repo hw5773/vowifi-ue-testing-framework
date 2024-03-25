@@ -275,9 +275,12 @@ def check_device_model():
     elif "A2020N3" in output:
         device = "A2020N3"
         logging.info("Device model: ZTE Stage 5G")
+    elif "Pixel_4a" in output:
+        device = "Pixel_6a"
+        logging.info("Device model: Google Pixel 4a")
     elif "Pixel_6a" in output:
         device = "Pixel_6a"
-        logging.info("Device model: Pixel 6a Android 12")
+        logging.info("Device model: Google Pixel 6a")
     elif "SOV41" in output:
         device = "SOV41"
         logging.info("Device model: Xperia 5")
@@ -290,6 +293,15 @@ def check_device_model():
     elif "T608M" in output:
         device = "TCL40XL"
         logging.info("Device model: TCL 40XL")
+    elif "I14_Pro_max" in output:
+        device = "I14_Pro_Nax"
+        logging.info("Device model: Blackcyber I14 Pro Max")
+    elif "I15_Pro_Max" in output:
+        device = "I15_Pro_Max"
+        logging.info("Device model: Blackcyber I15 Pro Max")
+    elif "Note_14" in output:
+        device = "Ulefone_Note_14"
+        logging.info("Device model: Ulefone Note 14")
     else:
         device = "others"
         logging.info("Device model: Others")
