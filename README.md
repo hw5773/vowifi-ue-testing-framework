@@ -151,7 +151,7 @@
 
   - Copy and paste all the configuration files
     - `cd VOWIFI_ROOT/settings/epdg`
-    - `sudo cp * /usr/local/etc`
+    - `sudo cp -r * /usr/local/etc`
 
   - Configuration - ipsec.conf
     - The important attributes in this configuration file are as follows: 
