@@ -1,1 +1,4 @@
 ike_sa_init_response/security_association/transform/encryption_algorithm:uint16/[0-255]
+ike_sa_init_response/security_association/transform/integrity_algorithm:uint16/[0-255]
+ike_sa_init_response/security_association/transform/pseudorandom_function:uint16/[0-255]
+ike_auth_1/extensible_authentication/rand:uint32/[0-255]

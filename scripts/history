@@ -1,0 +1,53 @@
+import json
+js = json.loads("default.json")
+f = open("default.json").read()
+f
+js = json.loads(f)
+js
+js["testcases"]
+for tc in js["testcases"]:
+        print (tc)
+for msg in js["testcases"]["testcase"]:
+        print (msg)
+testcases = js["testcases"]
+testcases
+for testcase in testcases:
+        print (testcase)
+for testcase in testcases:
+        for msg in testcase["testcase"]:
+                print (msg)
+for testcase in testcases:
+        for msg in testcase["testcase"]:
+                print (msg["name"])
+for testcase in testcases:
+        for msg in testcase["testcase"]:
+                if msg["name"] == "ike_sa_init_response":
+                        break
+for testcase in testcases:
+        for msg in testcase["testcase"]:
+                print (msg["name"])
+                if msg["name"] == "ike_sa_init_response":
+                        break
+joutput = {}
+joutput["testcases"] = []
+tc = {}
+tc["testcase"] = []
+tc
+joutput["testcases"].append(tc)
+joutput
+tc
+for testcase in testcases:
+        for msg in testcase["testcase"]:
+                tc["testcase"].append(msg)
+                if msg["name"] == "ike_sa_init_response":
+                        break
+tc
+output = json.dumps(tc)
+output
+of = open("output.json", "w")
+of.write(output)
+exit
+[("security_association/transform/encryption_algorithm", "uint16", "[0-255]"), ("security_association/transform/integrity_algorithm", "uint16", "[0-255]")]
+flst = [("security_association/transform/encryption_algorithm", "uint16", "[0-255]"), ("security_association/transform/integrity_algorithm", "uint16", "[0-255]")]
+flst
+history
