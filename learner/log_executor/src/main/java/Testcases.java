@@ -116,6 +116,10 @@ class Testcase {
           this.vtype = ValueType.UINT8;
         } else if (vt.equals("uint16")) {
           this.vtype = ValueType.UINT16;
+        } else if (vt.equals("uint32")) {
+          this.vtype = ValueType.UINT32;
+        } else if (vt.equals("uint64")) {
+          this.vtype = ValueType.UINT64;
         } else if (vt.equals("string")) {
           this.vtype = ValueType.STRING;
         } else {

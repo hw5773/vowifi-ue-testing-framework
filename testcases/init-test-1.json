@@ -1,0 +1,73 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-modify-responder-spi"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "responder_spi",
+              "op": "update",
+              "type": "uint64",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-major-version"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "ike_major_version",
+              "op": "update",
+              "type": "uint32",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-major-version"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "ike_minor_version",
+              "op": "update",
+              "type": "uint32",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

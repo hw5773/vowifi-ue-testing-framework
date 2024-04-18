@@ -62,7 +62,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    initIMSConnection();
+    //initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {

@@ -60,6 +60,10 @@
 #include <sa/ikev2/tasks/ike_redirect.h>
 #include <credentials/sets/auth_cfg_wrapper.h>
 
+///// Added for VoWiFi /////
+#include <inttypes.h>
+////////////////////////////
+
 #ifdef ME
 #include <sa/ikev2/tasks/ike_me.h>
 #include <processing/jobs/initiate_mediation_job.h>
@@ -1258,9 +1262,16 @@ METHOD(ike_sa_t, generate_message, status_t,
 	status_t status;
   ///// Added for VoWiFi /////
   instance_t *instance;
-  uint64_t ispi, rspi;
+  uint64_t ispi, rspi, tspi;
+  query_t *query;
+  uint8_t *tmp;
+  int vtype, op, tlen;
   instance = this->instance;
-  message->set_instance(message, instance);
+  //message->set_instance(message, instance);
+  //instance = message->get_instance(message);
+  ispi = this->ike_sa_id->get_initiator_spi(this->ike_sa_id);
+  rspi = this->ike_sa_id->get_responder_spi(this->ike_sa_id);
+  printf("\n\n\n\n\n[VoWiFi] instance: %p, ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64", rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n\n\n", instance, ispi, instance->ispi, rspi, instance->rspi);
   ////////////////////////////
 
 	if (message->is_encoded(message))
@@ -1270,6 +1281,28 @@ METHOD(ike_sa_t, generate_message, status_t,
 		return SUCCESS;
 	}
 	this->stats[STAT_OUTBOUND] = time_monotonic(NULL);
+  
+  ///// Added for VoWiFi /////
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "responder_spi")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        tspi = (uint64_t)char_to_int(tmp, tlen, 10);
+        printf("\n\n\n\n\n[VoWiFi] updated spi: %.16"PRIx64"\n\n\n\n\n", tspi);
+        this->ike_sa_id->set_responder_spi(this->ike_sa_id, tspi);
+        instance->rspi = tspi;
+      }
+    }
+  }
+  ////////////////////////////
+
 	message->set_ike_sa_id(message, this->ike_sa_id);
 	charon->bus->message(charon->bus, message, FALSE, TRUE);
 	status = message->generate(message, this->keymat, packet);

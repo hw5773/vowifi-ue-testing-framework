@@ -48,6 +48,7 @@
 
 ///// Added for VoWiFi /////
 #include <unistd.h>
+#include <inttypes.h>
 #include <sa/ike_sa_instance.h>
 #include "../../../libsimaka/simaka_message.h"
 
@@ -918,13 +919,76 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	me = request->get_destination(request);
 	other = request->get_source(request);
 
-	message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
+  ///// Added for VoWiFi /////
+  int major, minor, mid;
+  major = IKEV2_MAJOR_VERSION;
+  minor = IKEV2_MINOR_VERSION;
+  mid = this->responding.mid;
+  id = this->ike_sa->get_id(this->ike_sa);
+
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    if ((query = get_next_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "ike_major_version")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        major = (int) char_to_int(tmp, tlen, 10);
+      }
+    }
+
+    if ((query = get_next_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "ike_minor_version")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        minor = (int) char_to_int(tmp, tlen, 10);
+      }
+    }
+
+    if ((query = get_next_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "message_id")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        mid = (int) char_to_int(tmp, tlen, 10);
+      }
+    }
+
+    message = message_create(major, minor);
+    message->set_message_id(message, mid);
+    message->set_instance(message, instance);
+  }
+  else
+  {
+	  message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
+  	message->set_message_id(message, this->responding.mid);
+  }
+
+  id = NULL;
+  ///////////////////////////
+
+  ///// Commented out for VoWiFi /////
+	//message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
 	message->set_exchange_type(message, request->get_exchange_type(request));
 	/* send response along the path the request came in */
 	message->set_source(message, me->clone(me));
 	message->set_destination(message, other->clone(other));
-	message->set_message_id(message, this->responding.mid);
+	//message->set_message_id(message, this->responding.mid);
 	message->set_request(message, FALSE);
+  ////////////////////////////////////
 
   ///// Added for VoWiFi /////
   const uint8_t *symbol;
@@ -1538,6 +1602,33 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     instance->add_message_to_send_queue(instance, msg);
   }
   ////////////////////////////
+
+  /*
+  ///// Added for VoWiFi /////
+  ike_sa_id_t *tid;
+  uint64_t tspi;
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    tid = id;
+    id = this->ike_sa->get_id(this->ike_sa);
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "responder_spi")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        tspi = (uint64_t)char_to_int(tmp, tlen, 10);
+        printf("\n\n\n\n\n[VoWiFi] updated spi: %.16"PRIx64"\n\n\n\n\n", tspi);
+        id->set_responder_spi(id, tspi);
+      }
+    }
+    id = tid;
+  }
+  ////////////////////////////
+  */
 
 	/* message complete, send it */
 	clear_packets(this->responding.packets);
