@@ -920,10 +920,12 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	other = request->get_source(request);
 
   ///// Added for VoWiFi /////
-  int major, minor, mid;
+  int major, minor, etype, mid, is_req;
   major = IKEV2_MAJOR_VERSION;
   minor = IKEV2_MINOR_VERSION;
+  etype = request->get_exchange_type(request);
   mid = this->responding.mid;
+  is_req = FALSE;
   id = this->ike_sa->get_id(this->ike_sa);
 
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
@@ -956,6 +958,22 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
     if ((query = get_next_query(instance))
         && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "exchange_type")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      printf("\n\n\n\n\n[VoWiFi] exchange type 1\n\n\n\n\n");
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {
+      printf("\n\n\n\n\n[VoWiFi] exchange type 2\n\n\n\n\n");
+        tmp = get_query_value(query, &tlen);
+        etype = (int) char_to_int(tmp, tlen, 10);
+      printf("\n\n\n\n\n[VoWiFi] exchange type 3: %d\n\n\n\n\n", etype);
+      }
+    }
+
+    if ((query = get_next_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
         && (query = get_sub_query_by_name(query, "message_id")))
     {
       vtype = get_query_value_type(query);
@@ -967,14 +985,31 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
       }
     }
 
+    if ((query = get_next_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "flags")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        is_req = (int) char_to_int(tmp, tlen, 10);
+      }
+    }
+
     message = message_create(major, minor);
+	  message->set_exchange_type(message, etype);
     message->set_message_id(message, mid);
     message->set_instance(message, instance);
+    message->set_request(message, is_req);
   }
   else
   {
 	  message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
+	  message->set_exchange_type(message, request->get_exchange_type(request));
   	message->set_message_id(message, this->responding.mid);
+	  message->set_request(message, FALSE);
   }
 
   id = NULL;
@@ -982,12 +1017,12 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
   ///// Commented out for VoWiFi /////
 	//message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
-	message->set_exchange_type(message, request->get_exchange_type(request));
+	//message->set_exchange_type(message, request->get_exchange_type(request));
 	/* send response along the path the request came in */
 	message->set_source(message, me->clone(me));
 	message->set_destination(message, other->clone(other));
 	//message->set_message_id(message, this->responding.mid);
-	message->set_request(message, FALSE);
+	//message->set_request(message, FALSE);
   ////////////////////////////////////
 
   ///// Added for VoWiFi /////

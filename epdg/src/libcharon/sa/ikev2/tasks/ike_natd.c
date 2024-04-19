@@ -23,6 +23,10 @@
 #include <crypto/hashers/hasher.h>
 #include <encoding/payloads/notify_payload.h>
 
+///// Added for VoWiFi /////
+#include <sa/ike_sa_instance.h>
+////////////////////////////
+
 
 typedef struct private_ike_natd_t private_ike_natd_t;
 
@@ -137,8 +141,22 @@ static notify_payload_t *build_natd_payload(private_ike_natd_t *this,
 	notify_payload_t *notify;
 	ike_sa_id_t *ike_sa_id;
 	ike_cfg_t *config;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  uint64_t ispi, rspi;
+  uint8_t *tmp;
+  const uint8_t *name;
+  int vtype, tlen, op;
+  query_t *query;
+
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  ////////////////////////////
 
 	ike_sa_id = this->ike_sa->get_id(this->ike_sa);
+  ///// Added for VoWiFi /////
+  ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
+  rspi = ike_sa_id->get_responder_spi(ike_sa_id);
+  ////////////////////////////
 	config = this->ike_sa->get_ike_cfg(this->ike_sa);
 	if (force_encap(config) && type == NAT_DETECTION_SOURCE_IP)
 	{
@@ -161,8 +179,30 @@ static notify_payload_t *build_natd_payload(private_ike_natd_t *this,
 	}
 	notify = notify_payload_create(PLV2_NOTIFY);
 	notify->set_notify_type(notify, type);
+
+  ///// Added for VoWiFi /////
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    if (type == NAT_DETECTION_SOURCE_IP)
+    {
+      name = "nat_detection_source_ip";
+    }
+    else if (type == NAT_DETECTION_DESTINATION_IP)
+    {
+      name = "nat_detection_destination_ip";
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, name)))
+    {
+      // TODO for update 
+      // change the value in hash
+    }
+  }
+  ////////////////////////////
 	notify->set_notification_data(notify, hash);
-	chunk_free(&hash);
+  chunk_free(&hash);
 
 	return notify;
 }
@@ -383,6 +423,9 @@ METHOD(task_t, build_r, status_t,
 
 		/* initiator seems to support NAT detection, add response */
 		me = message->get_source(message);
+
+    // TODO: here to drop the payload (not included)
+    //
 		notify = build_natd_payload(this, NAT_DETECTION_SOURCE_IP, me);
 		if (notify)
 		{

@@ -1271,7 +1271,6 @@ METHOD(ike_sa_t, generate_message, status_t,
   //instance = message->get_instance(message);
   ispi = this->ike_sa_id->get_initiator_spi(this->ike_sa_id);
   rspi = this->ike_sa_id->get_responder_spi(this->ike_sa_id);
-  printf("\n\n\n\n\n[VoWiFi] instance: %p, ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64", rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n\n\n", instance, ispi, instance->ispi, rspi, instance->rspi);
   ////////////////////////////
 
 	if (message->is_encoded(message))
@@ -1295,7 +1294,6 @@ METHOD(ike_sa_t, generate_message, status_t,
       {
         tmp = get_query_value(query, &tlen);
         tspi = (uint64_t)char_to_int(tmp, tlen, 10);
-        printf("\n\n\n\n\n[VoWiFi] updated spi: %.16"PRIx64"\n\n\n\n\n", tspi);
         this->ike_sa_id->set_responder_spi(this->ike_sa_id, tspi);
         instance->rspi = tspi;
       }
