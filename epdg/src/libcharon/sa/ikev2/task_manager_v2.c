@@ -930,32 +930,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    if ((query = get_next_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "ike_major_version")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        major = (int) char_to_int(tmp, tlen, 10);
-      }
-    }
-
-    if ((query = get_next_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "ike_minor_version")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        minor = (int) char_to_int(tmp, tlen, 10);
-      }
-    }
-
+    /*
     if ((query = get_next_query(instance))
         && is_query_name(query, "ike_sa_init_response")
         && (query = get_sub_query_by_name(query, "exchange_type")))
@@ -997,11 +972,13 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         is_req = (int) char_to_int(tmp, tlen, 10);
       }
     }
+    */
 
     message = message_create(major, minor);
 	  message->set_exchange_type(message, etype);
     message->set_message_id(message, mid);
     message->set_instance(message, instance);
+    printf("\n\n\n\n\n[VoWiFi] message: %p, instance: %p (task_manager_v2.c)\n\n\n\n\n", message, instance);
     message->set_request(message, is_req);
   }
   else

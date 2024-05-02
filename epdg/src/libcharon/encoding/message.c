@@ -38,6 +38,10 @@
 #include <encoding/payloads/cp_payload.h>
 #include <encoding/payloads/fragment_payload.h>
 
+///// Added for VoWiFi /////
+#include <inttypes.h>
+////////////////////////////
+
 /**
  * Max number of notify payloads per IKEv2 message
  */
@@ -1676,6 +1680,31 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
 	payload_t *payload, *next;
 	bool encrypting = FALSE;
 
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  msg_t *msg;
+  query_t *query;
+  uint64_t ispi, rspi;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp;
+  int vtype, tlen, op;
+  uint16_t size;
+  message_t *message;
+  ike_sa_id_t *ike_sa_id;
+
+  message = &(this->public);
+  instance = message->get_instance(message);
+  ike_sa_id = message->get_ike_sa_id(message);
+  ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
+  rspi = ike_sa_id->get_responder_spi(ike_sa_id);
+  printf("\n\n\n\n\n[VoWiFi] message: %p, instance: %p (message.c)\n", message, instance);
+  printf("[VoWiFi] ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64"\n", ispi, instance->ispi);
+  printf("[VoWiFi] rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n\n\n", rspi, instance->rspi);
+  ////////////////////////////
+
 	if (this->exchange_type == EXCHANGE_TYPE_UNDEFINED)
 	{
 		DBG1(DBG_ENC, "exchange type is not defined");
@@ -1775,6 +1804,106 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
 	/* generate all payloads with proper next type */
 	*out_generator = generator = generator_create();
 	ike_header = create_header(this);
+
+  ///// Added for VoWiFi /////
+
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    printf("\n\n\n[VoWiFi] check_instance passed\n\n\n");
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "initiator_spi")))
+    {
+      printf("\n\n[VoWiFI] ike_sa_init_response - initiator_spi\n\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        v64 = char_to_int(tmp, tlen, 16);
+        ike_header->set_initiator_spi(ike_header, v64);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "responder_spi")))
+    {
+      printf("\n\n[VoWiFI] ike_sa_init_response - responder_spi\n\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        v64 = char_to_int(tmp, tlen, 16);
+        ike_header->set_initiator_spi(ike_header, v64);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "ike_major_version")))
+    {
+      printf("\n\n[VoWiFI] ike_sa_init_response - ike_major_version\n\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_maj_version(ike_header, v8);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "ike_minor_version")))
+    {
+      printf("\n\n[VoWiFI] ike_sa_init_response - ike_minor_version\n\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_min_version(ike_header, v8);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "exchange_type")))
+    {
+      printf("\n\n[VoWiFI] ike_sa_init_response - exchange_type\n\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_min_version(ike_header, v8);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "")))
+    {
+      printf("\n\n[VoWiFI] ike_sa_init_response - message ID\n\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_min_version(ike_header, v8);
+      }
+    }
+
+  }
+  ////////////////////////////
+
+
 	payload = (payload_t*)ike_header;
 	enumerator = create_payload_enumerator(this);
 	while (enumerator->enumerate(enumerator, &next))
@@ -1812,25 +1941,6 @@ static status_t finalize_message(private_message_t *this, keymat_t *keymat,
 	keymat_v1_t *keymat_v1 = (keymat_v1_t*)keymat;
 	chunk_t chunk;
 	uint32_t *lenpos;
-
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  aead_t *aead;
-  instance = this->instance;
-
-  //printf("\n\n[VoWiFi] check instance to set the instance and ike_sa_id\n\n");
-  if (instance)
-  {
-    //printf("\n\n[VoWiFi] setting the instance and ike_sa_id\n\n");
-  	aead = keymat->get_aead(keymat, FALSE);
-    if (aead)
-    {
-      //printf("\n\n\n[VoWiFi] this->ike_sa_id: %p\n\n\n", this->ike_sa_id);
-      aead->set_ike_sa_id(aead, this->ike_sa_id);
-      aead->set_instance(aead, instance);
-    }
-  }
-  ////////////////////////////
 
 	if (encrypted)
 	{
@@ -3003,10 +3113,10 @@ METHOD(message_t, destroy, void,
 METHOD(message_t, set_instance, void,
 	private_message_t *this, void *instance)
 {
-  this->instance = instance;
+  this->instance = (instance_t *)instance;
 }
 
-METHOD(message_t, get_instance, void,
+METHOD(message_t, get_instance, instance_t *,
 	private_message_t *this)
 {
   return this->instance;
