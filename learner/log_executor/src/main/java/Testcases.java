@@ -114,12 +114,20 @@ class Testcase {
           this.vtype = ValueType.INTEGER;
         } else if (vt.equals("uint8")) {
           this.vtype = ValueType.UINT8;
+        } else if (vt.equals("uint8h")) {
+          this.vtype = ValueType.UINT8H;
         } else if (vt.equals("uint16")) {
           this.vtype = ValueType.UINT16;
+        } else if (vt.equals("uint16h")) {
+          this.vtype = ValueType.UINT16H;
         } else if (vt.equals("uint32")) {
           this.vtype = ValueType.UINT32;
+        } else if (vt.equals("uint32h")) {
+          this.vtype = ValueType.UINT32H;
         } else if (vt.equals("uint64")) {
           this.vtype = ValueType.UINT64;
+        } else if (vt.equals("uint64h")) {
+          this.vtype = ValueType.UINT64H;
         } else if (vt.equals("string")) {
           this.vtype = ValueType.STRING;
         } else {
