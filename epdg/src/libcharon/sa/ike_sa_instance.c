@@ -547,9 +547,25 @@ int check_drop_next(instance_t *instance, payload_t *payload)
 }
 */
 
+int check_flag(uint8_t *flag, uint8_t *tmp, int tlen)
+{
+  size_t len;
+
+  if (strlen(flag) < tlen)
+  {
+    len = strlen(flag);
+  }
+  else
+  {
+    len = tlen;
+  }
+
+  return !strncmp(tmp, flag, len);
+}
+
 int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_t *ike_header)
 {
-  int ret;
+  int ret, i;
   query_t *query;
   payload_t *payload;
   uint8_t v8;
@@ -559,187 +575,389 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
   uint8_t *tmp;
   int vtype, tlen, op;
   uint16_t size;
+  const uint8_t *mname;
   table_item_t **init_hashes_table;
+  const uint8_t *messages = 
+  {
+    "ike_sa_init_response",
+    "ike_auth_1_response",
+    "ike_auth_2_response",
+    "ike_auth_3_response",
+    "ike_auth_4_response"
+  };
 
-  ret = NOT_SET;
+  ret = COMPLETED;
 
-  printf("\n\n\n[VoWiFi] process ike header\n");
-
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "initiator_spi")))
-  {    
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
+  for (i=0; i<5; i++)
+  {
+    mname = messages[i];
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "initiator_spi")))
     {    
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT64)
-        v64 = char_to_int(tmp, tlen, 10); 
-      else if (vtype == VAL_TYPE_UINT64H)
-        v64 = char_to_int(tmp, tlen, 16); 
-      ike_header->set_initiator_spi(ike_header, v64);
-      ike_sa_id->set_initiator_spi(ike_sa_id, v64);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT64)
+          v64 = char_to_int(tmp, tlen, 10); 
+        else if (vtype == VAL_TYPE_UINT64H)
+          v64 = char_to_int(tmp, tlen, 16); 
+        ike_header->set_initiator_spi(ike_header, v64);
+        ike_sa_id->set_initiator_spi(ike_sa_id, v64);
+      }    
     }    
-  }    
 
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "responder_spi")))
-  {    
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "responder_spi")))
     {    
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT64)
-        v64 = char_to_int(tmp, tlen, 10); 
-      else if (vtype == VAL_TYPE_UINT64H)
-        v64 = char_to_int(tmp, tlen, 16); 
-      ike_header->set_responder_spi(ike_header, v64);
-      ike_sa_id->set_responder_spi(ike_sa_id, v64);
-      init_hashes_table = (table_item_t **)(instance->init_hashes_table);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT64)
+          v64 = char_to_int(tmp, tlen, 10); 
+        else if (vtype == VAL_TYPE_UINT64H)
+          v64 = char_to_int(tmp, tlen, 16); 
+        ike_header->set_responder_spi(ike_header, v64);
+        ike_sa_id->set_responder_spi(ike_sa_id, v64);
+        init_hashes_table = (table_item_t **)(instance->init_hashes_table);
 
-      u_int row; 
-      table_item_t *item;
-      init_hash_t *thash;
+        u_int row; 
+        table_item_t *item;
+        init_hash_t *thash;
 
-      row = chunk_hash(instance->init_hash) & instance->table_mask;
-      item = init_hashes_table[row];
-      while (item)
+        row = chunk_hash(instance->init_hash) & instance->table_mask;
+        item = init_hashes_table[row];
+        while (item)
+        {
+          init_hash_t *current = item->value;
+
+          if (chunk_equals(instance->init_hash, current->hash))
+            break;
+        }
+
+        thash = (init_hash_t *)item->value;
+        thash->our_spi = v64; 
+      }    
+    } 
+
+    /*
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "next_payload")))
+    {
+      printf("[VoWiFi] ike_sa_init_response - next_payload\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
       {
-        init_hash_t *current = item->value;
-
-        if (chunk_equals(instance->init_hash, current->hash))
-          break;
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        printf("[VoWiFi] v8: %u\n\n\n", v8);
+        payload = (payload_t *)ike_header;
+        payload->set_next_type(payload, v8);
       }
-
-      thash = (init_hash_t *)item->value;
-      thash->our_spi = v64; 
-    }    
-  } 
-
-  /*
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "next_payload")))
-  {
-    printf("[VoWiFi] ike_sa_init_response - next_payload\n");
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
-    {
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT8)
-        v8 = char_to_int(tmp, tlen, 10);
-      else if (vtype == VAL_TYPE_UINT8H)
-        v8 = char_to_int(tmp, tlen, 16);
-      printf("[VoWiFi] v8: %u\n\n\n", v8);
-      payload = (payload_t *)ike_header;
-      payload->set_next_type(payload, v8);
     }
-  }
-  */
+    */
 
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "ike_major_version")))
-  {    
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "ike_major_version")))
     {    
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT8)
-        v8 = char_to_int(tmp, tlen, 10); 
-      else if (vtype == VAL_TYPE_UINT8H)
-        v8 = char_to_int(tmp, tlen, 16);
-      ike_header->set_maj_version(ike_header, v8);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10); 
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_maj_version(ike_header, v8);
+      }
     }
-  }
 
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "ike_minor_version")))
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "ike_minor_version")))
     {
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT8)
-        v8 = char_to_int(tmp, tlen, 10);
-      else if (vtype == VAL_TYPE_UINT8H)
-        v8 = char_to_int(tmp, tlen, 16);
-      ike_header->set_min_version(ike_header, v8);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_min_version(ike_header, v8);
+      }
     }
-  }
 
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "exchange_type")))
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "exchange_type")))
     {
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT8)
-        v8 = char_to_int(tmp, tlen, 10);
-      else if (vtype == VAL_TYPE_UINT8H)
-        v8 = char_to_int(tmp, tlen, 16);
-      ike_header->set_exchange_type(ike_header, v8);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_exchange_type(ike_header, v8);
+      }
     }
-  }
 
-  // flags
-  /*
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "exchange_type")))
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "flags")))
     {
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT8)
-        v8 = char_to_int(tmp, tlen, 10);
-      else if (vtype == VAL_TYPE_UINT8H)
-        v8 = char_to_int(tmp, tlen, 16);
-      ike_header->set_exchange_type(ike_header, v8);
+      const uint8_t *flag;
+      int len;
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        flag = "responder";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_response_flag(ike_header, 1);
+
+        flag = "no_responder";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_response_flag(ike_header, 0);
+
+        flag = "version";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_version_flag(ike_header, 1);
+
+        flag = "no_version";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_version_flag(ike_header, 0);
+
+        flag = "initiator";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_initiator_flag(ike_header, 1);
+
+        flag = "no_initiator";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_initiator_flag(ike_header, 0);
+
+        flag = "encryption";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_encryption_flag(ike_header, 1);
+
+        flag = "no_encryption";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_encryption_flag(ike_header, 0);
+
+        flag = "commit";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_commit_flag(ike_header, 1);
+
+        flag = "no_commit";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_commit_flag(ike_header, 0);
+
+        flag = "authonly";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_authonly_flag(ike_header, 1);
+
+        flag = "no_authonly";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_authonly_flag(ike_header, 0);
+      }
     }
-  }
-  */
 
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_sa_init_response")
-      && (query = get_sub_query_by_name(query, "message_id")))
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if ((vtype == VAL_TYPE_UINT32 || vtype == VAL_TYPE_UINT32H) && op == OP_TYPE_UPDATE)
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "message_id")))
     {
-      tmp = get_query_value(query, &tlen);
-      if (vtype == VAL_TYPE_UINT32)
-        v32 = char_to_int(tmp, tlen, 10);
-      else if (vtype == VAL_TYPE_UINT32H)
-        v32 = char_to_int(tmp, tlen, 16);
-      ike_header->set_message_id(ike_header, v32);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT32 || vtype == VAL_TYPE_UINT32H) && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT32)
+          v32 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT32H)
+          v32 = char_to_int(tmp, tlen, 16);
+        ike_header->set_message_id(ike_header, v32);
+      }
     }
   }
 
   return ret;
 }
 
+int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, sa_payload_t *security_association)
+{
+  int ret;
+  query_t *query;
+  proposal_t *proposal;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp;
+  int vtype, tlen, op;
+  uint16_t size;
+  uint16_t *algo, *klen;
+
+  ret = COMPLETED;
+  proposal = security_association->get_proposal(security_association);
+
+  // encryption related
+  algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+  klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+
+  // ike_sa_init_response - security_association - transform - encryption_algorithm
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "encryption_algorithm")))
+  {
+    proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+            && (query = get_sub_query_by_name(query, "security_association"))
+            && (query = get_sub_query_by_name(query, "transform"))
+            && (query = get_sub_query_by_name(query, "encryption_key_length")))
+        {
+          vtype = get_query_value_type(query);
+          op = get_query_operator(query);
+          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+          {
+            tmp = get_query_value(query, &tlen);
+            *klen = (uint16_t) char_to_int(tmp, tlen, 10);
+          }
+        }
+        this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
+      }
+
+      // ike_sa_init_response - security_association - transform - encryption_key_length
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "encryption_key_length")))
+      {
+        this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          *klen = (uint16_t) char_to_int(tmp, tlen, 10);
+        }
+
+        if ((query = get_query(instance))
+            && is_query_name(query, "ike_sa_init_response")
+            && (query = get_sub_query_by_name(query, "security_association"))
+            && (query = get_sub_query_by_name(query, "transform"))
+            && (query = get_sub_query_by_name(query, "encryption_algorithm")))
+        {
+          this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
+          vtype = get_query_value_type(query);
+          op = get_query_operator(query);
+          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+          {
+            tmp = get_query_value(query, &tlen);
+            *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+          }
+        }
+        this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
+      }
+
+      // ike_sa_init_response - security_association - transform - diffie_hellman_group
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
+      {
+        this->proposal->get_algorithm(this->proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+        }
+        this->proposal->set_algorithm(this->proposal, DIFFIE_HELLMAN_GROUP, *algo, *klen);
+      }
+
+      // ike_sa_init_response - security_association - transform - pseudo_random_function
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "pseudo_random_function")))
+      {
+        this->proposal->get_algorithm(this->proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+        }
+        this->proposal->set_algorithm(this->proposal, PSEUDO_RANDOM_FUNCTION, *algo, *klen);
+      }
+
+      // ike_sa_init_response - security_association - transform - integrity_algorithm
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "integrity_algorithm")))
+      {
+        this->proposal->get_algorithm(this->proposal, INTEGRITY_ALGORITHM, algo, klen);
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+        }
+        this->proposal->set_algorithm(this->proposal, INTEGRITY_ALGORITHM, *algo, *klen);
+      }
+
+      free(algo);
+      free(klen);
+
+out:
+  return ret;
+}
 
 int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *payload, payload_t *next)
 {
   int ret;
   ike_header_t *ike_header;
+  sa_payload_t *security_association;
 
   ret = NOT_SET;
   ike_header = NULL;
+  security_association = NULL;
 
   /*
   if ((ret = check_drop_next(instance, next)))
@@ -755,8 +973,9 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
       ret = process_ike_header(instance, ike_sa_id, ike_header);
       break;
 
-    case PL1_SECURITY_ASSOCIATION:
-      // TODO: Need to implement here
+    case PLV2_SECURITY_ASSOCIATION:
+      security_assocation = (sa_payload_t *)payload;
+      ret = process_security_association(instance, ike_sa_id, security_association);
       break;
 
     default:

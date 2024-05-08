@@ -1683,6 +1683,14 @@ METHOD(ike_init_t, get_lower_nonce, chunk_t,
 	}
 }
 
+///// Added for VoWiFi /////
+METHOD(ike_init_t, get_proposal, proposal_t *,
+	private_ike_init_t *this)
+{
+	return this->proposal;
+}
+////////////////////////////
+
 /*
  * Described in header.
  */
