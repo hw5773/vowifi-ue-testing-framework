@@ -18,10 +18,6 @@ struct init_hash_t {
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
 {
   int ret;
-  //printf("[check_instance] this->instance: %p\n", instance);
-
-  //if (instance)
-  //  printf("[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", instance->ispi, instance->rspi, ispi, rspi);
 
   if (!instance) 
     ret = 0;
@@ -381,17 +377,13 @@ query_t *get_query(instance_t *instance)
   ret = NULL;
   if (instance->initiated && !instance->finished)
   {
-    //printf("[VoWiFi] before the while loop\n");
     while (!instance->query)
     {
-      //printf("[VoWiFi] instance->query: %p\n", instance->query);
-
       if (instance->finished) 
         break;
 
       sleep(1);
     }
-    //printf("[VoWiFi] after the while loop\n");
 
     if (instance->finished)
       ret = NULL;
@@ -447,8 +439,6 @@ bool is_query_name(query_t *query, const uint8_t *name)
 
     if ((qlen == nlen) && !strncmp(qname, name, qlen))
       ret = true;
-
-    //printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
   }
 
   return ret;
@@ -458,7 +448,6 @@ query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
 {
   query_t *ret, *curr;
 
-  //printf("[VoWiFi] ike_sa_instance.c: get_sub_query_by_name(): query: %p, name: %s\n", query, name);
   ret = NULL;
   curr = query->sub;
 
@@ -537,15 +526,137 @@ out:
   return ret;
 }
 
-/*
-int check_drop_next(instance_t *instance, payload_t *payload)
+int check_drop_next(instance_t *instance, payload_t *next)
 {
-  int ret;
-  ret = COMPLETE;
+  int ret, type, op;
+  query_t *query;
+
+  ret = COMPLETED;
+  type = next->get_type(next);
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (type == PLV2_SECURITY_ASSOCIATION))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "key_exchange"))
+      && (type == PLV2_KEY_EXCHANGE))
+  {
+    printf("\n\n\n[VoWiFi] Drop key exchange\n\n\n");
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "nonce"))
+      && (type == PLV2_NONCE))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "id_responder"))
+      && (type == PLV2_ID_RESPONDER))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (type == PLV2_EAP))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_2_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (type == PLV2_EAP))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "authentication"))
+      && (type == PLV2_AUTH))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "ts_initiator"))
+      && (type == PLV2_TS_INITIATOR))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "ts_responder"))
+      && (type == PLV2_TS_RESPONDER))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "configuration"))
+      && (type == PLV2_CONFIGURATION))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
 
   return ret;
 }
-*/
 
 int check_flag(uint8_t *flag, uint8_t *tmp, int tlen)
 {
@@ -805,6 +916,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
   int ret;
   query_t *query;
   proposal_t *proposal;
+  linked_list_t *proposals;
   uint8_t v8;
   uint16_t v16;
   uint32_t v32;
@@ -815,7 +927,8 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
   uint16_t *algo, *klen;
 
   ret = COMPLETED;
-  proposal = security_association->get_proposal(security_association);
+  proposals = security_association->get_proposals(security_association);
+  proposals->get_first(proposals, &proposal);
 
   // encryption related
   algo = (uint16_t *)calloc(1, sizeof(uint16_t));
@@ -828,7 +941,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "encryption_algorithm")))
   {
-    proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
+    proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
     vtype = get_query_value_type(query);
     op = get_query_operator(query);
     if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
@@ -851,7 +964,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
             *klen = (uint16_t) char_to_int(tmp, tlen, 10);
           }
         }
-        this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
+        proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
       }
 
       // ike_sa_init_response - security_association - transform - encryption_key_length
@@ -861,7 +974,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
           && (query = get_sub_query_by_name(query, "transform"))
           && (query = get_sub_query_by_name(query, "encryption_key_length")))
       {
-        this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
+        proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
         vtype = get_query_value_type(query);
         op = get_query_operator(query);
         if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
@@ -876,7 +989,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
             && (query = get_sub_query_by_name(query, "transform"))
             && (query = get_sub_query_by_name(query, "encryption_algorithm")))
         {
-          this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
+          proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
           vtype = get_query_value_type(query);
           op = get_query_operator(query);
           if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
@@ -885,7 +998,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
             *algo = (uint16_t) char_to_int(tmp, tlen, 10);
           }
         }
-        this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
+        proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
       }
 
       // ike_sa_init_response - security_association - transform - diffie_hellman_group
@@ -895,7 +1008,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
           && (query = get_sub_query_by_name(query, "transform"))
           && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
       {
-        this->proposal->get_algorithm(this->proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
+        proposal->get_algorithm(proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
         vtype = get_query_value_type(query);
         op = get_query_operator(query);
         if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
@@ -903,7 +1016,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
           tmp = get_query_value(query, &tlen);
           *algo = (uint16_t) char_to_int(tmp, tlen, 10);
         }
-        this->proposal->set_algorithm(this->proposal, DIFFIE_HELLMAN_GROUP, *algo, *klen);
+        proposal->set_algorithm(proposal, DIFFIE_HELLMAN_GROUP, *algo, *klen);
       }
 
       // ike_sa_init_response - security_association - transform - pseudo_random_function
@@ -913,7 +1026,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
           && (query = get_sub_query_by_name(query, "transform"))
           && (query = get_sub_query_by_name(query, "pseudo_random_function")))
       {
-        this->proposal->get_algorithm(this->proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
+        proposal->get_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
         vtype = get_query_value_type(query);
         op = get_query_operator(query);
         if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
@@ -921,7 +1034,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
           tmp = get_query_value(query, &tlen);
           *algo = (uint16_t) char_to_int(tmp, tlen, 10);
         }
-        this->proposal->set_algorithm(this->proposal, PSEUDO_RANDOM_FUNCTION, *algo, *klen);
+        proposal->set_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, *algo, *klen);
       }
 
       // ike_sa_init_response - security_association - transform - integrity_algorithm
@@ -931,7 +1044,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
           && (query = get_sub_query_by_name(query, "transform"))
           && (query = get_sub_query_by_name(query, "integrity_algorithm")))
       {
-        this->proposal->get_algorithm(this->proposal, INTEGRITY_ALGORITHM, algo, klen);
+        proposal->get_algorithm(proposal, INTEGRITY_ALGORITHM, algo, klen);
         vtype = get_query_value_type(query);
         op = get_query_operator(query);
         if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
@@ -939,7 +1052,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
           tmp = get_query_value(query, &tlen);
           *algo = (uint16_t) char_to_int(tmp, tlen, 10);
         }
-        this->proposal->set_algorithm(this->proposal, INTEGRITY_ALGORITHM, *algo, *klen);
+        proposal->set_algorithm(proposal, INTEGRITY_ALGORITHM, *algo, *klen);
       }
 
       free(algo);
@@ -959,12 +1072,10 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   ike_header = NULL;
   security_association = NULL;
 
-  /*
   if ((ret = check_drop_next(instance, next)))
   {
     goto out;
   }
-  */
 
   switch (payload->get_type(payload))
   {
@@ -974,7 +1085,7 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
       break;
 
     case PLV2_SECURITY_ASSOCIATION:
-      security_assocation = (sa_payload_t *)payload;
+      security_association = (sa_payload_t *)payload;
       ret = process_security_association(instance, ike_sa_id, security_association);
       break;
 

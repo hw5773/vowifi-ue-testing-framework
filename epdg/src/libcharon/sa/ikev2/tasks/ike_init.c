@@ -378,6 +378,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	}
 	else
 	{
+    /*
     ///// Added for VoWiFi /////
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
@@ -511,6 +512,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
       free(algo);
       free(klen);
     }
+  */
 
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
@@ -598,6 +600,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	{
     ///// Added for VoWiFi (ke test) /////
     // Comment out if you want to drop the ke payload
+    /*
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
       if ((query = get_query(instance))
@@ -616,7 +619,10 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
     {
 		  message->add_payload(message, (payload_t*)ke_payload);
     }
+    */
     //////////////////////////////////////
+
+		message->add_payload(message, (payload_t*)ke_payload);
 
     ///// Added for VoWiFi (nonce test) /////
     // Comment out if you want to drop the nonce payload

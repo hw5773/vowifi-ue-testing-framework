@@ -58,6 +58,7 @@
 
 #include <encoding/payloads/payload.h>
 #include <encoding/payloads/ike_header.h>
+#include <encoding/payloads/sa_payload.h>
 #include <sa/ike_sa_id.h>
 
 typedef struct msg_st
@@ -88,7 +89,7 @@ typedef struct query_st
   struct query_st *next;
 } query_t;
 
-typedef struct instance_st 
+struct instance_st 
 {
   int asock;
   uint64_t ispi;
@@ -117,7 +118,7 @@ typedef struct instance_st
   void *init_hashes_table;
   uint8_t table_mask;
   chunk_t init_hash;
-} instance_t;
+};
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
 
