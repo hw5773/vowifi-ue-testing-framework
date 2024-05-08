@@ -20,10 +20,14 @@
 #define VAL_TYPE_NONE 1
 #define VAL_TYPE_INTEGER  2
 #define VAL_TYPE_UINT8 3
-#define VAL_TYPE_UINT16 4
-#define VAL_TYPE_UINT32 5
-#define VAL_TYPE_UINT64 6
-#define VAL_TYPE_STRING 7
+#define VAL_TYPE_UINT8H 4
+#define VAL_TYPE_UINT16 5
+#define VAL_TYPE_UINT16H 6
+#define VAL_TYPE_UINT32 7
+#define VAL_TYPE_UINT32H 8
+#define VAL_TYPE_UINT64 9
+#define VAL_TYPE_UINT64H 10
+#define VAL_TYPE_STRING 11
 
 #define VAL_LENGTH_NONE 0
 #define VAL_LENGTH_INTEGER 4
@@ -40,6 +44,10 @@
 #define UPDATE  1
 #define NON_UPDATE 0
 
+#define NOT_SET -1
+#define COMPLETED 0
+#define NEED_DROP_NEXT 1
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -47,6 +55,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <pthread.h>
+
+#include <encoding/payloads/payload.h>
+#include <encoding/payloads/ike_header.h>
+#include <sa/ike_sa_id.h>
 
 typedef struct msg_st
 {
@@ -101,6 +113,10 @@ typedef struct instance_st
 
   int imid;
   int rmid;
+
+  void *init_hashes_table;
+  uint8_t table_mask;
+  chunk_t init_hash;
 } instance_t;
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
@@ -118,6 +134,8 @@ int int_to_char(int num, uint8_t *str, int base);
 query_t *init_query(void);
 void free_query(query_t *query);
 void print_query(query_t *query);
+int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *payload, payload_t *next);
+int check_drop_next(instance_t *instance, payload_t *next);
 
 query_t *add_query_sub_message(query_t *query, int ptype, int mtype);
 int has_query_parent(query_t *query);

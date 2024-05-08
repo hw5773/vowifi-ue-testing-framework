@@ -1701,8 +1701,11 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
   ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
   rspi = ike_sa_id->get_responder_spi(ike_sa_id);
   printf("\n\n\n\n\n[VoWiFi] message: %p, instance: %p (message.c)\n", message, instance);
-  printf("[VoWiFi] ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64"\n", ispi, instance->ispi);
-  printf("[VoWiFi] rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n\n\n", rspi, instance->rspi);
+  if (instance)
+  {
+    printf("[VoWiFi] ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64"\n", ispi, instance->ispi);
+    printf("[VoWiFi] rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n\n\n", rspi, instance->rspi);
+  }
   ////////////////////////////
 
 	if (this->exchange_type == EXCHANGE_TYPE_UNDEFINED)
@@ -1805,6 +1808,7 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
 	*out_generator = generator = generator_create();
 	ike_header = create_header(this);
 
+  /*
   ///// Added for VoWiFi /////
 
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
@@ -1817,11 +1821,15 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
       printf("\n\n[VoWiFI] ike_sa_init_response - initiator_spi\n\n");
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
+      if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
       {
         tmp = get_query_value(query, &tlen);
-        v64 = char_to_int(tmp, tlen, 16);
+        if (vtype == VAL_TYPE_UINT64)
+          v64 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT64H)
+          v64 = char_to_int(tmp, tlen, 16);
         ike_header->set_initiator_spi(ike_header, v64);
+        ike_sa_id->set_initiator_spi(ike_sa_id, v64);
       }
     }
 
@@ -1832,11 +1840,34 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
       printf("\n\n[VoWiFI] ike_sa_init_response - responder_spi\n\n");
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
+      if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
       {
         tmp = get_query_value(query, &tlen);
-        v64 = char_to_int(tmp, tlen, 16);
-        ike_header->set_initiator_spi(ike_header, v64);
+        if (vtype == VAL_TYPE_UINT64)
+          v64 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT64H)
+          v64 = char_to_int(tmp, tlen, 16);
+        ike_header->set_responder_spi(ike_header, v64);
+        ike_sa_id->set_responder_spi(ike_sa_id, v64);
+
+        u_int row;
+        table_item_t *item;
+
+        row = chunk_hash(hash) & instance->table_mask;
+        item = instance->init_hashes_table[row];
+        while (item)
+        {
+          init_hash_t *current = item->value;
+
+          if (chunk_equals(hash, current->hash))
+            break;
+        }
+
+        printf("here 1\n");
+        thash = (init_hash_t *)item->value;
+        printf("here 2: v64: %d, thahs->our_spi: %d\n", v64, thash->our_spi);
+        thash->our_spi = v64;
+        printf("here 3: thash->our_spi: %d\n", thash->our_spi);
       }
     }
 
@@ -1847,10 +1878,13 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
       printf("\n\n[VoWiFI] ike_sa_init_response - ike_major_version\n\n");
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
       {
         tmp = get_query_value(query, &tlen);
-        v8 = char_to_int(tmp, tlen, 16);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
         ike_header->set_maj_version(ike_header, v8);
       }
     }
@@ -1862,10 +1896,13 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
       printf("\n\n[VoWiFI] ike_sa_init_response - ike_minor_version\n\n");
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
       {
         tmp = get_query_value(query, &tlen);
-        v8 = char_to_int(tmp, tlen, 16);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
         ike_header->set_min_version(ike_header, v8);
       }
     }
@@ -1877,11 +1914,14 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
       printf("\n\n[VoWiFI] ike_sa_init_response - exchange_type\n\n");
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
       {
         tmp = get_query_value(query, &tlen);
-        v8 = char_to_int(tmp, tlen, 16);
-        ike_header->set_min_version(ike_header, v8);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_exchange_type(ike_header, v8);
       }
     }
 
@@ -1892,25 +1932,58 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
       printf("\n\n[VoWiFI] ike_sa_init_response - message ID\n\n");
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
       {
         tmp = get_query_value(query, &tlen);
-        v8 = char_to_int(tmp, tlen, 16);
-        ike_header->set_min_version(ike_header, v8);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_message_id(ike_header, v8);
       }
     }
-
   }
   ////////////////////////////
+  */
 
-
+  ///// Added for VoWiFi /////
+  payload_t *ppayload;
+  int pret;
+  ppayload = NULL;
+  pret = NOT_SET;
+  ////////////////////////////
+  
 	payload = (payload_t*)ike_header;
 	enumerator = create_payload_enumerator(this);
 	while (enumerator->enumerate(enumerator, &next))
 	{
-		payload->set_next_type(payload, next->get_type(next));
-		generator->generate_payload(generator, payload);
-		payload = next;
+    ///// Added for VoWiFi /////
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      pret = process_query(instance, ike_sa_id, payload, next);
+    }
+
+    if (pret == NEED_DROP_NEXT)
+    {
+      ppayload = payload;
+    }
+    else
+    {
+      if (ppayload)
+      {
+        payload = ppayload;
+        ppayload = NULL;
+      }
+      payload->set_next_type(payload, next->get_type(next));
+		  generator->generate_payload(generator, payload);
+		  payload = next;
+    }
+    
+    ///// Commented out for VoWiFi /////
+		//payload->set_next_type(payload, next->get_type(next));
+		//generator->generate_payload(generator, payload);
+		//payload = next;
+    ////////////////////////////////////
 	}
 	enumerator->destroy(enumerator);
 
