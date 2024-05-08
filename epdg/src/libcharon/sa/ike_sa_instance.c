@@ -738,7 +738,6 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   int ret;
   ike_header_t *ike_header;
 
-  printf("\n\n\n\n\n[VoWiFi] Process Query!!!!!\n\n\n\n\n");
   ret = NOT_SET;
   ike_header = NULL;
 
@@ -754,6 +753,10 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
     case PL_HEADER:
       ike_header = (ike_header_t *)payload;
       ret = process_ike_header(instance, ike_sa_id, ike_header);
+      break;
+
+    case PL1_SECURITY_ASSOCIATION:
+      // TODO: Need to implement here
       break;
 
     default:
