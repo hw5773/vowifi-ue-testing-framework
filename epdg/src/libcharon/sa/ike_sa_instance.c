@@ -551,6 +551,7 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
 {
   int ret;
   query_t *query;
+  payload_t *payload;
   uint8_t v8;
   uint16_t v16;
   uint32_t v32;
@@ -562,11 +563,12 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
 
   ret = NOT_SET;
 
+  printf("\n\n\n[VoWiFi] process ike header\n");
+
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "initiator_spi")))
   {    
-    printf("\n\n[VoWiFI] ike_sa_init_response - initiator_spi\n\n");
     vtype = get_query_value_type(query);
     op = get_query_operator(query);
     if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
@@ -585,11 +587,8 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "responder_spi")))
   {    
-    printf("\n\n[VoWiFI] ike_sa_init_response - responder_spi\n\n");
     vtype = get_query_value_type(query);
     op = get_query_operator(query);
-    printf("[VoWiFi] vtype: %d, VAL_TYPE_UINT64: %d, VAL_TYPE_UINT64H: %d, op: %d, OP_TYPE_UPDATE: %d\n",
-        vtype, VAL_TYPE_UINT64, VAL_TYPE_UINT64H, op, OP_TYPE_UPDATE);
     if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
     {    
       tmp = get_query_value(query, &tlen);
@@ -597,7 +596,6 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
         v64 = char_to_int(tmp, tlen, 10); 
       else if (vtype == VAL_TYPE_UINT64H)
         v64 = char_to_int(tmp, tlen, 16); 
-      printf("v64: 0x%.16"PRIx64"\n", v64);
       ike_header->set_responder_spi(ike_header, v64);
       ike_sa_id->set_responder_spi(ike_sa_id, v64);
       init_hashes_table = (table_item_t **)(instance->init_hashes_table);
@@ -616,19 +614,37 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
           break;
       }
 
-      printf("here 1\n");
       thash = (init_hash_t *)item->value;
-      printf("here 2: v64: %d, thahs->our_spi: %d\n", v64, thash->our_spi);
       thash->our_spi = v64; 
-      printf("here 3: thash->our_spi: %d\n", thash->our_spi);
     }    
   } 
+
+  /*
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "next_payload")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - next_payload\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      if (vtype == VAL_TYPE_UINT8)
+        v8 = char_to_int(tmp, tlen, 10);
+      else if (vtype == VAL_TYPE_UINT8H)
+        v8 = char_to_int(tmp, tlen, 16);
+      printf("[VoWiFi] v8: %u\n\n\n", v8);
+      payload = (payload_t *)ike_header;
+      payload->set_next_type(payload, v8);
+    }
+  }
+  */
 
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "ike_major_version")))
   {    
-    printf("\n\n[VoWiFI] ike_sa_init_response - ike_major_version\n\n");
     vtype = get_query_value_type(query);
     op = get_query_operator(query);
     if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
@@ -646,7 +662,6 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "ike_minor_version")))
   {
-    printf("\n\n[VoWiFI] ike_sa_init_response - ike_minor_version\n\n");
     vtype = get_query_value_type(query);
     op = get_query_operator(query);
     if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
@@ -664,7 +679,6 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "exchange_type")))
   {
-    printf("\n\n[VoWiFI] ike_sa_init_response - exchange_type\n\n");
     vtype = get_query_value_type(query);
     op = get_query_operator(query);
     if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
@@ -675,6 +689,43 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
       else if (vtype == VAL_TYPE_UINT8H)
         v8 = char_to_int(tmp, tlen, 16);
       ike_header->set_exchange_type(ike_header, v8);
+    }
+  }
+
+  // flags
+  /*
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "exchange_type")))
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      if (vtype == VAL_TYPE_UINT8)
+        v8 = char_to_int(tmp, tlen, 10);
+      else if (vtype == VAL_TYPE_UINT8H)
+        v8 = char_to_int(tmp, tlen, 16);
+      ike_header->set_exchange_type(ike_header, v8);
+    }
+  }
+  */
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "message_id")))
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if ((vtype == VAL_TYPE_UINT32 || vtype == VAL_TYPE_UINT32H) && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      if (vtype == VAL_TYPE_UINT32)
+        v32 = char_to_int(tmp, tlen, 10);
+      else if (vtype == VAL_TYPE_UINT32H)
+        v32 = char_to_int(tmp, tlen, 16);
+      ike_header->set_message_id(ike_header, v32);
     }
   }
 
