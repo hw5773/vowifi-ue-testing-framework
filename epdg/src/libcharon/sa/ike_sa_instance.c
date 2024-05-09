@@ -933,8 +933,6 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   algo = (uint16_t *)calloc(1, sizeof(uint16_t));
   klen = (uint16_t *)calloc(1, sizeof(uint16_t));
 
-  printf("\n\n\n\n\n[VoWiFi] process_security_association\n");
-
   // ike_sa_init_response - security_association - transform - encryption_algorithm
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
@@ -1059,7 +1057,6 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   free(algo);
   free(klen);
 
-  printf("\n\n\n\n\n");
 out:
   return ret;
 }
@@ -1085,6 +1082,8 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
       ike_header = (ike_header_t *)payload;
       ret = process_ike_header(instance, ike_sa_id, ike_header);
       break;
+
+    case PLV2_KEY_EXCHANGE:
 
     default:
       break;
