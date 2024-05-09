@@ -20,15 +20,9 @@
                   "name": "transform",
                   "sub": [
                     {
-                      "name": "encryption_algorithm",
+                      "name": "integrity_algorithm",
                       "type": "uint16",
-                      "value": 13,
-                      "op": "update"
-                    },
-                    {
-                      "name": "encryption_key_length",
-                      "type": "uint16",
-                      "value": 128,
+                      "value": 3,
                       "op": "update"
                     }
                   ]

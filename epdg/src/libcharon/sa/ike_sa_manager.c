@@ -1860,6 +1860,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 
               ike_sa->set_instance(ike_sa, this->instance);
               instance = ike_sa->get_instance(ike_sa);
+              instance->ike_sa = ike_sa;
               asock = -1;
               if (instance)
                 asock = instance->asock;

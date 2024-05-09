@@ -115,6 +115,7 @@ struct instance_st
   int imid;
   int rmid;
 
+  ike_sa_t *ike_sa;
   void *init_hashes_table;
   uint8_t table_mask;
   chunk_t init_hash;
@@ -136,6 +137,7 @@ query_t *init_query(void);
 void free_query(query_t *query);
 void print_query(query_t *query);
 int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *payload, payload_t *next);
+int process_proposal(instance_t *instance, proposal_t *proposal);
 int check_drop_next(instance_t *instance, payload_t *next);
 
 query_t *add_query_sub_message(query_t *query, int ptype, int mtype);
