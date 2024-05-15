@@ -102,6 +102,10 @@ struct sa_payload_t {
 	 * Destroys an sa_payload_t object.
 	 */
 	void (*destroy) (sa_payload_t *this);
+
+  ///// Added for VoWiFi /////
+  proposal_t *(*get_selected_proposal) (sa_payload_t *this);
+  ////////////////////////////
 };
 
 /**
