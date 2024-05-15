@@ -1335,14 +1335,221 @@ int process_nonce(instance_t *instance, ike_sa_id_t *ike_sa_id, nonce_payload_t 
   return ret;
 }
 
+int process_identification_responder(instance_t *instance, ike_sa_id_t *ike_sa_id, id_payload_t *id)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *data;
+  int i, vtype, tlen, dlen, op;
+
+  ret = COMPLETED;
+
+  // ike_auth_1_response - identification_responder - id_type
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "identification_responder"))
+      && (query = get_sub_query_by_name(query, "id_type")))
+
+  {
+    printf("[VoWiFi] ike_auth_1_response - identification_responder - id_type\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+      id->set_id_type(id, v8);
+    }
+  }
+
+  // ike_auth_1_response - identification_responder - identification_data
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "identification_responder"))
+      && (query = get_sub_query_by_name(query, "identification_data")))
+
+  {
+    printf("[VoWiFi] ike_auth_1_response - identification_responder - identification_data\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      id->set_id_data(id, chunk_create(tmp, tlen));
+    }
+  }
+
+  return ret;
+}
+
+int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_id, eap_payload_t *eap)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *data;
+  int i, vtype, tlen, dlen, op;
+  const uint8_t *messages[2] = 
+  {
+    "ike_auth_1_response",
+    "ike_auth_2_response",
+  };
+
+  ret = COMPLETED;
+
+  // TODO: need to generalize the following statements with the above messages array
+
+  // ike_auth_1_response - extensible_authentication - code
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (query = get_sub_query_by_name(query, "code")))
+
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+
+      // TODO: need to fix the following statement
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  // ike_auth_1_response - extensible_authentication - id
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (query = get_sub_query_by_name(query, "id")))
+
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+
+      // TODO: need to fix the following statement
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  // ike_auth_1_response - extensible_authentication - type
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (query = get_sub_query_by_name(query, "type")))
+
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+
+      // TODO: need to fix the following statement
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  // ike_auth_1_response - extensible_authentication - eap_aka_subtype
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (query = get_sub_query_by_name(query, "eap_aka_subtype")))
+
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+
+      // TODO: need to fix the following statement
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  // ike_auth_1_response - extensible_authentication - eap_aka_attribute - at_rand
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+      && (query = get_sub_query_by_name(query, "at_rand")))
+
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+
+      // TODO: need to fix the following statement
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  // ike_auth_1_response - extensible_authentication - eap_aka_attribute - at_autn
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+      && (query = get_sub_query_by_name(query, "at_autn")))
+
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+
+      // TODO: need to fix the following statement
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  // ike_auth_1_response - extensible_authentication - eap_aka_attribute - at_mac
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+      && (query = get_sub_query_by_name(query, "at_mac")))
+
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+
+      // TODO: need to fix the following statement
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  return ret;
+}
+
 int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *payload, payload_t *next)
 {
   int ret;
   ike_header_t *ike_header;
   ke_payload_t *ke;
   nonce_payload_t *np;
-  sa_payload_t *security_association;
   notify_payload_t *notify;
+  id_payload_t *id;
 
   ret = NOT_SET;
   ike_header = NULL;
@@ -1374,6 +1581,11 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
     case PLV2_NOTIFY:
       notify = (notify_payload_t *)payload;
       ret = process_notify(instance, ike_sa_id, notify);
+      break;
+
+    case PLV2_ID_RESPONDER:
+      id = (id_payload_t *)payload;
+      ret = process_identification_responder(instance, ike_sa_id, id);
       break;
 
     default:

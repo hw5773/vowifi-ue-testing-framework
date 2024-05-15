@@ -241,6 +241,20 @@ METHOD(id_payload_t, get_identification, identification_t*,
 	return identification_create_from_encoding(this->id_type, this->id_data);
 }
 
+///// Added for VoWiFi /////
+METHOD(id_payload_t, set_id_type, void,
+	private_id_payload_t *this, uint8_t id_type)
+{
+	this->id_type = id_type;
+}
+
+METHOD(id_payload_t, set_id_data, void,
+	private_id_payload_t *this, chunk_t id_data)
+{
+	this->id_data = id_data;
+}
+////////////////////////////
+
 /**
  * Create a traffic selector from an range ID
  */
@@ -365,6 +379,9 @@ id_payload_t *id_payload_create(payload_type_t type)
 				.set_next_type = _set_next_type,
 				.get_type = _get_type,
 				.destroy = _destroy,
+        ///// Added for VoWiFi /////
+        .set_id_type = _set_id_type,
+        ////////////////////////////
 			},
 			.get_identification = _get_identification,
 			.get_encoded = _get_encoded,

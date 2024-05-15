@@ -65,6 +65,10 @@ struct id_payload_t {
 	 * Destroys an id_payload_t object.
 	 */
 	void (*destroy) (id_payload_t *this);
+
+  ///// Added for VoWiFi /////
+  void (*set_id_type) (id_payload_t *this, uint8_t id_type);
+  ////////////////////////////
 };
 
 /**

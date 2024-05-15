@@ -62,6 +62,7 @@
 #include <encoding/payloads/ke_payload.h>
 #include <encoding/payloads/nonce_payload.h>
 #include <encoding/payloads/notify_payload.h>
+#include <encoding/payloads/id_payload.h>
 #include <sa/ike_sa_id.h>
 
 typedef struct msg_st
