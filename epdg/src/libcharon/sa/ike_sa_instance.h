@@ -59,6 +59,8 @@
 #include <encoding/payloads/payload.h>
 #include <encoding/payloads/ike_header.h>
 #include <encoding/payloads/sa_payload.h>
+#include <encoding/payloads/ke_payload.h>
+#include <encoding/payloads/nonce_payload.h>
 #include <encoding/payloads/notify_payload.h>
 #include <sa/ike_sa_id.h>
 

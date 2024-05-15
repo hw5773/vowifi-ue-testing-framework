@@ -553,7 +553,6 @@ int check_drop_next(instance_t *instance, payload_t *next)
       && (query = get_sub_query_by_name(query, "key_exchange"))
       && (type == PLV2_KEY_EXCHANGE))
   {
-    printf("\n\n\n[VoWiFi] Drop key exchange\n\n\n");
     op = get_query_operator(query);
     if (op == OP_TYPE_DROP)
     {    
@@ -1165,16 +1164,252 @@ out:
   return ret;
 }
 
+int process_key_exchange(instance_t *instance, ike_sa_id_t *ike_sa_id, ke_payload_t *ke)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp;
+  uint8_t *data;
+  int i, vtype, tlen, dlen, op;
+  uint16_t size, dhgroup;
+  uint16_t *algo, *klen;
+
+  ret = COMPLETED;
+
+  // ike_sa_init_response - key_exchange - diffie_hellman_group
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "key_exchange"))
+      && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - key_exchange - diffie_hellman_group\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v16 = char_to_int(tmp, tlen, 10);
+      ke->set_dh_group_number(ke, v16);
+    }
+  }
+
+  // ike_sa_init_response - key_exchange - key_exchange_data
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "key_exchange"))
+      && (query = get_sub_query_by_name(query, "key_exchange_data")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - key_exchange - key_exchange_data\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      dhgroup = ke->get_dh_group_number(ke);
+
+      switch (dhgroup)
+      {
+        case MODP_NONE:
+          dlen = 0;
+          break;
+        case MODP_768_BIT:
+          dlen = 96;
+          break;
+        case MODP_1024_BIT:
+          dlen = 128;
+          break;
+        case MODP_1536_BIT:
+          dlen = 192;
+          break;
+        case MODP_2048_BIT:
+          dlen = 256;
+          break;
+        case MODP_3072_BIT:
+          dlen = 384;
+          break;
+        case MODP_4096_BIT:
+          dlen = 512;
+          break;
+        case MODP_6144_BIT:
+          dlen = 768;
+          break;
+        case MODP_8192_BIT:
+          dlen = 1024;
+          break;
+        case ECP_256_BIT:
+        case ECP_256_BP:
+        case MODP_2048_256:
+        case CURVE_25519:
+        case NTRU_256_BIT:
+          dlen = 32;
+          break;
+        case ECP_384_BIT:
+        case ECP_384_BP:
+          dlen = 48;
+          break;
+        case ECP_521_BIT:
+        case ECP_512_BP:
+          dlen = 64;
+          break;
+        case MODP_1024_160:
+          dlen = 20;
+          break;
+        case MODP_2048_224:
+          dlen = 28;
+          break;
+        case ECP_192_BIT:
+        case NTRU_192_BIT:
+          dlen = 24;
+          break;
+        case ECP_224_BIT:
+        case ECP_224_BP:
+        case CURVE_448:
+          dlen = 28;
+          break;
+        case NTRU_112_BIT:
+          dlen = 14;
+          break;
+        default:
+          dlen = 256;
+      }
+
+      if (tlen == 3
+          && !strncmp(tmp, "max", tlen))
+      {
+        data = (uint8_t *)calloc(1, dlen);
+        for (i=0; i<dlen; i++)
+          data[i] = 0xFF;
+      }
+      else if (tlen == 3
+          && !strncmp(tmp, "min", tlen))
+      {
+        data = (uint8_t *)calloc(1, dlen);
+        for (i=0; i<dlen; i++)
+          data[i] = 0;
+      }
+      ke->set_key_exchange_data(ke, chunk_create(data, dlen));
+    }
+  }
+
+out:
+  return ret;
+}
+
+int process_nonce(instance_t *instance, ike_sa_id_t *ike_sa_id, nonce_payload_t *np)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *data;
+  int i, vtype, tlen, dlen, op;
+
+  ret = COMPLETED;
+
+  // ike_sa_init_response - nonce - nonce_data
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "nonce")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - nonce\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      if (tlen == 3
+          && !strncmp(tmp, "max", tlen))
+      {
+        data = (uint8_t *)calloc(1, NONCE_SIZE);
+        for (i=0; i<NONCE_SIZE; i++)
+          data[i] = 0xFF;
+      }
+      else if (tlen == 3
+          && !strncmp(tmp, "min", tlen))
+      {
+        data = (uint8_t *)calloc(1, NONCE_SIZE);
+        for (i=0; i<NONCE_SIZE; i++)
+          data[i] = 0;
+      }
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  return ret;
+}
+
+int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_t *notify)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *data;
+  int i, vtype, tlen, dlen, op;
+
+  ret = COMPLETED;
+
+  // ike_sa_init_response - nonce - nonce_data
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "notify"))
+      && (query = get_sub_query_by_name(query, "nat_detection_source_ip"))
+      && (notify->get_notify_type(notify) == NAT_DETECTION_SOURCE_IP))
+  {
+    printf("[VoWiFi] ike_sa_init_response - notify - nat_detection_source_ip\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      if (tlen == 3
+          && !strncmp(tmp, "max", tlen))
+      {
+        data = (uint8_t *)calloc(1, 20);
+        for (i=0; i<NONCE_SIZE; i++)
+          data[i] = 0xFF;
+      }
+      else if (tlen == 3
+          && !strncmp(tmp, "min", tlen))
+      {
+        data = (uint8_t *)calloc(1, 20);
+        for (i=0; i<NONCE_SIZE; i++)
+          data[i] = 0;
+      }
+      else if (tlen == 4
+          && !strncmp(tmp, "same", tlen))
+      {
+        //data = (uint8_t *)calloc(1, 20);
+        //memcpy(data, instance->nat_detection_source_ip, 20);
+      }
+      notify->set_nonce(np, chunk_create(data, 20));
+    }
+  }
+
+  return ret;
+}
+
 int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *payload, payload_t *next)
 {
   int ret;
   ike_header_t *ike_header;
+  ke_payload_t *ke;
+  nonce_payload_t *np;
   sa_payload_t *security_association;
   notify_payload_t *notify;
 
   ret = NOT_SET;
   ike_header = NULL;
-  security_association = NULL;
+  ke = NULL;
+  np = NULL;
 
   if ((ret = check_drop_next(instance, next)))
   {
@@ -1189,6 +1424,19 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
       break;
 
     case PLV2_KEY_EXCHANGE:
+      ke = (ke_payload_t *)payload;
+      ret = process_key_exchange(instance, ike_sa_id, ke);
+      break;
+
+    case PLV2_NONCE:
+      np = (nonce_payload_t *)payload;
+      ret = process_nonce(instance, ike_sa_id, np);
+      break;
+
+    case PLV2_NOTIFY:
+      notify = (notify_payload_t *)payload;
+      ret = process_notify(instance, ike_sa_id, notify);
+      break;
 
     case PLV2_NOTIFY:
       notify = (notify_payload_t *)payload;

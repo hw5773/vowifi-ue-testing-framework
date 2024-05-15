@@ -54,6 +54,11 @@ struct ke_payload_t {
 	 */
 	diffie_hellman_group_t (*get_dh_group_number) (ke_payload_t *this);
 
+  ///// Added for VoWiFi /////
+  void (*set_key_exchange_data) (ke_payload_t *this, chunk_t data);
+  void (*set_dh_group_number) (ke_payload_t *this, diffie_hellman_group_t number);
+  ////////////////////////////
+
 	/**
 	 * Destroys a ke_payload_t object.
 	 */
