@@ -6,7 +6,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "sender": "epdg",
-          "id": "init-invalid-nat-detection-source-ip"
+          "id": "init-invalid-hash-algorithms"
         },
         {
           "receiver": "epdg",
@@ -14,10 +14,10 @@
           "sender": "epdg",
           "sub": [
             {
-              "name": "nat_detection_source_ip",
+              "name": "signature_hash_algorithms",
               "op": "update",
               "type": "string",
-              "value": "received"
+              "value": 00010005
             }
           ]
         }
