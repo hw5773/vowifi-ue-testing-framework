@@ -36,6 +36,8 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   }
   else if (instance->ispi == ispi && instance->rspi == rspi)
     ret = 1;
+  else if (instance->ispi == ispi && !rspi)
+    ret = 1;
   else
     ret = 0;
 
@@ -688,7 +690,7 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
   uint16_t size;
   const uint8_t *mname;
   table_item_t **init_hashes_table;
-  const uint8_t *messages = 
+  const uint8_t *messages[5] = 
   {
     "ike_sa_init_response",
     "ike_auth_1_response",
@@ -698,10 +700,12 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
   };
 
   ret = COMPLETED;
+  tmp = NULL;
 
   for (i=0; i<5; i++)
   {
     mname = messages[i];
+    printf("\n\n\n[VoWiFi] mname: %s\n\n\n", mname);
     if ((query = get_query(instance))
         && is_query_name(query, mname)
         && (query = get_sub_query_by_name(query, "initiator_spi")))
@@ -908,6 +912,9 @@ int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_
     }
   }
 
+  if (tmp)
+    free(tmp);
+
   return ret;
 }
 
@@ -927,6 +934,7 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
   uint16_t *algo, *klen;
 
   ret = COMPLETED;
+  tmp = NULL;
   proposals = security_association->get_proposals(security_association);
   proposals->get_first(proposals, &proposal);
 
@@ -955,108 +963,233 @@ int process_security_association(instance_t *instance, ike_sa_id_t *ike_sa_id, s
             && (query = get_sub_query_by_name(query, "security_association"))
             && (query = get_sub_query_by_name(query, "transform"))
             && (query = get_sub_query_by_name(query, "encryption_key_length")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        *klen = (uint16_t) char_to_int(tmp, tlen, 10);
+      }
+    }
+    proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
+  }
+
+  // ike_sa_init_response - security_association - transform - encryption_key_length
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "encryption_key_length")))
+  {
+    proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *klen = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, "ike_sa_init_response")
+        && (query = get_sub_query_by_name(query, "security_association"))
+        && (query = get_sub_query_by_name(query, "transform"))
+        && (query = get_sub_query_by_name(query, "encryption_algorithm")))
+    {
+      proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+      }
+    }
+    proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
+  }
+
+  // ike_sa_init_response - security_association - transform - diffie_hellman_group
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
+  {
+    proposal->get_algorithm(proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+    proposal->set_algorithm(proposal, DIFFIE_HELLMAN_GROUP, *algo, *klen);
+  }
+
+  // ike_sa_init_response - security_association - transform - pseudo_random_function
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "pseudo_random_function")))
+  {
+    proposal->get_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+    proposal->set_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, *algo, *klen);
+  }
+
+  // ike_sa_init_response - security_association - transform - integrity_algorithm
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "integrity_algorithm")))
+  {
+    proposal->get_algorithm(proposal, INTEGRITY_ALGORITHM, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+    proposal->set_algorithm(proposal, INTEGRITY_ALGORITHM, *algo, *klen);
+  }
+
+  free(algo);
+  free(klen);
+
+out:
+  return ret;
+}
+
+int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_t *notify)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *hval;
+  int vtype, tlen, op;
+  uint16_t size;
+  uint16_t *algo, *klen;
+
+  ret = COMPLETED;
+  tmp = NULL;
+  hval = NULL;
+ 
+  switch (notify->get_notify_type(notify))
+  {
+    case NAT_DETECTION_DESTINATION_IP:
+      if ((query = get_query(instance)) 
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "nat_detection_destination_ip")))
+      {
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
         {
-          vtype = get_query_value_type(query);
-          op = get_query_operator(query);
-          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+          tmp = get_query_value(query, &tlen);
+          if (tlen >= 8
+              && !strncmp(tmp, "received", 8))
           {
-            tmp = get_query_value(query, &tlen);
-            *klen = (uint16_t) char_to_int(tmp, tlen, 10);
+            printf("\n\n\n[VoWiFi] rcvd_dst_hash: %B\n\n\n", &(instance->rcvd_dst_hash));
+            notify->set_notification_data(notify, instance->rcvd_dst_hash); 
+          }
+          else if (tlen >= 20)
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, 20);
+            notify->set_notification_data(notify, chunk_create(hval, 20));
+          }
+          else
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, tlen); 
+            notify->set_notification_data(notify, chunk_create(hval, 20));
           }
         }
-        proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
       }
+      break;
 
-      // ike_sa_init_response - security_association - transform - encryption_key_length
-      if ((query = get_query(instance))
+    case NAT_DETECTION_SOURCE_IP:
+      if ((query = get_query(instance)) 
           && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "encryption_key_length")))
+          && (query = get_sub_query_by_name(query, "nat_detection_source_ip")))
       {
-        proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
         vtype = get_query_value_type(query);
         op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
         {
           tmp = get_query_value(query, &tlen);
-          *klen = (uint16_t) char_to_int(tmp, tlen, 10);
-        }
-
-        if ((query = get_query(instance))
-            && is_query_name(query, "ike_sa_init_response")
-            && (query = get_sub_query_by_name(query, "security_association"))
-            && (query = get_sub_query_by_name(query, "transform"))
-            && (query = get_sub_query_by_name(query, "encryption_algorithm")))
-        {
-          proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
-          vtype = get_query_value_type(query);
-          op = get_query_operator(query);
-          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+          if (tlen >= 8
+              && !strncmp(tmp, "received", 8))
           {
-            tmp = get_query_value(query, &tlen);
-            *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+            
+            printf("\n\n\n[VoWiFi] rcvd_src_hash: %B\n\n\n", &(instance->rcvd_src_hash));
+            notify->set_notification_data(notify, instance->rcvd_src_hash); 
+          }
+          else if (tlen >= 20)
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, 20);
+            notify->set_notification_data(notify, chunk_create(hval, 20));
+          }
+          else
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, tlen); 
+            notify->set_notification_data(notify, chunk_create(hval, 20));
           }
         }
-        proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
       }
+      break;
 
-      // ike_sa_init_response - security_association - transform - diffie_hellman_group
+    case SIGNATURE_HASH_ALGORITHMS:
       if ((query = get_query(instance))
           && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
+          && (query = get_sub_query_by_name(query, "signature_hash_algorithms")))
       {
-        proposal->get_algorithm(proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
         vtype = get_query_value_type(query);
         op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
         {
           tmp = get_query_value(query, &tlen);
-          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+          notify->set_notification_data(notify, chunk_create(tmp, tlen));
         }
-        proposal->set_algorithm(proposal, DIFFIE_HELLMAN_GROUP, *algo, *klen);
       }
+      break;
 
-      // ike_sa_init_response - security_association - transform - pseudo_random_function
+    case CHILDLESS_IKEV2_SUPPORTED:
       if ((query = get_query(instance))
           && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "pseudo_random_function")))
+          && (query = get_sub_query_by_name(query, "childless_ikev2_supported")))
       {
-        proposal->get_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
         vtype = get_query_value_type(query);
         op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
         {
           tmp = get_query_value(query, &tlen);
-          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+          notify->set_notification_data(notify, chunk_create(tmp, tlen));
         }
-        proposal->set_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, *algo, *klen);
       }
+      break;
 
-      // ike_sa_init_response - security_association - transform - integrity_algorithm
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "integrity_algorithm")))
-      {
-        proposal->get_algorithm(proposal, INTEGRITY_ALGORITHM, algo, klen);
-        vtype = get_query_value_type(query);
-        op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-        {
-          tmp = get_query_value(query, &tlen);
-          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
-        }
-        proposal->set_algorithm(proposal, INTEGRITY_ALGORITHM, *algo, *klen);
-      }
+    default:
+      break;
+  }
 
-      free(algo);
-      free(klen);
+  if (tmp)
+    free(tmp);
 
 out:
   return ret;
@@ -1067,6 +1200,7 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   int ret;
   ike_header_t *ike_header;
   sa_payload_t *security_association;
+  notify_payload_t *notify;
 
   ret = NOT_SET;
   ike_header = NULL;
@@ -1087,6 +1221,11 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
     case PLV2_SECURITY_ASSOCIATION:
       security_association = (sa_payload_t *)payload;
       ret = process_security_association(instance, ike_sa_id, security_association);
+      break;
+
+    case PLV2_NOTIFY:
+      notify = (notify_payload_t *)payload;
+      ret = process_notify(instance, ike_sa_id, notify);
       break;
 
     default:

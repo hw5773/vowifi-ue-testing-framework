@@ -59,6 +59,7 @@
 #include <encoding/payloads/payload.h>
 #include <encoding/payloads/ike_header.h>
 #include <encoding/payloads/sa_payload.h>
+#include <encoding/payloads/notify_payload.h>
 #include <sa/ike_sa_id.h>
 
 typedef struct msg_st
@@ -118,6 +119,9 @@ struct instance_st
   void *init_hashes_table;
   uint8_t table_mask;
   chunk_t init_hash;
+
+  chunk_t rcvd_dst_hash;
+  chunk_t rcvd_src_hash;
 };
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
