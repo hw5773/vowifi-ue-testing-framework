@@ -67,7 +67,7 @@ struct eap_payload_t {
 	 */
 	eap_code_t (*get_code) (eap_payload_t *this);
   ///// Added for VoWiFi /////
-	eap_code_t (*set_code) (eap_payload_t *this, uint8_t code);
+	void (*set_code) (eap_payload_t *this, uint8_t code);
   ////////////////////////////
 
 	/**
@@ -76,6 +76,9 @@ struct eap_payload_t {
 	 * @return			unique identifier
 	 */
 	uint8_t (*get_identifier) (eap_payload_t *this);
+  ///// Added for VoWiFi /////
+  void (*set_identifier) (eap_payload_t *this, uint8_t id);
+  ////////////////////////////
 
 	/**
 	 * Get the EAP method type.
@@ -84,6 +87,9 @@ struct eap_payload_t {
 	 * @return			EAP method type, vendor specific if vendor != 0
 	 */
 	eap_type_t (*get_type) (eap_payload_t *this, uint32_t *vendor);
+  ///// Added for VoWiFi /////
+	void (*set_type) (eap_payload_t *this, uint32_t *vendor, eap_type_t type);
+  ////////////////////////////
 
 	/**
 	 * Enumerate the EAP method types contained in an EAP-Nak (i.e. get_type()

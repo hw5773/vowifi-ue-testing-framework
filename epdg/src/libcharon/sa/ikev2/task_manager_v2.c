@@ -918,8 +918,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
 	me = request->get_destination(request);
 	other = request->get_source(request);
-
-
   id = NULL;
 
 	message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
@@ -1304,6 +1302,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     uint8_t *p, *tmp, *e;
     uint8_t alen, abytes, type, clen;
 
+    /*
     if ((query = get_query(instance))
         && is_query_name(query, "ike_auth_1_response")
         && (query = get_sub_query_by_name(query, "extensible_authentication"))
@@ -1439,38 +1438,12 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         }
       }
     }
+    */
     msg = init_message(instance, MSG_TYPE_BLOCK_END, 
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
   }
   ////////////////////////////
-
-  /*
-  ///// Added for VoWiFi /////
-  ike_sa_id_t *tid;
-  uint64_t tspi;
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    tid = id;
-    id = this->ike_sa->get_id(this->ike_sa);
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "responder_spi")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        tspi = (uint64_t)char_to_int(tmp, tlen, 10);
-        printf("\n\n\n\n\n[VoWiFi] updated spi: %.16"PRIx64"\n\n\n\n\n", tspi);
-        id->set_responder_spi(id, tspi);
-      }
-    }
-    id = tid;
-  }
-  ////////////////////////////
-  */
 
 	/* message complete, send it */
 	clear_packets(this->responding.packets);

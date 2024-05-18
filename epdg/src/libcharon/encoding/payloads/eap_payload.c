@@ -352,10 +352,16 @@ eap_payload_t *eap_payload_create()
 			.set_data = _set_data,
 			.get_code = _get_code,
       ///// Added for VoWiFi /////
-      .set_code = _set_code,
+      //.set_code = _set_code,
       ////////////////////////////
 			.get_identifier = _get_identifier,
+      ///// Added for VoWiFi /////
+      //.set_identifier = _set_identifier,
+      ////////////////////////////
 			.get_type = _get_type,
+      ///// Added for VoWiFi /////
+      //.set_type = _get_type,
+      ////////////////////////////
 			.get_types = _get_types,
 			.is_expanded = _is_expanded,
 			.destroy = _destroy,

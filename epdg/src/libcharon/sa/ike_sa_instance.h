@@ -41,6 +41,12 @@
 #define FIN_REQUEST "fin\n"
 #define ACK_RESPONSE "ACK\n"
 
+#define AKA_TYPE_AT_RAND 1
+#define AKA_TYPE_AT_AUTN 2
+#define AKA_TYPE_AT_RES 3
+#define AKA_TYPE_AT_MAC 11
+#define AKA_TYPE_AT_CHECKCODE 134
+
 #define UPDATE  1
 #define NON_UPDATE 0
 
@@ -63,6 +69,7 @@
 #include <encoding/payloads/nonce_payload.h>
 #include <encoding/payloads/notify_payload.h>
 #include <encoding/payloads/id_payload.h>
+#include <encoding/payloads/eap_payload.h>
 #include <sa/ike_sa_id.h>
 
 typedef struct msg_st

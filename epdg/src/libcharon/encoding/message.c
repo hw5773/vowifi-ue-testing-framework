@@ -1869,38 +1869,6 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
         ppayload = NULL;
       }
       payload->set_next_type(payload, next->get_type(next));
-
-      if (payload->get_type(payload) == PLV2_SECURITY_ASSOCIATION)
-      {
-        sa_payload_t *sa;
-        proposal_t *proposal;
-        linked_list_t *proposals;
-        uint16_t *algo, *klen;
-        sa = (sa_payload_t *)payload;
-        algo = (uint16_t *)calloc(1, sizeof(uint16_t));
-        klen = (uint16_t *)calloc(1, sizeof(uint16_t));
-        proposals = sa->get_proposals(sa);
-        proposals->get_first(proposals, &proposal);
-        proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
-        printf("[VoWiFi] proposal (first): %p, algo (first): %u, klen (first): %u\n", proposal, *algo, *klen);
-        proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, 11, 16);
-
-        proposals->get_last(proposals, &proposal);
-        proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
-        printf("[VoWiFi] proposal (last): %p, algo (last): %u, klen (last): %u\n", proposal, *algo, *klen);
-
-        printf("[VoWiFi] sa: %p\n", sa);
-        printf("[VoWiFi] sa->get_selected_proposal: %p\n", sa->get_selected_proposal);
-        proposal = sa->get_selected_proposal(sa);
-        printf("[VoWiFi] proposal (selected/before): %p\n", proposal);
-        proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
-        printf("[VoWiFi] proposal (selected/before): %p, algo (selected): %u, klen (selected): %u\n", proposal, *algo, *klen);
-        proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, 11, 16);
-        proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
-        printf("[VoWiFi] proposal (selected/after): %p, algo (selected): %u, klen (selected): %u\n", proposal, *algo, *klen);
-        instance->ike_sa->set_proposal(instance->ike_sa, proposal);
-      }
-
 		  generator->generate_payload(generator, payload);
 		  payload = next;
     }

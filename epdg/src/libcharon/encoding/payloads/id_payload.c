@@ -379,14 +379,16 @@ id_payload_t *id_payload_create(payload_type_t type)
 				.set_next_type = _set_next_type,
 				.get_type = _get_type,
 				.destroy = _destroy,
-        ///// Added for VoWiFi /////
-        .set_id_type = _set_id_type,
-        ////////////////////////////
 			},
 			.get_identification = _get_identification,
 			.get_encoded = _get_encoded,
 			.get_ts = _get_ts,
 			.destroy = _destroy,
+      ///// Added for VoWiFi /////
+      .set_id_type = _set_id_type,
+      .set_id_data = _set_id_data,
+      ////////////////////////////
+
 		},
 		.next_payload = PL_NONE,
 		.payload_length = get_header_length(this),

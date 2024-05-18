@@ -15,6 +15,16 @@ struct init_hash_t {
   uint64_t our_spi;
 };
 
+typedef struct eap_header_t ehdr_t;
+struct eap_header_t
+{
+  uint8_t code;
+  uint8_t identifier;
+  uint16_t length;
+  uint8_t subtype;
+  uint16_t reserved;
+} __attribute__((__packed__));
+
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
 {
   int ret;
@@ -1390,12 +1400,14 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
 {
   int ret;
   query_t *query;
-  uint8_t v8;
+  uint8_t v8, alen, abytes, type, clen;
   uint16_t v16;
   uint32_t v32;
   uint64_t v64;
-  uint8_t *tmp, *data;
-  int i, vtype, tlen, dlen, op;
+  uint8_t *tmp, *data, *e, *p;
+  int i, idx, vtype, tlen, dlen, plen, op;
+  chunk_t payload;
+  const uint8_t *mname;
   const uint8_t *messages[2] = 
   {
     "ike_auth_1_response",
@@ -1403,139 +1415,408 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
   };
 
   ret = COMPLETED;
+  mname = NULL;
 
-  // TODO: need to generalize the following statements with the above messages array
 
-  // ike_auth_1_response - extensible_authentication - code
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_auth_1_response")
-      && (query = get_sub_query_by_name(query, "extensible_authentication"))
-      && (query = get_sub_query_by_name(query, "code")))
-
+  for (idx=0; idx<2; idx++)
   {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
-    {    
-      tmp = get_query_value(query, &tlen);
-      v8 = char_to_int(tmp, tlen, 10);
+    mname = messages[idx];
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - code
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "code")))
 
-      // TODO: need to fix the following statement
-      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 10);
+
+        eap->set_code(eap, v8);
+      }
     }
-  }
 
-  // ike_auth_1_response - extensible_authentication - id
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_auth_1_response")
-      && (query = get_sub_query_by_name(query, "extensible_authentication"))
-      && (query = get_sub_query_by_name(query, "id")))
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - id
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "id")))
 
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
-    {    
-      tmp = get_query_value(query, &tlen);
-      v8 = char_to_int(tmp, tlen, 10);
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 10);
 
-      // TODO: need to fix the following statement
-      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+        eap->set_identifier(eap, v8);
+      }
     }
-  }
 
-  // ike_auth_1_response - extensible_authentication - type
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_auth_1_response")
-      && (query = get_sub_query_by_name(query, "extensible_authentication"))
-      && (query = get_sub_query_by_name(query, "type")))
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - type
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "type")))
 
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
-    {    
-      tmp = get_query_value(query, &tlen);
-      v8 = char_to_int(tmp, tlen, 10);
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 10);
 
-      // TODO: need to fix the following statement
-      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+        eap->set_type(eap, NULL, v8);
+      }
     }
-  }
 
-  // ike_auth_1_response - extensible_authentication - eap_aka_subtype
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_auth_1_response")
-      && (query = get_sub_query_by_name(query, "extensible_authentication"))
-      && (query = get_sub_query_by_name(query, "eap_aka_subtype")))
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_rand
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_rand")))
 
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
-    {    
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
       tmp = get_query_value(query, &tlen);
-      v8 = char_to_int(tmp, tlen, 10);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
 
-      // TODO: need to fix the following statement
-      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_RAND)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 2, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
     }
-  }
 
-  // ike_auth_1_response - extensible_authentication - eap_aka_attribute - at_rand
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_auth_1_response")
-      && (query = get_sub_query_by_name(query, "extensible_authentication"))
-      && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
-      && (query = get_sub_query_by_name(query, "at_rand")))
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_autn
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_autn")))
 
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
-    {    
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
       tmp = get_query_value(query, &tlen);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
 
-      // TODO: need to fix the following statement
-      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_AUTN)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 2, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
     }
-  }
 
-  // ike_auth_1_response - extensible_authentication - eap_aka_attribute - at_autn
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_auth_1_response")
-      && (query = get_sub_query_by_name(query, "extensible_authentication"))
-      && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
-      && (query = get_sub_query_by_name(query, "at_autn")))
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_mac
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_mac")))
 
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
-    {    
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
       tmp = get_query_value(query, &tlen);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
 
-      // TODO: need to fix the following statement
-      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_MAC)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 1, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
     }
-  }
 
-  // ike_auth_1_response - extensible_authentication - eap_aka_attribute - at_mac
-  if ((query = get_query(instance))
-      && is_query_name(query, "ike_auth_1_response")
-      && (query = get_sub_query_by_name(query, "extensible_authentication"))
-      && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
-      && (query = get_sub_query_by_name(query, "at_mac")))
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_mac
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_checkcode")))
 
-  {
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
-    {    
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
       tmp = get_query_value(query, &tlen);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
 
-      // TODO: need to fix the following statement
-      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_CHECKCODE)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 1, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
     }
   }
 
@@ -1550,6 +1831,7 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   nonce_payload_t *np;
   notify_payload_t *notify;
   id_payload_t *id;
+  eap_payload_t *eap;
 
   ret = NOT_SET;
   ike_header = NULL;
@@ -1586,6 +1868,11 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
     case PLV2_ID_RESPONDER:
       id = (id_payload_t *)payload;
       ret = process_identification_responder(instance, ike_sa_id, id);
+      break;
+
+    case PLV2_EAP:
+      eap = (eap_payload_t *)payload;
+      ret = process_extensible_authentication(instance, ike_sa_id, eap);
       break;
 
     default:
