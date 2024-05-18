@@ -661,8 +661,8 @@ am_libcharon_la_OBJECTS = attributes/attributes.lo \
 	processing/jobs/initiate_tasks_job.lo sa/eap/eap_method.lo \
 	sa/eap/eap_manager.lo sa/xauth/xauth_method.lo \
 	sa/xauth/xauth_manager.lo sa/authenticator.lo sa/child_sa.lo \
-	sa/ike_sa.lo sa/ike_sa_id.lo sa/keymat.lo sa/ike_sa_manager.lo \
 	sa/ike_sa_instance.lo sa/child_sa_manager.lo \
+	sa/ike_sa.lo sa/ike_sa_id.lo sa/keymat.lo sa/ike_sa_manager.lo \
 	sa/task_manager.lo sa/shunt_manager.lo sa/trap_manager.lo \
 	sa/redirect_manager.lo sa/task.lo $(am__objects_1) \
 	$(am__objects_2) $(am__objects_3) $(am__objects_4)
@@ -1704,8 +1704,8 @@ sa/child_sa.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/ike_sa.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/ike_sa_id.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/keymat.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
-sa/ike_sa_manager.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/ike_sa_instance.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
+sa/ike_sa_manager.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/child_sa_manager.lo: sa/$(am__dirstamp) \
 	sa/$(DEPDIR)/$(am__dirstamp)
 sa/task_manager.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)

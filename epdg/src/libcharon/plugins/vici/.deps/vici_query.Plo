@@ -238,6 +238,11 @@ vici_query.lo: vici_query.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ ../../../../src/libcharon/encoding/payloads/sa_payload.h \
+ ../../../../src/libcharon/encoding/payloads/ke_payload.h \
+ ../../../../src/libcharon/encoding/payloads/nonce_payload.h \
+ ../../../../src/libcharon/encoding/payloads/id_payload.h \
+ ../../../../src/libcharon/encoding/payloads/eap_payload.h \
  ../../../../src/libcharon/bus/listeners/logger.h vici_dispatcher.h \
  vici_message.h vici_builder.h vici_cert_info.h \
  ../../../../src/libstrongswan/credentials/certificates/x509.h \
@@ -263,7 +268,6 @@ vici_query.lo: vici_query.c /usr/include/stdc-predef.h \
  ../../../../src/libcharon/config/backend.h \
  ../../../../src/libcharon/sa/eap/eap_manager.h \
  ../../../../src/libcharon/sa/eap/eap_method.h \
- ../../../../src/libcharon/encoding/payloads/eap_payload.h \
  ../../../../src/libcharon/sa/xauth/xauth_manager.h \
  ../../../../src/libcharon/sa/xauth/xauth_method.h \
  ../../../../src/libcharon/encoding/payloads/cp_payload.h \
@@ -788,6 +792,16 @@ vici_query.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
+../../../../src/libcharon/encoding/payloads/sa_payload.h:
+
+../../../../src/libcharon/encoding/payloads/ke_payload.h:
+
+../../../../src/libcharon/encoding/payloads/nonce_payload.h:
+
+../../../../src/libcharon/encoding/payloads/id_payload.h:
+
+../../../../src/libcharon/encoding/payloads/eap_payload.h:
+
 ../../../../src/libcharon/bus/listeners/logger.h:
 
 vici_dispatcher.h:
@@ -847,8 +861,6 @@ vici_cert_info.h:
 ../../../../src/libcharon/sa/eap/eap_manager.h:
 
 ../../../../src/libcharon/sa/eap/eap_method.h:
-
-../../../../src/libcharon/encoding/payloads/eap_payload.h:
 
 ../../../../src/libcharon/sa/xauth/xauth_manager.h:
 

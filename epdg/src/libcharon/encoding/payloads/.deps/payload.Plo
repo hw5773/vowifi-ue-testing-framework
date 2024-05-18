@@ -221,17 +221,17 @@ encoding/payloads/payload.lo: encoding/payloads/payload.c \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
- encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
- encoding/payloads/ke_payload.h encoding/payloads/auth_payload.h \
- encoding/payloads/cert_payload.h encoding/payloads/certreq_payload.h \
+ encoding/payloads/ke_payload.h encoding/payloads/nonce_payload.h \
+ encoding/payloads/id_payload.h encoding/payloads/eap_payload.h \
+ encoding/payloads/auth_payload.h encoding/payloads/cert_payload.h \
+ encoding/payloads/certreq_payload.h \
  encoding/payloads/encrypted_payload.h encoding/generator.h \
  encoding/payloads/encrypted_fragment_payload.h \
  encoding/payloads/ts_payload.h \
  encoding/payloads/traffic_selector_substructure.h \
  encoding/payloads/delete_payload.h encoding/payloads/vendor_id_payload.h \
- encoding/payloads/cp_payload.h encoding/payloads/eap_payload.h \
- encoding/payloads/hash_payload.h encoding/payloads/fragment_payload.h \
- encoding/payloads/unknown_payload.h
+ encoding/payloads/cp_payload.h encoding/payloads/hash_payload.h \
+ encoding/payloads/fragment_payload.h encoding/payloads/unknown_payload.h
 
 /usr/include/stdc-predef.h:
 
@@ -749,11 +749,13 @@ sa/ike_sa_instance.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
+encoding/payloads/ke_payload.h:
+
 encoding/payloads/nonce_payload.h:
 
 encoding/payloads/id_payload.h:
 
-encoding/payloads/ke_payload.h:
+encoding/payloads/eap_payload.h:
 
 encoding/payloads/auth_payload.h:
 
@@ -776,8 +778,6 @@ encoding/payloads/delete_payload.h:
 encoding/payloads/vendor_id_payload.h:
 
 encoding/payloads/cp_payload.h:
-
-encoding/payloads/eap_payload.h:
 
 encoding/payloads/hash_payload.h:
 

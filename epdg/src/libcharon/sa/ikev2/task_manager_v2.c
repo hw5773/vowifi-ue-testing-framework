@@ -1439,9 +1439,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
       }
     }
     */
-    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(instance, msg);
   }
   ////////////////////////////
 
@@ -1477,6 +1474,13 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		 * to sync MIDs with MID 0 */
 		return NEED_MORE;
 	}
+
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
+  }
 
 	array_compress(this->passive_tasks);
 

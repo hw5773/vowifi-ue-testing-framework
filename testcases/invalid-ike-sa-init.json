@@ -1,0 +1,444 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-enc-algo"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "encryption_algorithm",
+                      "type": "uint16",
+                      "value": 13,
+                      "op": "update"
+                    },
+                    {
+                      "name": "encryption_key_length",
+                      "type": "uint16",
+                      "value": 128,
+                      "op": "update"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-exchange-type"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "exchange_type",
+              "op": "update",
+              "type": "uint8",
+              "value": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-flags"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "flags",
+              "op": "update",
+              "type": "uint8",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-init-key-exchange-dhgroup"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "key_exchange",
+              "sub": [
+                {
+                  "name": "key_exchange_data",
+                  "type": "string",
+                  "value": "max",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "drop-init-key-exchange-dhgroup"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "key_exchange",
+              "sub": [
+                {
+                  "name": "key_exchange_data",
+                  "op": "drop"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-init-key-exchange-dhgroup"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "key_exchange",
+              "sub": [
+                {
+                  "name": "diffie_hellman_group",
+                  "type": "uint16",
+                  "value": 128,
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-init-message-size"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "message_size",
+              "op": "update",
+              "type": "uint16",
+              "value": 4000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-init-nonce"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "type": "string",
+              "value": "min",
+              "op": "update"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "drop-init-nonce"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "type": "string",
+              "value": "min",
+              "op": "drop"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-init-responder-id-zero"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "identification_responder",
+              "sub": [
+                {
+                  "name": "id_type",
+                  "type": "uint8",
+                  "value": 0,
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-init-responder-id-abcde"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "identification_responder",
+              "sub": [
+                {
+                  "name": "identification_data",
+                  "type": "string",
+                  "value": "abcde",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-enc-algo"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "integrity_algorithm",
+                      "type": "uint16",
+                      "value": 3,
+                      "op": "update"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-major-version"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "ike_major_version",
+              "op": "update",
+              "type": "uint8",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-message-id"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-minor-version"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "ike_minor_version",
+              "op": "update",
+              "type": "uint8",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-responder-spi"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "responder_spi",
+              "op": "update",
+              "type": "uint64h",
+              "value": 0000000000000000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "init-invalid-nat-detection-source-ip"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "nat_detection_source_ip",
+              "op": "update",
+              "type": "string",
+              "value": "received"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

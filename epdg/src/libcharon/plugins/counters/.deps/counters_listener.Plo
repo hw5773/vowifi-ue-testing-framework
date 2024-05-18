@@ -238,6 +238,11 @@ counters_listener.lo: counters_listener.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ ../../../../src/libcharon/encoding/payloads/sa_payload.h \
+ ../../../../src/libcharon/encoding/payloads/ke_payload.h \
+ ../../../../src/libcharon/encoding/payloads/nonce_payload.h \
+ ../../../../src/libcharon/encoding/payloads/id_payload.h \
+ ../../../../src/libcharon/encoding/payloads/eap_payload.h \
  ../../../../src/libcharon/bus/listeners/logger.h counters_query.h \
  ../../../../src/libstrongswan/threading/spinlock.h \
  ../../../../src/libstrongswan/collections/hashtable.h \
@@ -760,6 +765,16 @@ counters_listener.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+../../../../src/libcharon/encoding/payloads/sa_payload.h:
+
+../../../../src/libcharon/encoding/payloads/ke_payload.h:
+
+../../../../src/libcharon/encoding/payloads/nonce_payload.h:
+
+../../../../src/libcharon/encoding/payloads/id_payload.h:
+
+../../../../src/libcharon/encoding/payloads/eap_payload.h:
 
 ../../../../src/libcharon/bus/listeners/logger.h:
 
