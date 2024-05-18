@@ -385,7 +385,10 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 		}
 
     ///// Added for VoWiFi /////
-    process_proposal(instance, this->proposal);
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      process_proposal(instance, this->proposal);
+    }
     ////////////////////////////
 
 		sa_payload = sa_payload_create_from_proposal_v2(this->proposal);
