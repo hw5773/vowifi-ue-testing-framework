@@ -22,7 +22,7 @@
                     {
                       "name": "encryption_algorithm",
                       "type": "uint16",
-                      "value": 13,
+                      "value": 1,
                       "op": "update"
                     },
                     {
