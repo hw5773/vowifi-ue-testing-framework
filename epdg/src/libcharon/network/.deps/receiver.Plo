@@ -228,14 +228,16 @@ network/receiver.lo: network/receiver.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
- attributes/attribute_handler.h network/sender.h network/receiver.h \
- network/socket_manager.h network/socket.h control/controller.h bus/bus.h \
- bus/listeners/logger.h bus/listeners/listener.h \
- bus/listeners/custom_logger.h sa/ike_sa_manager.h sa/child_sa_manager.h \
- sa/trap_manager.h sa/shunt_manager.h sa/redirect_manager.h \
- sa/redirect_provider.h config/backend_manager.h config/backend.h \
- sa/eap/eap_manager.h sa/eap/eap_method.h encoding/payloads/eap_payload.h \
- sa/xauth/xauth_manager.h sa/xauth/xauth_method.h \
+ encoding/payloads/sa_payload.h encoding/payloads/ke_payload.h \
+ encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
+ encoding/payloads/eap_payload.h attributes/attribute_handler.h \
+ network/sender.h network/receiver.h network/socket_manager.h \
+ network/socket.h control/controller.h bus/bus.h bus/listeners/logger.h \
+ bus/listeners/listener.h bus/listeners/custom_logger.h \
+ sa/ike_sa_manager.h sa/child_sa_manager.h sa/trap_manager.h \
+ sa/shunt_manager.h sa/redirect_manager.h sa/redirect_provider.h \
+ config/backend_manager.h config/backend.h sa/eap/eap_manager.h \
+ sa/eap/eap_method.h sa/xauth/xauth_manager.h sa/xauth/xauth_method.h \
  encoding/payloads/cp_payload.h processing/jobs/process_message_job.h \
  ../../src/libstrongswan/processing/jobs/callback_job.h \
  ../../src/libstrongswan/threading/mutex.h
@@ -776,6 +778,16 @@ sa/ike_sa_instance.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
+encoding/payloads/sa_payload.h:
+
+encoding/payloads/ke_payload.h:
+
+encoding/payloads/nonce_payload.h:
+
+encoding/payloads/id_payload.h:
+
+encoding/payloads/eap_payload.h:
+
 attributes/attribute_handler.h:
 
 network/sender.h:
@@ -815,8 +827,6 @@ config/backend.h:
 sa/eap/eap_manager.h:
 
 sa/eap/eap_method.h:
-
-encoding/payloads/eap_payload.h:
 
 sa/xauth/xauth_manager.h:
 

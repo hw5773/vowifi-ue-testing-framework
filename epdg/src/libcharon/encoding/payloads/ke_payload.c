@@ -203,6 +203,21 @@ METHOD(ke_payload_t, get_dh_group_number, diffie_hellman_group_t,
 	return this->dh_group_number;
 }
 
+///// Added for VoWiFi /////
+METHOD(ke_payload_t, set_key_exchange_data, void,
+	private_ke_payload_t *this, chunk_t data)
+{
+	this->key_exchange_data = data;
+}
+
+METHOD(ke_payload_t, set_dh_group_number, void,
+	private_ke_payload_t *this, diffie_hellman_group_t number)
+{
+	this->dh_group_number = number;
+}
+
+////////////////////////////
+
 METHOD2(payload_t, ke_payload_t, destroy, void,
 	private_ke_payload_t *this)
 {
@@ -231,6 +246,10 @@ ke_payload_t *ke_payload_create(payload_type_t type)
 			},
 			.get_key_exchange_data = _get_key_exchange_data,
 			.get_dh_group_number = _get_dh_group_number,
+      ///// Added for VoWiFi /////
+      .set_key_exchange_data = _set_key_exchange_data,
+      .set_dh_group_number = _set_dh_group_number,
+      ////////////////////////////
 			.destroy = _destroy,
 		},
 		.next_payload = PL_NONE,

@@ -317,9 +317,30 @@ class MessageLog {
         this.vtype = ValueType.INTEGER;
         break;
       case 3:
-        this.vtype = ValueType.UINT16;
+        this.vtype = ValueType.UINT8;
         break;
       case 4:
+        this.vtype = ValueType.UINT8H;
+        break;
+      case 5:
+        this.vtype = ValueType.UINT16;
+        break;
+      case 6:
+        this.vtype = ValueType.UINT16H;
+        break;
+      case 7:
+        this.vtype = ValueType.UINT32;
+        break;
+      case 8:
+        this.vtype = ValueType.UINT32H;
+        break;
+      case 9:
+        this.vtype = ValueType.UINT64;
+        break;
+      case 10:
+        this.vtype = ValueType.UINT64H;
+        break;
+      case 11:
         this.vtype = ValueType.STRING;
         break;
       default:

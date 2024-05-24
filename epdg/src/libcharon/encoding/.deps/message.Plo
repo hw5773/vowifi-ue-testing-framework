@@ -219,7 +219,9 @@ encoding/message.lo: encoding/message.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
- ../../src/libstrongswan/bio/bio_writer.h \
+ encoding/payloads/sa_payload.h encoding/payloads/ke_payload.h \
+ encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
+ encoding/payloads/eap_payload.h ../../src/libstrongswan/bio/bio_writer.h \
  ../../src/libstrongswan/collections/array.h daemon.h \
  attributes/attribute_manager.h attributes/attribute_provider.h \
  attributes/attribute_handler.h network/sender.h network/receiver.h \
@@ -228,13 +230,13 @@ encoding/message.lo: encoding/message.c /usr/include/stdc-predef.h \
  bus/listeners/custom_logger.h sa/ike_sa_manager.h sa/child_sa_manager.h \
  sa/trap_manager.h sa/shunt_manager.h sa/redirect_manager.h \
  sa/redirect_provider.h config/backend_manager.h config/backend.h \
- sa/eap/eap_manager.h sa/eap/eap_method.h encoding/payloads/eap_payload.h \
- sa/xauth/xauth_manager.h sa/xauth/xauth_method.h \
- encoding/payloads/cp_payload.h sa/ikev1/keymat_v1.h encoding/generator.h \
- encoding/parser.h encoding/payloads/hash_payload.h \
- encoding/payloads/encrypted_payload.h \
+ sa/eap/eap_manager.h sa/eap/eap_method.h sa/xauth/xauth_manager.h \
+ sa/xauth/xauth_method.h encoding/payloads/cp_payload.h \
+ sa/ikev1/keymat_v1.h encoding/generator.h encoding/parser.h \
+ encoding/payloads/hash_payload.h encoding/payloads/encrypted_payload.h \
  encoding/payloads/encrypted_fragment_payload.h \
- encoding/payloads/unknown_payload.h encoding/payloads/fragment_payload.h
+ encoding/payloads/unknown_payload.h encoding/payloads/fragment_payload.h \
+ /usr/include/inttypes.h
 
 /usr/include/stdc-predef.h:
 
@@ -750,6 +752,16 @@ sa/ike_sa_instance.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
+encoding/payloads/sa_payload.h:
+
+encoding/payloads/ke_payload.h:
+
+encoding/payloads/nonce_payload.h:
+
+encoding/payloads/id_payload.h:
+
+encoding/payloads/eap_payload.h:
+
 ../../src/libstrongswan/bio/bio_writer.h:
 
 ../../src/libstrongswan/collections/array.h:
@@ -800,8 +812,6 @@ sa/eap/eap_manager.h:
 
 sa/eap/eap_method.h:
 
-encoding/payloads/eap_payload.h:
-
 sa/xauth/xauth_manager.h:
 
 sa/xauth/xauth_method.h:
@@ -823,3 +833,5 @@ encoding/payloads/encrypted_fragment_payload.h:
 encoding/payloads/unknown_payload.h:
 
 encoding/payloads/fragment_payload.h:
+
+/usr/include/inttypes.h:

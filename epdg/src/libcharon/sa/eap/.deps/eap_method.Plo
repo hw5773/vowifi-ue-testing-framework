@@ -223,6 +223,8 @@ sa/eap/eap_method.lo: sa/eap/eap_method.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ encoding/payloads/sa_payload.h encoding/payloads/ke_payload.h \
+ encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
  attributes/attribute_handler.h network/sender.h network/receiver.h \
  network/socket_manager.h network/socket.h control/controller.h bus/bus.h \
  bus/listeners/logger.h bus/listeners/listener.h \
@@ -753,6 +755,14 @@ sa/ike_sa_instance.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+encoding/payloads/sa_payload.h:
+
+encoding/payloads/ke_payload.h:
+
+encoding/payloads/nonce_payload.h:
+
+encoding/payloads/id_payload.h:
 
 attributes/attribute_handler.h:
 

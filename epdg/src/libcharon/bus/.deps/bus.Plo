@@ -220,9 +220,11 @@ bus/bus.lo: bus/bus.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/x86_64-linux-gnu/bits/setjmp.h bus/listeners/logger.h \
- bus/bus.h bus/listeners/listener.h \
- ../../src/libstrongswan/threading/thread.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ encoding/payloads/sa_payload.h encoding/payloads/ke_payload.h \
+ encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
+ encoding/payloads/eap_payload.h bus/listeners/logger.h bus/bus.h \
+ bus/listeners/listener.h ../../src/libstrongswan/threading/thread.h \
  ../../src/libstrongswan/threading/thread_value.h \
  ../../src/libstrongswan/threading/mutex.h \
  ../../src/libstrongswan/threading/rwlock.h
@@ -740,6 +742,16 @@ sa/ike_sa_instance.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+encoding/payloads/sa_payload.h:
+
+encoding/payloads/ke_payload.h:
+
+encoding/payloads/nonce_payload.h:
+
+encoding/payloads/id_payload.h:
+
+encoding/payloads/eap_payload.h:
 
 bus/listeners/logger.h:
 

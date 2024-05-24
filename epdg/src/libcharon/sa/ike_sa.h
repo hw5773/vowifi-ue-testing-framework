@@ -30,6 +30,7 @@ typedef enum ike_sa_state_t ike_sa_state_t;
 typedef enum statistic_t statistic_t;
 typedef enum update_hosts_flag_t update_hosts_flag_t;
 typedef struct ike_sa_t ike_sa_t;
+typedef struct instance_st instance_t;
 
 #include <library.h>
 #include <attributes/attribute_handler.h>

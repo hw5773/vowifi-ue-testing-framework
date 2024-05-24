@@ -144,13 +144,7 @@ crypto/signers/mac_signer.lo: crypto/signers/mac_signer.c \
  metadata/metadata_factory.h metadata/metadata.h utils/chunk.h \
  utils/capabilities.h utils/integrity_checker.h utils/leak_detective.h \
  utils/backtrace.h plugins/plugin_loader.h utils/debug.h \
- settings/settings.h \
- crypto/signers/../../../libcharon/sa/ike_sa_instance.h \
- /usr/include/pthread.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/x86_64-linux-gnu/bits/setjmp.h
+ settings/settings.h
 
 /usr/include/stdc-predef.h:
 
@@ -579,17 +573,3 @@ plugins/plugin_loader.h:
 utils/debug.h:
 
 settings/settings.h:
-
-crypto/signers/../../../libcharon/sa/ike_sa_instance.h:
-
-/usr/include/pthread.h:
-
-/usr/include/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
-
-/usr/include/x86_64-linux-gnu/bits/setjmp.h:

@@ -378,172 +378,18 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	}
 	else
 	{
-    ///// Added for VoWiFi /////
-    if (check_instance(instance, ispi, rspi, NON_UPDATE))
-    {
-      // encryption related
-      algo = (uint16_t *)calloc(1, sizeof(uint16_t));
-      klen = (uint16_t *)calloc(1, sizeof(uint16_t));
-
-      // ike_sa_init_response - security_association - transform - encryption_algorithm
-      query = get_query(instance);
-      print_query(query);
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "encryption_algorithm")))
-      {
-        this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
-        vtype = get_query_value_type(query);
-        op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-        {
-          tmp = get_query_value(query, &tlen);
-          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
-        }
-
-        if ((query = get_query(instance))
-            && is_query_name(query, "ike_sa_init_response")
-            && (query = get_sub_query_by_name(query, "security_association"))
-            && (query = get_sub_query_by_name(query, "transform"))
-            && (query = get_sub_query_by_name(query, "encryption_key_length")))
-        {
-          vtype = get_query_value_type(query);
-          op = get_query_operator(query);
-          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-          {
-            tmp = get_query_value(query, &tlen);
-            *klen = (uint16_t) char_to_int(tmp, tlen, 10);
-          }
-        }
-        this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
-      }
-
-      // ike_sa_init_response - security_association - transform - encryption_key_length
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "encryption_key_length")))
-      {
-        this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
-        vtype = get_query_value_type(query);
-        op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-        {
-          tmp = get_query_value(query, &tlen);
-          *klen = (uint16_t) char_to_int(tmp, tlen, 10);
-        }
-
-        if ((query = get_query(instance))
-            && is_query_name(query, "ike_sa_init_response")
-            && (query = get_sub_query_by_name(query, "security_association"))
-            && (query = get_sub_query_by_name(query, "transform"))
-            && (query = get_sub_query_by_name(query, "encryption_algorithm")))
-        {
-          this->proposal->get_algorithm(this->proposal, ENCRYPTION_ALGORITHM, algo, klen);
-          vtype = get_query_value_type(query);
-          op = get_query_operator(query);
-          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-          {
-            tmp = get_query_value(query, &tlen);
-            *algo = (uint16_t) char_to_int(tmp, tlen, 10);
-          }
-        }
-        this->proposal->set_algorithm(this->proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
-      }
-
-      // ike_sa_init_response - security_association - transform - diffie_hellman_group
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
-      {
-        this->proposal->get_algorithm(this->proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
-        vtype = get_query_value_type(query);
-        op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-        {
-          tmp = get_query_value(query, &tlen);
-          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
-        }
-        this->proposal->set_algorithm(this->proposal, DIFFIE_HELLMAN_GROUP, *algo, *klen);
-      }
-
-      // ike_sa_init_response - security_association - transform - pseudo_random_function
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "pseudo_random_function")))
-      {
-        this->proposal->get_algorithm(this->proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
-        vtype = get_query_value_type(query);
-        op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-        {
-          tmp = get_query_value(query, &tlen);
-          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
-        }
-        this->proposal->set_algorithm(this->proposal, PSEUDO_RANDOM_FUNCTION, *algo, *klen);
-      }
-
-      // ike_sa_init_response - security_association - transform - integrity_algorithm
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "security_association"))
-          && (query = get_sub_query_by_name(query, "transform"))
-          && (query = get_sub_query_by_name(query, "integrity_algorithm")))
-      {
-        this->proposal->get_algorithm(this->proposal, INTEGRITY_ALGORITHM, algo, klen);
-        vtype = get_query_value_type(query);
-        op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-        {
-          tmp = get_query_value(query, &tlen);
-          *algo = (uint16_t) char_to_int(tmp, tlen, 10);
-        }
-        this->proposal->set_algorithm(this->proposal, INTEGRITY_ALGORITHM, *algo, *klen);
-      }
-
-      free(algo);
-      free(klen);
-    }
-
-    if (check_instance(instance, ispi, rspi, NON_UPDATE))
-    {
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "message_size")))
-      {
-        vtype = get_query_value_type(query);
-        op = get_query_operator(query);
-        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-        {
-          int i, nnoti;
-          tmp = get_query_value(query, &tlen);
-          size = (uint16_t) char_to_int(tmp, tlen, 10);
-          nnoti = size / 8 - 10;
-          printf("[VoWiFi] size: %d, nnoti: %d\n", size, nnoti);
-
-          ntype = 10000;
-          for (i=0; i<nnoti; i++)
-          {
-            message->add_notify(message, FALSE, ntype, chunk_empty);
-            ntype++;
-          }
-        }
-      }
-    }
-    ////////////////////////////
-
 		if (this->old_sa)
 		{
 			/* include SPI of new IKE_SA when we are rekeying */
 			this->proposal->set_spi(this->proposal, id->get_responder_spi(id));
 		}
+
+    ///// Added for VoWiFi /////
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      process_proposal(instance, this->proposal);
+    }
+    ////////////////////////////
 
 		sa_payload = sa_payload_create_from_proposal_v2(this->proposal);
 
@@ -557,28 +403,7 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
     }
 	}
 
-  ///// Added for VoWiFi (sa test) /////
-  // Comment out if you want to drop the sa payload
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "security_association"))
-        && (get_query_operator(query) == OP_TYPE_DROP))
-    {
-      printf("[VoWiFi] Drop the sa payload\n");
-    }
-    else
-    {
-      message->add_payload(message, (payload_t*)sa_payload);
-    }
-  }
-  else
-  {
-    message->add_payload(message, (payload_t*)sa_payload);
-  }
-  //////////////////////////////////////
-
+  message->add_payload(message, (payload_t*)sa_payload);
 	ke_payload = ke_payload_create_from_diffie_hellman(PLV2_KEY_EXCHANGE,
 													   this->dh);
 	if (!ke_payload)
@@ -596,51 +421,8 @@ static bool build_payloads(private_ike_init_t *this, message_t *message)
 	}
 	else
 	{
-    ///// Added for VoWiFi (ke test) /////
-    // Comment out if you want to drop the ke payload
-    if (check_instance(instance, ispi, rspi, NON_UPDATE))
-    {
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "key_exchange"))
-          && (get_query_operator(query) == OP_TYPE_DROP))
-      {
-        printf("[VoWiFi] Drop the key exchange payload\n");
-      }
-      else
-      {
-		    message->add_payload(message, (payload_t*)ke_payload);
-      }
-    }
-    else
-    {
-		  message->add_payload(message, (payload_t*)ke_payload);
-    }
-    //////////////////////////////////////
-
-    ///// Added for VoWiFi (nonce test) /////
-    // Comment out if you want to drop the nonce payload
-    //printf("before dropping the nonce payload\n");
-    if (check_instance(instance, ispi, rspi, NON_UPDATE))
-    {
-      if ((query = get_query(instance))
-          && is_query_name(query, "ike_sa_init_response")
-          && (query = get_sub_query_by_name(query, "nonce"))
-          && (get_query_operator(query) == OP_TYPE_DROP))
-      {
-        printf("[VoWiFi] Drop the nonce payload\n");
-      }
-      else
-      {
-        message->add_payload(message, (payload_t*)nonce_payload);
-      }
-    }
-    else
-    {
-  		message->add_payload(message, (payload_t*)nonce_payload);
-    }
-    //printf("after dropping the nonce payload\n");
-    /////////////////////////////////////////
+		message->add_payload(message, (payload_t*)ke_payload);
+  	message->add_payload(message, (payload_t*)nonce_payload);
 	}
 
 	/* negotiate fragmentation if we are not rekeying */

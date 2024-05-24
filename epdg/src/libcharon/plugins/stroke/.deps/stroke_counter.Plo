@@ -238,6 +238,11 @@ stroke_counter.lo: stroke_counter.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ ../../../../src/libcharon/encoding/payloads/sa_payload.h \
+ ../../../../src/libcharon/encoding/payloads/ke_payload.h \
+ ../../../../src/libcharon/encoding/payloads/nonce_payload.h \
+ ../../../../src/libcharon/encoding/payloads/id_payload.h \
+ ../../../../src/libcharon/encoding/payloads/eap_payload.h \
  ../../../../src/libcharon/bus/listeners/logger.h
 
 /usr/include/stdc-predef.h:
@@ -761,5 +766,15 @@ stroke_counter.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+../../../../src/libcharon/encoding/payloads/sa_payload.h:
+
+../../../../src/libcharon/encoding/payloads/ke_payload.h:
+
+../../../../src/libcharon/encoding/payloads/nonce_payload.h:
+
+../../../../src/libcharon/encoding/payloads/id_payload.h:
+
+../../../../src/libcharon/encoding/payloads/eap_payload.h:
 
 ../../../../src/libcharon/bus/listeners/logger.h:

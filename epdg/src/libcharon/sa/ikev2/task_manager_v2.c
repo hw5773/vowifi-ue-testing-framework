@@ -918,112 +918,14 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
 	me = request->get_destination(request);
 	other = request->get_source(request);
-
-  ///// Added for VoWiFi /////
-  int major, minor, etype, mid, is_req;
-  major = IKEV2_MAJOR_VERSION;
-  minor = IKEV2_MINOR_VERSION;
-  etype = request->get_exchange_type(request);
-  mid = this->responding.mid;
-  is_req = FALSE;
-  id = this->ike_sa->get_id(this->ike_sa);
-
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    if ((query = get_next_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "ike_major_version")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        major = (int) char_to_int(tmp, tlen, 10);
-      }
-    }
-
-    if ((query = get_next_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "ike_minor_version")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        minor = (int) char_to_int(tmp, tlen, 10);
-      }
-    }
-
-    if ((query = get_next_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "exchange_type")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      printf("\n\n\n\n\n[VoWiFi] exchange type 1\n\n\n\n\n");
-      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
-      {
-      printf("\n\n\n\n\n[VoWiFi] exchange type 2\n\n\n\n\n");
-        tmp = get_query_value(query, &tlen);
-        etype = (int) char_to_int(tmp, tlen, 10);
-      printf("\n\n\n\n\n[VoWiFi] exchange type 3: %d\n\n\n\n\n", etype);
-      }
-    }
-
-    if ((query = get_next_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "message_id")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT32 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        mid = (int) char_to_int(tmp, tlen, 10);
-      }
-    }
-
-    if ((query = get_next_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "flags")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        is_req = (int) char_to_int(tmp, tlen, 10);
-      }
-    }
-
-    message = message_create(major, minor);
-	  message->set_exchange_type(message, etype);
-    message->set_message_id(message, mid);
-    message->set_instance(message, instance);
-    message->set_request(message, is_req);
-  }
-  else
-  {
-	  message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
-	  message->set_exchange_type(message, request->get_exchange_type(request));
-  	message->set_message_id(message, this->responding.mid);
-	  message->set_request(message, FALSE);
-  }
-
   id = NULL;
-  ///////////////////////////
 
-  ///// Commented out for VoWiFi /////
-	//message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
-	//message->set_exchange_type(message, request->get_exchange_type(request));
-	/* send response along the path the request came in */
+	message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
+	message->set_exchange_type(message, request->get_exchange_type(request));
 	message->set_source(message, me->clone(me));
 	message->set_destination(message, other->clone(other));
-	//message->set_message_id(message, this->responding.mid);
-	//message->set_request(message, FALSE);
-  ////////////////////////////////////
+	message->set_message_id(message, this->responding.mid);
+	message->set_request(message, FALSE);
 
   ///// Added for VoWiFi /////
   const uint8_t *symbol;
@@ -1378,113 +1280,16 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	//	id->set_responder_spi(id, 0);
 	//}
 
-  ///// Added for VoWiFi /////
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    printf("[VoWiFi] erronous message is generated\n");
+  if (delete && request->get_exchange_type(request) == IKE_SA_INIT)
+	{
+		id = this->ike_sa->get_id(this->ike_sa);
+  	responder_spi = id->get_responder_spi(id);
+	  id->set_responder_spi(id, 0);
   }
-  else
-  {
-  	if (delete && request->get_exchange_type(request) == IKE_SA_INIT)
-	  {
-		  id = this->ike_sa->get_id(this->ike_sa);
-  		responder_spi = id->get_responder_spi(id);
-	  	id->set_responder_spi(id, 0);
-  	}
-  }
-  ////////////////////////////
 
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_auth_1_response")
-        && (query = get_sub_query_by_name(query, "message_size")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-      {
-        int i, nnoti;
-        tmp = get_query_value(query, &tlen);
-        size = (uint16_t) char_to_int(tmp, tlen, 10);
-        nnoti = size / 8;      
-
-        ntype = 10000;
-        for (i=0; i<nnoti; i++)
-        {
-          message->add_notify(message, FALSE, ntype, chunk_empty);
-          ntype++;
-        }
-      }
-    }
-
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_auth_2_response")
-        && (query = get_sub_query_by_name(query, "message_size")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-      {
-        int i, nnoti;
-        tmp = get_query_value(query, &tlen);
-        size = (uint16_t) char_to_int(tmp, tlen, 10);
-        nnoti = size / 8;      
-
-        ntype = 10000;
-        for (i=0; i<nnoti; i++)
-        {
-          message->add_notify(message, FALSE, ntype, chunk_empty);
-          ntype++;
-        }
-      }
-    }
-
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_auth_3_response")
-        && (query = get_sub_query_by_name(query, "message_size")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-      {
-        int i, nnoti;
-        tmp = get_query_value(query, &tlen);
-        size = (uint16_t) char_to_int(tmp, tlen, 10);
-        nnoti = size / 8;      
-
-        ntype = 10000;
-        for (i=0; i<nnoti; i++)
-        {
-          message->add_notify(message, FALSE, ntype, chunk_empty);
-          ntype++;
-        }
-      }
-    }
-
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_auth_4_response")
-        && (query = get_sub_query_by_name(query, "message_size")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
-      {
-        int i, nnoti;
-        tmp = get_query_value(query, &tlen);
-        size = (uint16_t) char_to_int(tmp, tlen, 10);
-        nnoti = size / 8;      
-
-        ntype = 10000;
-        for (i=0; i<nnoti; i++)
-        {
-          message->add_notify(message, FALSE, ntype, chunk_empty);
-          ntype++;
-        }
-      }
-    }
-
 #define AKA_TYPE_AT_RAND 1
 #define AKA_TYPE_AT_AUTN 2
 #define AKA_TYPE_AT_RES 3
@@ -1497,6 +1302,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     uint8_t *p, *tmp, *e;
     uint8_t alen, abytes, type, clen;
 
+    /*
     if ((query = get_query(instance))
         && is_query_name(query, "ike_auth_1_response")
         && (query = get_sub_query_by_name(query, "extensible_authentication"))
@@ -1632,38 +1438,9 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         }
       }
     }
-    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(instance, msg);
+    */
   }
   ////////////////////////////
-
-  /*
-  ///// Added for VoWiFi /////
-  ike_sa_id_t *tid;
-  uint64_t tspi;
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    tid = id;
-    id = this->ike_sa->get_id(this->ike_sa);
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "responder_spi")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        tspi = (uint64_t)char_to_int(tmp, tlen, 10);
-        printf("\n\n\n\n\n[VoWiFi] updated spi: %.16"PRIx64"\n\n\n\n\n", tspi);
-        id->set_responder_spi(id, tspi);
-      }
-    }
-    id = tid;
-  }
-  ////////////////////////////
-  */
 
 	/* message complete, send it */
 	clear_packets(this->responding.packets);
@@ -1697,6 +1474,13 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		 * to sync MIDs with MID 0 */
 		return NEED_MORE;
 	}
+
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
+  }
 
 	array_compress(this->passive_tasks);
 

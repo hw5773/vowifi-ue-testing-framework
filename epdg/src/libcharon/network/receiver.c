@@ -485,6 +485,11 @@ static job_requeue_t receive_packets(private_receiver_t *this)
 
 	/* parse message header */
 	message = message_create_from_packet(packet);
+
+  ///// Added for VoWiFi /////
+  //report_message(instance, message);
+  ////////////////////////////
+
 	if (message->parse_header(message) != SUCCESS)
 	{
 		DBG1(DBG_NET, "received invalid IKE header from %H - ignored",

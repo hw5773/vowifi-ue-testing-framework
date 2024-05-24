@@ -45,6 +45,10 @@ struct ike_init_t {
 	 * @return			lower nonce
 	 */
 	chunk_t (*get_lower_nonce) (ike_init_t *this);
+
+  ///// Added for VoWiFi /////
+  proposal_t *(*get_proposal) (ike_init_t *this);
+  ////////////////////////////
 };
 
 /**

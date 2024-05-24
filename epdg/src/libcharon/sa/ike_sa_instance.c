@@ -3,13 +3,31 @@
 #include <unistd.h>
 #include "ike_sa_instance.h"
 
+typedef struct table_item_t table_item_t;
+struct table_item_t {
+  void *value;
+  table_item_t *next;
+};
+
+typedef struct init_hash_t init_hash_t;
+struct init_hash_t {
+  chunk_t hash;
+  uint64_t our_spi;
+};
+
+typedef struct eap_header_t ehdr_t;
+struct eap_header_t
+{
+  uint8_t code;
+  uint8_t identifier;
+  uint16_t length;
+  uint8_t subtype;
+  uint16_t reserved;
+} __attribute__((__packed__));
+
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
 {
   int ret;
-  //printf("[check_instance] this->instance: %p\n", instance);
-
-  //if (instance)
-  //  printf("[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", instance->ispi, instance->rspi, ispi, rspi);
 
   if (!instance) 
     ret = 0;
@@ -27,6 +45,8 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
     }
   }
   else if (instance->ispi == ispi && instance->rspi == rspi)
+    ret = 1;
+  else if (instance->ispi == ispi && !rspi)
     ret = 1;
   else
     ret = 0;
@@ -369,17 +389,13 @@ query_t *get_query(instance_t *instance)
   ret = NULL;
   if (instance->initiated && !instance->finished)
   {
-    //printf("[VoWiFi] before the while loop\n");
     while (!instance->query)
     {
-      //printf("[VoWiFi] instance->query: %p\n", instance->query);
-
       if (instance->finished) 
         break;
 
       sleep(1);
     }
-    //printf("[VoWiFi] after the while loop\n");
 
     if (instance->finished)
       ret = NULL;
@@ -435,8 +451,6 @@ bool is_query_name(query_t *query, const uint8_t *name)
 
     if ((qlen == nlen) && !strncmp(qname, name, qlen))
       ret = true;
-
-    //printf("[VoWiFi] qname (%d bytes): %s, name (%d bytes): %s, ret: %d\n", qlen, qname, nlen, name, ret);
   }
 
   return ret;
@@ -446,7 +460,6 @@ query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
 {
   query_t *ret, *curr;
 
-  //printf("[VoWiFi] ike_sa_instance.c: get_sub_query_by_name(): query: %p, name: %s\n", query, name);
   ret = NULL;
   curr = query->sub;
 
@@ -499,6 +512,19 @@ int char_to_int(char *str, int slen, int base)
 
   if (!slen) goto out;
 
+  if (!base)
+  {
+    if (str[0] == '0' && str[1] == 'x')
+    {
+      str = str + 2;
+      base = 16;
+    }
+    else
+    {
+      base = 10;
+    }
+  }
+
   for (i=0; i<slen; i++)
   {
     ch = str[i];
@@ -506,6 +532,1351 @@ int char_to_int(char *str, int slen, int base)
       break;
 
     ret = ret * base + (ch - 48);
+  }
+
+out:
+  return ret;
+}
+
+int check_drop_next(instance_t *instance, payload_t *next)
+{
+  int ret, type, op;
+  query_t *query;
+
+  ret = COMPLETED;
+  type = next->get_type(next);
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (type == PLV2_SECURITY_ASSOCIATION))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "key_exchange"))
+      && (type == PLV2_KEY_EXCHANGE))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "nonce"))
+      && (type == PLV2_NONCE))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "id_responder"))
+      && (type == PLV2_ID_RESPONDER))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (type == PLV2_EAP))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_2_response")
+      && (query = get_sub_query_by_name(query, "extensible_authentication"))
+      && (type == PLV2_EAP))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "authentication"))
+      && (type == PLV2_AUTH))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "ts_initiator"))
+      && (type == PLV2_TS_INITIATOR))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "ts_responder"))
+      && (type == PLV2_TS_RESPONDER))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_3_response")
+      && (query = get_sub_query_by_name(query, "configuration"))
+      && (type == PLV2_CONFIGURATION))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  return ret;
+}
+
+int check_flag(uint8_t *flag, uint8_t *tmp, int tlen)
+{
+  size_t len;
+
+  if (strlen(flag) < tlen)
+  {
+    len = strlen(flag);
+  }
+  else
+  {
+    len = tlen;
+  }
+
+  return !strncmp(tmp, flag, len);
+}
+
+int process_ike_header(instance_t *instance, ike_sa_id_t *ike_sa_id, ike_header_t *ike_header)
+{
+  int ret, i;
+  query_t *query;
+  payload_t *payload;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp;
+  int vtype, tlen, op;
+  uint16_t size;
+  const uint8_t *mname;
+  table_item_t **init_hashes_table;
+  const uint8_t *messages[30] = 
+  {
+    "ike_sa_init_response",
+    "ike_auth_1_response",
+    "ike_auth_2_response",
+    "ike_auth_3_response",
+    "ike_auth_4_response"
+  };
+
+  ret = COMPLETED;
+  tmp = NULL;
+
+  for (i=0; i<5; i++)
+  {
+    mname = messages[i];
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "initiator_spi")))
+    {    
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT64)
+          v64 = char_to_int(tmp, tlen, 10); 
+        else if (vtype == VAL_TYPE_UINT64H)
+          v64 = char_to_int(tmp, tlen, 16); 
+        ike_header->set_initiator_spi(ike_header, v64);
+        ike_sa_id->set_initiator_spi(ike_sa_id, v64);
+      }    
+    }    
+
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "responder_spi")))
+    {    
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT64)
+          v64 = char_to_int(tmp, tlen, 10); 
+        else if (vtype == VAL_TYPE_UINT64H)
+          v64 = char_to_int(tmp, tlen, 16); 
+        ike_header->set_responder_spi(ike_header, v64);
+        ike_sa_id->set_responder_spi(ike_sa_id, v64);
+        init_hashes_table = (table_item_t **)(instance->init_hashes_table);
+
+        u_int row; 
+        table_item_t *item;
+        init_hash_t *thash;
+
+        row = chunk_hash(instance->init_hash) & instance->table_mask;
+        item = init_hashes_table[row];
+        while (item)
+        {
+          init_hash_t *current = item->value;
+
+          if (chunk_equals(instance->init_hash, current->hash))
+            break;
+        }
+
+        thash = (init_hash_t *)item->value;
+        thash->our_spi = v64; 
+      }    
+    } 
+
+    /*
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "next_payload")))
+    {
+      printf("[VoWiFi] ike_sa_init_response - next_payload\n");
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        printf("[VoWiFi] v8: %u\n\n\n", v8);
+        payload = (payload_t *)ike_header;
+        payload->set_next_type(payload, v8);
+      }
+    }
+    */
+
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "ike_major_version")))
+    {    
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10); 
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_maj_version(ike_header, v8);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "ike_minor_version")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_min_version(ike_header, v8);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "exchange_type")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT8 || vtype == VAL_TYPE_UINT8H) && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT8)
+          v8 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT8H)
+          v8 = char_to_int(tmp, tlen, 16);
+        ike_header->set_exchange_type(ike_header, v8);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "flags")))
+    {
+      const uint8_t *flag;
+      int len;
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        flag = "responder";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_response_flag(ike_header, 1);
+
+        flag = "no_responder";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_response_flag(ike_header, 0);
+
+        flag = "version";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_version_flag(ike_header, 1);
+
+        flag = "no_version";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_version_flag(ike_header, 0);
+
+        flag = "initiator";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_initiator_flag(ike_header, 1);
+
+        flag = "no_initiator";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_initiator_flag(ike_header, 0);
+
+        flag = "encryption";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_encryption_flag(ike_header, 1);
+
+        flag = "no_encryption";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_encryption_flag(ike_header, 0);
+
+        flag = "commit";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_commit_flag(ike_header, 1);
+
+        flag = "no_commit";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_commit_flag(ike_header, 0);
+
+        flag = "authonly";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_authonly_flag(ike_header, 1);
+
+        flag = "no_authonly";
+        if (check_flag(flag, tmp, tlen))
+          ike_header->set_authonly_flag(ike_header, 0);
+      }
+    }
+
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "message_id")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if ((vtype == VAL_TYPE_UINT32 || vtype == VAL_TYPE_UINT32H) && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        if (vtype == VAL_TYPE_UINT32)
+          v32 = char_to_int(tmp, tlen, 10);
+        else if (vtype == VAL_TYPE_UINT32H)
+          v32 = char_to_int(tmp, tlen, 16);
+        ike_header->set_message_id(ike_header, v32);
+      }
+    }
+  }
+
+  if (tmp)
+    free(tmp);
+
+  return ret;
+}
+
+int process_proposal(instance_t *instance, proposal_t *proposal)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp;
+  int vtype, tlen, op;
+  uint16_t size;
+  uint16_t *algo, *klen;
+
+  ret = COMPLETED;
+  tmp = NULL;
+
+  // encryption related
+  algo = (uint16_t *)calloc(1, sizeof(uint16_t));
+  klen = (uint16_t *)calloc(1, sizeof(uint16_t));
+
+  // ike_sa_init_response - security_association - transform - encryption_algorithm
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "encryption_algorithm")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - security_association - transform - encryption_algorithm\n");
+    proposal->get_algorithm(proposal, ENCRYPTION_ALGORITHM, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+
+    if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "encryption_key_length")))
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+      {
+        tmp = get_query_value(query, &tlen);
+        *klen = (uint16_t) char_to_int(tmp, tlen, 10);
+      }
+    }
+    proposal->set_algorithm(proposal, ENCRYPTION_ALGORITHM, *algo, *klen);
+  }
+
+  // ike_sa_init_response - security_association - transform - diffie_hellman_group
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
+  {
+    proposal->get_algorithm(proposal, DIFFIE_HELLMAN_GROUP, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+    proposal->set_algorithm(proposal, DIFFIE_HELLMAN_GROUP, *algo, *klen);
+  }
+
+  // ike_sa_init_response - security_association - transform - pseudo_random_function
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "pseudo_random_function")))
+  {
+    proposal->get_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+    proposal->set_algorithm(proposal, PSEUDO_RANDOM_FUNCTION, *algo, *klen);
+  }
+
+  // ike_sa_init_response - security_association - transform - integrity_algorithm
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "transform"))
+      && (query = get_sub_query_by_name(query, "integrity_algorithm")))
+  {
+    proposal->get_algorithm(proposal, INTEGRITY_ALGORITHM, algo, klen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      *algo = (uint16_t) char_to_int(tmp, tlen, 10);
+    }
+    proposal->set_algorithm(proposal, INTEGRITY_ALGORITHM, *algo, *klen);
+  }
+
+  free(algo);
+  free(klen);
+
+out:
+  return ret;
+}
+
+int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_t *notify)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *hval;
+  int vtype, tlen, op;
+  uint16_t size;
+
+  ret = COMPLETED;
+  tmp = NULL;
+  hval = NULL;
+ 
+  switch (notify->get_notify_type(notify))
+  {
+    case NAT_DETECTION_DESTINATION_IP:
+      if ((query = get_query(instance)) 
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "nat_detection_destination_ip")))
+      {
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          if (tlen >= 8
+              && !strncmp(tmp, "received", 8))
+          {
+            printf("\n\n\n[VoWiFi] rcvd_dst_hash: %B\n\n\n", &(instance->rcvd_dst_hash));
+            notify->set_notification_data(notify, instance->rcvd_dst_hash); 
+          }
+          else if (tlen >= 20)
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, 20);
+            notify->set_notification_data(notify, chunk_create(hval, 20));
+          }
+          else
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, tlen); 
+            notify->set_notification_data(notify, chunk_create(hval, 20));
+          }
+        }
+      }
+      break;
+
+    case NAT_DETECTION_SOURCE_IP:
+      if ((query = get_query(instance)) 
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "nat_detection_source_ip")))
+      {
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          if (tlen >= 8
+              && !strncmp(tmp, "received", 8))
+          {
+            
+            printf("\n\n\n[VoWiFi] rcvd_src_hash: %B\n\n\n", &(instance->rcvd_src_hash));
+            notify->set_notification_data(notify, instance->rcvd_src_hash); 
+          }
+          else if (tlen >= 20)
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, 20);
+            notify->set_notification_data(notify, chunk_create(hval, 20));
+          }
+          else
+          {
+            hval = calloc(20, sizeof(uint8_t));
+            memcpy(hval, tmp, tlen); 
+            notify->set_notification_data(notify, chunk_create(hval, 20));
+          }
+        }
+      }
+      break;
+
+    case SIGNATURE_HASH_ALGORITHMS:
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "signature_hash_algorithms")))
+      {
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          notify->set_notification_data(notify, chunk_create(tmp, tlen));
+        }
+      }
+      break;
+
+    case CHILDLESS_IKEV2_SUPPORTED:
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "childless_ikev2_supported")))
+      {
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          tmp = get_query_value(query, &tlen);
+          notify->set_notification_data(notify, chunk_create(tmp, tlen));
+        }
+      }
+      break;
+
+    default:
+      break;
+  }
+
+  if (tmp)
+    free(tmp);
+  
+out:
+  return ret;
+}
+
+int process_key_exchange(instance_t *instance, ike_sa_id_t *ike_sa_id, ke_payload_t *ke)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp;
+  uint8_t *data;
+  int i, vtype, tlen, dlen, op;
+  uint16_t size, dhgroup;
+  uint16_t *algo, *klen;
+
+  ret = COMPLETED;
+
+  // ike_sa_init_response - key_exchange - diffie_hellman_group
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "key_exchange"))
+      && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - key_exchange - diffie_hellman_group\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v16 = char_to_int(tmp, tlen, 10);
+      ke->set_dh_group_number(ke, v16);
+    }
+  }
+
+  // ike_sa_init_response - key_exchange - key_exchange_data
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "key_exchange"))
+      && (query = get_sub_query_by_name(query, "key_exchange_data")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - key_exchange - key_exchange_data\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      dhgroup = ke->get_dh_group_number(ke);
+
+      switch (dhgroup)
+      {
+        case MODP_NONE:
+          dlen = 0;
+          break;
+        case MODP_768_BIT:
+          dlen = 96;
+          break;
+        case MODP_1024_BIT:
+          dlen = 128;
+          break;
+        case MODP_1536_BIT:
+          dlen = 192;
+          break;
+        case MODP_2048_BIT:
+          dlen = 256;
+          break;
+        case MODP_3072_BIT:
+          dlen = 384;
+          break;
+        case MODP_4096_BIT:
+          dlen = 512;
+          break;
+        case MODP_6144_BIT:
+          dlen = 768;
+          break;
+        case MODP_8192_BIT:
+          dlen = 1024;
+          break;
+        case ECP_256_BIT:
+        case ECP_256_BP:
+        case MODP_2048_256:
+        case CURVE_25519:
+        case NTRU_256_BIT:
+          dlen = 32;
+          break;
+        case ECP_384_BIT:
+        case ECP_384_BP:
+          dlen = 48;
+          break;
+        case ECP_521_BIT:
+        case ECP_512_BP:
+          dlen = 64;
+          break;
+        case MODP_1024_160:
+          dlen = 20;
+          break;
+        case MODP_2048_224:
+          dlen = 28;
+          break;
+        case ECP_192_BIT:
+        case NTRU_192_BIT:
+          dlen = 24;
+          break;
+        case ECP_224_BIT:
+        case ECP_224_BP:
+        case CURVE_448:
+          dlen = 28;
+          break;
+        case NTRU_112_BIT:
+          dlen = 14;
+          break;
+        default:
+          dlen = 256;
+      }
+
+      if (tlen == 3
+          && !strncmp(tmp, "max", tlen))
+      {
+        data = (uint8_t *)calloc(1, dlen);
+        for (i=0; i<dlen; i++)
+          data[i] = 0xFF;
+      }
+      else if (tlen == 3
+          && !strncmp(tmp, "min", tlen))
+      {
+        data = (uint8_t *)calloc(1, dlen);
+        for (i=0; i<dlen; i++)
+          data[i] = 0;
+      }
+      ke->set_key_exchange_data(ke, chunk_create(data, dlen));
+    }
+  }
+
+out:
+  return ret;
+}
+
+int process_nonce(instance_t *instance, ike_sa_id_t *ike_sa_id, nonce_payload_t *np)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *data;
+  int i, vtype, tlen, dlen, op;
+
+  ret = COMPLETED;
+
+  // ike_sa_init_response - nonce - nonce_data
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "nonce")))
+  {
+    printf("[VoWiFi] ike_sa_init_response - nonce\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      if (tlen == 3
+          && !strncmp(tmp, "max", tlen))
+      {
+        data = (uint8_t *)calloc(1, NONCE_SIZE);
+        for (i=0; i<NONCE_SIZE; i++)
+          data[i] = 0xFF;
+      }
+      else if (tlen == 3
+          && !strncmp(tmp, "min", tlen))
+      {
+        data = (uint8_t *)calloc(1, NONCE_SIZE);
+        for (i=0; i<NONCE_SIZE; i++)
+          data[i] = 0;
+      }
+      np->set_nonce(np, chunk_create(data, NONCE_SIZE));
+    }
+  }
+
+  return ret;
+}
+
+int process_identification_responder(instance_t *instance, ike_sa_id_t *ike_sa_id, id_payload_t *id)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *data;
+  int i, vtype, tlen, dlen, op;
+
+  ret = COMPLETED;
+
+  // ike_auth_1_response - identification_responder - id_type
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "identification_responder"))
+      && (query = get_sub_query_by_name(query, "id_type")))
+
+  {
+    printf("[VoWiFi] ike_auth_1_response - identification_responder - id_type\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+      id->set_id_type(id, v8);
+    }
+  }
+
+  // ike_auth_1_response - identification_responder - identification_data
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_auth_1_response")
+      && (query = get_sub_query_by_name(query, "identification_responder"))
+      && (query = get_sub_query_by_name(query, "identification_data")))
+
+  {
+    printf("[VoWiFi] ike_auth_1_response - identification_responder - identification_data\n");
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+    {    
+      tmp = get_query_value(query, &tlen);
+      id->set_id_data(id, chunk_create(tmp, tlen));
+    }
+  }
+
+  return ret;
+}
+
+int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_id, eap_payload_t *eap)
+{
+  int ret;
+  query_t *query;
+  uint8_t v8, alen, abytes, type, clen;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp, *data, *e, *p;
+  int i, idx, vtype, tlen, dlen, plen, op;
+  chunk_t payload;
+  const uint8_t *mname;
+  const uint8_t *messages[2] = 
+  {
+    "ike_auth_1_response",
+    "ike_auth_2_response",
+  };
+
+  ret = COMPLETED;
+  mname = NULL;
+
+
+  for (idx=0; idx<2; idx++)
+  {
+    mname = messages[idx];
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - code
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "code")))
+
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 10);
+
+        eap->set_code(eap, v8);
+      }
+    }
+
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - id
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "id")))
+
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 10);
+
+        eap->set_identifier(eap, v8);
+      }
+    }
+
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - type
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "type")))
+
+    {
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+      {    
+        tmp = get_query_value(query, &tlen);
+        v8 = char_to_int(tmp, tlen, 10);
+
+        eap->set_type(eap, NULL, v8);
+      }
+    }
+
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_rand
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_rand")))
+
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      tmp = get_query_value(query, &tlen);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
+
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_RAND)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 2, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
+    }
+
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_autn
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_autn")))
+
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      tmp = get_query_value(query, &tlen);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
+
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_AUTN)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 2, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
+    }
+
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_mac
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_mac")))
+
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      tmp = get_query_value(query, &tlen);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
+
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_MAC)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 1, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
+    }
+
+    // ike_auth_1_response/ike_auth_2_response - extensible_authentication - eap_aka_attribute - at_mac
+    if ((query = get_query(instance))
+        && is_query_name(query, mname)
+        && (query = get_sub_query_by_name(query, "extensible_authentication"))
+        && (query = get_sub_query_by_name(query, "eap_aka_attribute"))
+        && (query = get_sub_query_by_name(query, "at_checkcode")))
+
+    {
+      payload = eap->get_data(eap);
+      vtype = get_query_value_type(query);
+      op = get_query_operator(query);
+      tmp = get_query_value(query, &tlen);
+      e = p = (uint8_t *) payload.ptr;
+      plen = (int) payload.len;
+      p += sizeof(ehdr_t);
+      plen -= sizeof(ehdr_t);
+
+      while (plen > 0)
+      {
+        type = *(p++);
+        plen--;
+        alen = *(p++);
+        plen--;
+        abytes = 4 * alen - 2;
+
+        if (type != AKA_TYPE_AT_CHECKCODE)
+        {
+          p += abytes;
+          plen -= abytes;
+          continue;
+        }
+        else
+        {
+          break;
+        }
+      }
+
+      if (plen > 0)
+      {
+        if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
+        {
+          if (tlen >= 3 && !strncmp(tmp, "min", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "max", 3))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0xff;
+            }
+          }
+          else if (tlen >= 3 && !strncmp(tmp, "median", 6))
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x88;
+            }
+          }
+          else
+          {
+            for (i=2; i<abytes; i++)
+            {
+              p[i] = 0x00;
+              if (tlen > 0)
+              {
+                p[i] = char_to_int(tmp[2*(i-2)], 1, 16);
+                tlen -= 2;
+              }
+            }
+          }
+        }
+        else if (op == OP_TYPE_DROP)
+        {
+          clen = payload.len - alen * 4;
+          e += 2;
+          e[0] = (clen >> 8) & 0xff;
+          e[1] = clen & 0xff;
+          payload.len = clen;
+        }
+      }
+    }
+  }
+
+  return ret;
+}
+
+int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *payload, payload_t *next)
+{
+  int ret;
+  ike_header_t *ike_header;
+  ke_payload_t *ke;
+  nonce_payload_t *np;
+  notify_payload_t *notify;
+  id_payload_t *id;
+  eap_payload_t *eap;
+
+  ret = NOT_SET;
+  ike_header = NULL;
+  ke = NULL;
+  np = NULL;
+
+  if ((ret = check_drop_next(instance, next)))
+  {
+    goto out;
+  }
+
+  switch (payload->get_type(payload))
+  {
+    case PL_HEADER:
+      ike_header = (ike_header_t *)payload;
+      ret = process_ike_header(instance, ike_sa_id, ike_header);
+      break;
+
+    case PLV2_KEY_EXCHANGE:
+      ke = (ke_payload_t *)payload;
+      ret = process_key_exchange(instance, ike_sa_id, ke);
+      break;
+
+    case PLV2_NONCE:
+      np = (nonce_payload_t *)payload;
+      ret = process_nonce(instance, ike_sa_id, np);
+      break;
+
+    case PLV2_NOTIFY:
+      notify = (notify_payload_t *)payload;
+      ret = process_notify(instance, ike_sa_id, notify);
+      break;
+
+    case PLV2_ID_RESPONDER:
+      id = (id_payload_t *)payload;
+      ret = process_identification_responder(instance, ike_sa_id, id);
+      break;
+
+    case PLV2_EAP:
+      eap = (eap_payload_t *)payload;
+      ret = process_extensible_authentication(instance, ike_sa_id, eap);
+      break;
+
+    default:
+      break;
   }
 
 out:

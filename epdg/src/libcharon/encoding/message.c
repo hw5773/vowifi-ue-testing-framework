@@ -38,6 +38,10 @@
 #include <encoding/payloads/cp_payload.h>
 #include <encoding/payloads/fragment_payload.h>
 
+///// Added for VoWiFi /////
+#include <inttypes.h>
+////////////////////////////
+
 /**
  * Max number of notify payloads per IKEv2 message
  */
@@ -1676,6 +1680,28 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
 	payload_t *payload, *next;
 	bool encrypting = FALSE;
 
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  msg_t *msg;
+  query_t *query;
+  uint64_t ispi, rspi;
+  uint8_t v8;
+  uint16_t v16;
+  uint32_t v32;
+  uint64_t v64;
+  uint8_t *tmp;
+  int vtype, tlen, op;
+  uint16_t size;
+  message_t *message;
+  ike_sa_id_t *ike_sa_id;
+
+  message = &(this->public);
+  instance = message->get_instance(message);
+  ike_sa_id = message->get_ike_sa_id(message);
+  ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
+  rspi = ike_sa_id->get_responder_spi(ike_sa_id);
+  ////////////////////////////
+
 	if (this->exchange_type == EXCHANGE_TYPE_UNDEFINED)
 	{
 		DBG1(DBG_ENC, "exchange type is not defined");
@@ -1775,13 +1801,83 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
 	/* generate all payloads with proper next type */
 	*out_generator = generator = generator_create();
 	ike_header = create_header(this);
+
+  ///// Added for VoWiFi /////
+  payload_t *ppayload;
+  int pret, ntype, idx;
+  ppayload = NULL;
+  pret = NOT_SET;
+  const uint8_t *mname;
+  const uint8_t *messages[30] = 
+  {
+    "ike_sa_init_response",
+    "ike_auth_1_response",
+    "ike_auth_2_response",
+    "ike_auth_3_response",
+    "ike_auth_4_response"
+  };
+
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    for (idx=0; idx<5; idx++)
+    {
+      mname = messages[idx];
+      if ((query = get_query(instance))
+          && is_query_name(query, mname)
+          && (query = get_sub_query_by_name(query, "message_size")))
+      {
+        vtype = get_query_value_type(query);
+        op = get_query_operator(query);
+        if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE)
+        {
+          int i, nnoti;
+          tmp = get_query_value(query, &tlen);
+          size = (uint16_t) char_to_int(tmp, tlen, 10);
+          nnoti = size / 8 - 10;
+        
+          ntype = 10000;
+          for (i=0; i<nnoti; i++)
+          {
+            message->add_notify(message, FALSE, ntype, chunk_empty);
+            ntype++;
+          }
+        }
+      }
+    }
+  }
+  ////////////////////////////
+  
 	payload = (payload_t*)ike_header;
 	enumerator = create_payload_enumerator(this);
 	while (enumerator->enumerate(enumerator, &next))
 	{
-		payload->set_next_type(payload, next->get_type(next));
-		generator->generate_payload(generator, payload);
-		payload = next;
+    ///// Added for VoWiFi /////
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      pret = process_query(instance, ike_sa_id, payload, next);
+    }
+
+    if (pret == NEED_DROP_NEXT)
+    {
+      ppayload = payload;
+    }
+    else
+    {
+      if (ppayload)
+      {
+        payload = ppayload;
+        ppayload = NULL;
+      }
+      payload->set_next_type(payload, next->get_type(next));
+		  generator->generate_payload(generator, payload);
+		  payload = next;
+    }
+    
+    ///// Commented out for VoWiFi /////
+		//payload->set_next_type(payload, next->get_type(next));
+		//generator->generate_payload(generator, payload);
+		//payload = next;
+    ////////////////////////////////////
 	}
 	enumerator->destroy(enumerator);
 
@@ -1812,25 +1908,6 @@ static status_t finalize_message(private_message_t *this, keymat_t *keymat,
 	keymat_v1_t *keymat_v1 = (keymat_v1_t*)keymat;
 	chunk_t chunk;
 	uint32_t *lenpos;
-
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  aead_t *aead;
-  instance = this->instance;
-
-  //printf("\n\n[VoWiFi] check instance to set the instance and ike_sa_id\n\n");
-  if (instance)
-  {
-    //printf("\n\n[VoWiFi] setting the instance and ike_sa_id\n\n");
-  	aead = keymat->get_aead(keymat, FALSE);
-    if (aead)
-    {
-      //printf("\n\n\n[VoWiFi] this->ike_sa_id: %p\n\n\n", this->ike_sa_id);
-      aead->set_ike_sa_id(aead, this->ike_sa_id);
-      aead->set_instance(aead, instance);
-    }
-  }
-  ////////////////////////////
 
 	if (encrypted)
 	{
@@ -3003,10 +3080,10 @@ METHOD(message_t, destroy, void,
 METHOD(message_t, set_instance, void,
 	private_message_t *this, void *instance)
 {
-  this->instance = instance;
+  this->instance = (instance_t *)instance;
 }
 
-METHOD(message_t, get_instance, void,
+METHOD(message_t, get_instance, instance_t *,
 	private_message_t *this)
 {
   return this->instance;

@@ -220,7 +220,10 @@ sa/keymat.lo: sa/keymat.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/x86_64-linux-gnu/bits/setjmp.h sa/ikev2/keymat_v2.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ encoding/payloads/sa_payload.h encoding/payloads/ke_payload.h \
+ encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
+ encoding/payloads/eap_payload.h sa/ikev2/keymat_v2.h \
  ../../src/libstrongswan/collections/array.h
 
 /usr/include/stdc-predef.h:
@@ -738,6 +741,16 @@ sa/ike_sa_instance.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+encoding/payloads/sa_payload.h:
+
+encoding/payloads/ke_payload.h:
+
+encoding/payloads/nonce_payload.h:
+
+encoding/payloads/id_payload.h:
+
+encoding/payloads/eap_payload.h:
 
 sa/ikev2/keymat_v2.h:
 

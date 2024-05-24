@@ -16,8 +16,8 @@
             {
               "name": "nat_detection_source_ip",
               "op": "update",
-              "type": "uint32",
-              "value": 0
+              "type": "string",
+              "value": "received"
             }
           ]
         }

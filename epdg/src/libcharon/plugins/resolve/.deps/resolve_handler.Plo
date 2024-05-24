@@ -235,6 +235,11 @@ resolve_handler.lo: resolve_handler.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ ../../../../src/libcharon/encoding/payloads/sa_payload.h \
+ ../../../../src/libcharon/encoding/payloads/ke_payload.h \
+ ../../../../src/libcharon/encoding/payloads/nonce_payload.h \
+ ../../../../src/libcharon/encoding/payloads/id_payload.h \
+ ../../../../src/libcharon/encoding/payloads/eap_payload.h \
  ../../../../src/libcharon/attributes/attributes.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h /usr/include/unistd.h \
@@ -760,6 +765,16 @@ resolve_handler.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+../../../../src/libcharon/encoding/payloads/sa_payload.h:
+
+../../../../src/libcharon/encoding/payloads/ke_payload.h:
+
+../../../../src/libcharon/encoding/payloads/nonce_payload.h:
+
+../../../../src/libcharon/encoding/payloads/id_payload.h:
+
+../../../../src/libcharon/encoding/payloads/eap_payload.h:
 
 ../../../../src/libcharon/attributes/attributes.h:
 

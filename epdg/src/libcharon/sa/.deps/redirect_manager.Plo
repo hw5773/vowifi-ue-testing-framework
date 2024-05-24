@@ -221,6 +221,9 @@ sa/redirect_manager.lo: sa/redirect_manager.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ encoding/payloads/sa_payload.h encoding/payloads/ke_payload.h \
+ encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
+ encoding/payloads/eap_payload.h \
  ../../src/libstrongswan/threading/rwlock.h \
  ../../src/libstrongswan/bio/bio_reader.h \
  ../../src/libstrongswan/bio/bio_writer.h
@@ -740,6 +743,16 @@ sa/ike_sa_instance.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+encoding/payloads/sa_payload.h:
+
+encoding/payloads/ke_payload.h:
+
+encoding/payloads/nonce_payload.h:
+
+encoding/payloads/id_payload.h:
+
+encoding/payloads/eap_payload.h:
 
 ../../src/libstrongswan/threading/rwlock.h:
 

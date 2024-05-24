@@ -24,6 +24,7 @@
 #include <encoding/payloads/notify_payload.h>
 
 ///// Added for VoWiFi /////
+#include <inttypes.h>
 #include <sa/ike_sa_instance.h>
 ////////////////////////////
 
@@ -141,23 +142,8 @@ static notify_payload_t *build_natd_payload(private_ike_natd_t *this,
 	notify_payload_t *notify;
 	ike_sa_id_t *ike_sa_id;
 	ike_cfg_t *config;
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  uint64_t ispi, rspi;
-  uint8_t *tmp;
-  const uint8_t *name;
-  int vtype, tlen, op;
-  query_t *query;
-
-  instance = this->ike_sa->get_instance(this->ike_sa);
-  ////////////////////////////
-
 	ike_sa_id = this->ike_sa->get_id(this->ike_sa);
-  ///// Added for VoWiFi /////
-  ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
-  rspi = ike_sa_id->get_responder_spi(ike_sa_id);
-  ////////////////////////////
-	config = this->ike_sa->get_ike_cfg(this->ike_sa);
+  config = this->ike_sa->get_ike_cfg(this->ike_sa);
 	if (force_encap(config) && type == NAT_DETECTION_SOURCE_IP)
 	{
 		uint32_t addr;
@@ -179,29 +165,7 @@ static notify_payload_t *build_natd_payload(private_ike_natd_t *this,
 	}
 	notify = notify_payload_create(PLV2_NOTIFY);
 	notify->set_notify_type(notify, type);
-
-  ///// Added for VoWiFi /////
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    if (type == NAT_DETECTION_SOURCE_IP)
-    {
-      name = "nat_detection_source_ip";
-    }
-    else if (type == NAT_DETECTION_DESTINATION_IP)
-    {
-      name = "nat_detection_destination_ip";
-    }
-
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, name)))
-    {
-      // TODO for update 
-      // change the value in hash
-    }
-  }
-  ////////////////////////////
-	notify->set_notification_data(notify, hash);
+  notify->set_notification_data(notify, hash);
   chunk_free(&hash);
 
 	return notify;
@@ -219,6 +183,18 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
 	ike_sa_id_t *ike_sa_id;
 	host_t *me, *other;
 	ike_cfg_t *config;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  uint64_t ispi, rspi;
+  uint8_t *tmp;
+  const uint8_t *name;
+  int vtype, tlen, op;
+  query_t *query;
+
+  printf("\n\n[VoWiFi] this: %p, this->ike_sa: %p\n\n", this, this->ike_sa);
+  instance = this->ike_sa->get_instance(this->ike_sa);
+  ////////////////////////////
+
 
 	/* Precompute NAT-D hashes for incoming NAT notify comparison */
 	ike_sa_id = message->get_ike_sa_id(message);
@@ -227,6 +203,13 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
 	dst_hash = generate_natd_hash(this, ike_sa_id, me);
 	src_hash = generate_natd_hash(this, ike_sa_id, other);
 
+  ///// Added for VoWiFi /////
+  ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
+  rspi = ike_sa_id->get_responder_spi(ike_sa_id);
+  if (instance)
+    printf("\n\n\n[VoWiFi] ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64", rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n", ispi, instance->ispi, rspi, instance->rspi);
+  ////////////////////////////
+	
 	DBG3(DBG_IKE, "precalculated src_hash %B", &src_hash);
 	DBG3(DBG_IKE, "precalculated dst_hash %B", &dst_hash);
 
@@ -244,6 +227,15 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
 			{
 				this->dst_seen = TRUE;
 				hash = notify->get_notification_data(notify);
+        ///// Added for VoWiFi /////
+        printf("[VoWiFi] before check_instance in NAT_DETECTION_DESTINATION_IP\n");
+        if (check_instance(instance, ispi, rspi, NON_UPDATE))
+        {
+        printf("[VoWiFi] after check_instance in NAT_DETECTION_DESTINATION_IP\n");
+          instance->rcvd_dst_hash = chunk_clone(hash);
+        }
+        ////////////////////////////
+	
 				if (!this->dst_matched)
 				{
 					DBG3(DBG_IKE, "received dst_hash %B", &hash);
@@ -269,6 +261,16 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
 				if (!this->src_matched)
 				{
 					hash = notify->get_notification_data(notify);
+          ///// Added for VoWiFi /////
+        printf("[VoWiFi] before check_instance in NAT_DETECTION_SOURCE_IP\n");
+          if (check_instance(instance, ispi, rspi, NON_UPDATE))
+          {
+        printf("[VoWiFi] after check_instance in NAT_DETECTION_SOURCE_IP\n");
+					  printf("\n\n\n[VoWiFi] (ike_natd.c) received src_hash %B\n\n\n", &hash);
+            instance->rcvd_src_hash = chunk_clone(hash);
+          }
+          ////////////////////////////
+	
 					DBG3(DBG_IKE, "received src_hash %B", &hash);
 					if (chunk_equals(hash, src_hash))
 					{
@@ -444,7 +446,9 @@ METHOD(task_t, build_r, status_t,
 METHOD(task_t, process_r, status_t,
 	private_ike_natd_t *this, message_t *message)
 {
+  printf("\n\n\n\n\n[VoWiFi] before process_payloads\n\n\n\n\n");
 	process_payloads(this, message);
+  printf("\n\n\n\n\n[VoWiFi] after process_payloads\n\n\n\n\n");
 
 	return NEED_MORE;
 }

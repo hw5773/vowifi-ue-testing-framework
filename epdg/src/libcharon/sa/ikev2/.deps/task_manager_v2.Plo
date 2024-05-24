@@ -220,7 +220,10 @@ sa/ikev2/task_manager_v2.lo: sa/ikev2/task_manager_v2.c \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/x86_64-linux-gnu/bits/setjmp.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ encoding/payloads/sa_payload.h encoding/payloads/ke_payload.h \
+ encoding/payloads/nonce_payload.h encoding/payloads/id_payload.h \
+ encoding/payloads/eap_payload.h /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
@@ -237,22 +240,22 @@ sa/ikev2/task_manager_v2.lo: sa/ikev2/task_manager_v2.c \
  bus/listeners/custom_logger.h sa/ike_sa_manager.h sa/child_sa_manager.h \
  sa/trap_manager.h sa/shunt_manager.h sa/redirect_manager.h \
  sa/redirect_provider.h config/backend_manager.h config/backend.h \
- sa/eap/eap_manager.h sa/eap/eap_method.h encoding/payloads/eap_payload.h \
- sa/xauth/xauth_manager.h sa/xauth/xauth_method.h \
- encoding/payloads/cp_payload.h sa/ikev2/tasks/ike_init.h \
- sa/ikev2/tasks/ike_natd.h sa/ikev2/tasks/ike_mobike.h \
- sa/ikev2/tasks/ike_auth.h sa/ikev2/tasks/ike_auth_lifetime.h \
- sa/ikev2/tasks/ike_cert_pre.h sa/ikev2/tasks/ike_cert_post.h \
- sa/ikev2/tasks/ike_rekey.h sa/ikev2/tasks/ike_reauth.h \
- sa/ikev2/tasks/ike_reauth_complete.h sa/ikev2/tasks/ike_redirect.h \
- sa/ikev2/tasks/ike_delete.h sa/ikev2/tasks/ike_config.h \
- sa/ikev2/tasks/ike_dpd.h sa/ikev2/tasks/ike_mid_sync.h \
- sa/ikev2/tasks/ike_vendor.h sa/ikev2/tasks/ike_verify_peer_cert.h \
- sa/ikev2/tasks/child_create.h sa/ikev2/tasks/child_rekey.h \
- sa/ikev2/tasks/child_delete.h encoding/payloads/delete_payload.h \
- encoding/payloads/unknown_payload.h processing/jobs/retransmit_job.h \
- processing/jobs/delete_ike_sa_job.h processing/jobs/initiate_tasks_job.h \
- /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ sa/eap/eap_manager.h sa/eap/eap_method.h sa/xauth/xauth_manager.h \
+ sa/xauth/xauth_method.h encoding/payloads/cp_payload.h \
+ sa/ikev2/tasks/ike_init.h sa/ikev2/tasks/ike_natd.h \
+ sa/ikev2/tasks/ike_mobike.h sa/ikev2/tasks/ike_auth.h \
+ sa/ikev2/tasks/ike_auth_lifetime.h sa/ikev2/tasks/ike_cert_pre.h \
+ sa/ikev2/tasks/ike_cert_post.h sa/ikev2/tasks/ike_rekey.h \
+ sa/ikev2/tasks/ike_reauth.h sa/ikev2/tasks/ike_reauth_complete.h \
+ sa/ikev2/tasks/ike_redirect.h sa/ikev2/tasks/ike_delete.h \
+ sa/ikev2/tasks/ike_config.h sa/ikev2/tasks/ike_dpd.h \
+ sa/ikev2/tasks/ike_mid_sync.h sa/ikev2/tasks/ike_vendor.h \
+ sa/ikev2/tasks/ike_verify_peer_cert.h sa/ikev2/tasks/child_create.h \
+ sa/ikev2/tasks/child_rekey.h sa/ikev2/tasks/child_delete.h \
+ encoding/payloads/delete_payload.h encoding/payloads/unknown_payload.h \
+ processing/jobs/retransmit_job.h processing/jobs/delete_ike_sa_job.h \
+ processing/jobs/initiate_tasks_job.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
@@ -776,6 +779,16 @@ sa/ike_sa_instance.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
+encoding/payloads/sa_payload.h:
+
+encoding/payloads/ke_payload.h:
+
+encoding/payloads/nonce_payload.h:
+
+encoding/payloads/id_payload.h:
+
+encoding/payloads/eap_payload.h:
+
 /usr/include/math.h:
 
 /usr/include/x86_64-linux-gnu/bits/math-vector.h:
@@ -841,8 +854,6 @@ config/backend.h:
 sa/eap/eap_manager.h:
 
 sa/eap/eap_method.h:
-
-encoding/payloads/eap_payload.h:
 
 sa/xauth/xauth_manager.h:
 

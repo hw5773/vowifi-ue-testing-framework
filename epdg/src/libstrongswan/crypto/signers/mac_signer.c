@@ -17,10 +17,6 @@
 
 #include "mac_signer.h"
 
-///// Added for VoWiFi /////
-#include "../../../libcharon/sa/ike_sa_instance.h"
-////////////////////////////
-
 typedef struct private_signer_t private_signer_t;
 
 /**
@@ -42,10 +38,6 @@ struct private_signer_t {
 	 * Truncation of MAC output
 	 */
 	size_t truncation;
-
-  ///// Added for VoWiFi /////
-  void *instance;
-  ////////////////////////////
 };
 
 METHOD(signer_t, get_signature, bool,
@@ -125,20 +117,6 @@ METHOD(signer_t, destroy, void,
 	this->mac->destroy(this->mac);
 	free(this);
 }
-
-///// Added for VoWiFi /////
-METHOD(signer_t, set_instance, void,
-	private_signer_t *this, void *instance)
-{
-  this->instance = instance;
-}
-
-METHOD(signer_t, get_instance, void *,
-	private_signer_t *this)
-{
-  return this->instance;
-}
-////////////////////////////
 
 /*
  * Described in header

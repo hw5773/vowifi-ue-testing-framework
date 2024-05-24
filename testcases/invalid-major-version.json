@@ -16,7 +16,7 @@
             {
               "name": "ike_major_version",
               "op": "update",
-              "type": "uint32",
+              "type": "uint8",
               "value": 0
             }
           ]

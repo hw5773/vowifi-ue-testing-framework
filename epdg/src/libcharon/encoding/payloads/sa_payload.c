@@ -77,6 +77,10 @@ struct private_sa_payload_t {
 	 * IKEv1 situation
 	 */
 	uint32_t situation;
+
+  ///// Added for VoWiFi /////
+  proposal_t *selected_proposal;
+  ////////////////////////////
 };
 
 /**
@@ -285,6 +289,14 @@ static void add_proposal_v2(private_sa_payload_t *this, proposal_t *proposal)
 	this->proposals->insert_last(this->proposals, substruct);
 	compute_length(this);
 }
+
+///// Added for VoWiFi /////
+METHOD(sa_payload_t, get_selected_proposal, proposal_t*,
+	private_sa_payload_t *this)
+{
+  return this->selected_proposal;
+}
+///////////////////////////
 
 METHOD(sa_payload_t, get_proposals, linked_list_t*,
 	private_sa_payload_t *this)
@@ -518,6 +530,9 @@ sa_payload_t *sa_payload_create(payload_type_t type)
 			.get_auth_method = _get_auth_method,
 			.get_encap_mode = _get_encap_mode,
 			.destroy = _destroy,
+      ///// Added for VoWiFi /////
+      .get_selected_proposal = _get_selected_proposal,
+      ////////////////////////////
 		},
 		.next_payload = PL_NONE,
 		.proposals = linked_list_create(),
@@ -561,6 +576,8 @@ sa_payload_t *sa_payload_create_from_proposal_v2(proposal_t *proposal)
 
 	this = (private_sa_payload_t*)sa_payload_create(PLV2_SECURITY_ASSOCIATION);
 	add_proposal_v2(this, proposal);
+  this->selected_proposal = proposal;
+  printf("\n\n\n\n\n[VoWiFi] proposal (sa_payload.c): %p\n", proposal);
 
 	return &this->public;
 
