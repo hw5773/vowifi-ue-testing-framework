@@ -682,6 +682,7 @@ METHOD(task_manager_t, initiate, status_t,
 				/* processed, but task needs another exchange */
 				break;
 			case FAILED:
+        printf("[VoWiFi] auth failed\n\n\n\n\n");
 			default:
 				this->initiating.type = EXCHANGE_TYPE_UNDEFINED;
 				if (this->ike_sa->get_state(this->ike_sa) != IKE_CONNECTING &&
@@ -2070,6 +2071,7 @@ static void send_notify_response(private_task_manager_t *this,
 	}
 	response->set_source(response, me->clone(me));
 	response->set_destination(response, other->clone(other));
+  printf("\n\n\n\n\n[VoWiFi] before ike_sa->generate_message()\n\n\n\n\n");
 	if (this->ike_sa->generate_message(this->ike_sa, response,
 									   &packet) == SUCCESS)
 	{

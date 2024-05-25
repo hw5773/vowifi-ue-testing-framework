@@ -644,6 +644,14 @@ METHOD(authenticator_t, build_server, status_t,
 		eap_code_t code;
 
     ///// Added for VoWiFi /////
+    if (check_instance(instance, ispi, rspi, NON_UPDATE))
+    {
+      process_query(instance, sa_id, this->eap_payload, NULL);
+    }
+    ////////////////////////////
+
+    ///// Added for VoWiFi /////
+    /*
     printf("[VoWiFi] before processing the query\n");
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
@@ -702,6 +710,7 @@ METHOD(authenticator_t, build_server, status_t,
       }
     }
     printf("[VoWiFi] after processing the query\n");
+    */
     ////////////////////////////
 
 		code = this->eap_payload->get_code(this->eap_payload);

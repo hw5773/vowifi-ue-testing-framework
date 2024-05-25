@@ -1268,7 +1268,6 @@ METHOD(ike_sa_t, generate_message, status_t,
   int vtype, op, tlen;
   instance = this->instance;
   message->set_instance(message, instance);
-  printf("\n\n\n\n\n[VoWiFi] instance: %p, message: %p (ike_sa.c)\n\n\n\n\n", instance, message);
   //instance = message->get_instance(message);
   ispi = this->ike_sa_id->get_initiator_spi(this->ike_sa_id);
   rspi = this->ike_sa_id->get_responder_spi(this->ike_sa_id);
@@ -1304,6 +1303,7 @@ METHOD(ike_sa_t, generate_message, status_t,
 
 	message->set_ike_sa_id(message, this->ike_sa_id);
 	charon->bus->message(charon->bus, message, FALSE, TRUE);
+  printf("\n\n\n\n\n[VoWiFi] before message->generate()\n\n\n\n\n");
 	status = message->generate(message, this->keymat, packet);
 	if (status == SUCCESS)
 	{
