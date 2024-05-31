@@ -104,6 +104,7 @@ struct instance_st
 {
   int asock;
   uint64_t ispi;
+  uint64_t pispi;
   uint64_t rspi;
 
   int slast;

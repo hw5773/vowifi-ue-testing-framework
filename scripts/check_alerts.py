@@ -14,6 +14,7 @@ def check(ldir, ofname):
         of.write("===== {} =====\n".format(device))
         results = sorted(["{}/{}".format(dev, f) for f in os.listdir(dev) if "swp" not in f])
         for result in results:
+            logging.info("result: {}".format(result))
             with open(result, "r") as f:
                 for line in f:
                     line = line.strip()

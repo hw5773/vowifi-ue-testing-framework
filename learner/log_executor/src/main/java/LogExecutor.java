@@ -1191,7 +1191,7 @@ public class LogExecutor {
     QueryReplyPair pair;
     String tname = testcase.getName();
     String receiver = testcase.getQueryReceiver();
-    String sender = testcase.getReplySender();
+    String reporter = testcase.getReplyReporter();
     String qname, rname;
     boolean ret;
     logger.debug("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
@@ -1218,8 +1218,8 @@ public class LogExecutor {
       query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       query.setName("enable_vowifi");
     }
-    logger.debug("Sender: " + sender);
-    reply = processResult(testcase, sender);
+    logger.debug("Reporter: " + reporter);
+    reply = processResult(testcase, reporter);
     rname = reply.getName();
 
 	  logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");

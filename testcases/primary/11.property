@@ -7,12 +7,12 @@
         { 
           "receiver": "ue", 
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg",
+          "reporter": "epdg",
           "sub": [
             {
               "name": "key_exchange"

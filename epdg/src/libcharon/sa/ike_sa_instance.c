@@ -46,10 +46,19 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   }
   else if (instance->ispi == ispi && instance->rspi == rspi)
     ret = 1;
-  else if (instance->ispi == ispi && !rspi)
+  else if (instance->ispi == ispi && (instance->pispi == ispi || !instance->pispi) && !rspi)
+  {
     ret = 1;
+  }
   else
+  {
     ret = 0;
+  }
+
+  if (!rspi)
+  {
+    instance->pispi = instance->ispi;
+  }
 
   return ret;
 }
