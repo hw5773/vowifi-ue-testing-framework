@@ -1,0 +1,37 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "sender": "epdg",
+          "id": "invalid-eap-at-mac"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "sender": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "sender": "epdg",
+          "sub": [
+            {
+              "name": "eap_aka_attribute",
+              "sub": [
+                {
+                  "name": "at_mac",
+                  "type": "string",
+                  "value": "min",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

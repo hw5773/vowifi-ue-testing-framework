@@ -553,6 +553,10 @@ int check_drop_next(instance_t *instance, payload_t *next)
   query_t *query;
 
   ret = COMPLETED;
+
+  if (!next)
+    goto out;
+
   type = next->get_type(next);
 
   if ((query = get_query(instance))
@@ -675,6 +679,7 @@ int check_drop_next(instance_t *instance, payload_t *next)
     }
   }
 
+out:
   return ret;
 }
 
@@ -1405,6 +1410,45 @@ int process_identification_responder(instance_t *instance, ike_sa_id_t *ike_sa_i
   return ret;
 }
 
+int check_exceptional_case(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_t *notify)
+{
+  int i, ret;
+  query_t *query;
+  const uint8_t *mname;
+  const uint8_t *messages[5] =
+  {
+    "ike_sa_init_response",
+    "ike_auth_1_response",
+    "ike_auth_2_response",
+    "ike_auth_3_response",
+    "ike_auth_4_response",
+  };
+
+  ret = FALSE;
+
+  printf("\n\n\n[VoWiFi] in check_exceptional_case()\n");
+  switch (notify->get_notify_type(notify))
+  {
+    case AUTHENTICATION_FAILED:
+      for (i=0; i<5; i++)
+      {
+        if ((query = get_query(instance)) 
+            && is_query_name(query, mname)
+            && (query = get_sub_query_by_name(query, "authentication_failed")))
+        {
+          ret = TRUE;
+          break;
+        }
+      }
+      printf("[VoWiFi] Authentication failed: %d\n", ret);
+      break;
+    default:
+      ret = FALSE;
+  }
+
+  return ret;
+}
+
 int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_id, eap_payload_t *eap)
 {
   int ret;
@@ -1427,9 +1471,13 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
   mname = NULL;
 
 
+  printf("[VoWiFi] in process_extensible_authentication()\n");
+  query = get_query(instance);
+  print_query(query);
   for (idx=0; idx<2; idx++)
   {
     mname = messages[idx];
+    printf("[VoWiFi] mname: %s\n", mname);
     // ike_auth_1_response/ike_auth_2_response - extensible_authentication - code
     if ((query = get_query(instance))
         && is_query_name(query, mname)
@@ -1664,6 +1712,7 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
         && (query = get_sub_query_by_name(query, "at_mac")))
 
     {
+      printf("\n\n\n\n\n[VoWiFi] extensible_authentication / eap_aka_attribute / at_mac\n\n\n\n\n");
       payload = eap->get_data(eap);
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
@@ -1695,8 +1744,10 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
 
       if (plen > 0)
       {
+        printf("[VoWiFi] ike_auth_1_response / extensible_authentication / eap_aka_attribute / at_mac - value update\n");
         if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
         {
+          printf("[VoWiFi] minimum value is going to be assigned\n");
           if (tlen >= 3 && !strncmp(tmp, "min", 3))
           {
             for (i=2; i<abytes; i++)
@@ -1852,34 +1903,51 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
     goto out;
   }
 
+  printf("[VoWiFi] in process_query(): %p\n", payload);
+
   switch (payload->get_type(payload))
   {
     case PL_HEADER:
+      printf("[VoWiFi] before process_ike_header()\n");
       ike_header = (ike_header_t *)payload;
       ret = process_ike_header(instance, ike_sa_id, ike_header);
       break;
 
     case PLV2_KEY_EXCHANGE:
+      printf("[VoWiFi] before process_key_exchange()\n");
       ke = (ke_payload_t *)payload;
       ret = process_key_exchange(instance, ike_sa_id, ke);
       break;
 
     case PLV2_NONCE:
+      printf("[VoWiFi] before process_nonce()\n");
       np = (nonce_payload_t *)payload;
       ret = process_nonce(instance, ike_sa_id, np);
       break;
 
     case PLV2_NOTIFY:
+      printf("[VoWiFi] before process_notify()\n");
       notify = (notify_payload_t *)payload;
-      ret = process_notify(instance, ike_sa_id, notify);
+
+      if (!check_exceptional_case(instance, ike_sa_id, notify))
+      {
+        ret = process_notify(instance, ike_sa_id, notify);
+      }
+      else
+      {
+        // TODO: need to assign an appropriate value below
+        ret = COMPLETED; 
+      }
       break;
 
     case PLV2_ID_RESPONDER:
+      printf("[VoWiFi] before process_identification_responder()\n");
       id = (id_payload_t *)payload;
       ret = process_identification_responder(instance, ike_sa_id, id);
       break;
 
     case PLV2_EAP:
+      printf("[VoWiFi] before process_extensible_authentication()\n");
       eap = (eap_payload_t *)payload;
       ret = process_extensible_authentication(instance, ike_sa_id, eap);
       break;
