@@ -7,7 +7,7 @@
         {
           "receiver": "ue",
           "name": "enable_vowifi",
-          "reporter": "epdg",
+          "reporter": "epdg"
         },
         {
           "receiver": "epdg",
@@ -36,7 +36,7 @@
                   "name": "internal_ip6_dns",
                   "op": ["insert", "update", "drop"],
                   "type": "string",
-                  "value" VALUE
+                  "value": VALUE
                 }
               ]
             }

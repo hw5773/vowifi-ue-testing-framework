@@ -12,6 +12,7 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
+          "op": ["update"],
           "reporter": "epdg"
         }
       ]

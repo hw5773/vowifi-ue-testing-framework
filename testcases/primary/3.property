@@ -22,6 +22,7 @@
         { 
           "receiver": "epdg", 
           "name": "ike_auth_2_response",
+          "op": ["update"],
           "reporter": "epdg"
         }
       ]

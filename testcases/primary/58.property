@@ -21,7 +21,7 @@
           "sub": [
             {
               "name": "message_authentication_code",
-              "op": ["update"]
+              "op": ["update"],
               "type": "string",
               "value": VALUE
             }

@@ -7,7 +7,7 @@
         {
           "receiver": "ue",
           "name": "enable_vowifi",
-          "reporter": "epdg",
+          "reporter": "epdg"
         },
         {
           "receiver": "epdg",
@@ -39,7 +39,7 @@
                       "name": "spi_size",
                       "op": ["update"],
                       "type": "uint8",
-                      "value" VALUE([0, 4, 8, 255], [4])
+                      "value": VALUE([0, 4, 8, 255], [4])
                     }
                   ]
                 }
