@@ -39,6 +39,7 @@
               "sub": [
                 {
                   "name": "nonce",
+                  "op": ["update", "drop"],
                   "type": "string",
                   "value": VALUE
                 }

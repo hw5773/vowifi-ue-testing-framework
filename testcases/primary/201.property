@@ -32,6 +32,7 @@
         {
           "receiver": "ims",
           "name": "401_unauthorized",
+          "op": ["update", "drop"],
           "reporter": "ims"
         }
       ]

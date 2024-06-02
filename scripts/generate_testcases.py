@@ -12,7 +12,8 @@ messages = ["ike_sa_init_response", "ike_auth_1_response", "ike_auth_2_response"
 
 def abstract_testcases(pname):
     ret = []
-    lst = ["{}/{}".format(pname, f) for f in os.listdir(pname) if "swp" not in f and not os.path.isdir("{}/{}".format(pname, f))]
+    lst = ["{}/{}".format(pname, f) for f in os.listdir(pname) if "swp" not in f and "property" in f and not os.path.isdir("{}/{}".format(pname, f))]
+    lst = sorted(lst, key=lambda x:int(x.split("/")[-1].split(".")[0]))
     cnt = 0
 
     for fname in lst:
@@ -45,6 +46,8 @@ def substitution(ptcs, ename, fname):
             tc = testcase["testcase"]
 
             lc = tc[-1]
+            if "sub" in lc:
+                continue
             if "ike" in lc["name"]:
                 for emsg in emsgs:
                     t = {}
@@ -52,6 +55,7 @@ def substitution(ptcs, ename, fname):
                     t["testcase"].append(emsg)
                     tnum += 1
                     t["testcase"][0]["id"] = "substitution-{}-{}-{}".format(ptc.get_id(), emsg["name"], tnum)
+                    t["testcase"][0]["serial"] = cnt
                     ret[key]["testcases"].append(t)
                     cnt += 1
             elif "sip" in lc["name"]:

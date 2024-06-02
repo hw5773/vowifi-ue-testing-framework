@@ -54,14 +54,20 @@ class Testcases:
                         args = values[values.index("(")+1 : values.index(")")]
                         pvals = args[args.index("[")+1 : args.index("]")].split(",")
                         for v in pvals:
-                            possible_values.add(int(v))
+                            try:
+                                possible_values.add(int(v))
+                            except:
+                                possible_values.add(v)
                         self.possible_values[target] = possible_values
 
                         tmp = args[args.index("]")+1:].strip()
                         if len(tmp) > 0:
                             cvals = tmp[tmp.index("[")+1 : tmp.index("]")].split(",")
                             for v in cvals:
-                                correct_values.add(int(v))
+                                try:
+                                    correct_values.add(int(v))
+                                except:
+                                    correct_values.add(v)
                         else:
                             cvals = []
                     else:
@@ -81,7 +87,6 @@ class Testcases:
 
                 js += line
 
-            print ("js: {}".format(js))
             self.default_object = json.loads(js)
 
             tmp = []
@@ -91,10 +96,6 @@ class Testcases:
                 else:
                     tmp.append(name)
             self.id = "{}-{}".format(self.message, '-'.join(tmp))
-
-            print ("target message: {}".format(self.message))
-            print ("id: {}".format(self.id))
-            
 
     def get_filename(self):
         return self.fname

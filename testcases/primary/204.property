@@ -39,6 +39,7 @@
               "sub": [
                 {
                   "name": "alg",
+                  "op": ["update", "drop"],
                   "type": "string",
                   "value": VALUE
                 }
