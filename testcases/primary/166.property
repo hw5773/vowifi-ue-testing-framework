@@ -1,0 +1,48 @@
+# RFC 5996 (page 95): The responder MAY respond with zero or more DNS server attributes
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "configuration",
+              "sub": [
+                {
+                  "name": "internal_ip6_dns",
+                  "op": ["insert", "update", "drop"],
+                  "type": "string",
+                  "value" VALUE
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

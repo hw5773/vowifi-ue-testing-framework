@@ -1,4 +1,4 @@
-# RFC 5996 (page 10, figure): the IKE_SA_INIT response MUST contain the key exchange payload
+# RFC 5996: All IKEv2 implementations MUST be able to send, receive, and process the third IKE AUTH messages that are up to 1280 octets long, and they SHOULD be able to send, receive, and process messages that are up to 3000 octets long. (IKE_AUTH 3)
 
 {
   "testcases": [
@@ -9,13 +9,15 @@
           "name": "enable_vowifi",
           "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
           "reporter": "epdg",
           "sub": [
             {
-              "name": "key_exchange"
+              "name": "message_size",
+              "type": "uint16",
+              "value": VALUE([1000, 2000, 3000, 4000, 5000], [1000])
             }
           ]
         }

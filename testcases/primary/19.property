@@ -1,28 +1,39 @@
-# RFC 5996 (page 24): The UE should accept the same message id only if the message is retransmitted
+# RFC 5996 9 (page 81): The IKE_SA_INIT response message should include a pseudo random function supported by the peer
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "reporter": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
+          "reporter": "epdg",
         },
         {
           "receiver": "epdg",
-          "name": "ike_auth_1_response",
+          "name": "ike_sa_init_response",
           "reporter": "epdg",
           "sub": [
             {
-              "name": "message_id",
-              "type": "uint32",
-              "value": VALUE
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "transform",
+                      "sub": [
+                        {
+                          "name": "pseudo_random_function",
+                          "op": ["update"],
+                          "type": "uint16",
+                          "value": VALUE([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1024, 1025, 1026, 1027, 1028, 65535], [2])
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }

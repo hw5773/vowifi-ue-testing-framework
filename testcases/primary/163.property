@@ -1,0 +1,48 @@
+# RFC 5996 (page 95): The configuration type is the type of exchange represented by the configuration attributes. Other values may have been added since then or will be added after the publication of this document. Readers should refer to IANA for the latest values
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "configuration",
+              "sub": [
+                {
+                  "name": "cfg_type",
+                  "op": ["update"],
+                  "type": "uint8",
+                  "value" VALUE([0, 1, 2, 3, 4, 255], [2])
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

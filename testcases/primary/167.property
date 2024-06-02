@@ -1,0 +1,48 @@
+# RFC 7651 (page 95): The P_CSCF_IP6_ADDRESS configuration attribute provides an IPv6 address of a P-CSCF server within the network. If an instance of an empty P_CSCF_IP6_ADDRESS attribute with a zero-length IPv6 address field is included by the mobile node, the responder MAY respond with zero, one, or more P_CSCF_IP6_ADDRESS attributes.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "configuration",
+              "sub": [
+                {
+                  "name": "p_cscf_ip6_address",
+                  "op": ["insert", "update", "drop"],
+                  "type": "string",
+                  "value" VALUE
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,31 +1,27 @@
-# RFC 4187 (page 49): In EAP-Request/AKA-Challenge delivered by the first IKE AUTH message, AT_MAC MUST be included
+# TBA
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "reporter": "epdg"
+          "reporter": "epdg",
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
           "reporter": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication",
+              "name": "notify",
               "sub": [
                 {
-                  "name": "at_mac",
+                  "name": "nat_detection_source_ip",
+                  "op": ["update", "drop"],
                   "type": "string",
-                  "value": VALUE
+                  "value": VALUE(["min", "median", "received", "max"], ["received"])
                 }
               ]
             }

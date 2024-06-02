@@ -1,0 +1,58 @@
+# RFC 5996 (page 75): The security association payload is used to negotiate attributes of a security association. Even if the SPI size if not a multiple of 4 octets, there is no padding applied to the payload. When the SPI size field is zero, this field is not present in the security association payload.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "transform",
+                      "sub": [
+                        {
+                          "name": "encryption_key_length",
+                          "op": ["update"],
+                          "type": "uint16",
+                          "value": VALUE([0, 128, 192, 256, 65535], [256])
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

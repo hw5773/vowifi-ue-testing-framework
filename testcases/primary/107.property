@@ -1,4 +1,4 @@
-# RFC 5996: All IKEv2 implementations MUST be able to send, receive, and process the second IKE AUTH messages that are up to 1280 octets long, and they SHOULD be able to send, receive, and process the second IKE AUTH messages that are up to 3000 octets long.
+# RFC 5996: All IKEv2 implementations MUST be able to send, receive, and process the third IKE AUTH messages that are up to 1280 octets long, and they SHOULD be able to send, receive, and process messages that are up to 3000 octets long. (IKE_AUTH 3)
 
 {
   "testcases": [

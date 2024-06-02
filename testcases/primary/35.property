@@ -1,4 +1,4 @@
-# RFC3261 Section 10.3: A registrar MUST not generate 6xx responses
+# Conformance Testing: with a UE has transmitted an IKE_SA_INIT Request message addressed to the ePDG to initiate security association establishment, ensure that when a UE receives an IKE_SA_INIT Response message, then a UE transmits an IKE_AUTH Request message containing the configuration payload to request IP addresses for a UE and for a P-CSCF
 
 {
   "testcases": [
@@ -17,22 +17,17 @@
         { 
           "receiver": "epdg", 
           "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims"
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "configuration",
+              "sub": [
+                {
+                  "name": "internal_ip6_address"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

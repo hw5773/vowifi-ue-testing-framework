@@ -1,4 +1,4 @@
-# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the algorithm should be specified)
+# RFC5996 (page 9): Both parities in the IKE_AUTH exchange MUST verify that all signatures and Message Authentication Codes (MACs) are computed correctly.
 
 {
   "testcases": [
@@ -14,35 +14,15 @@
           "name": "ike_sa_init_response",
           "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "algorithm",
-                  "type": "string",
-                  "value": VALUE
-                }
-              ]
+              "name": "message_authentication_code",
+              "type": "string",
+              "value": VALUE
             }
           ]
         }

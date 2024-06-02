@@ -1,4 +1,4 @@
-# RFC 5996 (page 24): The UE should accept the same message id only if the message is retransmitted
+# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the algorithm should be specified)
 
 {
   "testcases": [
@@ -19,20 +19,30 @@
           "name": "ike_auth_1_response",
           "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_auth_2_response",
           "reporter": "epdg"
         },
         {
           "receiver": "epdg",
           "name": "ike_auth_3_response",
-          "reporter": "epdg",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
           "sub": [
             {
-              "name": "message_id",
-              "type": "uint32",
-              "value": VALUE
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "ealg",
+                  "type": "string",
+                  "value": VALUE
+                }
+              ]
             }
           ]
         }

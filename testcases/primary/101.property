@@ -1,21 +1,21 @@
-# RFC 5996 (page 24): The UE should accept the same message id only if the message is retransmitted
+# RFC 4718: Normal IKE messages include the initiator's and responder's Security Parameter Indexes (SPIs), both of which are non-zero, int he IKE header.
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "reporter": "epdg"
+          "reporter": "epdg",
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
           "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_auth_1_response",
           "reporter": "epdg"
         },
@@ -25,8 +25,9 @@
           "reporter": "epdg",
           "sub": [
             {
-              "name": "message_id",
-              "type": "uint32",
+              "name": "responder_spi",
+              "op": ["update"],
+              "type": "uint64h",
               "value": VALUE
             }
           ]

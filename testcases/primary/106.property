@@ -1,0 +1,38 @@
+# RFC 5996: The Message ID is a 32-bit quantity, which is zero for the IKE_SA_INIT messages (including retries of the message due to responses such as COOKIE and INVALID_KE_PAYLOAD), and incremented for each subsequent exchange. The Message ID is reset to zero in the new IKE SA after the IKE SA is rekeyed. Retransmission of a message MUST use the same Message ID as the original message.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": ["update"],
+              "type": "uint32",
+              "value": VALUE
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

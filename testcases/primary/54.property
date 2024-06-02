@@ -1,0 +1,33 @@
+# RFC 5996: in all cases, all IKE_SA_INIT exchanges MUST complete before any other exchange type, then all IKE_AUTH exchanges MUST complete, and following that, any number of CREATE_CHILD_SA and INFORMATIONAL exchanges may occur in any order.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "exchange_type",
+              "op": ["update"],
+              "type": "uint8",
+              "value": VALUE([34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255], [35])
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

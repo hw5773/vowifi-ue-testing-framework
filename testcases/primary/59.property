@@ -1,4 +1,4 @@
-# All IKEv2 implementations MUST be able to send, receive, and process first IKE_AUTH messages that are up to 1280 octets long, and they SHOULD be able to send, receive, and process messages that are up to 3000 octets long.
+# TS: The Responder Identifier (IDr) will be in ID_FQDN form.
 
 {
   "testcases": [
@@ -20,9 +20,15 @@
           "reporter": "epdg",
           "sub": [
             {
-              "name": "message_size",
-              "type": "uint16",
-              "value": VALUE([1000, 2000, 3000, 4000, 5000], [1000])
+              "name": "identification_responder",
+              "sub": [
+                {
+                  "name": "id_type",
+                  "op": ["update"],
+                  "type": "uint8",
+                  "value": VALUE
+                }
+              ]
             }
           ]
         }

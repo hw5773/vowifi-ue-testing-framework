@@ -1,0 +1,43 @@
+# RFC5996 6 (page 81): The IKE_SA_INIT response message should include an encryption algorithm that is supported by the peer
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "transform",
+                      "sub": [
+                        {
+                          "name": "encryption_algorithm",
+                          "op": ["update"],
+                          "type": "uint16",
+                          "value": VALUE([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 65535], [12])
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

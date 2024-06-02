@@ -1,4 +1,4 @@
-# RFC 5996 (page 10, figure): the IKE_SA_INIT response MUST contain the correct IKE version number
+# RFC 5996 1 (page 5): All IKE_SA_INIT exchanges MUST complete before any other exchange type, then all IKE_AUTH exchanges MUST complete
 
 {
   "testcases": [
@@ -12,14 +12,22 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "ike_version",
-              "type": "uint8",
-              "value": VALUE([0, 16, 32, 255], [32])
-            }
-          ]
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_3_response",
+          "reporter": "epdg"
         }
       ]
     }

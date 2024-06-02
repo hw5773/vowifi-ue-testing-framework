@@ -1,4 +1,4 @@
-# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the algorithm should be specified)
+# RFC 4187 (page 49): The first IKE AUTH message must deliver the EAP-Request/AKA-Challenge
 
 {
   "testcases": [
@@ -12,15 +12,21 @@
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
           "reporter": "epdg",
           "sub": [
             {
-              "name": "notify",
+              "name": "extensible_authentication",
               "sub": [
                 {
-                  "name": "nat_detection_source_ip",
-                  "type": "string",
-                  "value": [0, "received", 1]
+                  "name": "id",
+                  "op": ["update"],
+                  "type": "uint8",
+                  "value": VALUE
                 }
               ]
             }

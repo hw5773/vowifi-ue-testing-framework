@@ -1,21 +1,34 @@
-# RFC 5996 (page 10, figure): the IKE_SA_INIT response MUST contain the key exchange payload
+# RFC 5996 (page 75): The security association payload is used to negotiate attributes of a security association. Even if the SPI size if not a multiple of 4 octets, there is no padding applied to the payload. When the SPI size field is zero, this field is not present in the security association payload.
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "reporter": "epdg"
+          "reporter": "epdg",
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
           "reporter": "epdg",
           "sub": [
             {
-              "name": "nonce"
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "spi",
+                      "op": ["update"],
+                      "type": "string",
+                      "value" VALUE
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }

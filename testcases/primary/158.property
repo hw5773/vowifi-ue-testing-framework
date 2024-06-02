@@ -1,0 +1,43 @@
+# RFC 5996: Both parities in the third IKE_AUTH exchange MUST verify that all signatures and Message Authentication Codes (MACs) are computed correctly. (IKE_AUTH 3)
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_authentication_code",
+              "op": ["update"]
+              "type": "string",
+              "value": VALUE
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

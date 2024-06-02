@@ -18,16 +18,6 @@
           "receiver": "epdg", 
           "name": "ike_auth_1_response",
           "reporter": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_3_response",
-          "reporter": "epdg"
         }
       ]
     }

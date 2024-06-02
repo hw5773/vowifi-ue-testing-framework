@@ -1,4 +1,4 @@
-# Conformance Testing: With a UE has transmitted an IKE_AUTH request message containing an EAP-Response/AKA-Challenge, when a UE receives an IKE_AUTH Response message including EAP-Success, then a UE transmits an IKE_AUTH Request message with Authentication payload
+# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the algorithm should be specified)
 
 {
   "testcases": [
@@ -22,15 +22,25 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_2_response",
-          "reporter": "epdg",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
           "sub": [
             {
-              "name": "extensible_authentication",
+              "name": "security_server",
               "sub": [
                 {
-                  "name": "code",
-                  "type": "uint8",
-                  "value": VALUE([1, 2, 3], [3])
+                  "name": "alg",
+                  "type": "string",
+                  "value": VALUE
                 }
               ]
             }

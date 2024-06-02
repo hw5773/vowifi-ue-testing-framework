@@ -1,33 +1,24 @@
-# RFC 5996 8: (page 81): The IKE_SA_INIT response message should include an integrity algorithm that is supported by the peer
+# RFC 5996 (page 72): R: This bit indicates that this message is a response to a message containing the same Message ID. This bit MUST be cleared in all request messages and MUST be set in all responses. An IKE endpoint MUST NOT generate a response to a message that is marked as being a response.
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "reporter": "epdg"
+          "reporter": "epdg",
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
           "reporter": "epdg",
           "sub": [
             {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "transform",
-                  "sub": [
-                    {
-                      "name": "integrity_algorithm",
-                      "type": "uint16",
-                      "value": VALUE([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1025, 1026, 1027, 1028, 1029, 1030, 65535], [2])
-                    }
-                  ]
-                }
-              ]
+              "name": "flags",
+              "op": ["update"],
+              "type": "uint8",
+              "value": VALUE(["responder", "no_responder", "version", "no_version", "initiator", "no_initiator", "encryption", "no_encryption", "commit", "no_commit", "authonly", "no_authonly"], ["responder"])
             }
           ]
         }
