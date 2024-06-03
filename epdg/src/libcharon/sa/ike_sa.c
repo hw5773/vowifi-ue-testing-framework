@@ -1303,7 +1303,6 @@ METHOD(ike_sa_t, generate_message, status_t,
 
 	message->set_ike_sa_id(message, this->ike_sa_id);
 	charon->bus->message(charon->bus, message, FALSE, TRUE);
-  printf("\n\n\n\n\n[VoWiFi] before message->generate()\n\n\n\n\n");
 	status = message->generate(message, this->keymat, packet);
 	if (status == SUCCESS)
 	{

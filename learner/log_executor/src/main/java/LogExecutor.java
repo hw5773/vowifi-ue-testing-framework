@@ -364,8 +364,18 @@ public class LogExecutor {
       } else {
         msg = "1";
       }
-      msg += ispi;
-      msg += rspi;
+      if (ispi == null) {
+        msg += "0000000000000000";
+      } else {
+        msg += ispi;
+      }
+
+      if (rspi == null) {
+        msg += "0000000000000000";
+      } else {
+        msg += rspi;
+      }
+
       msg += name;
       logger.debug("msg 1: " + msg);
       logger.debug("getOperator(): " + testcase.getOperator());
@@ -398,6 +408,7 @@ public class LogExecutor {
       }
       logger.debug(print);
 
+      logger.debug("testcase.getHasSubTestcase(): " + testcase.getHasNextSubTestcase());
       if (testcase.getHasSubTestcase()) {
         depth++;
         while (testcase.getHasNextSubTestcase()) {
@@ -415,8 +426,17 @@ public class LogExecutor {
         print += "end";
         logger.debug(print);
 
-        msg += ispi;
-        msg += rspi;
+        if (ispi == null) {
+          msg += "0000000000000000";
+        } else {
+          msg += ispi;
+        }
+
+        if (rspi == null) {
+          msg += "0000000000000000";
+        } else {
+          msg += rspi;
+        }
         msg += "\n";
         if (receiver.startsWith("epdg")) {
           epdgOut.write(msg);

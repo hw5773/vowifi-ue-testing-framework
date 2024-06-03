@@ -443,9 +443,7 @@ METHOD(task_t, build_r, status_t,
 METHOD(task_t, process_r, status_t,
 	private_ike_natd_t *this, message_t *message)
 {
-  printf("\n\n\n\n\n[VoWiFi] before process_payloads\n\n\n\n\n");
 	process_payloads(this, message);
-  printf("\n\n\n\n\n[VoWiFi] after process_payloads\n\n\n\n\n");
 
 	return NEED_MORE;
 }

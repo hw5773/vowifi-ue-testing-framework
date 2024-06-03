@@ -1285,18 +1285,18 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     symbol = NULL;
     if (instance->authentication_failed)
     {
-      printf("\n\n\n\n\n[VoWiFi] auth failed is marked!!!!!\n\n\n\n\n");
+      printf("[VoWiFi] auth failed is marked!\n");
       symbol = "retest_required:auth_failed";
     } else if (instance->no_proposal_chosen)
     {
-      printf("\n\n\n\n\n[VoWiFi] no proposal chosen is marked!!!!!\n\n\n\n\n");
+      printf("[VoWiFi] no proposal chosen is marked!\n");
       symbol = "retransmission:no_proposal_chosen";
       instance->sprev = NULL;
       instance->ispi = 0;
       instance->rspi = 0;
     } else if (instance->invalid_ke_payload)
     {
-      printf("\n\n\n\n\n[VoWiFi] invalid ke payload is marked!!!!!\n\n\n\n\n");
+      printf("[VoWiFi] invalid ke payload is marked!\n");
       symbol = "retransmission:invalid_ke_payload";
       instance->sprev = NULL;
       instance->ispi = 0;

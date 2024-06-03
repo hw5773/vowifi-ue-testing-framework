@@ -964,10 +964,11 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   algo = (uint16_t *)calloc(1, sizeof(uint16_t));
   klen = (uint16_t *)calloc(1, sizeof(uint16_t));
 
-  // ike_sa_init_response - security_association - transform - encryption_algorithm
+  // ike_sa_init_response - security_association - proposal - transform - encryption_algorithm
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "encryption_algorithm")))
   {
@@ -984,6 +985,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
     if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "encryption_key_length")))
     {
@@ -1002,6 +1004,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
   {
@@ -1020,6 +1023,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "pseudo_random_function")))
   {
@@ -1038,6 +1042,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "integrity_algorithm")))
   {
