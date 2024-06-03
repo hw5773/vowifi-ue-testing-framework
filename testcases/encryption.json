@@ -1,0 +1,121 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "14-2"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "encryption_algorithm",
+                      "type": "uint16",
+                      "value": 6,
+                      "op": "update"
+                    },
+                    {
+                      "name": "encryption_key_length",
+                      "type": "uint16",
+                      "value": 256,
+                      "op": "update"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "14-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "encryption_algorithm",
+                      "type": "uint16",
+                      "value": 7,
+                      "op": "update"
+                    },
+                    {
+                      "name": "encryption_key_length",
+                      "type": "uint16",
+                      "value": 256,
+                      "op": "update"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "14-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "transform",
+                  "sub": [
+                    {
+                      "name": "encryption_algorithm",
+                      "type": "uint16",
+                      "value": 11,
+                      "op": "update"
+                    },
+                    {
+                      "name": "encryption_key_length",
+                      "type": "uint16",
+                      "value": 256,
+                      "op": "update"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

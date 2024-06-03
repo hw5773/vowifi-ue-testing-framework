@@ -948,6 +948,16 @@ METHOD(task_t, build_r, status_t,
 {
 	identification_t *gateway;
 	auth_cfg_t *cfg;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  uint64_t ispi, rspi;
+  ike_sa_id_t *id;
+
+  instance = message->get_instance(message);
+  id = message->get_ike_sa_id(message);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
 
 	if (message->get_exchange_type(message) == IKE_SA_INIT)
 	{
@@ -1153,13 +1163,16 @@ METHOD(task_t, build_r, status_t,
 	return SUCCESS;
 
 peer_auth_failed:
-  printf("\n\n\n\n\n[VoWiFi] auth failed here 2?\n\n\n\n\n");
 	message->add_notify(message, TRUE, AUTHENTICATION_FAILED, chunk_empty);
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    printf("[VoWiFi] authentication failed\n");
+    instance->authentication_failed = 1;
+  }
 peer_auth_failed_no_notify:
 	charon->bus->alert(charon->bus, ALERT_PEER_AUTH_FAILED);
 	return FAILED;
 local_auth_failed:
-  printf("\n\n\n\n\n[VoWiFi] auth failed here 3?\n\n\n\n\n");
 	message->add_notify(message, TRUE, AUTHENTICATION_FAILED, chunk_empty);
 	charon->bus->alert(charon->bus, ALERT_LOCAL_AUTH_FAILED);
 	return FAILED;

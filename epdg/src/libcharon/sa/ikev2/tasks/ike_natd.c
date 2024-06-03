@@ -191,7 +191,6 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
   int vtype, tlen, op;
   query_t *query;
 
-  printf("\n\n[VoWiFi] this: %p, this->ike_sa: %p\n\n", this, this->ike_sa);
   instance = this->ike_sa->get_instance(this->ike_sa);
   ////////////////////////////
 
@@ -206,8 +205,6 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
   ///// Added for VoWiFi /////
   ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
   rspi = ike_sa_id->get_responder_spi(ike_sa_id);
-  if (instance)
-    printf("\n\n\n[VoWiFi] ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64", rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n", ispi, instance->ispi, rspi, instance->rspi);
   ////////////////////////////
 	
 	DBG3(DBG_IKE, "precalculated src_hash %B", &src_hash);

@@ -682,7 +682,6 @@ METHOD(task_manager_t, initiate, status_t,
 				/* processed, but task needs another exchange */
 				break;
 			case FAILED:
-        printf("[VoWiFi] auth failed\n\n\n\n\n");
 			default:
 				this->initiating.type = EXCHANGE_TYPE_UNDEFINED;
 				if (this->ike_sa->get_state(this->ike_sa) != IKE_CONNECTING &&
@@ -914,12 +913,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   id = this->ike_sa->get_id(this->ike_sa);
   ispi = id->get_initiator_spi(id);
   rspi = id->get_responder_spi(id);
-  id = NULL;
   ////////////////////////////
 
 	me = request->get_destination(request);
 	other = request->get_source(request);
-  id = NULL;
 
 	message = message_create(IKEV2_MAJOR_VERSION, IKEV2_MINOR_VERSION);
 	message->set_exchange_type(message, request->get_exchange_type(request));
@@ -927,6 +924,13 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	message->set_destination(message, other->clone(other));
 	message->set_message_id(message, this->responding.mid);
 	message->set_request(message, FALSE);
+
+  ///// Added for VoWiFi /////
+  message->set_instance(message, instance);
+  message->set_ike_sa_id(message, id);
+  ////////////////////////////
+
+  id = NULL;
 
   ///// Added for VoWiFi /////
   const uint8_t *symbol;
@@ -1256,10 +1260,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 				}
 				break;
 			case FAILED:
-        ///// Added for VoWiFi /////
-        printf("\n\n\n\n\n[VoWiFi] auth failed!!!!!\n\n\n\n\n");
-        instance->auth_failed = 1;
-        ////////////////////////////
 			default:
 				hook = TRUE;
 				/* FALL */
@@ -1283,14 +1283,31 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     symbol = NULL;
-    if (instance->auth_failed)
+    if (instance->authentication_failed)
     {
       printf("\n\n\n\n\n[VoWiFi] auth failed is marked!!!!!\n\n\n\n\n");
       symbol = "retest_required:auth_failed";
+    } else if (instance->no_proposal_chosen)
+    {
+      printf("\n\n\n\n\n[VoWiFi] no proposal chosen is marked!!!!!\n\n\n\n\n");
+      symbol = "retransmission:no_proposal_chosen";
+      instance->sprev = NULL;
+      instance->ispi = 0;
+      instance->rspi = 0;
+    } else if (instance->invalid_ke_payload)
+    {
+      printf("\n\n\n\n\n[VoWiFi] invalid ke payload is marked!!!!!\n\n\n\n\n");
+      symbol = "retransmission:invalid_ke_payload";
+      instance->sprev = NULL;
+      instance->ispi = 0;
+      instance->rspi = 0;
     }
     msg = init_message(instance, MSG_TYPE_BLOCK_END, 
         symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
+    instance->authentication_failed = 0;
+    instance->no_proposal_chosen = 0;
+    instance->invalid_ke_payload = 0;
   }
   ////////////////////////////
 

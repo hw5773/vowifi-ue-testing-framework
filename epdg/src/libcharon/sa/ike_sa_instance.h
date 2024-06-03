@@ -127,7 +127,9 @@ struct instance_st
 
   int imid;
   int rmid;
-  int auth_failed;
+  int authentication_failed;
+  int no_proposal_chosen;
+  int invalid_ke_payload;
 
   ike_sa_t *ike_sa;
   void *init_hashes_table;

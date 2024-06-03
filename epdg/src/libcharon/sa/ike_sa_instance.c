@@ -30,7 +30,10 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   int ret;
 
   if (!instance) 
+  {
     ret = 0;
+    goto out;
+  }
   else if (!(instance->ispi) && !(instance->rspi))
   {
     if (update)
@@ -60,6 +63,7 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
     instance->pispi = instance->ispi;
   }
 
+out:
   return ret;
 }
 

@@ -632,6 +632,8 @@ public class LogExecutor {
       pair = null;
       while (pair == null) {
         pair = logExecutor.step(message);
+        if (pair == null)
+          logger.info("the pair is null");
       }
 
       logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
@@ -1108,7 +1110,7 @@ public class LogExecutor {
 
           if (arr.length > 1) {
             if (arr.length != 3) {
-              logger.error("The array length should be 3");
+              logger.error("The array length should be 3. It is " + arr.length);
             }
             else {
               mlog.setValueType(arr[1]);
@@ -1132,12 +1134,27 @@ public class LogExecutor {
       mlog.setName("null_action");
 		}
 
-    if (print != null && print.equals("retest_required:auth_failed"))
+    if (print != null) 
     {
-      logger.info("Authentication is failed. So, we reboot the UE");
-      rebootUE();
-  		mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
-      mlog.setName("retest");
+      if (print.contains("retest_required:auth_failed"))
+      {
+        logger.info("Authentication is failed. So, we reboot the UE");
+        rebootUE();
+    		mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("retest");
+      }
+      else if (print.contains("retransmission:no_proposal_chosen"))
+      {
+        logger.info("No proposal chosen received. There will be a retransmission");
+        mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("retransmission");
+      }
+      else if (print.contains("retransmission:invalid_ke_payload"))
+      {
+        logger.info("Invalid key payload received. There will be a retransmission");
+        mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("retransmission");
+      }
     }
 
     return mlog;
@@ -1240,16 +1257,24 @@ public class LogExecutor {
       query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       query.setName("enable_vowifi");
     }
-    logger.debug("Reporter: " + reporter);
-    reply = processResult(testcase, reporter);
-    rname = reply.getName();
-
-    if (rname.equals("retest"))
+    qname = query.getName();
+    if (qname.equals("retest"))
+    {
+      logger.info("pair is set to null");
+      pair = null;
+    } 
+    else if (qname.equals("retransmission"))
     {
       pair = null;
+      testcase.setIspi(null);
+      testcase.setRspi(null);
     }
     else
     {
+      logger.debug("Reporter: " + reporter);
+      reply = processResult(testcase, reporter);
+      rname = reply.getName();
+
 	    logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
       pair = new QueryReplyPair(testcase, query, reply, logger);
     }

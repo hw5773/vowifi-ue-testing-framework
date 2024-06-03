@@ -1133,6 +1133,16 @@ METHOD(task_t, build_r, status_t,
 	private_ike_init_t *this, message_t *message)
 {
 	identification_t *gateway;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ike_sa_id_t *id;
+  uint64_t ispi, rspi;
+
+  instance = message->get_instance(message);
+  id = message->get_ike_sa_id(message);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
 
 	/* check if we have everything we need */
 	if (this->proposal == NULL ||
@@ -1174,11 +1184,23 @@ METHOD(task_t, build_r, status_t,
 			group = htons(group);
 			message->add_notify(message, FALSE, INVALID_KE_PAYLOAD,
 								chunk_from_thing(group));
+
+      if (check_instance(instance, ispi, rspi, NON_UPDATE))
+      {
+        printf("[VoWiFi] invalid ke payload\n");
+        instance->invalid_ke_payload = 1;
+      }
 		}
 		else
 		{
 			DBG1(DBG_IKE, "no acceptable proposal found");
 			message->add_notify(message, TRUE, NO_PROPOSAL_CHOSEN, chunk_empty);
+
+      if (check_instance(instance, ispi, rspi, NON_UPDATE))
+      {
+        printf("[VoWiFi] no proposal chosen\n");
+        instance->no_proposal_chosen = 1;
+      }
 		}
 		return FAILED;
 	}
