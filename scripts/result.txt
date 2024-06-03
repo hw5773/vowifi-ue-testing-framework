@@ -1,0 +1,292 @@
+===== OnePlus7T =====
+===============
+===== SM_A21 =====
+/home/hyun/vowifi-log/SM_A21/result.substitution-ike_sa_init_response--unsupported_critical_payload-1.1.1717369334003: Functional Oracle: positive
+===============
+===== SM_G920T =====
+/home/hyun/vowifi-log/SM_G920T/result.init-invalid-flags.3.1716539947184: Functional Oracle: positive
+/home/hyun/vowifi-log/SM_G920T/result.init-modify-responder-spi.1.1713338223901: Functional Oracle: positive
+===============
+===== OnePlus9R =====
+/home/hyun/vowifi-log/OnePlus9R/result.3-1.1.1697626069626: Liveness Oracle: positive (eap-aka client error)
+===============
+===== SOV41 =====
+/home/hyun/vowifi-log/SOV41/result.init-dh-group--1.122.1694258235481: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-14.125.1694258616986: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-15.126.1694258795193: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-17.128.1694259083550: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-18.129.1694259272380: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-19.130.1694259455767: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-21.132.1694259747223: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-22.133.1694259930769: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-24.135.1694260221968: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-25.136.1694260408333: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-26.137.1694260590370: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-27.138.1694260773564: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-29.140.1694261069287: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-30.141.1694261273855: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-32.143.1694261575132: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-dh-group-5.124.1694258526908: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-enc-algo.145.1694261825196: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-enc-algo.145.1694261825196: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-drop-enc-algo.148.1694262106649: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-int-algo.146.1694261887473: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-kex.2.1694194234569: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-kex.2.1694194654912: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-kex.2.1694240280644: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce-drop-kex.3.1694163243174: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce-drop-kex.3.1694163243174: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce-drop-kex.3.1694194741300: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce-drop-kex.3.1694240437253: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce-drop-kex.3.1694240437253: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694162979097: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694162979097: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694194046548: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694194046548: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694194464884: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694194464884: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694240097593: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-nonce.1.1694240097593: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-drop-prf-algo.147.1694262044775: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-drop-prf-algo.147.1694262044775: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo--1-key-128.43.1694202124699: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo--1-key-192.61.1694205191276: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo--1-key-256.25.1694167289082: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo--1-key-256.25.1694198775472: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo--1-key-256.25.1694243952310: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-11-key-128.29.1694199526326: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-11-key-192.47.1694202863251: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-11-key-192.47.1694247452779: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-11-key-256.11.1694164740411: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-11-key-256.11.1694196222636: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-11.84.1694253043967: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13-key-128.30.1694199715367: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13-key-128.30.1694244717428: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13-key-192.48.1694203048838: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13-key-192.48.1694247639323: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13-key-256.12.1694164927239: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13-key-256.12.1694196408487: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13-key-256.12.1694241863002: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-13.85.1694253229822: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-14.86.1694253415774: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-15-key-128.31.1694199898696: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-15-key-128.31.1694244902869: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-15-key-192.49.1694247823241: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-15-key-256.13.1694165115525: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-15-key-256.13.1694196597108: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-15-key-256.13.1694242048395: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-15.87.1694253599403: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-16-key-128.32.1694200083839: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-16-key-192.50.1694203337545: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-16-key-256.14.1694165299441: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-16-key-256.14.1694196785222: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-16.88.1694253781598: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-18-key-128.33.1694200271737: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-18-key-128.33.1694245190802: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-18-key-192.51.1694203523208: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-18-key-192.51.1694248099087: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-18-key-256.15.1694165487240: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-18-key-256.15.1694196975268: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-18-key-256.15.1694242340757: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-19-key-128.34.1694200461759: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-19-key-192.52.1694248285007: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-19-key-256.16.1694165675370: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-19-key-256.16.1694197163200: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-20-key-128.35.1694200647765: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-20-key-192.53.1694203814752: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-20-key-192.53.1694248468358: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-20-key-256.17.1694165859034: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-20-key-256.17.1694197352407: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-20-key-256.17.1694242632682: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-20.91.1694254237026: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-21-key-128.36.1694200834669: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-21-key-128.36.1694245635164: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-21-key-192.54.1694204002650: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-21-key-192.54.1694248649793: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-21-key-256.18.1694166050747: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-21-key-256.18.1694197537697: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-21.92.1694254420449: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-23-key-128.37.1694201022466: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-23-key-192.55.1694204190661: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-23-key-256.19.1694166234149: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-23-key-256.19.1694197726685: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-23-key-256.19.1694242923035: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-24-key-128.38.1694201208056: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-24-key-192.56.1694204379490: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-24-key-192.56.1694248925487: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-24-key-256.20.1694197915393: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-24-key-256.20.1694243111131: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-25-key-128.39.1694201389010: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-25-key-128.39.1694246084765: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-25-key-256.21.1694166527864: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-25-key-256.21.1694243294446: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-25.95.1694254864159: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-26-key-128.40.1694201572787: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-26-key-128.40.1694246267864: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-26-key-192.58.1694204674817: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-26-key-192.58.1694249205195: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-26-key-256.22.1694166718624: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-26-key-256.22.1694198210252: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-26-key-256.22.1694243475849: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-27-key-128.41.1694201758175: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-27-key-128.41.1694246451826: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-27-key-256.23.1694166906355: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-27-key-256.23.1694198401244: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-28-key-128.42.1694201941500: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-28-key-192.60.1694204988834: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-28-key-192.60.1694249477451: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-28-key-256.24.1694167091701: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-28-key-256.24.1694198586735: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-28-key-256.24.1694243766124: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-28.98.1694255306533: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-128.26.1694167491477: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-128.26.1694198962902: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-128.26.1694244136087: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-192.44.1694202312586: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-192.44.1694246901427: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-256.8.1694164174110: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-256.8.1694195671142: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3-key-256.8.1694241203084: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-3.81.1694252590743: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-6-key-128.27.1694199157005: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-6-key-192.45.1694202496048: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-6-key-192.45.1694247085060: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-6-key-256.9.1694164361854: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-6-key-256.9.1694195852503: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-6-key-256.9.1694241385919: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-6.82.1694252772223: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-65535.99.1694255492449: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-7-key-128.28.1694199340524: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-7-key-128.28.1694244426696: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-7-key-192.46.1694202681828: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-7-key-192.46.1694247269092: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-7-key-256.10.1694164552434: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-7-key-256.10.1694196033633: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-enc-algo-7-key-256.10.1694241571232: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-integrity-1.70.1694250974699: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-integrity-10.76.1694251893688: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-integrity-1024.69.1694250793301: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-integrity-12.78.1694252120231: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-integrity-13.79.1694252311452: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-integrity-6.72.1694251248498: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-integrity-7.73.1694251431955: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-integrity-8.74.1694251613421: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group--1.100.1694255646320: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group--1.100.1694255646320: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-1.101.1694255797744: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-1.101.1694255797744: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-14.103.1694256003713: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-15.104.1694256145764: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-15.104.1694256145764: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-16.105.1694256200695: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-17.106.1694256342395: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-17.106.1694256342395: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-18.107.1694256397760: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-19.108.1694256539239: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-19.108.1694256539239: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-20.109.1694256691827: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-20.109.1694256691827: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-21.110.1694256743341: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-22.111.1694256887611: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-22.111.1694256887611: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-23.112.1694256942745: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-24.113.1694257086969: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-24.113.1694257086969: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-25.114.1694257238913: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-25.114.1694257238913: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-26.115.1694257390866: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-26.115.1694257390866: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-27.116.1694257543459: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-27.116.1694257543459: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-28.117.1694257598597: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-29.118.1694257743014: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-29.118.1694257743014: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-30.119.1694257794511: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-31.120.1694257980515: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-32.121.1694258057070: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-5.102.1694255952508: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-invalid-ke-dh-group-5.102.1694255952508: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-2000.7.1694163985751: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-2000.7.1694195483811: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-3000.6.1694163796255: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-3000.6.1694195298713: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-3000.6.1694240910372: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-4000.4.1694163422569: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-4000.4.1694194921918: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-4000.4.1694240622893: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-5000.5.1694163608030: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-large-message-5000.5.1694195112367: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-prf--1.62.1694205394058: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-prf--1.62.1694249743138: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-prf-1.63.1694249928711: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-prf-4.64.1694205705464: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-prf-5.65.1694250153483: Functional Oracle: positive
+/home/hyun/vowifi-log/SOV41/result.init-prf-5.65.1694250153483: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/SOV41/result.init-prf-6.66.1694250337119: Liveness Oracle: positive (eap-aka client error)
+/home/hyun/vowifi-log/SOV41/result.init-prf-8.68.1694250607079: Liveness Oracle: positive (eap-aka client error)
+===============
+===== OnePlusN20 =====
+/home/hyun/vowifi-log/OnePlusN20/result.init-drop-nonce-drop-kex.3.1695150087268: Functional Oracle: positive
+/home/hyun/vowifi-log/OnePlusN20/result.init-drop-nonce.1.1695149918467: Functional Oracle: positive
+===============
+===== A13_Pro =====
+===============
+===== others =====
+===============
+===== HTC_U11 =====
+/home/hyun/vowifi-log/HTC_U11/result.init-dh-group-5.124.1695208259919: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-dh-group-5.124.1695208259919: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.145.1695213478096: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.145.1695213478096: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.148.1695214094470: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.148.1695214094470: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-int-algo.146.1695213732299: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-int-algo.146.1695213732299: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-nonce-drop-kex.3.1695156031276: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-nonce.1.1695155600531: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-enc-algo-15-key-192.49.1695169053789: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-enc-algo-21-key-128.36.1695166170828: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group--1.100.1695203704970: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group--1.100.1695203704970: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-15.104.1695204672979: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-15.104.1695204672979: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-16.105.1695204841467: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-16.105.1695204841467: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-17.106.1695205014270: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-17.106.1695205014270: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-18.107.1695205189351: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-18.107.1695205189351: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-19.108.1695205363131: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-19.108.1695205363131: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-20.109.1695205536003: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-20.109.1695205536003: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-21.110.1695205708762: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-21.110.1695205708762: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-22.111.1695205883091: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-22.111.1695205883091: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-23.112.1695206057343: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-23.112.1695206057343: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-24.113.1695206230245: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-24.113.1695206230245: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-25.114.1695206402546: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-25.114.1695206402546: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-26.115.1695206569081: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-26.115.1695206569081: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-27.116.1695206743180: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-27.116.1695206743180: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-28.117.1695206917264: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-28.117.1695206917264: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-29.118.1695207094191: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-29.118.1695207094191: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-30.119.1695207266941: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-30.119.1695207266941: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-31.120.1695207438561: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-31.120.1695207438561: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-32.121.1695207613817: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-32.121.1695207613817: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-5.102.1695204200660: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-5.102.1695204200660: Liveness Oracle: positive (not sending IKE_SA_INIT)
+===============
+===== TCL40XL =====
+/home/hyun/vowifi-log/TCL40XL/result.31-1.1.1700153836752: Liveness Oracle: positive (not sending IKE_SA_INIT)
+===============

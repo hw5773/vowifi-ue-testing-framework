@@ -91,6 +91,10 @@ class QueryReplyLogger {
     } else if (r2result == 2) {
       writer.write("  Liveness Oracle: positive (eap-aka client error)\n");
     }
+
+    writer.write("Elapsed Time: ");
+    tmp = plst.get(0);
+    writer.write(tmp.getDuration() + " ms");
     writer.close();
   }
 
@@ -137,12 +141,14 @@ class QueryReplyPair {
   private MessageLog reply;
   static Log logger;
   private int deviated;
+  private long duration;
 
   QueryReplyPair(Testcase testcase, MessageLog query, MessageLog reply, Log logger) {
     setLogger(logger);
     this.testcase = testcase;
     this.query = query;
     this.reply = reply;
+    this.duration = -1;
   }
 
   QueryReplyPair(Testcase testcase, MessageLog query, MessageLog reply) {
@@ -175,6 +181,14 @@ class QueryReplyPair {
 
   public void setLogger(Log logger) {
     this.logger = logger;
+  }
+
+  public void setDuration(long duration) {
+    this.duration = duration;
+  }
+
+  public long getDuration() {
+    return this.duration;
   }
 }
 

@@ -53,6 +53,7 @@
 #define NOT_SET -1
 #define COMPLETED 0
 #define NEED_DROP_NEXT 1
+#define NEED_SEND_NOTIFY 2
 
 #include <stdint.h>
 #include <stddef.h>
@@ -126,6 +127,7 @@ struct instance_st
 
   int imid;
   int rmid;
+  int auth_failed;
 
   ike_sa_t *ike_sa;
   void *init_hashes_table;

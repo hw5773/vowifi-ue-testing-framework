@@ -131,6 +131,7 @@ public class LogExecutor {
 
     try {
       vowifiUEConfig = new VoWiFiUEConfig(configFilePath);
+      vowifiUEConfig.loadProperties();
     } catch (Exception e) {
       logger.error("Error happened while processing the configuration file");
       e.printStackTrace();
@@ -186,7 +187,7 @@ public class LogExecutor {
     List<QueryReplyPair> pairs;
     QueryReplyPair pair;
     Iterator iter;
-    String rpath;
+    String rpath, home;
     Testcases livenessTestcase = null;
     int r1, r2;
     boolean needReboot;
@@ -197,6 +198,8 @@ public class LogExecutor {
       matched = true;
 
     rpath = config.getLivenessTestcasePath();
+    home = System.getProperty("user.home");
+    logger.info("Home directory: " + home);
     logger.info("Load the liveness testcase from: " + rpath);
     try (FileReader reader = new FileReader(rpath)) {
       JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
@@ -596,11 +599,13 @@ public class LogExecutor {
     double insec;
     String ispi = null;
     String rspi = null;
+    QueryReplyPair tmp;
     List<QueryReplyPair> pairs;
 
     logExecutor.pre();
     pairs = new ArrayList<>();
 
+    startTime = System.currentTimeMillis();
     while (testcase.hasNextMessage()) {
       Testcase message = testcase.getNextMessage();
       QueryReplyPair pair;
@@ -624,14 +629,12 @@ public class LogExecutor {
         continue;
       }
 
-      startTime = System.currentTimeMillis();
-      pair = logExecutor.step(message);
-      endTime = System.currentTimeMillis();
+      pair = null;
+      while (pair == null) {
+        pair = logExecutor.step(message);
+      }
 
       logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
-      duration = (endTime - startTime);
-      insec = duration/1000.0;
-      logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
       
       if (ispi == null) {
         ispi = pair.getIspi();
@@ -659,11 +662,21 @@ public class LogExecutor {
 
       logger.info("RESULT: " + pair.getReplyName());
     }
+    endTime = System.currentTimeMillis();
+    duration = (endTime - startTime);
+    insec = duration/1000.0;
+    logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
+
     sleep(TESTCASE_SLEEP_TIME);
     logExecutor.post();
 
     if (exceptionOccured)
       pairs = null;
+
+    if (pairs != null) {
+      tmp = pairs.get(0);
+      tmp.setDuration(duration);
+    }
 
     logger.debug("FINISH: executeTestcase()");
     return pairs;
@@ -1003,6 +1016,7 @@ public class LogExecutor {
     int idx, type, len, depth;
     BufferedReader sockIn = null;
 
+    print = null;
     depth = 0;
     try {
       if (reporter.contains("epdg")) {
@@ -1112,11 +1126,19 @@ public class LogExecutor {
       mlog.setName("timeout");
     } catch (Exception e) {
 			e.printStackTrace();
-			logger.info("Some error happened. Restart UE.");
+			logger.info("\n\n\nSome error happened. Simple exception. Need to check\n\n\n");
 			rebootUE();
 			mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       mlog.setName("null_action");
 		}
+
+    if (print != null && print.equals("retest_required:auth_failed"))
+    {
+      logger.info("Authentication is failed. So, we reboot the UE");
+      rebootUE();
+  		mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+      mlog.setName("retest");
+    }
 
     return mlog;
   }
@@ -1222,8 +1244,15 @@ public class LogExecutor {
     reply = processResult(testcase, reporter);
     rname = reply.getName();
 
-	  logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
-    pair = new QueryReplyPair(testcase, query, reply, logger);
+    if (rname.equals("retest"))
+    {
+      pair = null;
+    }
+    else
+    {
+	    logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
+      pair = new QueryReplyPair(testcase, query, reply, logger);
+    }
     
     logger.debug("FINISH: step()");
 		return pair;

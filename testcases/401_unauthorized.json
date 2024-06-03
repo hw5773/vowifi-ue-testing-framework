@@ -6,64 +6,8 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "replay-401_unauthorized--1",
-          "serial": 94
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "op": [
-            "update",
-            "drop"
-          ],
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "op": [
-            "update",
-            "drop"
-          ],
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "message_id",
-              "type": "string",
-              "value": "previous"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
           "id": "replay-401_unauthorized-www_authenticate-nonce-1",
-          "serial": 95
+          "serial": 90
         },
         {
           "receiver": "epdg",
@@ -95,10 +39,7 @@
               "sub": [
                 {
                   "name": "nonce",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -116,10 +57,7 @@
               "sub": [
                 {
                   "name": "nonce",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -130,7 +68,8 @@
               "type": "string",
               "value": "previous"
             }
-          ]
+          ],
+          "op": "replay"
         }
       ]
     },
@@ -141,7 +80,7 @@
           "name": "enable_vowifi",
           "reporter": "epdg",
           "id": "replay-401_unauthorized-www_authenticate-algorithm-1",
-          "serial": 96
+          "serial": 91
         },
         {
           "receiver": "epdg",
@@ -173,10 +112,7 @@
               "sub": [
                 {
                   "name": "algorithm",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -194,10 +130,7 @@
               "sub": [
                 {
                   "name": "algorithm",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -208,7 +141,8 @@
               "type": "string",
               "value": "previous"
             }
-          ]
+          ],
+          "op": "replay"
         }
       ]
     },
@@ -219,7 +153,7 @@
           "name": "enable_vowifi",
           "reporter": "epdg",
           "id": "replay-401_unauthorized-security_server-alg-1",
-          "serial": 97
+          "serial": 92
         },
         {
           "receiver": "epdg",
@@ -251,10 +185,7 @@
               "sub": [
                 {
                   "name": "alg",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -272,10 +203,7 @@
               "sub": [
                 {
                   "name": "alg",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -286,7 +214,8 @@
               "type": "string",
               "value": "previous"
             }
-          ]
+          ],
+          "op": "replay"
         }
       ]
     },
@@ -297,7 +226,7 @@
           "name": "enable_vowifi",
           "reporter": "epdg",
           "id": "replay-401_unauthorized-security_server-ealg-1",
-          "serial": 98
+          "serial": 93
         },
         {
           "receiver": "epdg",
@@ -329,10 +258,7 @@
               "sub": [
                 {
                   "name": "ealg",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -350,10 +276,7 @@
               "sub": [
                 {
                   "name": "ealg",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -364,7 +287,8 @@
               "type": "string",
               "value": "previous"
             }
-          ]
+          ],
+          "op": "replay"
         }
       ]
     },
@@ -374,7 +298,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-nonce-median-1",
+          "id": "update-401_unauthorized-www_authenticate-nonce-random-1",
           "serial": 941
         },
         {
@@ -409,7 +333,7 @@
                   "name": "nonce",
                   "op": "update",
                   "type": "string",
-                  "value": "median"
+                  "value": "random"
                 }
               ]
             }
@@ -423,155 +347,8 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-nonce-mean-2",
+          "id": "update-401_unauthorized-www_authenticate-nonce-max-2",
           "serial": 942
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "nonce",
-                  "type": "string",
-                  "value": "mean",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-nonce-min-3",
-          "serial": 943
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "nonce",
-                  "type": "string",
-                  "value": "min",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-nonce-random-4",
-          "serial": 944
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "nonce",
-                  "type": "string",
-                  "value": "random",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-nonce-max-5",
-          "serial": 945
         },
         {
           "receiver": "epdg",
@@ -619,7 +396,154 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-algorithm-median-1",
+          "id": "update-401_unauthorized-www_authenticate-nonce-median-3",
+          "serial": 943
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "www_authenticate",
+              "sub": [
+                {
+                  "name": "nonce",
+                  "type": "string",
+                  "value": "median",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-www_authenticate-nonce-min-4",
+          "serial": 944
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "www_authenticate",
+              "sub": [
+                {
+                  "name": "nonce",
+                  "type": "string",
+                  "value": "min",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-www_authenticate-nonce-mean-5",
+          "serial": 945
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "www_authenticate",
+              "sub": [
+                {
+                  "name": "nonce",
+                  "type": "string",
+                  "value": "mean",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-www_authenticate-algorithm-random-1",
           "serial": 946
         },
         {
@@ -654,7 +578,7 @@
                   "name": "algorithm",
                   "op": "update",
                   "type": "string",
-                  "value": "median"
+                  "value": "random"
                 }
               ]
             }
@@ -668,155 +592,8 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-algorithm-mean-2",
+          "id": "update-401_unauthorized-www_authenticate-algorithm-max-2",
           "serial": 947
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "algorithm",
-                  "type": "string",
-                  "value": "mean",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-algorithm-min-3",
-          "serial": 948
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "algorithm",
-                  "type": "string",
-                  "value": "min",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-algorithm-random-4",
-          "serial": 949
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "algorithm",
-                  "type": "string",
-                  "value": "random",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-www_authenticate-algorithm-max-5",
-          "serial": 950
         },
         {
           "receiver": "epdg",
@@ -864,7 +641,154 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-alg-median-1",
+          "id": "update-401_unauthorized-www_authenticate-algorithm-median-3",
+          "serial": 948
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "www_authenticate",
+              "sub": [
+                {
+                  "name": "algorithm",
+                  "type": "string",
+                  "value": "median",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-www_authenticate-algorithm-min-4",
+          "serial": 949
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "www_authenticate",
+              "sub": [
+                {
+                  "name": "algorithm",
+                  "type": "string",
+                  "value": "min",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-www_authenticate-algorithm-mean-5",
+          "serial": 950
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "www_authenticate",
+              "sub": [
+                {
+                  "name": "algorithm",
+                  "type": "string",
+                  "value": "mean",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-alg-random-1",
           "serial": 951
         },
         {
@@ -899,7 +823,7 @@
                   "name": "alg",
                   "op": "update",
                   "type": "string",
-                  "value": "median"
+                  "value": "random"
                 }
               ]
             }
@@ -913,155 +837,8 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-alg-mean-2",
+          "id": "update-401_unauthorized-security_server-alg-max-2",
           "serial": 952
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "security_server",
-              "sub": [
-                {
-                  "name": "alg",
-                  "type": "string",
-                  "value": "mean",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-alg-min-3",
-          "serial": 953
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "security_server",
-              "sub": [
-                {
-                  "name": "alg",
-                  "type": "string",
-                  "value": "min",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-alg-random-4",
-          "serial": 954
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "security_server",
-              "sub": [
-                {
-                  "name": "alg",
-                  "type": "string",
-                  "value": "random",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-alg-max-5",
-          "serial": 955
         },
         {
           "receiver": "epdg",
@@ -1109,7 +886,154 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-ealg-median-1",
+          "id": "update-401_unauthorized-security_server-alg-median-3",
+          "serial": 953
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "alg",
+                  "type": "string",
+                  "value": "median",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-alg-min-4",
+          "serial": 954
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "alg",
+                  "type": "string",
+                  "value": "min",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-alg-mean-5",
+          "serial": 955
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "alg",
+                  "type": "string",
+                  "value": "mean",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-ealg-random-1",
           "serial": 956
         },
         {
@@ -1144,7 +1068,7 @@
                   "name": "ealg",
                   "op": "update",
                   "type": "string",
-                  "value": "median"
+                  "value": "random"
                 }
               ]
             }
@@ -1158,7 +1082,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-ealg-mean-2",
+          "id": "update-401_unauthorized-security_server-ealg-max-2",
           "serial": 957
         },
         {
@@ -1192,7 +1116,7 @@
                 {
                   "name": "ealg",
                   "type": "string",
-                  "value": "mean",
+                  "value": "max",
                   "op": "update"
                 }
               ]
@@ -1207,8 +1131,57 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-ealg-min-3",
+          "id": "update-401_unauthorized-security_server-ealg-median-3",
           "serial": 958
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "ealg",
+                  "type": "string",
+                  "value": "median",
+                  "op": "update"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-ealg-min-4",
+          "serial": 959
         },
         {
           "receiver": "epdg",
@@ -1256,56 +1229,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-ealg-random-4",
-          "serial": 959
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "reporter": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "reporter": "ims",
-          "sub": [
-            {
-              "name": "security_server",
-              "sub": [
-                {
-                  "name": "ealg",
-                  "type": "string",
-                  "value": "random",
-                  "op": "update"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-ealg-max-5",
+          "id": "update-401_unauthorized-security_server-ealg-mean-5",
           "serial": 960
         },
         {
@@ -1339,7 +1263,7 @@
                 {
                   "name": "ealg",
                   "type": "string",
-                  "value": "max",
+                  "value": "mean",
                   "op": "update"
                 }
               ]
@@ -1388,7 +1312,7 @@
                 {
                   "name": "nonce",
                   "type": "string",
-                  "value": "max",
+                  "value": "mean",
                   "op": "drop"
                 }
               ]
@@ -1437,7 +1361,7 @@
                 {
                   "name": "algorithm",
                   "type": "string",
-                  "value": "max",
+                  "value": "mean",
                   "op": "drop"
                 }
               ]
@@ -1486,7 +1410,7 @@
                 {
                   "name": "alg",
                   "type": "string",
-                  "value": "max",
+                  "value": "mean",
                   "op": "drop"
                 }
               ]
@@ -1535,7 +1459,7 @@
                 {
                   "name": "ealg",
                   "type": "string",
-                  "value": "max",
+                  "value": "mean",
                   "op": "drop"
                 }
               ]

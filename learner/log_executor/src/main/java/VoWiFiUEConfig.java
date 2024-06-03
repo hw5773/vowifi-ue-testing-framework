@@ -56,6 +56,7 @@ public class VoWiFiUEConfig extends LearningConfig {
   @Override
   public void loadProperties() {
     super.loadProperties();
+    String home = System.getProperty("user.home");
 
     if (properties.getProperty("alphabet") != null)
       alphabet = properties.getProperty("alphabet");
@@ -64,7 +65,10 @@ public class VoWiFiUEConfig extends LearningConfig {
       hostname = properties.getProperty("hostname");
 
     if (properties.getProperty("output_dir") != null)
+    {
       outputDir = properties.getProperty("output_dir");
+      outputDir = outputDir.replace("~", home);
+    }
 
     if (properties.getProperty("ue_controller_ip_address") != null)
       ueControllerIPAddress = properties.getProperty("ue_controller_ip_address");
@@ -85,19 +89,34 @@ public class VoWiFiUEConfig extends LearningConfig {
       imsPort = Integer.parseInt(properties.getProperty("ims_port"));
 
     if (properties.getProperty("epdg_start_cmd") != null)
+    {
       epdgStartCmd = properties.getProperty("epdg_start_cmd");
+      epdgStartCmd = epdgStartCmd.replace("~", home);
+    }
 
     if (properties.getProperty("epdg_stop_cmd") != null)
+    {
       epdgStopCmd = properties.getProperty("epdg_stop_cmd");
+      epdgStopCmd = epdgStopCmd.replace("~", home);
+    }
 
     if (properties.getProperty("ims_start_cmd") != null)
+    {
       imsStartCmd = properties.getProperty("ims_start_cmd");
+      imsStartCmd = imsStartCmd.replace("~", home);
+    }
 
     if (properties.getProperty("ims_stop_cmd") != null)
+    {
       imsStopCmd = properties.getProperty("ims_stop_cmd");
+      imsStopCmd = imsStopCmd.replace("~", home);
+    }
 
     if (properties.getProperty("liveness_testcase_path") != null)
+    {
       livenessTestcasePath = properties.getProperty("liveness_testcase_path");
+      livenessTestcasePath = livenessTestcasePath.replace("~", home);
+    }
 
     if (properties.getProperty("combine_query") != null)
       combineQuery = Boolean.parseBoolean(properties.getProperty("combine_query"));

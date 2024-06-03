@@ -94,8 +94,13 @@ class Testcases:
                 if name in messages:
                     self.message = name
                 else:
-                    tmp.append(name)
-            self.id = "{}-{}".format(self.message, '-'.join(tmp))
+                    name = name.strip()
+                    if len(name) > 0:
+                        tmp.append(name)
+            if len(tmp) > 0:
+                self.id = "{}-{}".format(self.message, '-'.join(tmp))
+            else:
+                self.id = self.message
 
     def get_filename(self):
         return self.fname

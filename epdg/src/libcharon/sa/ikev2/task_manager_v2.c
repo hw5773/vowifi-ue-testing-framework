@@ -1159,8 +1159,14 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 				    //send_notify_response(this, message, ntype, chunk_from_thing(type));
 
 				    //send_notify_response(this, message, ntype, chunk_empty);
-            printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
-            if (is_query_name(query, "ike_auth_1_response")
+            printf("\n\n\n[VoWiFi] instance->sprev: %s\n\n\n", instance->sprev);
+            if (is_query_name(query, "ike_sa_init_response"))
+            {
+              symbol = "ike_sa_init_response";
+              instance->sprev = "ike_sa_init_response";
+              send = 1;
+            }
+            else if (is_query_name(query, "ike_auth_1_response")
                 && (!strncmp(instance->sprev, "ike_sa_init_response", 
                     strlen("ike_sa_init_response"))))
             {
@@ -1250,6 +1256,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 				}
 				break;
 			case FAILED:
+        ///// Added for VoWiFi /////
+        printf("\n\n\n\n\n[VoWiFi] auth failed!!!!!\n\n\n\n\n");
+        instance->auth_failed = 1;
+        ////////////////////////////
 			default:
 				hook = TRUE;
 				/* FALL */
@@ -1269,6 +1279,21 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	}
 	enumerator->destroy(enumerator);
 
+  ///// Added for VoWiFi /////
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    symbol = NULL;
+    if (instance->auth_failed)
+    {
+      printf("\n\n\n\n\n[VoWiFi] auth failed is marked!!!!!\n\n\n\n\n");
+      symbol = "retest_required:auth_failed";
+    }
+    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+        symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
+  }
+  ////////////////////////////
+
 	/* RFC 5996, section 2.6 mentions that in the event of a failure during
 	 * IKE_SA_INIT the responder's SPI will be 0 in the response, while it
 	 * actually explicitly allows it to be non-zero.  Since we use the responder
@@ -1287,161 +1312,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   	responder_spi = id->get_responder_spi(id);
 	  id->set_responder_spi(id, 0);
   }
-
-  ///// Added for VoWiFi /////
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-#define AKA_TYPE_AT_RAND 1
-#define AKA_TYPE_AT_AUTN 2
-#define AKA_TYPE_AT_RES 3
-#define AKA_TYPE_AT_MAC 11
-#define AKA_TYPE_AT_CHECKCODE 134
-
-    eap_payload_t *epload;
-    chunk_t payload;
-    int i, plen, tlen, vtype;
-    uint8_t *p, *tmp, *e;
-    uint8_t alen, abytes, type, clen;
-
-    /*
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_auth_1_response")
-        && (query = get_sub_query_by_name(query, "extensible_authentication"))
-        && (query = get_sub_query_by_name(query, "at_mac")))
-    {
-      epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
-      if (epload)
-      {
-        payload = epload->get_data(epload);
-        e = p = (uint8_t *) payload.ptr;
-        plen = (int) payload.len;
-        p += sizeof(ehdr_t);
-        plen -= sizeof(ehdr_t);
-        for (i=0; i<plen; i++)
-        {
-          printf("%02x ", p[i]);
-        }
-        printf("\n");
-
-        while (plen > 0)
-        {
-          type = *(p++);
-          plen--;
-          alen = *(p++);
-          plen--;
-          abytes = 4 * alen - 2;
-          
-          if (type != AKA_TYPE_AT_MAC)
-          {
-            p += abytes;
-            plen -= abytes;
-            continue;
-          }
-          else {
-            break;
-          }
-        }
-
-        if (plen > 0)
-        {
-          op = get_query_operator(query);
-          if (op == OP_TYPE_UPDATE) 
-          {
-            vtype = get_query_value_type(query);
-            if (vtype == VAL_TYPE_STRING)
-            {
-              tmp = get_query_value(query, &tlen);
-              if (!strncmp(tmp, "min", strlen("min")))
-              {
-                for (i=2; i<abytes; i++)
-                  p[i] = 0x00;
-              }
-              else if (!strncmp(tmp, "max", strlen("max")))
-              {
-                for (i=2; i<abytes; i++)
-                  p[i] = 0xff;
-              }
-              else if (!strncmp(tmp, "median", strlen("median")))
-              {
-                for (i=2; i<abytes; i++)
-                  p[i] = 0x88;
-              }
-            }
-          }
-          else if (op == OP_TYPE_DROP)
-          {
-            clen = payload.len - alen * 4;
-            printf("[VoWiFi] at_mac drop: change from %d to %d\n", payload.len, clen);
-            e += 2;
-            e[0] = (clen >> 8) & 0xff;
-            e[1] = clen & 0xff;
-            payload.len = clen;
-          }
-        }
-      }
-    }
-
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_auth_1_response")
-        && (query = get_sub_query_by_name(query, "extensible_authentication"))
-        && (query = get_sub_query_by_name(query, "at_checkcode")))
-    {
-      epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
-      if (epload)
-      {
-        p = (uint8_t *)epload->get_data(epload).ptr;
-        plen = (int) epload->get_data(epload).len;
-        p += sizeof(ehdr_t);
-        plen -= sizeof(ehdr_t);
-
-        while (plen > 0)
-        {
-          type = *(p++);
-          plen--;
-          alen = *(p++);
-          plen--;
-          abytes = 2 + 4 * (alen - 1);
-          
-          if (type != AKA_TYPE_AT_CHECKCODE)
-          {
-            p += abytes;
-            plen -= abytes;
-            continue;
-          }
-          else {
-            break;
-          }
-        }
-
-        if (plen > 0)
-        {
-          vtype = get_query_value_type(query);
-          op = get_query_operator(query);
-          if (vtype == VAL_TYPE_UINT16 && op == OP_TYPE_UPDATE) 
-          {
-            tmp = get_query_value(query, &tlen);
-            if (!strncmp(tmp, "min", strlen("min")))
-            {
-              for (i=0; i<abytes; i++)
-                p[i] = 0x00;
-            }
-            else if (!strncmp(tmp, "max", strlen("max")))
-            {
-              for (i=0; i<abytes; i++)
-                p[i] = 0xff;
-            }
-            else if (!strncmp(tmp, "median", strlen("median")))
-            {
-              for (i=0; i<abytes; i++)
-                p[i] = 0x88;
-            }
-          }
-        }
-      }
-    }
-    */
-  }
-  ////////////////////////////
 
 	/* message complete, send it */
 	clear_packets(this->responding.packets);
@@ -1475,13 +1345,6 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		 * to sync MIDs with MID 0 */
 		return NEED_MORE;
 	}
-
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(instance, msg);
-  }
 
 	array_compress(this->passive_tasks);
 

@@ -48,11 +48,21 @@ def substitution(ptcs, ename, fname):
             lc = tc[-1]
             if "sub" in lc:
                 continue
+            if "op" in lc:
+                del lc["op"]
+            lc["op"] = "substitution"
             if "ike" in lc["name"]:
                 for emsg in emsgs:
                     t = {}
                     t["testcase"] = copy.deepcopy(tc[:-1])
-                    t["testcase"].append(emsg)
+                    l = copy.deepcopy(lc)
+                    l["sub"] = []
+                    if "receiver" in emsg:
+                        del emsg["receiver"]
+                    if "reporter" in emsg:
+                        del emsg["reporter"]
+                    l["sub"].append(emsg)
+                    t["testcase"].append(l)
                     tnum += 1
                     t["testcase"][0]["id"] = "substitution-{}-{}-{}".format(ptc.get_id(), emsg["name"], tnum)
                     t["testcase"][0]["serial"] = cnt
@@ -62,7 +72,14 @@ def substitution(ptcs, ename, fname):
                 for emsg in fmsgs:
                     t = {}
                     t["testcase"] = copy.deepcopy(tc[:-1])
-                    t["testcase"].append(emsg)
+                    l = copy.deepcopy(lc)
+                    l["sub"] = []
+                    if "receiver" in emsg:
+                        del emsg["receiver"]
+                    if "reporter" in emsg:
+                        del emsg["reporter"]
+                    l["sub"].append(emsg)
+                    t["testcase"].append(l)
                     tnum += 1
                     t["testcase"][0]["id"] = "substitution-{}-{}-{}".format(ptc.get_id(), emsg["name"], tnum)
                     t["testcase"][0]["serial"] = cnt
@@ -91,14 +108,39 @@ def replay(ptcs):
 
             t = {}
             t["testcase"] = copy.deepcopy(tc)
-            r = copy.deepcopy(t["testcase"][-1])
+            z = t["testcase"][-1]
+            if "sub" in z:
+                for sub in z["sub"]:
+                    if "op" in sub:
+                        sub["op"] = "update"
+                    if "sub" in sub:
+                        for ssub in sub["sub"]:
+                            if "op" in ssub:
+                                ssub["op"] = "update"
+                            if "sub" in ssub:
+                                for sssub in ssub["sub"]:
+                                    if "op" in sssub:
+                                        sssub["op"] = "update"
+
+            r = copy.deepcopy(z)
             if "sub" not in r:
                 r["sub"] = []
+
+            for sub in r["sub"]:
+                if "op" in sub:
+                    sub["op"] = "update"
+
+            if "op" in r:
+                if r["op"] == "substitution":
+                    continue
             s = {}
             s["name"] = "message_id"
             s["type"] = "string"
             s["value"] = "previous"
             r["sub"].append(s)
+            if "op" in r:
+                del r["op"]
+            r["op"] = "replay"
 
             t["testcase"].append(r)
             tnum += 1
