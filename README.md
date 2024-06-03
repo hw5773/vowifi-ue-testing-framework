@@ -388,8 +388,7 @@
     - IP Address: 127.0.0.1
     - Change all the "open-ims" to "ims.mnc260.mcc310.3gppnetwork.org" (check them by grep -r -n "open-ims")
 
-    - `cd ~`
-    - `cp FHoSS/deploy/configurator.sh VOWIFI_ROOT/settings/hss`
+    - `cp configurator.sh ~/FHoSS/config/`
     - `cd ~/FHoSS/config`
     - `./configurator.sh`
     - Domain Name: ims.mnc260.mcc310.3gppnetwork.org
