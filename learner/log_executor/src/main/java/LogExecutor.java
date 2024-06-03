@@ -1148,7 +1148,7 @@ public class LogExecutor {
       mlog.setName("timeout");
     } catch (Exception e) {
 			e.printStackTrace();
-			logger.info("\n\n\nSome error happened. Simple exception. Need to check\n\n\n");
+			logger.info("Some error happened. Simple exception. Need to check");
 			rebootUE();
 			mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       mlog.setName("null_action");
@@ -1168,12 +1168,14 @@ public class LogExecutor {
         logger.info("No proposal chosen received. There will be a retransmission");
         mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
         mlog.setName("retransmission");
+        testcase.resetIterator();
       }
       else if (print.contains("retransmission:invalid_ke_payload"))
       {
         logger.info("Invalid key payload received. There will be a retransmission");
         mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
         mlog.setName("retransmission");
+        testcase.resetIterator();
       }
     }
 
@@ -1278,6 +1280,10 @@ public class LogExecutor {
       query.setName("enable_vowifi");
     }
     qname = query.getName();
+    logger.debug("Reporter: " + reporter);
+    reply = processResult(testcase, reporter);
+    rname = reply.getName();
+
     if (qname.equals("retest"))
     {
       logger.info("pair is set to null");
@@ -1291,9 +1297,9 @@ public class LogExecutor {
     }
     else
     {
-      logger.debug("Reporter: " + reporter);
-      reply = processResult(testcase, reporter);
-      rname = reply.getName();
+      //logger.debug("Reporter: " + reporter);
+      //reply = processResult(testcase, reporter);
+      //rname = reply.getName();
 
 	    logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
       pair = new QueryReplyPair(testcase, query, reply, logger);

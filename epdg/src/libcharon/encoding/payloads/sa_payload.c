@@ -577,7 +577,6 @@ sa_payload_t *sa_payload_create_from_proposal_v2(proposal_t *proposal)
 	this = (private_sa_payload_t*)sa_payload_create(PLV2_SECURITY_ASSOCIATION);
 	add_proposal_v2(this, proposal);
   this->selected_proposal = proposal;
-  printf("\n\n\n\n\n[VoWiFi] proposal (sa_payload.c): %p\n", proposal);
 
 	return &this->public;
 

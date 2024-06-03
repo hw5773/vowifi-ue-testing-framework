@@ -193,6 +193,25 @@ class Testcase {
     return this.type;
   }
 
+  void resetIterator() {
+    JSONObject testcase = this.orig;
+    JSONArray testcaseArr = (JSONArray) testcase.get("sub");
+    if (testcaseArr != null) {
+      Iterator i = testcaseArr.iterator();
+      Testcase tmp;
+
+      while (i.hasNext()) {
+        if (this.sub == null)
+          this.sub = new ArrayList<>();
+
+        JSONObject subtestcase = (JSONObject) i.next();
+        this.sub.add(new Testcase(subtestcase, this, this.logger));
+      }
+
+      this.iter = this.sub.iterator();
+    }
+  }
+
   void setTestcaseType(TestcaseType type) {
     this.type = type;
   }

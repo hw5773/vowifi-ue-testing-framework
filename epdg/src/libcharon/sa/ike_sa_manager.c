@@ -1864,7 +1864,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
               asock = -1;
               if (instance)
                 asock = instance->asock;
-              printf("\n\n[VoWiFi] this->instance: %p\n", this->instance);
+              printf("[VoWiFi] this->instance: %p\n", this->instance);
               printf("[VoWiFi] ispi: %.16"PRIx64": \n", id->get_initiator_spi(id));
               printf("[VoWiFi] instance->ispi: %.16"PRIx64": \n", this->instance->ispi);
               printf("[VoWiFi] rspi: %.16"PRIx64": \n", id->get_responder_spi(id));
@@ -1873,44 +1873,6 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
               instance->init_hashes_table = (void *)(this->init_hashes_table);
               instance->table_mask = (uint8_t)(this->table_mask);
               instance->init_hash = hash;
-
-              /*
-              if ((query = get_query(instance))
-                  && is_query_name(query, "ike_sa_init_response")
-                  && (query = get_sub_query_by_name(query, "responder_spi")))
-              {
-                vtype = get_query_value_type(query);
-                op = get_query_operator(query);
-                if ((vtype == VAL_TYPE_UINT64 || vtype == VAL_TYPE_UINT64H) && op == OP_TYPE_UPDATE)
-                {
-                  tmp = get_query_value(query, &tlen);
-                  if (vtype == VAL_TYPE_UINT64)
-                    v64 = char_to_int(tmp, tlen, 10);
-                  else if (vtype == VAL_TYPE_UINT64H)
-                    v64 = char_to_int(tmp, tlen, 16);
-
-                  u_int row;
-                  table_item_t *item;
-
-                  row = chunk_hash(hash) & this->table_mask;
-                  item = this->init_hashes_table[row];
-                  while (item)
-                  {
-                    init_hash_t *current = item->value;
-
-                    if (chunk_equals(hash, current->hash))
-                      break;
-                  }
-
-                  printf("here 1\n");
-                  thash = (init_hash_t *)item->value;
-                  printf("here 2: v64: %d, thash->our_spi: %d\n", v64, thash->our_spi);
-                  thash->our_spi = v64;
-                  printf("here 3: thash->our_spi: %d\n", thash->our_spi);
-                  id->set_responder_spi(id, v64);
-                }
-              }
-              */
             }
 
             if (!(ike_sa->get_instance(ike_sa)))
@@ -2010,7 +1972,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 
     if (check_instance(this->instance, ispi, rspi, UPDATE))
     {
-      printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n");
+      printf("[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n");
       /*
       ike_sa->set_instance(ike_sa, this->instance);
       instance = ike_sa->get_instance(ike_sa);
@@ -2024,7 +1986,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
   else
   {
     instance = this->instance;
-    printf("\n\n[VoWiFi] this->instance: %p\n", this->instance);
+    printf("[VoWiFi] this->instance: %p\n", this->instance);
     printf("[VoWiFi] instance->imid: %d\n", instance->imid);
     printf("[VoWiFi] message->get_message_id(message): %d\n", message->get_message_id(message));
     if (instance->imid > 0

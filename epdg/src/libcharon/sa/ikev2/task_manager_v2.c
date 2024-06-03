@@ -2218,6 +2218,9 @@ METHOD(task_manager_t, process_message, status_t,
   ////////////////////////////
 
 	charon->bus->message(charon->bus, msg, TRUE, FALSE);
+
+  // TODO: Need to report the messages at this point (before decryption and integrity checking) 
+
 	status = parse_message(this, msg);
 	if (status != SUCCESS)
 	{

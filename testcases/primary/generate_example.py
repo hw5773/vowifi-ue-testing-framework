@@ -18,9 +18,16 @@ for fname in lst:
                 if "#" in line:
                     continue
                 if "\"op\"" in line:
-                    if "[" not in line or "]" not in line:
-                        print ("op error: {}".format(fname))
-                        sys.exit(1)
+                    if "[" in line:
+                        line = line.replace("[", "")
+                    if "]" in line:
+                        line = line.replace("]", "")
+                    if "\"drop\"" in line:
+                        line = line.replace("\"drop\"", "")
+                    if "\"insert\"" in line:
+                        line = line.replace("\"insert\", ", "")
+                    if "\"update\", " in line:
+                        line = line.replace(", ", """)
                 if "VALUE" in line:
                     try:
                         tmp = line.split(":")
