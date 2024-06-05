@@ -1,6 +1,6 @@
 sa/xauth/xauth_manager.lo: sa/xauth/xauth_manager.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
- /usr/include/string.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -210,7 +210,7 @@ sa/xauth/xauth_manager.lo: sa/xauth/xauth_manager.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 /usr/include/string.h:
 

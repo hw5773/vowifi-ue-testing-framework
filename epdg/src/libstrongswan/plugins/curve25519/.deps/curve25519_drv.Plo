@@ -1,5 +1,5 @@
 curve25519_drv.lo: curve25519_drv.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h curve25519_drv.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h curve25519_drv.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -198,7 +198,7 @@ curve25519_drv.lo: curve25519_drv.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 curve25519_drv.h:
 

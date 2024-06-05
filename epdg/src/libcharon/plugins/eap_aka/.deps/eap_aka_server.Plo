@@ -1,5 +1,5 @@
 eap_aka_server.lo: eap_aka_server.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h eap_aka_server.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h eap_aka_server.h \
  ../../../../src/libcharon/sa/eap/eap_method.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -279,7 +279,7 @@ eap_aka_server.lo: eap_aka_server.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 eap_aka_server.h:
 

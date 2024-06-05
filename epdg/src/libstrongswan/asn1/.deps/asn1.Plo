@@ -1,5 +1,5 @@
 asn1/asn1.lo: asn1/asn1.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h /usr/include/stdio.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -150,7 +150,7 @@ asn1/asn1.lo: asn1/asn1.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 /usr/include/stdio.h:
 

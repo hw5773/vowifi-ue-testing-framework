@@ -1,5 +1,5 @@
 commands/log.o: commands/log.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h command.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h command.h \
  ../../src/libcharon/plugins/vici/libvici.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -207,7 +207,7 @@ commands/log.o: commands/log.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 command.h:
 

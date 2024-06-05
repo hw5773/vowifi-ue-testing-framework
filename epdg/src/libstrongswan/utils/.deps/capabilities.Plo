@@ -1,5 +1,5 @@
 utils/capabilities.lo: utils/capabilities.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h utils/capabilities.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h utils/capabilities.h \
  library.h utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -161,7 +161,7 @@ utils/capabilities.lo: utils/capabilities.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 utils/capabilities.h:
 

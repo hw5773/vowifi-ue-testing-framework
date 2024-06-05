@@ -1,5 +1,6 @@
 sa/ikev2/tasks/ike_mid_sync.lo: sa/ikev2/tasks/ike_mid_sync.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
  sa/ikev2/tasks/ike_mid_sync.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -237,7 +238,7 @@ sa/ikev2/tasks/ike_mid_sync.lo: sa/ikev2/tasks/ike_mid_sync.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/ike_mid_sync.h:
 

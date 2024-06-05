@@ -1,5 +1,5 @@
 pkcs8_plugin.lo: pkcs8_plugin.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h pkcs8_plugin.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h pkcs8_plugin.h \
  ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -202,7 +202,7 @@ pkcs8_plugin.lo: pkcs8_plugin.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 pkcs8_plugin.h:
 

@@ -1,5 +1,5 @@
 dnskey_builder.lo: dnskey_builder.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h dnskey_builder.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h dnskey_builder.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -197,7 +197,7 @@ dnskey_builder.lo: dnskey_builder.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 dnskey_builder.h:
 

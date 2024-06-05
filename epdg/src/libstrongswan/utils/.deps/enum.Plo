@@ -1,5 +1,5 @@
 utils/enum.lo: utils/enum.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -147,7 +147,7 @@ utils/enum.lo: utils/enum.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

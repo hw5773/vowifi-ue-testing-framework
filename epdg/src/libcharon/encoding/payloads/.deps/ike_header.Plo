@@ -1,5 +1,6 @@
 encoding/payloads/ike_header.lo: encoding/payloads/ike_header.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  encoding/payloads/ike_header.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -198,7 +199,7 @@ encoding/payloads/ike_header.lo: encoding/payloads/ike_header.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

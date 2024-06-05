@@ -1,5 +1,6 @@
 sa/ikev2/tasks/ike_dpd.lo: sa/ikev2/tasks/ike_dpd.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
  sa/ikev2/tasks/ike_dpd.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -236,7 +237,7 @@ sa/ikev2/tasks/ike_dpd.lo: sa/ikev2/tasks/ike_dpd.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/ike_dpd.h:
 

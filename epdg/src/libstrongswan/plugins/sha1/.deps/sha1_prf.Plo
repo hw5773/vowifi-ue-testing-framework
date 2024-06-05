@@ -1,5 +1,5 @@
 sha1_prf.lo: sha1_prf.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h sha1_prf.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h sha1_prf.h \
  ../../../../src/libstrongswan/crypto/prfs/prf.h \
  ../../../../src/libstrongswan/utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
@@ -201,7 +201,7 @@ sha1_prf.lo: sha1_prf.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 sha1_prf.h:
 

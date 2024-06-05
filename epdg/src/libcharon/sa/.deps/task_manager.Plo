@@ -1,5 +1,5 @@
 sa/task_manager.lo: sa/task_manager.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h sa/task_manager.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h sa/task_manager.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
  /usr/include/limits.h \
@@ -235,7 +235,7 @@ sa/task_manager.lo: sa/task_manager.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 sa/task_manager.h:
 

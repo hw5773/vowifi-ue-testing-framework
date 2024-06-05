@@ -1,6 +1,6 @@
 encoding/payloads/transform_attribute.lo: \
  encoding/payloads/transform_attribute.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h /usr/include/string.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -199,7 +199,7 @@ encoding/payloads/transform_attribute.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 /usr/include/string.h:
 

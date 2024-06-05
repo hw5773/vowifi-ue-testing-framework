@@ -1,6 +1,7 @@
 stroke_counter.lo: stroke_counter.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h /usr/include/inttypes.h \
- /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /usr/include/inttypes.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
@@ -247,7 +248,7 @@ stroke_counter.lo: stroke_counter.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 /usr/include/inttypes.h:
 

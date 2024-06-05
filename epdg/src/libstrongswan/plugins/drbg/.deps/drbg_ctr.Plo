@@ -1,5 +1,5 @@
 drbg_ctr.lo: drbg_ctr.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h drbg_ctr.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h drbg_ctr.h \
  ../../../../src/libstrongswan/crypto/drbgs/drbg.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -197,7 +197,7 @@ drbg_ctr.lo: drbg_ctr.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 drbg_ctr.h:
 

@@ -1,5 +1,5 @@
 crypto/drbgs/drbg.lo: crypto/drbgs/drbg.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h crypto/drbgs/drbg.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h crypto/drbgs/drbg.h \
  library.h utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -147,7 +147,7 @@ crypto/drbgs/drbg.lo: crypto/drbgs/drbg.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 crypto/drbgs/drbg.h:
 
