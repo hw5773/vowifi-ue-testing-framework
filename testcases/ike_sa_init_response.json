@@ -972,9 +972,7 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 12
                         }
@@ -1002,9 +1000,7 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 12
                         }
@@ -1049,9 +1045,7 @@
                       "sub": [
                         {
                           "name": "encryption_key_length",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 256
                         }
@@ -1079,9 +1073,7 @@
                       "sub": [
                         {
                           "name": "encryption_key_length",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 256
                         }
@@ -1126,9 +1118,7 @@
                       "sub": [
                         {
                           "name": "integrity_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 2
                         }
@@ -1156,9 +1146,7 @@
                       "sub": [
                         {
                           "name": "integrity_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 2
                         }
@@ -1203,9 +1191,7 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 2
                         }
@@ -1233,9 +1219,7 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 2
                         }
@@ -1280,10 +1264,7 @@
                       "sub": [
                         {
                           "name": "diffie_hellman_group",
-                          "op": [
-                            "insert",
-                            "update"
-                          ],
+                          "op": "insert, update",
                           "type": "uint16",
                           "value": 2
                         }
@@ -1311,10 +1292,7 @@
                       "sub": [
                         {
                           "name": "diffie_hellman_group",
-                          "op": [
-                            "insert",
-                            "update"
-                          ],
+                          "op": "insert, update",
                           "type": "uint16",
                           "value": 2
                         }
@@ -1665,9 +1643,7 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 12
                         }
@@ -1695,9 +1671,7 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 12
                         }
@@ -1884,9 +1858,7 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 2
                         }
@@ -1914,9 +1886,7 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 2
                         }
