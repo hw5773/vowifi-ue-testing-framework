@@ -263,8 +263,11 @@ static status_t challenge(private_eap_aka_server_t *this, eap_payload_t **out)
 	this->rand = chunk_clone(chunk_create(rand, AKA_RAND_LEN));
 	this->xres = chunk_clone(chunk_create(xres, xres_len));
 
-	message = simaka_message_create(TRUE, this->identifier++, EAP_AKA,
-									AKA_CHALLENGE, this->crypto);
+  ///// Revised for VoWiFi /////
+	//message = simaka_message_create(TRUE, this->identifier++, EAP_AKA, AKA_CHALLENGE, this->crypto);
+	message = simaka_message_create(TRUE, 0, EAP_AKA, AKA_CHALLENGE, this->crypto);
+  ////////////////////////////
+
 	message->add_attribute(message, AT_RAND, this->rand);
 	message->add_attribute(message, AT_AUTN, chunk_create(autn, AKA_AUTN_LEN));
   ///// Added for VoWiFi /////

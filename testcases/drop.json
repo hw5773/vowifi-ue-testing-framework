@@ -20,6 +20,28 @@
           ]
         }
       ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "init-drop-nonce"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "op": "drop"
+            }
+          ]
+        }
+      ]
     }
+
   ]
 }

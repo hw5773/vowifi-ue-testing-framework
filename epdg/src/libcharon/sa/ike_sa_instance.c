@@ -575,11 +575,13 @@ int check_drop_next(instance_t *instance, payload_t *next)
     }
   }
 
+  printf("\n\n\n[VoWiFi] check drop next\n\n\n");
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "key_exchange"))
       && (type == PLV2_KEY_EXCHANGE))
   {
+    printf("\n\n\nkey exchange - drop\n\n\n");
     op = get_query_operator(query);
     if (op == OP_TYPE_DROP)
     {    

@@ -194,6 +194,9 @@ class Testcase {
   }
 
   void resetIterator() {
+    if (this.sub != null)
+      this.iter = this.sub.iterator();
+    /*
     JSONObject testcase = this.orig;
     JSONArray testcaseArr = (JSONArray) testcase.get("sub");
     if (testcaseArr != null) {
@@ -210,6 +213,7 @@ class Testcase {
 
       this.iter = this.sub.iterator();
     }
+    */
   }
 
   void setTestcaseType(TestcaseType type) {

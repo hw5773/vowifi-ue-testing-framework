@@ -1292,8 +1292,9 @@ public class LogExecutor {
     else if (qname.equals("retransmission"))
     {
       pair = null;
-      testcase.setIspi(null);
-      testcase.setRspi(null);
+      testcase.setIspi(reply.getIspi());
+      testcase.setRspi(reply.getRspi());
+      //testcase.resetIterator();
     }
     else
     {

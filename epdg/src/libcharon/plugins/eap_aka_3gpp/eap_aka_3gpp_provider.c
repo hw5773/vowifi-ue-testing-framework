@@ -81,7 +81,7 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 	char rand[AKA_RAND_LEN], char xres[AKA_RES_MAX], int *xres_len,
 	char ck[AKA_CK_LEN], char ik[AKA_IK_LEN], char autn[AKA_AUTN_LEN])
 {
-  //printf("!!!!! eap_aka_3gpp_provider.c get_quintuplet() !!!!!\n");
+  printf("\n\n\n\n\n!!!!! eap_aka_3gpp_provider.c get_quintuplet() !!!!!\n");
 	rng_t *rng;
 	uint8_t maca[AKA_MAC_LEN], ak[AKA_AK_LEN], k[AKA_K_LEN], opc[AKA_OPC_LEN];
 
@@ -96,6 +96,12 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 	rng->destroy(rng);
 	DBG3(DBG_IKE, "generated rand %b", rand, AKA_RAND_LEN);
 
+  ///// Added for VoWiFi /////
+  printf("generated rand (before): %b\n", rand, AKA_RAND_LEN);
+  memset(rand, 0, AKA_RAND_LEN);
+  printf("generated rand (after): %b\n", rand, AKA_RAND_LEN);
+  ////////////////////////////
+
 	if (!eap_aka_3gpp_get_k_opc(id, k, opc))
 	{
 		DBG1(DBG_IKE, "no EAP key found for %Y to authenticate with AKA", id);
@@ -105,14 +111,16 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 	DBG4(DBG_IKE, "EAP key found for id %Y, using K %b and OPc %b", id, k,
 		 AKA_K_LEN, opc, AKA_OPC_LEN);
 
+  ///// Added for VoWiFi /////
   int i;
   printf("!!!!! SQN Value !!!!!\n");
   for (i=0; i<AKA_SQN_LEN; i++)
   {
-    //this->sqn[i] = 0x00;
+    this->sqn[i] = 0x00;
     printf("%02x ", (this->sqn)[i]);
   }
   printf("\n");
+  ////////////////////////////
 
 	/* generate MAC and XRES, CK, IK, AK */
 	if (!this->f->f1(this->f, k, opc, rand, this->sqn, amf, maca) ||
@@ -128,6 +136,17 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 	memcpy(autn + AKA_SQN_LEN, amf, AKA_AMF_LEN);
 	memcpy(autn + AKA_SQN_LEN + AKA_AMF_LEN, maca, AKA_MAC_LEN);
 	DBG3(DBG_IKE, "AUTN %b", autn, AKA_AUTN_LEN);
+
+  ///// Added for VoWiFi /////
+  printf("xres: %b\n", xres, AKA_RES_LEN);
+  printf("k: %b\n", k, AKA_K_LEN);
+  printf("opc: %b\n", opc, AKA_OPC_LEN);
+  printf("ik: %b\n", ik, AKA_IK_LEN);
+  printf("ck: %b\n", ck, AKA_CK_LEN);
+  printf("ak: %b\n", ak, AKA_AK_LEN);
+  printf("autn: %b\n", autn, AKA_AUTN_LEN);
+  printf("mac: %b\n", maca, AKA_MAC_LEN);
+  ////////////////////////////
 
 	chunk_increment(chunk_create(this->sqn, AKA_SQN_LEN));
 

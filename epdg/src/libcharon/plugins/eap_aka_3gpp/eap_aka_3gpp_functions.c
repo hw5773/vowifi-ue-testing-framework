@@ -140,17 +140,38 @@ static bool f1andf1star(private_eap_aka_3gpp_functions_t *this,
 
 	/* XOR RAND and OPc */
 	memcpy(data, rand, sizeof(data));
+  ///// Added for VoWiFi /////
+  printf("\n\n\n\n\n[VoWiFi] f1 function\n");
+  printf("data after rand: %b\n", data, sizeof(data));
+  ////////////////////////////
 	memxor(data, opc, sizeof(data));
+  ///// Added for VoWiFi /////
+  printf("data after opc: %b\n", data, sizeof(data));
+  ////////////////////////////
 	if (!this->crypter->encrypt(this->crypter, chunk_create(data, sizeof(data)),
 								chunk_create(iv, sizeof(iv)), NULL))
 	{
 		return FALSE;
 	}
 
+  ///// Added for VoWiFi /////
+  printf("data after encryption 1: %b\n", data, sizeof(data));
+  printf("iv: %b\n", iv, sizeof(iv));
+  ////////////////////////////
+
 	/* concatenate SQN || AMF ||SQN || AMF */
 	memcpy(in, sqn, 6);
+  ///// Added for VoWiFi /////
+  printf("in after sqn: %b\n", in, sizeof(in));
+  ////////////////////////////
 	memcpy(&in[6], amf, 2);
+  ///// Added for VoWiFi /////
+  printf("in after amf: %b\n", in, sizeof(in));
+  ////////////////////////////
 	memcpy(&in[8], in, 8);
+  ///// Added for VoWiFi /////
+  printf("in after in: %b\n", in, sizeof(in));
+  ////////////////////////////
 
 	/* XOR opc and in, rotate by r1=64, and XOR
 	 * on the constant c1 (which is all zeroes) and finally the output above */
@@ -158,13 +179,26 @@ static bool f1andf1star(private_eap_aka_3gpp_functions_t *this,
 	{
 		data[(i + 8) % 16] ^= in[i] ^ opc[i];
 	}
+  ///// Added for VoWiFi /////
+  printf("data after xor: %b\n", data, sizeof(data));
+  ////////////////////////////
 	if (!this->crypter->encrypt(this->crypter, chunk_create(data, sizeof(data)),
 								chunk_create(iv, sizeof(iv)), NULL))
 	{
 		return FALSE;
 	}
+  ///// Added for VoWiFi /////
+  printf("data after encryption 2: %b\n", data, sizeof(data));
+  ////////////////////////////
 	memxor(data, opc, sizeof(data));
+  ///// Added for VoWiFi /////
+  printf("data after xor: %b\n", data, sizeof(data));
+  ////////////////////////////
 	memcpy(mac, data, 16);
+  ///// Added for VoWiFi /////
+  printf("mac: %b\n", mac, sizeof(mac));
+  printf("\n\n\n\n\n");
+  ////////////////////////////
 	return TRUE;
 }
 
@@ -224,12 +258,27 @@ METHOD(eap_aka_3gpp_functions_t, f2345, bool,
 
 	/* XOR RAND and OPc */
 	memcpy(data, rand, sizeof(data));
+
+  ///// Added for VoWiFi /////
+  printf("\n\n\n\n\n[VoWiFi] 3gpp functions f2345\n");
+  printf("data after rand: %b\n", data, sizeof(data));
+  ////////////////////////////
+
 	memxor(data, opc, sizeof(data));
+  ///// Added for VoWiFi /////
+  printf("data after opc: %b\n", data, sizeof(data));
+  ////////////////////////////
 	if (!this->crypter->encrypt(this->crypter, chunk_create(data, sizeof(data)),
 								chunk_create(iv, sizeof(iv)), &temp))
 	{
 		return FALSE;
 	}
+
+  ///// Added for VoWiFi /////
+  printf("data after encryption 1: %b\n", data, sizeof(data));
+  printf("temp: %b\n", temp, sizeof(temp));
+  printf("iv: %b\n", iv, sizeof(iv));
+  ////////////////////////////
 
 	/* to obtain output block OUT2: XOR OPc and TEMP,
 	 * rotate by r2=0, and XOR on the constant c2 (which is all zeroes except
@@ -238,7 +287,13 @@ METHOD(eap_aka_3gpp_functions_t, f2345, bool,
 	{
 		data[i] = temp.ptr[i] ^ opc[i];
 	}
+  ///// Added for VoWiFi /////
+  printf("data after xor: %b\n", data, sizeof(data));
+  ////////////////////////////
 	data[15] ^= 1;
+  ///// Added for VoWiFi /////
+  printf("data after xor again: %b\n", data, sizeof(data));
+  ////////////////////////////
 
 	if (!this->crypter->encrypt(this->crypter, chunk_create(data, sizeof(data)),
 								chunk_create(iv, sizeof(iv)), NULL))
@@ -246,12 +301,23 @@ METHOD(eap_aka_3gpp_functions_t, f2345, bool,
 		chunk_free(&temp);
 		return FALSE;
 	}
+  ///// Added for VoWiFi /////
+  printf("data after encryption 2: %b\n", data, sizeof(data)); 
+  ////////////////////////////
 	memxor(data, opc, sizeof(data));
+  ///// Added for VoWiFi /////
+  printf("data after xor with opc: %b\n", data, sizeof(data)); 
+  ////////////////////////////
 
 	/* f5 output */
 	memcpy(ak, data, 6);
 	/* f2 output */
 	memcpy(res, &data[8], 8);
+
+  ///// Added for VoWiFi /////
+  printf("ak: %b\n", ak, sizeof(ak));
+  printf("res: %b\n", res, sizeof(res));
+  ////////////////////////////
 
 	/* to obtain output block OUT3: XOR OPc and TEMP,
 	 * rotate by r3=32, and XOR on the constant c3 (which
@@ -260,7 +326,13 @@ METHOD(eap_aka_3gpp_functions_t, f2345, bool,
 	{
 		data[(i + 12) % 16] = temp.ptr[i] ^ opc[i];
 	}
+  ///// Added for VoWiFi /////
+  printf("data after xor: %b\n", data, sizeof(data));
+  ////////////////////////////
 	data[15] ^= 2;
+  ///// Added for VoWiFi /////
+  printf("data after xor again: %b\n", data, sizeof(data));
+  ////////////////////////////
 
 	if (!this->crypter->encrypt(this->crypter, chunk_create(data, sizeof(data)),
 								chunk_create(iv, sizeof(iv)), NULL))
@@ -268,10 +340,19 @@ METHOD(eap_aka_3gpp_functions_t, f2345, bool,
 		chunk_free(&temp);
 		return FALSE;
 	}
+  ///// Added for VoWiFi /////
+  printf("data after encryption 3: %b\n", data, sizeof(data));
+  ////////////////////////////
 	memxor(data, opc, sizeof(data));
+  ///// Added for VoWiFi /////
+  printf("data after xor again: %b\n", data, sizeof(data));
+  ////////////////////////////
 
 	/* f3 output */
 	memcpy(ck, data, 16);
+  ///// Added for VoWiFi /////
+  printf("ck: %b\n", ck, sizeof(ck));
+  ////////////////////////////
 
 	/* to obtain output block OUT4: XOR OPc and TEMP,
 	 * rotate by r4=64, and XOR on the constant c4 (which
@@ -280,7 +361,13 @@ METHOD(eap_aka_3gpp_functions_t, f2345, bool,
 	{
 		data[(i + 8) % 16] = temp.ptr[i] ^ opc[i];
 	}
+  ///// Added for VoWiFi /////
+  printf("data after xor: %b\n", data, sizeof(data));
+  ////////////////////////////
 	data[15] ^= 4;
+  ///// Added for VoWiFi /////
+  printf("data after xor again: %b\n", data, sizeof(data));
+  ////////////////////////////
 
 	if (!this->crypter->encrypt(this->crypter, chunk_create(data, sizeof(data)),
 								chunk_create(iv, sizeof(iv)), NULL))
@@ -288,9 +375,20 @@ METHOD(eap_aka_3gpp_functions_t, f2345, bool,
 		chunk_free(&temp);
 		return FALSE;
 	}
+  ///// Added for VoWiFi /////
+  printf("data after encryption 4: %b\n", data, sizeof(data));
+  printf("iv: %b\n", iv, sizeof(iv));
+  ////////////////////////////
 	memxor(data, opc, sizeof(data));
+  ///// Added for VoWiFi /////
+  printf("data after xor: %b\n", data, sizeof(data));
+  ////////////////////////////
 	/* f4 output */
 	memcpy(ik, data, 16);
+  ///// Added for VoWiFi /////
+  printf("ik: %b\n", ik, sizeof(ik));
+  printf("\n\n\n\n\n");
+  ////////////////////////////
 	chunk_free(&temp);
 	return TRUE;
 
