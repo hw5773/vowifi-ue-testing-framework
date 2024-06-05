@@ -185,6 +185,9 @@ struct proposal_t {
 	 * @return				proposal number
 	 */
 	uint8_t (*get_number)(proposal_t *this);
+  ///// Added for VoWiFi /////
+  void (*set_number)(proposal_t *this, uint8_t number);
+  ////////////////////////////
 
 	/**
 	 * Get number of the transform on which this proposal is based (IKEv1 only)

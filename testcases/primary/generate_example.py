@@ -17,17 +17,6 @@ for fname in lst:
             for line in f:
                 if "#" in line:
                     continue
-                if "\"op\"" in line:
-                    if "[" in line:
-                        line = line.replace("[", "")
-                    if "]" in line:
-                        line = line.replace("]", "")
-                    if "\"drop\"" in line:
-                        line = line.replace("\"drop\"", "")
-                    if "\"insert\"" in line:
-                        line = line.replace("\"insert\", ", "")
-                    if "\"update\", " in line:
-                        line = line.replace(", ", """)
                 if "VALUE" in line:
                     try:
                         tmp = line.split(":")
@@ -51,6 +40,27 @@ for fname in lst:
     print ("{} / {}".format(idx, total))
 
     for tc in js["testcases"]:
+        testcase = tc["testcase"]
+        for msg in testcase:
+            if "op" in msg:
+                msg["op"] = "update"
+            if "sub" in msg:
+                for sub in msg["sub"]:
+                    if "op" in sub:
+                        sub["op"] = "update"
+                    if "sub" in sub:
+                        for ssub in sub["sub"]:
+                            if "op" in ssub:
+                                ssub["op"] = "update"
+                            if "sub" in ssub:
+                                for sssub in ssub["sub"]:
+                                    if "op" in sssub:
+                                        sssub["op"] = "update"
+                                    if "sub" in sssub:
+                                        for ssssub in sssub["sub"]:
+                                            if "op" in ssssub:
+                                                ssssub["op"] = "update"
+
         out["testcases"].append(tc)
 
 with open(ofname, "w") as of:

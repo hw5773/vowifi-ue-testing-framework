@@ -65,7 +65,6 @@ def substitution(ptcs, ename, fname):
                     t["testcase"].append(l)
                     tnum += 1
                     t["testcase"][0]["id"] = "substitution-{}-{}-{}".format(ptc.get_id(), emsg["name"], tnum)
-                    t["testcase"][0]["serial"] = cnt
                     ret[key]["testcases"].append(t)
                     cnt += 1
             elif "sip" in lc["name"]:
@@ -82,7 +81,6 @@ def substitution(ptcs, ename, fname):
                     t["testcase"].append(l)
                     tnum += 1
                     t["testcase"][0]["id"] = "substitution-{}-{}-{}".format(ptc.get_id(), emsg["name"], tnum)
-                    t["testcase"][0]["serial"] = cnt
                     ret[key]["testcases"].append(t)
                     cnt += 1
 
@@ -121,6 +119,10 @@ def replay(ptcs):
                                 for sssub in ssub["sub"]:
                                     if "op" in sssub:
                                         sssub["op"] = "update"
+                                    if "sub" in sssub:
+                                        for ssssub in sssub["sub"]:
+                                            if "op" in ssssub:
+                                                ssssub["op"] = "update"
 
             r = copy.deepcopy(z)
             if "sub" not in r:
@@ -145,7 +147,6 @@ def replay(ptcs):
             t["testcase"].append(r)
             tnum += 1
             t["testcase"][0]["id"] = "replay-{}-{}".format(ptc.get_id(), tnum)
-            t["testcase"][0]["serial"] = cnt
 
             ret[key]["testcases"].append(t)
             cnt += 1
@@ -188,25 +189,13 @@ def update_values(ptcs):
                 msg = _find_target(testcase["testcase"], target)
                 if msg != None:
                     for val in avals:
-                        '''
-                        if val == "min":
-                            msg["value"] = 0
-                        elif val == "max":
-                            msg["value"] = 0xffff
-                        elif val == "mean":
-                            msg["value"] = 0xaaaa
-                        elif val == "random":
-                            msg["value"] = int(random.random())
-                        '''
                         msg["value"] = val
                         msg["op"] = "update"
                         t = copy.deepcopy(testcase)
                         tnum += 1
                         t["testcase"][0]["id"] = "update-{}-{}-{}".format(tc.get_id(), val, tnum)
-                        t["testcase"][0]["serial"] = cnt
 
                         ret[key]["testcases"].append(t)
-                        msg.pop("op", None)
                         cnt += 1
 
     logging.info("Update Values> {} testcases are generated".format(cnt))
@@ -247,7 +236,6 @@ def drop_payloads(ptcs):
                     t = copy.deepcopy(testcase)
                     tnum += 1
                     t["testcase"][0]["id"] = "drop-{}-{}".format(ptc.get_id(), tnum)
-                    t["testcase"][0]["serial"] = cnt
 
                     ret[key]["testcases"].append(t)
                     msg.pop("op", None)

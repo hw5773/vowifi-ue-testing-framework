@@ -610,6 +610,14 @@ METHOD(proposal_t, get_number, uint8_t,
 	return this->number;
 }
 
+///// Added for VoWiFi /////
+METHOD(void, set_number, uint8_t,
+	private_proposal_t *this, uint8_t number)
+{
+	this->number = number;
+}
+////////////////////////////
+
 METHOD(proposal_t, get_transform_number, uint8_t,
 	private_proposal_t *this)
 {
@@ -1009,6 +1017,9 @@ proposal_t *proposal_create_v1(protocol_id_t protocol, uint8_t number,
 			.set_spi = _set_spi,
 			.get_spi = _get_spi,
 			.get_number = _get_number,
+      ///// Added for VoWiFi /////
+      .set_number = _set_number,
+      ////////////////////////////
 			.get_transform_number = _get_transform_number,
 			.equals = _equals,
 			.clone = _clone_,

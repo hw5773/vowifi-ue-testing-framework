@@ -1260,18 +1260,6 @@ METHOD(ike_sa_t, generate_message, status_t,
 	private_ike_sa_t *this, message_t *message, packet_t **packet)
 {
 	status_t status;
-  ///// Added for VoWiFi /////
-  instance_t *instance;
-  uint64_t ispi, rspi, tspi;
-  query_t *query;
-  uint8_t *tmp;
-  int vtype, op, tlen;
-  instance = this->instance;
-  message->set_instance(message, instance);
-  //instance = message->get_instance(message);
-  ispi = this->ike_sa_id->get_initiator_spi(this->ike_sa_id);
-  rspi = this->ike_sa_id->get_responder_spi(this->ike_sa_id);
-  ////////////////////////////
 
 	if (message->is_encoded(message))
 	{	/* already encoded in task, but set DSCP value */
@@ -1281,26 +1269,6 @@ METHOD(ike_sa_t, generate_message, status_t,
 	}
 	this->stats[STAT_OUTBOUND] = time_monotonic(NULL);
   
-  ///// Added for VoWiFi /////
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    if ((query = get_query(instance))
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "responder_spi")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-      if (vtype == VAL_TYPE_UINT64 && op == OP_TYPE_UPDATE)
-      {
-        tmp = get_query_value(query, &tlen);
-        tspi = (uint64_t)char_to_int(tmp, tlen, 10);
-        this->ike_sa_id->set_responder_spi(this->ike_sa_id, tspi);
-        instance->rspi = tspi;
-      }
-    }
-  }
-  ////////////////////////////
-
 	message->set_ike_sa_id(message, this->ike_sa_id);
 	charon->bus->message(charon->bus, message, FALSE, TRUE);
 	status = message->generate(message, this->keymat, packet);
