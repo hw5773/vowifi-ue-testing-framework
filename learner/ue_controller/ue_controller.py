@@ -130,7 +130,7 @@ def handle_ue_reboot(client, device):
     while True:
         cmd = ["adb", "devices", "-l"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        output = result.stdout.decode() + result.stderr.decode()
+        output = result.stdout.decode()
         if device in output:
             logging.info("UE reboot success")
             client.send(ACK)
