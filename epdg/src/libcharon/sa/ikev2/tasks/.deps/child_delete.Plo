@@ -1,5 +1,6 @@
 sa/ikev2/tasks/child_delete.lo: sa/ikev2/tasks/child_delete.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
  sa/ikev2/tasks/child_delete.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -238,7 +239,7 @@ sa/ikev2/tasks/child_delete.lo: sa/ikev2/tasks/child_delete.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/child_delete.h:
 

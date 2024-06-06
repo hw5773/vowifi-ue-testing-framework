@@ -1,5 +1,5 @@
 network/socket.lo: network/socket.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h network/socket.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h network/socket.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -236,7 +236,7 @@ network/socket.lo: network/socket.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 network/socket.h:
 

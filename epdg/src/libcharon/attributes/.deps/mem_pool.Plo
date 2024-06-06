@@ -1,5 +1,5 @@
 attributes/mem_pool.lo: attributes/mem_pool.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h attributes/mem_pool.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h attributes/mem_pool.h \
  ../../src/libstrongswan/networking/host.h \
  ../../src/libstrongswan/utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
@@ -205,7 +205,7 @@ attributes/mem_pool.lo: attributes/mem_pool.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 attributes/mem_pool.h:
 

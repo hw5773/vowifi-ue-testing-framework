@@ -10,9 +10,7 @@
         {
           "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "op": [
-            "update"
-          ],
+          "op": "update",
           "reporter": "epdg"
         }
       ]
@@ -32,9 +30,7 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "op": [
-            "update"
-          ],
+          "op": "update",
           "reporter": "epdg"
         }
       ]
@@ -59,9 +55,7 @@
         {
           "receiver": "epdg",
           "name": "ike_auth_2_response",
-          "op": [
-            "update"
-          ],
+          "op": "update",
           "reporter": "epdg"
         }
       ]
@@ -109,9 +103,7 @@
           "sub": [
             {
               "name": "responder_spi",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint64h",
               "value": 0
             }
@@ -133,9 +125,7 @@
           "sub": [
             {
               "name": "ike_major_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -157,9 +147,7 @@
           "sub": [
             {
               "name": "ike_minor_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -181,9 +169,7 @@
           "sub": [
             {
               "name": "exchange_type",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -205,9 +191,7 @@
           "sub": [
             {
               "name": "flags",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -229,9 +213,7 @@
           "sub": [
             {
               "name": "message_id",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint32",
               "value": 0
             }
@@ -280,9 +262,7 @@
                   "sub": [
                     {
                       "name": "proposal_number",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "uint8",
                       "value": 0
                     }
@@ -314,9 +294,7 @@
                   "sub": [
                     {
                       "name": "spi_size",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "uint8",
                       "value": 0
                     }
@@ -348,9 +326,7 @@
                   "sub": [
                     {
                       "name": "spi",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     }
@@ -382,9 +358,7 @@
                   "sub": [
                     {
                       "name": "num_transforms",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "uint8",
                       "value": 0
                     }
@@ -419,9 +393,7 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -458,9 +430,7 @@
                       "sub": [
                         {
                           "name": "encryption_key_length",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -497,9 +467,7 @@
                       "sub": [
                         {
                           "name": "integrity_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -536,9 +504,7 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -575,10 +541,7 @@
                       "sub": [
                         {
                           "name": "diffie_hellman_group",
-                          "op": [
-                            "insert",
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -610,10 +573,7 @@
                 {
                   "name": "diffie_hellman_group",
                   "type": "uint16",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "value": 0
                 }
               ]
@@ -639,10 +599,7 @@
               "sub": [
                 {
                   "name": "nonce_data",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -669,10 +626,7 @@
               "sub": [
                 {
                   "name": "nat_detection_source_ip",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -699,10 +653,7 @@
               "sub": [
                 {
                   "name": "nat_detection_destination_ip",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -729,10 +680,7 @@
               "sub": [
                 {
                   "name": "childless_ikev2_supported",
-                  "op": [
-                    "insert",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -917,9 +865,7 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -1028,9 +974,7 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -1099,9 +1043,7 @@
           "sub": [
             {
               "name": "responder_spi",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint64h",
               "value": 0
             }
@@ -1128,9 +1070,7 @@
           "sub": [
             {
               "name": "ike_major_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1157,9 +1097,7 @@
           "sub": [
             {
               "name": "ike_minor_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1186,9 +1124,7 @@
           "sub": [
             {
               "name": "exchange_type",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1215,9 +1151,7 @@
           "sub": [
             {
               "name": "flags",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1244,9 +1178,7 @@
           "sub": [
             {
               "name": "message_id",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint32",
               "value": 0
             }
@@ -1299,9 +1231,7 @@
           "sub": [
             {
               "name": "message_authentication_code",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "string",
               "value": 0
             }
@@ -1331,9 +1261,7 @@
               "sub": [
                 {
                   "name": "id_type",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -1368,10 +1296,7 @@
                   "sub": [
                     {
                       "name": "at_rand",
-                      "op": [
-                        "update",
-                        "drop"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     }
@@ -1408,10 +1333,7 @@
                   "sub": [
                     {
                       "name": "at_autn",
-                      "op": [
-                        "update",
-                        "drop"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     }
@@ -1448,10 +1370,7 @@
                   "sub": [
                     {
                       "name": "at_mac",
-                      "op": [
-                        "update",
-                        "drop"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     }
@@ -1488,10 +1407,7 @@
                   "sub": [
                     {
                       "name": "at_checkcode",
-                      "op": [
-                        "update",
-                        "drop"
-                      ],
+                      "op": "update",
                       "type": "uint32",
                       "value": 0
                     }
@@ -1525,10 +1441,7 @@
               "sub": [
                 {
                   "name": "code",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -1560,9 +1473,7 @@
               "sub": [
                 {
                   "name": "id",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -1594,9 +1505,7 @@
               "sub": [
                 {
                   "name": "type",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -1628,9 +1537,7 @@
               "sub": [
                 {
                   "name": "eap_aka_subtype",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -1664,9 +1571,7 @@
           "sub": [
             {
               "name": "responder_spi",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint64h",
               "value": 0
             }
@@ -1698,9 +1603,7 @@
           "sub": [
             {
               "name": "ike_major_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1732,9 +1635,7 @@
           "sub": [
             {
               "name": "ike_minor_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1766,9 +1667,7 @@
           "sub": [
             {
               "name": "exchange_type",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1800,9 +1699,7 @@
           "sub": [
             {
               "name": "flags",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -1834,9 +1731,7 @@
           "sub": [
             {
               "name": "message_id",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint32",
               "value": 0
             }
@@ -1899,9 +1794,7 @@
           "sub": [
             {
               "name": "message_authentication_code",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "string",
               "value": 0
             }
@@ -1936,9 +1829,7 @@
               "sub": [
                 {
                   "name": "code",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -1975,9 +1866,7 @@
               "sub": [
                 {
                   "name": "id",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -2016,9 +1905,7 @@
           "sub": [
             {
               "name": "responder_spi",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint64h",
               "value": 0
             }
@@ -2055,9 +1942,7 @@
           "sub": [
             {
               "name": "ike_major_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -2094,9 +1979,7 @@
           "sub": [
             {
               "name": "ike_minor_version",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -2133,9 +2016,7 @@
           "sub": [
             {
               "name": "exchange_type",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -2172,9 +2053,7 @@
           "sub": [
             {
               "name": "flags",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint8",
               "value": 0
             }
@@ -2211,9 +2090,7 @@
           "sub": [
             {
               "name": "message_id",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "uint32",
               "value": 0
             }
@@ -2286,9 +2163,7 @@
           "sub": [
             {
               "name": "message_authentication_code",
-              "op": [
-                "update"
-              ],
+              "op": "update",
               "type": "string",
               "value": 0
             }
@@ -2325,9 +2200,7 @@
           "sub": [
             {
               "name": "authentication",
-              "op": [
-                "drop"
-              ]
+              "op": "update"
             }
           ]
         }
@@ -2365,9 +2238,7 @@
               "sub": [
                 {
                   "name": "auth_method",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -2409,9 +2280,7 @@
               "sub": [
                 {
                   "name": "authentication_data",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -2450,9 +2319,7 @@
           "sub": [
             {
               "name": "configuration",
-              "op": [
-                "drop"
-              ]
+              "op": "update"
             }
           ]
         }
@@ -2490,9 +2357,7 @@
               "sub": [
                 {
                   "name": "cfg_type",
-                  "op": [
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint8",
                   "value": 0
                 }
@@ -2534,10 +2399,7 @@
               "sub": [
                 {
                   "name": "internal_ip6_address",
-                  "op": [
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -2579,11 +2441,7 @@
               "sub": [
                 {
                   "name": "internal_ip6_dns",
-                  "op": [
-                    "insert",
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -2625,11 +2483,7 @@
               "sub": [
                 {
                   "name": "internal_ip6_dns",
-                  "op": [
-                    "insert",
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -2671,11 +2525,7 @@
               "sub": [
                 {
                   "name": "p_cscf_ip6_address",
-                  "op": [
-                    "insert",
-                    "update",
-                    "drop"
-                  ],
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -2720,9 +2570,7 @@
                   "sub": [
                     {
                       "name": "proposal_number",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "uint8",
                       "value": 0
                     }
@@ -2769,9 +2617,7 @@
                   "sub": [
                     {
                       "name": "spi_size",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "uint8",
                       "value": 0
                     }
@@ -2818,9 +2664,7 @@
                   "sub": [
                     {
                       "name": "spi",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     }
@@ -2867,9 +2711,7 @@
                   "sub": [
                     {
                       "name": "num_transforms",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "uint8",
                       "value": 0
                     }
@@ -2919,9 +2761,7 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -2973,9 +2813,7 @@
                       "sub": [
                         {
                           "name": "encryption_key_length",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -3027,9 +2865,7 @@
                       "sub": [
                         {
                           "name": "integrity_algorithm",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -3081,9 +2917,7 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": [
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -3135,10 +2969,7 @@
                       "sub": [
                         {
                           "name": "diffie_hellman_group",
-                          "op": [
-                            "insert",
-                            "update"
-                          ],
+                          "op": "update",
                           "type": "uint16",
                           "value": 0
                         }
@@ -3187,17 +3018,13 @@
                   "sub": [
                     {
                       "name": "starting_address",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     },
                     {
                       "name": "end_address",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     }
@@ -3244,17 +3071,13 @@
                   "sub": [
                     {
                       "name": "starting_address",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     },
                     {
                       "name": "end_address",
-                      "op": [
-                        "update"
-                      ],
+                      "op": "update",
                       "type": "string",
                       "value": 0
                     }
@@ -3298,10 +3121,7 @@
               "sub": [
                 {
                   "name": "mobike_supported",
-                  "op": [
-                    "insert",
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint32",
                   "value": 0
                 }
@@ -3343,10 +3163,7 @@
               "sub": [
                 {
                   "name": "additional_ip4_address",
-                  "op": [
-                    "insert",
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint32",
                   "value": 0
                 }
@@ -3388,10 +3205,7 @@
               "sub": [
                 {
                   "name": "additional_ip6_address",
-                  "op": [
-                    "insert",
-                    "update"
-                  ],
+                  "op": "update",
                   "type": "uint32",
                   "value": 0
                 }
@@ -3431,6 +3245,7 @@
         {
           "receiver": "ims",
           "name": "401_unauthorized",
+          "op": "update",
           "reporter": "ims"
         }
       ]
@@ -3472,6 +3287,7 @@
               "sub": [
                 {
                   "name": "nonce",
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -3518,6 +3334,7 @@
               "sub": [
                 {
                   "name": "algorithm",
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -3564,6 +3381,7 @@
               "sub": [
                 {
                   "name": "alg",
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }
@@ -3610,6 +3428,7 @@
               "sub": [
                 {
                   "name": "ealg",
+                  "op": "update",
                   "type": "string",
                   "value": 0
                 }

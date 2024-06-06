@@ -1,5 +1,5 @@
 vici_attribute.lo: vici_attribute.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h vici_attribute.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h vici_attribute.h \
  vici_dispatcher.h vici_message.h ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -275,7 +275,7 @@ vici_attribute.lo: vici_attribute.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 vici_attribute.h:
 

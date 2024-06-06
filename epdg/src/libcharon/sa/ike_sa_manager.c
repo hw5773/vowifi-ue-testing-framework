@@ -2166,38 +2166,6 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 
 	id->destroy(id);
 
-  /*
-  ///// Added for VoWiFi /////
-	init_hash_t *init;
-	uint64_t spi;
-	table_item_t *item;
-	u_int row;
-  chunk_t init_hash;
-
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-  	id = entry->ike_sa_id;
-    init_hash = entry->init_hash;
-    row = chunk_hash(init_hash) & this->table_mask;
-    item = this->init_hashes_table[row];
-    init = item->value;
-
-    printf("\n\n\n\n\nspi: %.16"PRIx64"\n\n\n\n\n", init->our_spi);
-
-    if (query = get_query(instance)
-        && is_query_name(query, "ike_sa_init_response")
-        && (query = get_sub_query_by_name(query, "responder_spi")))
-    {
-      vtype = get_query_value_type(query);
-      op = get_query_operator(query);
-
-      tmp = get_query_value(query, &tlen);
-      id->set_responder_spi(id, (uint64_t)char_to_int(tmp, tlen, 10));
-    }
-  }
-  ////////////////////////////
-  */
-
 out:
 	charon->bus->set_sa(charon->bus, ike_sa);
 	if (!ike_sa)

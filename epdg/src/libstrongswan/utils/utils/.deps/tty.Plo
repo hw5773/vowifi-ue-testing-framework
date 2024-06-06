@@ -1,5 +1,5 @@
 utils/utils/tty.lo: utils/utils/tty.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h utils/utils.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -124,7 +124,7 @@ utils/utils/tty.lo: utils/utils/tty.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 utils/utils.h:
 

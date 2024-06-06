@@ -1059,6 +1059,40 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
     proposal->set_algorithm(proposal, INTEGRITY_ALGORITHM, *algo, *klen);
   }
 
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
+      && (query = get_sub_query_by_name(query, "proposal_number")))
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+
+      proposal->set_number(proposal, v8);
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
+      && (query = get_sub_query_by_name(query, "spi")))
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT64H && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      v64 = char_to_int(tmp, tlen, 16);
+
+      proposal->set_spi(proposal, v64);
+    }
+  }
+
   free(algo);
   free(klen);
 
@@ -1097,7 +1131,6 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
           if (tlen >= 8
               && !strncmp(tmp, "received", 8))
           {
-            printf("\n\n\n[VoWiFi] rcvd_dst_hash: %B\n\n\n", &(instance->rcvd_dst_hash));
             notify->set_notification_data(notify, instance->rcvd_dst_hash); 
           }
           else if (tlen >= 20)
@@ -1129,8 +1162,6 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
           if (tlen >= 8
               && !strncmp(tmp, "received", 8))
           {
-            
-            printf("\n\n\n[VoWiFi] rcvd_src_hash: %B\n\n\n", &(instance->rcvd_src_hash));
             notify->set_notification_data(notify, instance->rcvd_src_hash); 
           }
           else if (tlen >= 20)
@@ -1903,6 +1934,7 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   notify_payload_t *notify;
   id_payload_t *id;
   eap_payload_t *eap;
+  sa_payload_t *sa;
 
   ret = NOT_SET;
   ike_header = NULL;

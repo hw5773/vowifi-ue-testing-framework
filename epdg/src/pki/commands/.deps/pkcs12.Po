@@ -1,5 +1,5 @@
 commands/pkcs12.o: commands/pkcs12.c /usr/include/stdc-predef.h \
- /home/hyun/vowifi-core-network/epdg/config.h /usr/include/errno.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h /usr/include/errno.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
@@ -205,7 +205,7 @@ commands/pkcs12.o: commands/pkcs12.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 /usr/include/errno.h:
 

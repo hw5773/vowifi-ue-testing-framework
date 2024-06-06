@@ -47,8 +47,10 @@ public class LogExecutor {
   private static final int LIVENESS_SLEEP_TIME = 5*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
-  private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
+  //private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
+  //private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 15*1000;
   private static final int UE_REBOOT_TIMEOUT_VALUE = 60*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;

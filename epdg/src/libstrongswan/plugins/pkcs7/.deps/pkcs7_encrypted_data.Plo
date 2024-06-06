@@ -1,6 +1,6 @@
 pkcs7_encrypted_data.lo: pkcs7_encrypted_data.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
- pkcs7_encrypted_data.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h pkcs7_encrypted_data.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -205,7 +205,7 @@ pkcs7_encrypted_data.lo: pkcs7_encrypted_data.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 pkcs7_encrypted_data.h:
 

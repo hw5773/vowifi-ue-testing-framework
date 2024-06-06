@@ -126,13 +126,22 @@ def handle_ue_reboot(client, device):
     time.sleep(5)
     cnt = 0
     start = int(time.time())
+    retry = 0
     while True:
         cmd = ["adb", "devices", "-l"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        if device in result.stdout.decode():
+        output = result.stdout.decode()
+        if device in output:
             logging.info("UE reboot success")
             client.send(ACK)
             break
+
+        if "no devices/emulator" in output:
+            ue_reboot(device)
+
+        if "unauthorized" in output:
+            ue_reboot(device)
+
         curr = int(time.time())
         if curr - start >= REBOOT_TIMEOUT:
             if cnt < 3:
@@ -142,7 +151,7 @@ def handle_ue_reboot(client, device):
                 logging.info("UE reboot failure: timeout")
                 client.send(FAIL)
                 break
-        time.sleep(5)
+        time.sleep(7)
     time.sleep(REBOOT_WAIT_TIME)
     handle_init_config(device)
 
@@ -302,6 +311,9 @@ def check_device_model():
     elif "Note_14" in output:
         device = "Ulefone_Note_14"
         logging.info("Device model: Ulefone Note 14")
+    elif "B15 model" in output:
+        device = "NUU_B15"
+        logging.info("Device model: NUU B15")
     else:
         device = "others"
         logging.info("Device model: Others")

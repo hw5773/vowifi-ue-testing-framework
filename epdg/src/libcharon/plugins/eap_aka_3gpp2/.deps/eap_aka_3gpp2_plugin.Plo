@@ -1,6 +1,7 @@
 eap_aka_3gpp2_plugin.lo: eap_aka_3gpp2_plugin.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
- eap_aka_3gpp2_plugin.h ../../../../src/libstrongswan/plugins/plugin.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h eap_aka_3gpp2_plugin.h \
+ ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -280,7 +281,7 @@ eap_aka_3gpp2_plugin.lo: eap_aka_3gpp2_plugin.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 eap_aka_3gpp2_plugin.h:
 

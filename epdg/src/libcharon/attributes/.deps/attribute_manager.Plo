@@ -1,5 +1,6 @@
 attributes/attribute_manager.lo: attributes/attribute_manager.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
  attributes/attribute_manager.h attributes/attribute_provider.h \
  sa/ike_sa.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -229,7 +230,7 @@ attributes/attribute_manager.lo: attributes/attribute_manager.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 attributes/attribute_manager.h:
 

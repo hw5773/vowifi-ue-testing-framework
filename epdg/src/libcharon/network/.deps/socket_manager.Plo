@@ -1,5 +1,6 @@
 network/socket_manager.lo: network/socket_manager.c \
- /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h \
+ /home/esslab-04/vowifi-core-network/epdg/config.h \
  network/socket_manager.h network/socket.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -239,7 +240,7 @@ network/socket_manager.lo: network/socket_manager.c \
 
 /usr/include/stdc-predef.h:
 
-/home/hyun/vowifi-core-network/epdg/config.h:
+/home/esslab-04/vowifi-core-network/epdg/config.h:
 
 network/socket_manager.h:
 

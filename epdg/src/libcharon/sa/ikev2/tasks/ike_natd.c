@@ -262,8 +262,7 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
         printf("[VoWiFi] before check_instance in NAT_DETECTION_SOURCE_IP\n");
           if (check_instance(instance, ispi, rspi, NON_UPDATE))
           {
-        printf("[VoWiFi] after check_instance in NAT_DETECTION_SOURCE_IP\n");
-					  printf("\n\n\n[VoWiFi] (ike_natd.c) received src_hash %B\n\n\n", &hash);
+            printf("[VoWiFi] after check_instance in NAT_DETECTION_SOURCE_IP\n");
             instance->rcvd_src_hash = chunk_clone(hash);
           }
           ////////////////////////////
