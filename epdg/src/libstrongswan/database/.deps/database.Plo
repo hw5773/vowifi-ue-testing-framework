@@ -1,5 +1,5 @@
 database/database.lo: database/database.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h database/database.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h database/database.h \
  collections/enumerator.h utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -118,7 +118,7 @@ database/database.lo: database/database.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 database/database.h:
 

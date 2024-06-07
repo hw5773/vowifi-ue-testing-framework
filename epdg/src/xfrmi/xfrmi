@@ -188,7 +188,7 @@ func_exec_program ()
 
   if test -f "$progdir/$program"; then
     # Add our own library path to LD_LIBRARY_PATH
-    LD_LIBRARY_PATH="/home/esslab-04/vowifi-core-network/epdg/src/libcharon/plugins/kernel_netlink/.libs:/home/esslab-04/vowifi-core-network/epdg/src/libstrongswan/.libs:/home/esslab-04/vowifi-core-network/epdg/src/libcharon/.libs:$LD_LIBRARY_PATH"
+    LD_LIBRARY_PATH="/home/esslab-03/vowifi-core-network/epdg/src/libcharon/plugins/kernel_netlink/.libs:/home/esslab-03/vowifi-core-network/epdg/src/libstrongswan/.libs:/home/esslab-03/vowifi-core-network/epdg/src/libcharon/.libs:$LD_LIBRARY_PATH"
 
     # Some systems cannot cope with colon-terminated LD_LIBRARY_PATH
     # The second colon is a workaround for a bug in BeOS R4 sed

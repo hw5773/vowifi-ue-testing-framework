@@ -1,6 +1,6 @@
 eap_aka_3gpp2_provider.lo: eap_aka_3gpp2_provider.c \
  /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  eap_aka_3gpp2_provider.h eap_aka_3gpp2_functions.h \
  ../../../../src/libsimaka/simaka_manager.h \
  ../../../../src/libstrongswan/crypto/hashers/hasher.h \
@@ -285,7 +285,7 @@ eap_aka_3gpp2_provider.lo: eap_aka_3gpp2_provider.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 eap_aka_3gpp2_provider.h:
 

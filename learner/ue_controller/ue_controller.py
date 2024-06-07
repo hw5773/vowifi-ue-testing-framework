@@ -180,7 +180,7 @@ def handle_init_config(device):
         time.sleep(3)
 
         logging.debug("Toggle the WiFi Calling button")
-        for _ in range(3):
+        for _ in range(2):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)

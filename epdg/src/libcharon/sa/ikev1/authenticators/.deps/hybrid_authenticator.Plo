@@ -1,7 +1,7 @@
 sa/ikev1/authenticators/hybrid_authenticator.lo: \
  sa/ikev1/authenticators/hybrid_authenticator.c \
  /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  sa/ikev1/authenticators/hybrid_authenticator.h sa/authenticator.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -240,7 +240,7 @@ sa/ikev1/authenticators/hybrid_authenticator.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 sa/ikev1/authenticators/hybrid_authenticator.h:
 

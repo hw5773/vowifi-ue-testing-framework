@@ -1,5 +1,5 @@
 resolve_handler.lo: resolve_handler.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h resolve_handler.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h resolve_handler.h \
  ../../../../src/libcharon/attributes/attribute_handler.h \
  ../../../../src/libcharon/sa/ike_sa.h \
  ../../../../src/libstrongswan/library.h \
@@ -256,7 +256,7 @@ resolve_handler.lo: resolve_handler.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 resolve_handler.h:
 

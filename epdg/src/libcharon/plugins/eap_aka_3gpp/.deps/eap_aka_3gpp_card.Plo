@@ -1,5 +1,5 @@
 eap_aka_3gpp_card.lo: eap_aka_3gpp_card.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h eap_aka_3gpp_card.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h eap_aka_3gpp_card.h \
  eap_aka_3gpp_functions.h \
  ../../../../src/libstrongswan/credentials/keys/shared_key.h \
  ../../../../src/libstrongswan/collections/enumerator.h \
@@ -284,7 +284,7 @@ eap_aka_3gpp_card.lo: eap_aka_3gpp_card.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 eap_aka_3gpp_card.h:
 

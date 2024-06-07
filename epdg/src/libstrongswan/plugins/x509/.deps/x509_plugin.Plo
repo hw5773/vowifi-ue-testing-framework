@@ -1,5 +1,5 @@
 x509_plugin.lo: x509_plugin.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h x509_plugin.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h x509_plugin.h \
  ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -211,7 +211,7 @@ x509_plugin.lo: x509_plugin.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 x509_plugin.h:
 

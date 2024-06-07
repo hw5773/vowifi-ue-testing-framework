@@ -1,5 +1,5 @@
 libvici.lo: libvici.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h libvici.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h libvici.h \
  /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -204,7 +204,7 @@ libvici.lo: libvici.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 libvici.h:
 

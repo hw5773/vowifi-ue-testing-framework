@@ -1,5 +1,5 @@
 sa/keymat.lo: sa/keymat.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h sa/keymat.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h sa/keymat.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -228,7 +228,7 @@ sa/keymat.lo: sa/keymat.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 sa/keymat.h:
 

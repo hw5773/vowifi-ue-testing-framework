@@ -1,6 +1,6 @@
 sa/ikev2/tasks/ike_verify_peer_cert.lo: \
  sa/ikev2/tasks/ike_verify_peer_cert.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  sa/ikev2/tasks/ike_verify_peer_cert.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -237,7 +237,7 @@ sa/ikev2/tasks/ike_verify_peer_cert.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 sa/ikev2/tasks/ike_verify_peer_cert.h:
 

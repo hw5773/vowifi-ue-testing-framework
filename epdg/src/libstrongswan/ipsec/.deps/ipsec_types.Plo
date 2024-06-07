@@ -1,5 +1,5 @@
 ipsec/ipsec_types.lo: ipsec/ipsec_types.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h ipsec/ipsec_types.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h ipsec/ipsec_types.h \
  library.h utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -147,7 +147,7 @@ ipsec/ipsec_types.lo: ipsec/ipsec_types.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 ipsec/ipsec_types.h:
 

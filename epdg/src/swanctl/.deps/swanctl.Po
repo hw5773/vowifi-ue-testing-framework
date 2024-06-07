@@ -1,5 +1,5 @@
 swanctl.o: swanctl.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h swanctl.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h swanctl.h \
  ../../src/libstrongswan/settings/settings.h \
  ../../src/libstrongswan/utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
@@ -210,7 +210,7 @@ swanctl.o: swanctl.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 swanctl.h:
 

@@ -1,5 +1,5 @@
 pkcs7_data.lo: pkcs7_data.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h pkcs7_data.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h pkcs7_data.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -201,7 +201,7 @@ pkcs7_data.lo: pkcs7_data.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 pkcs7_data.h:
 
