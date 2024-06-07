@@ -314,6 +314,9 @@ def check_device_model():
     elif "B15 model" in output:
         device = "NUU_B15"
         logging.info("Device model: NUU B15")
+    elif "Nokia_G100":
+        device = "Nokia_G100"
+        logging.info("Device model: Nokia G100")
     else:
         device = "others"
         logging.info("Device model: Others")
