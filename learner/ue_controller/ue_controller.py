@@ -129,8 +129,10 @@ def handle_ue_reboot(client, device):
     retry = 0
     while True:
         cmd = ["adb", "devices", "-l"]
+        print ("cmd: {}".format(cmd))
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         output = result.stdout.decode()
+        print ("output: {}".format(output))
         if device in output:
             logging.info("UE reboot success")
             client.send(ACK)
@@ -285,7 +287,7 @@ def check_device_model():
         device = "A2020N3"
         logging.info("Device model: ZTE Stage 5G")
     elif "Pixel_4a" in output:
-        device = "Pixel_6a"
+        device = "Pixel_4a"
         logging.info("Device model: Google Pixel 4a")
     elif "Pixel_6a" in output:
         device = "Pixel_6a"
