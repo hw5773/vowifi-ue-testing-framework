@@ -203,8 +203,11 @@ def handle_client_connection(client, server, device):
             if opcode == "reset":
                 handle_reset(client, device)
             elif opcode == "device":
-                logging.info("UE model name to be sent: {}".format(device))
-                client.send("{}\n".format(device).encode())
+                name = device
+                if name == "B15 model":
+                    name = "NUU_B15"
+                logging.info("UE model name to be sent: {}".format(name))
+                client.send("{}\n".format(name).encode())
             elif opcode == "ue_reboot":
                 handle_ue_reboot(client, device)
             elif opcode == "adb_server_restart":
