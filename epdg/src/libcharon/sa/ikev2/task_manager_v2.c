@@ -1218,9 +1218,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 
             if (send)
             {
-              printf("[VoWiFi/IKE_AUTH] Before sending the notify payload\n");
               send_notify_response(this, message, ntype, chunk_empty);
-              printf("[VoWiFi/IKE_AUTH] After sending the notify payload\n");
               send = 0;
             }
 
@@ -1953,7 +1951,6 @@ static void send_notify_response(private_task_manager_t *this,
 	}
 	response->set_source(response, me->clone(me));
 	response->set_destination(response, other->clone(other));
-  printf("\n\n\n\n\n[VoWiFi] before ike_sa->generate_message()\n\n\n\n\n");
 	if (this->ike_sa->generate_message(this->ike_sa, response,
 									   &packet) == SUCCESS)
 	{
@@ -2234,8 +2231,6 @@ METHOD(task_manager_t, process_message, status_t,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    printf("[VoWiFi] instance->imid: %d\n", instance->imid);
-    printf("[VoWiFi] message->get_message_id(message): %d\n", msg->get_message_id(msg));
     if (instance->imid > 0
         && instance->imid == msg->get_message_id(msg))
       retransmission = 1;
@@ -2397,6 +2392,7 @@ METHOD(task_manager_t, process_message, status_t,
           symbol = "error in exchange_type";
           instance->rprev = "error";
       }
+      printf("[VoWiFi] the symbol to be reported: %s\n\n\n\n\n", symbol);
       m = init_message(instance, MSG_TYPE_BLOCK_START,
           symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, m);

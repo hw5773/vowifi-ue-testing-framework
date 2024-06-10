@@ -563,6 +563,7 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
   uint16_t *algo, *klen;
   bool found;
 
+  printf("[VoWiFi] send security association\n");
   msg = init_message(instance, MSG_TYPE_BLOCK_START,
       "security_association", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
   instance->add_message_to_send_queue(instance, msg);
