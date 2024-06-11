@@ -84,3 +84,7 @@ tags
 **.Plo
 **.soT
 **.tar.gz
+
+# ignore
+learner/log_executor/log_executor.log.1
+

@@ -225,8 +225,38 @@ class MessageLog {
     this(testcase, type, null, null);
   }
 
+  void printMessageLog(int indent) {
+    String msg;
+    MessageLog tmp;
+    Iterator<MessageLog> iter;
+    logger = this.logger;
+    msg = "";
+
+    for (int i=0; i<indent; i++)
+      msg += " ";
+
+    msg += this.name;
+    logger.info(msg);
+
+    if (this.sub != null) {
+      indent += 2;
+      iter = this.sub.iterator();
+      while (iter.hasNext()) {
+        tmp = iter.next();
+        tmp.printMessageLog(indent);
+      }
+    }
+  }
+
   public MessageLog addSubmessage(MessageLogType type) {
     MessageLog ret;
+    ret = new MessageLog(this.testcase, type, this, this.logger);
+    if (this.sub == null) {
+      this.sub = new ArrayList<MessageLog>();
+    }
+    this.sub.add(ret);
+
+    /*
     if (this.type == MessageLogType.ATTRIBUTE) {
       ret = new MessageLog(this.testcase, type, this.getParent(), this.logger);
       this.getParent().sub.add(ret);
@@ -237,6 +267,8 @@ class MessageLog {
       }
       this.sub.add(ret);
     }
+    */
+
     return ret;
   }
 

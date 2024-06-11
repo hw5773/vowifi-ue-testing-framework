@@ -1020,7 +1020,6 @@ METHOD(task_t, build_r, status_t,
 
 		if ((uintptr_t)cfg->get(cfg, AUTH_RULE_AUTH_CLASS) == AUTH_CLASS_EAP)
 		{	/* EAP-only authentication */
-      printf("\n\n\n[VoWiFi] this is invoked 1\n\n\n");
 			if (!this->ike_sa->supports_extension(this->ike_sa,
 												  EXT_EAP_ONLY_AUTHENTICATION))
 			{
@@ -1041,7 +1040,6 @@ METHOD(task_t, build_r, status_t,
 		}
 		else
 		{
-      printf("\n\n\n[VoWiFi] this is invoked 2\n\n\n");
 			/* build authentication data */
 			this->my_auth = authenticator_create_builder(this->ike_sa, cfg,
 								this->other_nonce, this->my_nonce,
@@ -1057,7 +1055,6 @@ METHOD(task_t, build_r, status_t,
 
 	if (this->other_auth)
 	{
-      printf("\n\n\n[VoWiFi] this is invoked 3\n\n\n");
 		switch (this->other_auth->build(this->other_auth, message))
 		{
 			case SUCCESS:
@@ -1076,7 +1073,6 @@ METHOD(task_t, build_r, status_t,
 	}
 	if (this->my_auth)
 	{
-      printf("\n\n\n[VoWiFi] this is invoked 4\n\n\n");
 		if (this->ppk.ptr && this->my_auth->use_ppk)
 		{
 			this->my_auth->use_ppk(this->my_auth, this->ppk, FALSE);
@@ -1095,7 +1091,6 @@ METHOD(task_t, build_r, status_t,
 		}
 	}
 
-      printf("\n\n\n[VoWiFi] this is invoked 5\n\n\n");
 	/* add a PPK_IDENTITY notify and derive new keys and clear the PPK */
 	if (this->ppk.ptr) {
 	

@@ -1078,8 +1078,10 @@ public class LogExecutor {
 
           case 2:
             if (mlog == null) {
+              logger.info("mlog is initialized");
               mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
             } else {
+              logger.info("mlog add the submessage");
               mlog = mlog.addSubmessage(MessageLogType.PAYLOAD);
             }
             depth++;
@@ -1088,6 +1090,7 @@ public class LogExecutor {
 
           case 3:
             if (mlog.hasParent()) {
+              logger.info("mlog moves to the parent");
               mlog = mlog.getParent();
             }
             depth--;
@@ -1128,6 +1131,7 @@ public class LogExecutor {
           print += rstr;
           arr = rstr.split(":", 0);
 
+          logger.info("name is set to " + arr[0]);
           mlog.setName(arr[0]);
 
           if (arr.length > 1) {
@@ -1141,6 +1145,12 @@ public class LogExecutor {
           }
           logger.info(print);
         }
+
+        ///// Added to test the result /////
+        if (mlog.getType() == MessageLogType.ATTRIBUTE) {
+          mlog = mlog.getParent();
+        }
+        ////////////////////////////////////
       } while (stack.size() != 0);
   	  epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
 		} catch (SocketTimeoutException e) {
@@ -1181,6 +1191,7 @@ public class LogExecutor {
       }
     }
 
+    mlog.printMessageLog(0);
     return mlog;
   }
 

@@ -59,7 +59,7 @@ public class Oracle {
     String query, reply;
     Iterator i;
 
-    ret = 1;
+    ret = 0;
 
     i = pairs.iterator();
 
@@ -69,11 +69,34 @@ public class Oracle {
       reply = pair.getReplyName();
 
       if (query.contains("enable_vowifi")
-          && reply.contains("ike_sa_init_request"))
-        ret = 0;
+          && !reply.contains("ike_sa_init_request"))
+        ret = 1;
+
+      if (query.contains("ike_sa_init_response")
+          && !reply.contains("ike_auth_1_request"))
+        ret = 1;
+
+      if (query.contains("ike_auth_1_response")
+          && !reply.contains("ike_auth_2_request"))
+        ret = 1;
+
+      if (query.contains("ike_auth_2_response")
+          && !reply.contains("ike_auth_3_request"))
+        ret = 1;
+
+      if (query.contains("ike_auth_3_response")
+          && !(reply.contains("timeout") || reply.contains("register")))
+        ret = 1;
+
+      if (query.contains("401_unauthorized")
+          && !reply.contains("register"))
+        ret = 1;
 
       if (reply.contains("client_error"))
+      {
         ret = 2;
+        break;
+      }
     }
 
     return ret;
