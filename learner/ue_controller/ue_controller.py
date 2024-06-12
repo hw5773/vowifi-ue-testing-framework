@@ -203,8 +203,11 @@ def handle_client_connection(client, server, device):
             if opcode == "reset":
                 handle_reset(client, device)
             elif opcode == "device":
-                logging.info("UE model name to be sent: {}".format(device))
-                client.send("{}\n".format(device).encode())
+                name = device
+                if name == "B15 model":
+                    name = "NUU_B15"
+                logging.info("UE model name to be sent: {}".format(name))
+                client.send("{}\n".format(name).encode())
             elif opcode == "ue_reboot":
                 handle_ue_reboot(client, device)
             elif opcode == "adb_server_restart":
@@ -285,7 +288,7 @@ def check_device_model():
         device = "A2020N3"
         logging.info("Device model: ZTE Stage 5G")
     elif "Pixel_4a" in output:
-        device = "Pixel_6a"
+        device = "Pixel_4a"
         logging.info("Device model: Google Pixel 4a")
     elif "Pixel_6a" in output:
         device = "Pixel_6a"
@@ -312,8 +315,11 @@ def check_device_model():
         device = "Ulefone_Note_14"
         logging.info("Device model: Ulefone Note 14")
     elif "B15 model" in output:
-        device = "NUU_B15"
+        device = "B15 model"
         logging.info("Device model: NUU B15")
+    elif "Nokia_G100":
+        device = "Nokia_G100"
+        logging.info("Device model: Nokia G100")
     else:
         device = "others"
         logging.info("Device model: Others")
