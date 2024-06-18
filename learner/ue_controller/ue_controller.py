@@ -210,6 +210,8 @@ def handle_client_connection(client, server, device):
                 name = device
                 if name == "B15 model":
                     name = "NUU_B15"
+                elif name == "LM_Q730":
+                    name = "LG_Stylo_6"
                 logging.info("UE model name to be sent: {}".format(name))
                 client.send("{}\n".format(name).encode())
             elif opcode == "ue_reboot":
@@ -258,6 +260,9 @@ def check_device_model():
     elif "LM_G900TM" in output:
         device = "LM_G900TM"
         logging.info("Device model: LG Velvet 5G")
+    elif "LM_Q730" in output:
+        device = "LM_Q730"
+        logging.info("Device model: LG Stylo 6")
     elif "OnePlus7T" in output:
         device = "OnePlus7T"
         logging.info("Device model: OnePlus7T")
@@ -321,7 +326,7 @@ def check_device_model():
     elif "B15 model" in output:
         device = "B15 model"
         logging.info("Device model: NUU B15")
-    elif "Nokia_G100":
+    elif "Nokia_G100" in output:
         device = "Nokia_G100"
         logging.info("Device model: Nokia G100")
     else:
