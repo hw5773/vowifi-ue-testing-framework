@@ -179,6 +179,11 @@ def handle_init_config(device):
             time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
     elif device == "A13_Pro":
+        logging.debug("Swipe to unlock the phone")
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
