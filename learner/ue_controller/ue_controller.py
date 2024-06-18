@@ -127,6 +127,7 @@ def handle_ue_reboot(client, device):
     cnt = 0
     start = int(time.time())
     retry = 0
+    no_device = 0
     while True:
         cmd = ["adb", "devices", "-l"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -137,7 +138,10 @@ def handle_ue_reboot(client, device):
             break
 
         if "no devices/emulator" in output:
-            ue_reboot(device)
+            if no_device < 3:
+                no_device += 1
+            else:
+                ue_reboot(device)
 
         if "unauthorized" in output:
             ue_reboot(device)
@@ -147,6 +151,7 @@ def handle_ue_reboot(client, device):
             if cnt < 3:
                 ue_reboot(device)
                 start = int(time.time())
+                cnt += 1
             else:
                 logging.info("UE reboot failure: timeout")
                 client.send(FAIL)
