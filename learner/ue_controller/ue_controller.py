@@ -11,7 +11,7 @@ import signal
 ACK = "ACK\n".encode()
 FAIL = "Fail\n".encode()
 REBOOT_TIMEOUT = 120
-REBOOT_WAIT_TIME = 15
+REBOOT_WAIT_TIME = 25
 
 def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
@@ -128,37 +128,31 @@ def handle_ue_reboot(client, device):
     start = int(time.time())
     retry = 0
     no_device = 0
+    success = False
     while True:
         cmd = ["adb", "devices", "-l"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         output = result.stdout.decode()
         if device in output:
             logging.info("UE reboot success")
-            client.send(ACK)
+            success = True
             break
-
-        if "no devices/emulator" in output:
-            if no_device < 3:
-                no_device += 1
-            else:
-                ue_reboot(device)
-
-        if "unauthorized" in output:
-            ue_reboot(device)
 
         curr = int(time.time())
         if curr - start >= REBOOT_TIMEOUT:
             if cnt < 3:
                 ue_reboot(device)
-                start = int(time.time())
                 cnt += 1
             else:
                 logging.info("UE reboot failure: timeout")
-                client.send(FAIL)
                 break
         time.sleep(7)
-    time.sleep(REBOOT_WAIT_TIME)
-    handle_init_config(device)
+    if success:
+        time.sleep(REBOOT_WAIT_TIME)
+        handle_init_config(device)
+        client.send(ACK)
+    else:
+        client.send(FAIL)
 
 def handle_adb_server_restart(client):
     adb_server_restart()
