@@ -1,6 +1,6 @@
 kernel_netlink_plugin.lo: kernel_netlink_plugin.c \
  /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  kernel_netlink_plugin.h ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -245,7 +245,7 @@ kernel_netlink_plugin.lo: kernel_netlink_plugin.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 kernel_netlink_plugin.h:
 

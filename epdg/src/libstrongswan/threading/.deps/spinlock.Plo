@@ -1,5 +1,5 @@
 threading/spinlock.lo: threading/spinlock.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h /usr/include/pthread.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h /usr/include/pthread.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
@@ -152,7 +152,7 @@ threading/spinlock.lo: threading/spinlock.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 /usr/include/pthread.h:
 

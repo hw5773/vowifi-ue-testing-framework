@@ -1,6 +1,6 @@
 plugins/plugin_loader.lo: plugins/plugin_loader.c \
  /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  plugins/plugin_loader.h collections/enumerator.h utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -172,7 +172,7 @@ plugins/plugin_loader.lo: plugins/plugin_loader.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 plugins/plugin_loader.h:
 

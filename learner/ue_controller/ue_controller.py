@@ -11,7 +11,7 @@ import signal
 ACK = "ACK\n".encode()
 FAIL = "Fail\n".encode()
 REBOOT_TIMEOUT = 120
-REBOOT_WAIT_TIME = 15
+REBOOT_WAIT_TIME = 25
 
 def handle_turn_off_wifi_interface(device):
     if device == "SM_G920T":
@@ -127,33 +127,35 @@ def handle_ue_reboot(client, device):
     cnt = 0
     start = int(time.time())
     retry = 0
+    no_device = 0
+    success = False
     while True:
         cmd = ["adb", "devices", "-l"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         output = result.stdout.decode()
+        logging.info("device: {}".format(device))
+        logging.info("output: {}".format(output))
+        logging.info("device in output: {}".format(device in output))
         if device in output:
             logging.info("UE reboot success")
-            client.send(ACK)
+            success = True
             break
-
-        if "no devices/emulator" in output:
-            ue_reboot(device)
-
-        if "unauthorized" in output:
-            ue_reboot(device)
 
         curr = int(time.time())
         if curr - start >= REBOOT_TIMEOUT:
             if cnt < 3:
                 ue_reboot(device)
-                start = int(time.time())
+                cnt += 1
             else:
                 logging.info("UE reboot failure: timeout")
-                client.send(FAIL)
                 break
         time.sleep(7)
-    time.sleep(REBOOT_WAIT_TIME)
-    handle_init_config(device)
+    if success:
+        time.sleep(REBOOT_WAIT_TIME)
+        handle_init_config(device)
+        client.send(ACK)
+    else:
+        client.send(FAIL)
 
 def handle_adb_server_restart(client):
     adb_server_restart()
@@ -174,13 +176,18 @@ def handle_init_config(device):
             time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
     elif device == "A13_Pro":
+        logging.debug("Swipe to unlock the phone")
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
 
         logging.debug("Toggle the WiFi Calling button")
-        for _ in range(3):
+        for _ in range(2):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
@@ -206,6 +213,10 @@ def handle_client_connection(client, server, device):
                 name = device
                 if name == "B15 model":
                     name = "NUU_B15"
+                elif name == "LM_Q730":
+                    name = "LG_Stylo_6"
+                elif name == "Note_14":
+                    name = "Ulefone_Note_14"
                 logging.info("UE model name to be sent: {}".format(name))
                 client.send("{}\n".format(name).encode())
             elif opcode == "ue_reboot":
@@ -254,6 +265,9 @@ def check_device_model():
     elif "LM_G900TM" in output:
         device = "LM_G900TM"
         logging.info("Device model: LG Velvet 5G")
+    elif "LM_Q730" in output:
+        device = "LM_Q730"
+        logging.info("Device model: LG Stylo 6")
     elif "OnePlus7T" in output:
         device = "OnePlus7T"
         logging.info("Device model: OnePlus7T")
@@ -312,12 +326,12 @@ def check_device_model():
         device = "I15_Pro_Max"
         logging.info("Device model: Blackcyber I15 Pro Max")
     elif "Note_14" in output:
-        device = "Ulefone_Note_14"
+        device = "Note_14"
         logging.info("Device model: Ulefone Note 14")
     elif "B15 model" in output:
         device = "B15 model"
         logging.info("Device model: NUU B15")
-    elif "Nokia_G100":
+    elif "Nokia_G100" in output:
         device = "Nokia_G100"
         logging.info("Device model: Nokia G100")
     else:

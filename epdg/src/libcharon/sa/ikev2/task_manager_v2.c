@@ -1120,6 +1120,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         }
       }
 
+      printf("\n\n\n[VoWiFi] sending the symbol 1: %s\n\n\n", symbol);
       msg = init_message(instance, MSG_TYPE_BLOCK_START, 
         symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, msg);
@@ -1597,7 +1598,6 @@ static status_t process_request(private_task_manager_t *this,
   eap_payload_t *epload;
   ehdr_t *ehdr;
   symbol = "unknown";
-  int retransmission = 0;
 
   /*
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
@@ -1842,12 +1842,9 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    if (!retransmission)
-    {
-      msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-          NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-      instance->add_message_to_send_queue(instance, msg);
-    }
+    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
   }
   ////////////////////////////
 
@@ -2231,7 +2228,7 @@ METHOD(task_manager_t, process_message, status_t,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    if (instance->imid > 0
+    if (instance->imid >= 0
         && instance->imid == msg->get_message_id(msg))
       retransmission = 1;
     else
@@ -2392,7 +2389,6 @@ METHOD(task_manager_t, process_message, status_t,
           symbol = "error in exchange_type";
           instance->rprev = "error";
       }
-      printf("[VoWiFi] the symbol to be reported: %s\n\n\n\n\n", symbol);
       m = init_message(instance, MSG_TYPE_BLOCK_START,
           symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, m);

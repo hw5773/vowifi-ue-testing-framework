@@ -1,5 +1,5 @@
 pkcs12_decode.lo: pkcs12_decode.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h pkcs12_decode.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h pkcs12_decode.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -205,7 +205,7 @@ pkcs12_decode.lo: pkcs12_decode.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 pkcs12_decode.h:
 

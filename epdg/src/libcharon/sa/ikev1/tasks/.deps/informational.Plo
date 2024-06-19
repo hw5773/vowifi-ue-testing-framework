@@ -1,6 +1,6 @@
 sa/ikev1/tasks/informational.lo: sa/ikev1/tasks/informational.c \
  /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  sa/ikev1/tasks/informational.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -238,7 +238,7 @@ sa/ikev1/tasks/informational.lo: sa/ikev1/tasks/informational.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 sa/ikev1/tasks/informational.h:
 

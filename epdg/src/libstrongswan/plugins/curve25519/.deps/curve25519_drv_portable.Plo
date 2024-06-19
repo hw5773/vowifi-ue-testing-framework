@@ -1,6 +1,6 @@
 curve25519_drv_portable.lo: curve25519_drv_portable.c \
  /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  curve25519_drv_portable.h curve25519_drv.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -199,7 +199,7 @@ curve25519_drv_portable.lo: curve25519_drv_portable.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 curve25519_drv_portable.h:
 

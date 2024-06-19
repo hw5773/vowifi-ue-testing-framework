@@ -137,6 +137,7 @@ def replay(ptcs):
                     continue
             s = {}
             s["name"] = "message_id"
+            s["op"] = "update"
             s["type"] = "string"
             s["value"] = "previous"
             r["sub"].append(s)
@@ -251,14 +252,14 @@ def message_level_manipulation(ptcs, ename, fname):
         ret[key]["testcases"] = []
 
     lst1 = substitution(ptcs, ename, fname)
-    lst2 = replay(ptcs)
+    #lst2 = replay(ptcs)
 
     for key in messages:
         for tc in lst1[key]["testcases"]:
             ret[key]["testcases"].append(tc)
 
-        for tc in lst2[key]["testcases"]:
-            ret[key]["testcases"].append(tc)
+        #for tc in lst2[key]["testcases"]:
+        #    ret[key]["testcases"].append(tc)
 
     return ret 
 

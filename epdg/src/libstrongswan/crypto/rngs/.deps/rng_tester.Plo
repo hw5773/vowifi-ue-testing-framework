@@ -1,6 +1,6 @@
 crypto/rngs/rng_tester.lo: crypto/rngs/rng_tester.c \
  /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  crypto/rngs/rng_tester.h library.h utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -149,7 +149,7 @@ crypto/rngs/rng_tester.lo: crypto/rngs/rng_tester.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 crypto/rngs/rng_tester.h:
 

@@ -1,5 +1,5 @@
 commands/print.o: commands/print.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h pki.h command.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h pki.h command.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -204,7 +204,7 @@ commands/print.o: commands/print.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 pki.h:
 

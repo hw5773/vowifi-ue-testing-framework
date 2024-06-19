@@ -1,5 +1,5 @@
 simaka_crypto.lo: simaka_crypto.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h simaka_crypto.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h simaka_crypto.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -202,7 +202,7 @@ simaka_crypto.lo: simaka_crypto.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 simaka_crypto.h:
 

@@ -1,5 +1,5 @@
 gmp_diffie_hellman.lo: gmp_diffie_hellman.c /usr/include/stdc-predef.h \
- /home/esslab-04/vowifi-core-network/epdg/config.h \
+ /home/esslab-03/vowifi-core-network/epdg/config.h \
  /usr/include/x86_64-linux-gnu/gmp.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
@@ -198,7 +198,7 @@ gmp_diffie_hellman.lo: gmp_diffie_hellman.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-04/vowifi-core-network/epdg/config.h:
+/home/esslab-03/vowifi-core-network/epdg/config.h:
 
 /usr/include/x86_64-linux-gnu/gmp.h:
 
