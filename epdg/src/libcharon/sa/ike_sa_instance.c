@@ -40,6 +40,8 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
     {
       instance->ispi = ispi;
       instance->rspi = rspi;
+      instance->imid = -1;
+      instance->rmid = -1;
       ret = 1;
     }
     else

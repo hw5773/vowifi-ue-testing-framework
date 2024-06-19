@@ -1067,6 +1067,7 @@ public class LogExecutor {
         rcvd = result.getBytes();
         type = (char) rcvd[idx++];
 
+        logger.debug("mlog before switch: " + mlog);
         switch (type) {
           case 1:
             if (mlog == null) {
@@ -1086,9 +1087,11 @@ public class LogExecutor {
             }
             depth++;
             stack.push(1);
+            logger.debug("mlog in case 2: " + mlog);
             break;
 
           case 3:
+            logger.debug("mlog in case 3: " + mlog);
             if (mlog.hasParent()) {
               logger.info("mlog moves to the parent");
               mlog = mlog.getParent();

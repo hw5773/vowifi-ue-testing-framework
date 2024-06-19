@@ -133,6 +133,9 @@ def handle_ue_reboot(client, device):
         cmd = ["adb", "devices", "-l"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         output = result.stdout.decode()
+        logging.info("device: {}".format(device))
+        logging.info("output: {}".format(output))
+        logging.info("device in output: {}".format(device in output))
         if device in output:
             logging.info("UE reboot success")
             success = True
@@ -212,6 +215,8 @@ def handle_client_connection(client, server, device):
                     name = "NUU_B15"
                 elif name == "LM_Q730":
                     name = "LG_Stylo_6"
+                elif name == "Note_14":
+                    name = "Ulefone_Note_14"
                 logging.info("UE model name to be sent: {}".format(name))
                 client.send("{}\n".format(name).encode())
             elif opcode == "ue_reboot":
@@ -321,7 +326,7 @@ def check_device_model():
         device = "I15_Pro_Max"
         logging.info("Device model: Blackcyber I15 Pro Max")
     elif "Note_14" in output:
-        device = "Ulefone_Note_14"
+        device = "Note_14"
         logging.info("Device model: Ulefone Note 14")
     elif "B15 model" in output:
         device = "B15 model"
