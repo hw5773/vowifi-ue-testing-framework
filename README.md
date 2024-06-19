@@ -195,7 +195,7 @@
  
   - [Host] Initiate the VM
     - `cd VOWIFI_ROOT/vagrant/310260`
-    - `vagrant up`
+    - `vagrant up or (First run this --> vagrant init <box-name> e.g:, in our case it is <bento/ubuntu-20.04> so command will be --> vagrant init bento/ubuntu-20.04)`
     - select vowifi-310260 for the bridge
     - `vagrant ssh` (to get the shell of VM)
  
