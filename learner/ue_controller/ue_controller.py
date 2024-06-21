@@ -277,24 +277,15 @@ def check_device_model():
     elif "HTC_U11_life" in output:
         device = "HTC_U11"
         logging.info("Device model: HTC U11")
-    elif "CPH2459" in output:
-        device = "OnePlusN20"
-        logging.info("Device model: OnePlus Nord N20")
     elif "Blackview_A55" in output:
         device = "Blackview_A55"
         logging.info("Device model: A55")
-    elif "OnePlus Nord N20" in output:
-        device = "OnePlus_Nord_N20"
-        logging.info("Device model: CPH2459")
     elif "Z8850K" in output:
         device = "ZTE_State_5G"
         logging.info("Device model: ZTE STAGE 5G")
     elif "A55" in output:
         device = "A55"
         logging.info("Device model: Blackview_A55")
-    elif "CPH2459" in output:
-        device = "CPH2459"
-        logging.info("Device model: OnePlus Nord N20")
     elif "A13_Pro" in output:
         device = "A13_Pro"
         logging.info("Device model: UMIDIGI A13 Pro")
@@ -334,6 +325,9 @@ def check_device_model():
     elif "Nokia_G100" in output:
         device = "Nokia_G100"
         logging.info("Device model: Nokia G100")
+    elif "CPH2459" in output:
+        device = "One_Plus_Nord_N20"
+        logging.info("Device mode: One Plus Nord N20")
     else:
         device = "others"
         logging.info("Device model: Others")
