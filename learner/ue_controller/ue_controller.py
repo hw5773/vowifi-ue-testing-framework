@@ -175,26 +175,30 @@ def handle_init_config(device):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         
-        #Enabling the Swipe action
-        #logging.debug("Enabling Swipe to unlock the phone")
-        #cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-        #logging.debug("Swiped Successfully")
-        
-        #Enabling the MTP Toggle
-        #logging.debug("Enabling MTP Toggle")
-        #cmd = ["adb", "shell", "input", "tap", "300", "300"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-        #logging.debug("Tapped Successfully")
-        
         logging.debug("Toggle the WiFi Calling button")
         for _ in range(3):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
+    elif device == "One_Plus_Nord_N20":
+         logging.debug("Enabling Menu")
+         cmd = ["adb", "shell", "input", "keyevent", "82"]
+         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+         time.sleep(3)
+         logging.debug("Menu enabled successfully")
+
+         logging.debug("Enable WiFi Calling")
+         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+         time.sleep(3)
+
+         logging.debug("Toggle the WiFi Calling button")
+         for _ in range(3):
+             cmd = ["adb", "shell", "input", "keyevent", "23"]
+             result = subprocess.run(cmd, stdout=subprocess.PIPE)
+             time.sleep(3)
+         logging.debug("Finish toggling the WiFi Calling button")
     elif device == "A13_Pro":
         logging.debug("Swipe to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
