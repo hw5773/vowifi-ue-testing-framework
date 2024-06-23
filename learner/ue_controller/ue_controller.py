@@ -164,11 +164,31 @@ def handle_adb_server_restart(client):
 
 def handle_init_config(device):
     if device == "ZTE_State_5G":
+        logging.debug("Enabling Menu")
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Menu enabled successfully")
+
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-
+        
+        #Enabling the Swipe action
+        #logging.debug("Enabling Swipe to unlock the phone")
+        #cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        #logging.debug("Swiped Successfully")
+        
+        #Enabling the MTP Toggle
+        #logging.debug("Enabling MTP Toggle")
+        #cmd = ["adb", "shell", "input", "tap", "300", "300"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        #logging.debug("Tapped Successfully")
+        
         logging.debug("Toggle the WiFi Calling button")
         for _ in range(3):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
