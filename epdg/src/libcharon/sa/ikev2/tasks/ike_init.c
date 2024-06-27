@@ -819,12 +819,14 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
       free(klen);
     }
 
+    printf("\n\n\n[VoWiFi] block end 5\n\n\n");
     msg = init_message(instance, MSG_TYPE_BLOCK_END,
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
   }
   enumerator->destroy(enumerator);
 
+  printf("\n\n\n[VoWiFi] block end 6\n\n\n");
   msg = init_message(instance, MSG_TYPE_BLOCK_END,
       NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
   instance->add_message_to_send_queue(instance, msg);

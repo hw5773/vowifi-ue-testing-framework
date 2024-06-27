@@ -1235,6 +1235,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     {
       printf("[VoWiFi] auth failed is marked!\n");
       symbol = "retest_required:auth_failed";
+      instance->sprev = NULL;
+      instance->ispi = 0;
+      instance->rspi = 0;
+      instance->imid = -1;
     } else if (instance->no_proposal_chosen)
     {
       printf("[VoWiFi] no proposal chosen is marked!\n");
@@ -2197,6 +2201,10 @@ METHOD(task_manager_t, process_message, status_t,
         && instance->imid == msg->get_message_id(msg))
     {
       instance->retransmission++;
+      ///// added to test whether it works /////
+      if (instance->imid > 0)
+        return DESTROY_ME;
+      //////////////////////////////////////////
     }
     else
     {
@@ -2366,6 +2374,10 @@ METHOD(task_manager_t, process_message, status_t,
           symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, m);
     }
+  }
+  else if (instance)
+  {
+    return DESTROY_ME;
   }
   ////////////////////////////
 

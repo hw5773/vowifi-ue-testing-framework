@@ -164,10 +164,14 @@ class QueryReplyPair {
   }
 
   public String getQueryName() {
+    if (this.query == null)
+      return null;
     return this.query.getName();
   }
 
   public String getReplyName() {
+    if (this.reply == null)
+      return null;
     return this.reply.getName();
   }
 
