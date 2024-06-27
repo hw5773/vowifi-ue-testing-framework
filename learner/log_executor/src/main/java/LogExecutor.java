@@ -47,12 +47,12 @@ public class LogExecutor {
   private static final int LIVENESS_SLEEP_TIME = 5*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
-  //private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
-  private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
-  //private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  //private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  //private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 15*1000;
-  private static final int UE_REBOOT_TIMEOUT_VALUE = 60*1000;
+  private static final int UE_REBOOT_TIMEOUT_VALUE = 120*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
   private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
@@ -64,7 +64,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    //initIMSConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -1300,16 +1300,18 @@ public class LogExecutor {
     reply = processResult(testcase, reporter);
     rname = reply.getName();
 
-    if (qname.equals("retest"))
+    if (rname.equals("retest"))
     {
       logger.info("pair is set to null");
       pair = null;
+      sendEnableVoWiFi();
     } 
-    else if (qname.equals("retransmission"))
+    else if (rname.equals("retransmission"))
     {
       pair = null;
       testcase.setIspi(reply.getIspi());
       testcase.setRspi(reply.getRspi());
+      sendEnableVoWiFi();
       //testcase.resetIterator();
     }
     else
