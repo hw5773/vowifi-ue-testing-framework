@@ -1,25 +1,9 @@
+#include "mem/shm.h"
 #include "sip_controller.h"
+#include "sip_instance.h"
 //#include "dprint.h"
 
 uint8_t *serialize_value(kvp_t *kvp, int *vlen);
-
-int read_message(char *input, char *buf, int max)
-{
-  assert(input != NULL);
-  assert(buf != NULL);
-  assert(max > 0);
-
-  int len;
-  FILE *fp;
-
-  fp = fopen(input, "r");
-  fseek(fp, 0L, SEEK_END);
-  len = (int)ftell(fp);
-  fseek(fp, 0L, SEEK_SET);
-  fread(buf, 1, len, fp);
-
-  return len;
-}
 
 sip_message_t *init_sip_message(char *buf, int len)
 {
@@ -35,7 +19,7 @@ sip_message_t *init_sip_message(char *buf, int len)
   uint8_t flag, kset;
   int klen, vlen;
 
-  ret = (sip_message_t *)calloc(1, sizeof(sip_message_t));
+  ret = (sip_message_t *)shm_malloc(sizeof(sip_message_t));
   c = (uint8_t *)buf;
   p[SC_KEY_IDX] = key;
   p[SC_VALUE_IDX] = value;
@@ -86,7 +70,7 @@ sip_message_t *init_sip_message(char *buf, int len)
       {
         kvp = init_kvp(k, klen, v, vlen);
         add_kvp_to_sip_message(ret, kvp, NULL, 0, 0);
-        printf("kvp: key (%d bytes): %.*s\n", kvp->klen, kvp->klen, kvp->key);
+        LM_INFO("[VoWiFi] kvp: key (%d bytes): %.*s\n", kvp->klen, kvp->klen, kvp->key);
       }
 
       p[SC_KEY_IDX] = key;
@@ -110,7 +94,7 @@ uint8_t *serialize_sip_message(sip_message_t *message, int *len)
 
   uint8_t *ret, *p, *vtmp;
   uint8_t tmp[SC_BUF_LENGTH];
-  int vlen;
+  int klen, vlen;
   kvp_t *curr;
 
   p = tmp;
@@ -118,7 +102,13 @@ uint8_t *serialize_sip_message(sip_message_t *message, int *len)
 
   while (curr)
   {
-    if (strncmp(curr->key, "header", curr->klen))
+    LM_INFO("[VoWiFi] (serialize_sip_message()) key (%d bytes): %s\n", curr->klen, curr->key);
+    if (curr->klen < strlen("header"))
+      klen = curr->klen;
+    else
+      klen = strlen("header");
+
+    if (strncmp(curr->key, "header", klen))
     {
       memcpy(p, curr->key, curr->klen);
       p += curr->klen;
@@ -127,6 +117,7 @@ uint8_t *serialize_sip_message(sip_message_t *message, int *len)
       p += 2;
     }
     vtmp = serialize_value(curr, &vlen);
+    LM_INFO("[VoWiFi] (serialize_sip_message()) val (%d bytes): %s\n", vlen, vtmp);
     memcpy(p, vtmp, vlen);
     p += vlen;
     *(p++) = '\r';
@@ -137,7 +128,7 @@ uint8_t *serialize_sip_message(sip_message_t *message, int *len)
   *(p++) = '\r';
   *(p++) = '\n';
   *len = p - tmp;
-  ret = (uint8_t *)malloc(*len);
+  ret = (uint8_t *)shm_malloc(*len);
   memcpy(ret, tmp, *len);
 
   return ret;
@@ -175,6 +166,7 @@ void free_sip_message(sip_message_t *message)
       curr = next;
     }
   }
+  shm_free(message);
 }
 
 val_t *init_val(uint8_t *val, int len, uint8_t delimiter, uint8_t space)
@@ -187,7 +179,7 @@ val_t *init_val(uint8_t *val, int len, uint8_t delimiter, uint8_t space)
 
   printf("  init_val(): val: %.*s, len: %d, delimiter: %d, space: %d\n", len, val, len, delimiter, space);
 
-  ret = (val_t *)calloc(1, sizeof(val_t));
+  ret = (val_t *)shm_malloc(sizeof(val_t));
   p = val;
   t = tmp;
   inside = 0;
@@ -196,7 +188,7 @@ val_t *init_val(uint8_t *val, int len, uint8_t delimiter, uint8_t space)
     if (!inside && *p == '=')
     {
       tlen = t-tmp;
-      ret->attr = (uint8_t *)calloc(1, tlen);
+      ret->attr = (uint8_t *)shm_malloc(tlen);
       memcpy(ret->attr, tmp, tlen);
       ret->alen = tlen;
       printf("    attr: %.*s, alen: %d\n", ret->alen, ret->attr, ret->alen);
@@ -205,7 +197,7 @@ val_t *init_val(uint8_t *val, int len, uint8_t delimiter, uint8_t space)
     else if (!inside && (p - val == len))
     {
       tlen = t-tmp;
-      ret->val = (uint8_t *)calloc(1, tlen);
+      ret->val = (uint8_t *)shm_malloc(tlen);
       memcpy(ret->val, tmp, tlen);
       ret->vlen = tlen;
       printf("    val: %.*s, vlen: %d\n", ret->vlen, ret->val, ret->vlen);
@@ -230,11 +222,11 @@ void free_val(val_t *val)
   if (val)
   {
     if (val->attr)
-      free(val->attr);
+      shm_free(val->attr);
     val->alen = 0;
 
     if (val->val)
-      free(val->val);
+      shm_free(val->val);
     val->vlen = 0;
   }
 }
@@ -273,7 +265,7 @@ uint8_t *serialize_value(kvp_t *kvp, int *vlen)
     val = val->next;
   }
   *vlen = p-tmp;
-  ret = (uint8_t *)malloc(*vlen);
+  ret = (uint8_t *)shm_malloc(*vlen);
   memcpy(ret, tmp, *vlen);
 
   return ret;
@@ -310,7 +302,7 @@ vlst_t *init_vlst(uint8_t *value, int vlen)
   uint8_t *p, *q;
   uint8_t tmp[SC_BUF_LENGTH] = {0, };
   
-  ret = (vlst_t *)calloc(1, sizeof(vlst_t));
+  ret = (vlst_t *)shm_malloc(sizeof(vlst_t));
 
   p = value;
   q = tmp;
@@ -393,7 +385,7 @@ void free_vlst(vlst_t *vlst)
       free_val(curr);
       curr = next;
     }
-    free(vlst);
+    shm_free(vlst);
   }
 }
 
@@ -405,9 +397,9 @@ kvp_t *init_kvp(uint8_t *key, int klen, uint8_t *value, int vlen)
   assert(vlen > 0);
 
   kvp_t *ret;
-  ret = (kvp_t *)calloc(1, sizeof(kvp_t));
+  ret = (kvp_t *)shm_malloc(sizeof(kvp_t));
 
-  ret->key = (uint8_t *)calloc(1, klen);
+  ret->key = (uint8_t *)shm_malloc(klen);
   memcpy(ret->key, key, klen);
   ret->klen = klen;
 
@@ -421,7 +413,7 @@ void free_kvp(kvp_t *kvp)
   if (kvp)
   {
     if (kvp->key)
-      free(kvp->key);
+      shm_free(kvp->key);
     kvp->klen = 0;
     
     if (kvp->vlst)
@@ -647,7 +639,7 @@ uint8_t *get_value_from_kvp_by_idx(kvp_t *kvp, int idx, int *vlen)
   for (i=0; i<idx; i++)
     val = val->next;
   
-  ret = (uint8_t *)malloc(val->vlen);
+  ret = (uint8_t *)shm_malloc(val->vlen);
   memcpy(ret, val->val, val->vlen);
   *vlen = val->vlen;
 
@@ -675,7 +667,7 @@ uint8_t *get_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen, int *vl
     if (val->alen == alen 
         && !strncmp(val->attr, attr, alen))
     {
-      ret = (uint8_t *)malloc(val->vlen);
+      ret = (uint8_t *)shm_malloc(val->vlen);
       memcpy(ret, val->val, val->vlen);
       *vlen = val->vlen;
       break;
@@ -707,7 +699,7 @@ void change_value_from_kvp_by_idx(kvp_t *kvp, int idx, uint8_t *value, int vlen)
   {
     if (val->val)
       free(val->val);
-    val->val = (uint8_t *)malloc(vlen);
+    val->val = (uint8_t *)shm_malloc(vlen);
     memcpy(val->val, value, vlen);
     val->vlen = vlen;
   }
@@ -733,8 +725,8 @@ void change_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen, uint8_t 
         && !strncmp(val->attr, attr, alen))
     {
       if (val->val)
-        free(val->val);
-      val->val = (uint8_t *)malloc(vlen);
+        shm_free(val->val);
+      val->val = (uint8_t *)shm_malloc(vlen);
       memcpy(val->val, value, vlen);
       val->vlen = vlen;
     }
@@ -797,3 +789,71 @@ void del_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen)
     vlst->head = curr->next;
   free_val(curr);
 }
+
+void *process_query(const char *buf, unsigned len, unsigned *rlen)
+{
+  instance_t *instance;
+  sip_message_t *msg;
+  kvp_t *kvp;
+
+  const char *str1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  const char *str2 = "5";
+  uint8_t *val, *res;
+  int vlen, is_401, is_200;
+  LM_INFO("\n\n\n[VoWiFi] tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
+
+  msg = init_sip_message((uint8_t *)buf, len);
+  if (is_401_unauthorized_message(msg))
+  {
+    LM_ERR("[VoWiFi] This SIP message is a 401 unauthorized message\n");
+    is_401 = 1;
+  }
+  else
+  {
+    LM_ERR("[VoWiFi] This SIP message is NOT a 401 unauthorized message\n");
+    is_401 = 0;
+  }
+
+  if (is_200_ok_message(msg))
+  {
+    LM_ERR("[VoWiFi] This SIP message is a 200 OK message\n");
+    is_200 = 1;
+  }
+  else
+  {
+    LM_ERR("[VoWiFi] This SIP message is NOT a 200 OK message\n");
+    is_200 = 0;
+  }
+    
+  if (!is_401 && !is_200)
+  {
+    res = NULL;
+    goto out;
+  }
+
+  kvp = get_kvp_from_sip_message(msg, (uint8_t *)"WWW-Authenticate", 16, 0);
+  if (is_401_unauthorized_message(msg))
+  {
+    val = (uint8_t *)shm_malloc(strlen(str1));
+    memcpy(val, str1, strlen(str1));
+    vlen = strlen(str1);
+    change_value_from_kvp_by_name(kvp, "nonce", 5, val, vlen);
+    shm_free(val);
+  }
+
+  if (is_200_ok_message(msg))
+  {
+    val = (uint8_t *)shm_malloc(strlen(str2));
+    memcpy(val, str2, strlen(str2));
+    vlen = strlen(str2);
+    change_value_from_kvp_by_idx(kvp, 0, val, vlen);
+    shm_free(val);
+  }
+    
+  res = serialize_sip_message(msg, rlen);
+  LM_INFO("changed message (%d bytes): %.*s\n", (*rlen), (*rlen), res);
+
+out:
+  return (void *)res;
+}
+

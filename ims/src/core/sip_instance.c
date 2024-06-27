@@ -50,7 +50,7 @@ void *sender_run(void *data)
       snprintf((char *)p, 17, "%.16"PRIx64, msg->rspi); 
       p += 16;
 
-      LM_INFO("[VoWiFi] before key\n");
+      LM_INFO("[VoWiFi] before key (length: %d)\n", msg->klen);
       if (msg->klen > 0)
       {
         memcpy(p, msg->key, msg->klen);
@@ -100,6 +100,7 @@ void *sender_run(void *data)
       offset = 0;
 
       LM_INFO("[VoWiFi] To be sent: %d bytes\n", tbs);
+      LM_INFO("[VoWiFi] Message: %s\n", buf);
       while (offset < tbs)
       {
         sent = write(asock, buf + offset, tbs - offset);
@@ -108,7 +109,9 @@ void *sender_run(void *data)
       }
       LM_INFO("[VoWiFi] Sent bytes: %d bytes\n", offset);
 
+      LM_INFO("[VoWiFi] before free_message()\n");
       free_message(msg);
+      LM_INFO("[VoWiFi] after free_message()\n");
       msg = NULL;
     }
   }
@@ -296,7 +299,6 @@ void *listener_run(void *data)
               LM_INFO("  the operator is set to %d\n", get_query_operator(query));
               break;
 
-
             case 2:
               LM_INFO("value type: %s\n", token);
               set_query_value_type(query, token);
@@ -347,32 +349,6 @@ void *listener_run(void *data)
 
 out:
   return NULL;
-}
-
-int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
-{
-  int ret;
-
-  if (instance)
-    LM_INFO("\n[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n\n", instance->ispi, instance->rspi, ispi, rspi);
-
-  if (!instance) 
-    ret = 0;
-  else if (!(instance->ispi) && !(instance->rspi))
-  {
-    if (update)
-    {
-      instance->ispi = ispi;
-      instance->rspi = rspi;
-    }
-    ret = 1;
-  }
-  else if (instance->ispi == ispi && instance->rspi == rspi)
-    ret = 1;
-  else
-    ret = 0;
-
-  return ret;
 }
 
 msg_t *add_message_to_send_queue(instance_t *instance, msg_t *msg)
@@ -456,9 +432,20 @@ msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key,
   ret->mtype = mtype;
   ret->ispi = ispi;
   ret->rspi = rspi;
+
+  if (key)
+  {
+    memcpy(ret->key, key, strlen(key));
+    ret->klen = strlen(key);
+  }
+
   ret->vtype = vtype;
-  memcpy(ret->val, val, vlen);
-  ret->vlen = vlen;
+
+  if (val)
+  {
+    memcpy(ret->val, val, ret->vlen);
+    ret->vlen = vlen;
+  }
 
   LM_INFO("[init_message()] ret: %p, mtype: %d\n", ret, mtype);
 
@@ -838,6 +825,7 @@ void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len)
           {
             symbol = "unknown";
           }
+          LM_INFO("[VoWiFi] symbol: %s\n", symbol);
         }
         else if (!receiver_set)
         {
@@ -874,7 +862,7 @@ void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len)
           memset(mem, 0, 1024);
         }
 
-        LM_INFO("[VoWiFi] before init_message() type 2 (block start)\n");
+        LM_INFO("[VoWiFi] before init_message() type 2 (block start): symbol: %s\n", symbol);
         msg = init_message(instance, MSG_TYPE_BLOCK_START, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
         add_message_to_send_queue(instance, msg);
         LM_INFO("[VoWiFi] after init_message() type 2 (block start): msg: %p\n", msg);
@@ -977,7 +965,7 @@ void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len)
   LM_INFO("[VoWiFi] after parsing the message\n");
 
   LM_INFO("[VoWiFi] before init_message() type 3 (block end)\n");
-  msg = init_message(instance, MSG_TYPE_BLOCK_END, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+  msg = init_message(instance, MSG_TYPE_BLOCK_END, NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
   add_message_to_send_queue(instance, msg);
   LM_INFO("[VoWiFi] after init_message() type 3 (block end): msg: %p\n", msg);
 }
