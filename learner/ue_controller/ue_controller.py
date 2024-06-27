@@ -237,11 +237,11 @@ def handle_init_config(device):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
 
-        logging.debug("Enabling swipe")
-        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled Swipe")
+        #logging.debug("Enabling swipe")
+        #cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        #logging.debug("Enabled Swipe")
 
         logging.debug("Enabling wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
@@ -256,7 +256,7 @@ def handle_init_config(device):
         logging.debug("Enabled Wifi Calling")
 
         logging.debug("Toggle the WiFi Calling button")
-        for _ in range(1):
+        for _ in range(2):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
