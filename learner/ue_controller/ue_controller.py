@@ -162,6 +162,16 @@ def handle_adb_server_restart(client):
     time.sleep(1)
     client.send(ACK)
 
+def is_screen_swiped():
+    cmd_check = ["adb", "shell", "dumpsys", "window", "windows"]
+    result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
+    return "specific_ui_element_after_swipe" in  result_check.stdout
+
+def is_wifi_enabled():
+    cmd_check =["adb", "shell", "dumpsys", "wifi" ]
+    result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
+    return "Wi-Fi is enabled" in result_check.stdout
+
 def handle_init_config(device):
     if device == "ZTE_State_5G":
         logging.debug("Enabling Menu")
@@ -206,17 +216,31 @@ def handle_init_config(device):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         
-        logging.debug("Enabling swipe")
-        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled swipe")
-        
-        logging.debug("Enabling wifi")
-        cmd = ["adb", "shell", "svc", "wifi", "enable"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(4)
-        logging.debug("Enabled wifi")
+        #####start#### checking if screen is already swiped#######
+        logging.debug("Checking if screen is already swiped")
+        if is_screen_swiped():
+            time.sleep(3)
+            logging.debug("Screen is already swiped")
+        else:    
+            logging.debug("Enabling swipe")
+            cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+            logging.debug("Enabled swipe")
+        #####end### checking if screen is already swiped##########
+
+        #####start#### checking if wifi is already enabled#######
+        logging.debug("Checking if Wifi is already enabled")
+        if is_wifi_enabled():
+            time.sleep(3)
+            logging.debug("WiFi is already enabled")
+        else:
+            logging.debug("Enabling wifi")
+            cmd = ["adb", "shell", "svc", "wifi", "enable"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(4)
+            logging.debug("Enabled wifi")
+        #####end ##### checking if wifi is already enabled#######
 
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
