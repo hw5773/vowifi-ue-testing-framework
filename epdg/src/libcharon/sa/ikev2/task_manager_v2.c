@@ -1050,74 +1050,71 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         ntype = INVALID_CERT_AUTHORITY;
         failed = 1;
       }
-      else 
-      {
-  		  switch (message->get_exchange_type(message)) 
-        {
-          case IKE_SA_INIT:
-            if (is_query_name(query, "ike_sa_init_response"))
-            {
-              symbol = "ike_sa_init_response";
-              instance->sprev = "ike_sa_init_response";
-            }
-            else
-            {
-              symbol = "error in ike_sa_init";
-              instance->sprev = "error";
-            }
-            break;
 
-          ///// this point 1
-          case IKE_AUTH:
-            printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
-            if (is_query_name(query, "ike_auth_1_response")
-                && (!strncmp(instance->sprev, "ike_sa_init_response", 
-                    strlen("ike_sa_init_response"))))
-            {
-              symbol = "ike_auth_1_response";
-              instance->sprev = "ike_auth_1_response";
-            }
-            else if (is_query_name(query, "ike_auth_2_response")
-                && (!strncmp(instance->sprev, "ike_auth_1_response", 
-                    strlen("ike_auth_1_response"))))
-            {
-              symbol = "ike_auth_2_response";
-              instance->sprev = "ike_auth_2_response";
-            }
-            else if (is_query_name(query, "ike_auth_3_response")
-                && (!strncmp(instance->sprev, "ike_auth_2_response", 
-                    strlen("ike_auth_2_response"))))
-            {
-              symbol = "ike_auth_3_response";
-              instance->sprev = "ike_auth_3_response";
-            }
-            else if (is_query_name(query, "ike_auth_4_response")
-                && (!strncmp(instance->sprev, "ike_auth_3_response", 
-                    strlen("ike_auth_3_response"))))
-            {
-              symbol = "ike_auth_4_response";
-              instance->sprev = "ike_auth_4_response";
-            }
-            else if (is_query_name(query, "ike_auth_5_response")
-                && (!strncmp(instance->sprev, "ike_auth_4_response", 
-                    strlen("ike_auth_4_response"))))
-            {
-              symbol = "ike_auth_5_response";
-              instance->sprev = "ike_auth_5_response";
-            }
-            else
-            {
-              symbol = "error in ike_auth";
-              instance->sprev = "error";
-            }
-            break;
-          ///// by here
-  		    case CREATE_CHILD_SA:
-        	case INFORMATIONAL:
-          default:
-            symbol = "error in exchange_type";
+  		switch (message->get_exchange_type(message)) 
+      {
+        case IKE_SA_INIT:
+          printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
+          if (is_query_name(query, "ike_sa_init_response"))
+          {
+            symbol = "ike_sa_init_response";
+            instance->sprev = "ike_sa_init_response";
+          }
+          else
+          {
+            symbol = "error in ike_sa_init";
             instance->sprev = "error";
-        }
+          }
+          break;
+
+        case IKE_AUTH:
+          printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
+          if (is_query_name(query, "ike_auth_1_response")
+              && (!strncmp(instance->sprev, "ike_sa_init_response", 
+                  strlen("ike_sa_init_response"))))
+          {
+            symbol = "ike_auth_1_response";
+            instance->sprev = "ike_auth_1_response";
+          }
+          else if (is_query_name(query, "ike_auth_2_response")
+              && (!strncmp(instance->sprev, "ike_auth_1_response", 
+                  strlen("ike_auth_1_response"))))
+          {
+            symbol = "ike_auth_2_response";
+            instance->sprev = "ike_auth_2_response";
+          }
+          else if (is_query_name(query, "ike_auth_3_response")
+              && (!strncmp(instance->sprev, "ike_auth_2_response", 
+                  strlen("ike_auth_2_response"))))
+          {
+            symbol = "ike_auth_3_response";
+            instance->sprev = "ike_auth_3_response";
+          }
+          else if (is_query_name(query, "ike_auth_4_response")
+              && (!strncmp(instance->sprev, "ike_auth_3_response", 
+                  strlen("ike_auth_3_response"))))
+          {
+            symbol = "ike_auth_4_response";
+            instance->sprev = "ike_auth_4_response";
+          }
+          else if (is_query_name(query, "ike_auth_5_response")
+              && (!strncmp(instance->sprev, "ike_auth_4_response", 
+                  strlen("ike_auth_4_response"))))
+          {
+            symbol = "ike_auth_5_response";
+            instance->sprev = "ike_auth_5_response";
+          }
+          else
+          {
+            symbol = "error in ike_auth";
+            instance->sprev = "error";
+          }
+          break;
+  		  case CREATE_CHILD_SA:
+        case INFORMATIONAL:
+        default:
+          symbol = "error in exchange_type";
+          instance->sprev = "error";
       }
 
       printf("\n\n\n[VoWiFi] sending the symbol 1: %s\n\n\n", symbol);
@@ -1128,6 +1125,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
       //printf("[VoWiFi] 1: failed: %d, instance: %p\n", failed, instance);
       if (failed)
       {
+        printf("\n\n\n[VoWiFi] block end 2: %s\n\n\n", symbol);
         msg = init_message(instance, MSG_TYPE_BLOCK_END, 
           NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
         instance->add_message_to_send_queue(instance, msg);
@@ -1164,70 +1162,14 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 				    //send_notify_response(this, message, ntype, chunk_from_thing(type));
 
 				    //send_notify_response(this, message, ntype, chunk_empty);
-            printf("\n\n\n[VoWiFi] instance->sprev: %s\n\n\n", instance->sprev);
-            if (is_query_name(query, "ike_sa_init_response"))
-            {
-              symbol = "ike_sa_init_response";
-              instance->sprev = "ike_sa_init_response";
-              send = 1;
-            }
-            else if (is_query_name(query, "ike_auth_1_response")
-                && (!strncmp(instance->sprev, "ike_sa_init_response", 
-                    strlen("ike_sa_init_response"))))
-            {
-              symbol = "ike_auth_1_response";
-              instance->sprev = "ike_auth_1_response";
-              send = 1;
-            }
-            else if (is_query_name(query, "ike_auth_2_response")
-                && (!strncmp(instance->sprev, "ike_auth_1_response", 
-                    strlen("ike_auth_1_response"))))
-            {
-              symbol = "ike_auth_2_response";
-              instance->sprev = "ike_auth_2_response";
-              send = 1;
-            }
-            else if (is_query_name(query, "ike_auth_3_response")
-                && (!strncmp(instance->sprev, "ike_auth_2_response", 
-                    strlen("ike_auth_2_response"))))
-            {
-              symbol = "ike_auth_3_response";
-              instance->sprev = "ike_auth_3_response";
-              send = 1;
-            }
-            else if (is_query_name(query, "ike_auth_4_response")
-                && (!strncmp(instance->sprev, "ike_auth_3_response", 
-                    strlen("ike_auth_3_response"))))
-            {
-              symbol = "ike_auth_4_response";
-              instance->sprev = "ike_auth_4_response";
-              send = 1;
-            }
-            else if (is_query_name(query, "ike_auth_5_response")
-                && (!strncmp(instance->sprev, "ike_auth_4_response", 
-                    strlen("ike_auth_4_response"))))
-            {
-              symbol = "ike_auth_5_response";
-              instance->sprev = "ike_auth_5_response";
-              send = 1;
-            }
-            else
-            {
-              symbol = "error in ike_auth";
-              instance->sprev = "error";
-            }
-
+            printf("\n\n\n[VoWiFi] instance->sprev 2: %s\n\n\n", instance->sprev);
             if (send)
             {
               send_notify_response(this, message, ntype, chunk_empty);
               send = 0;
             }
-
-            break;
         }
-
 		    this->responding.mid++;
-
         return FAILED;
       }
     }
@@ -1244,6 +1186,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		switch (task->build(task, message))
 		{
 			case SUCCESS:
+        printf("success\n");
 				/* task completed, remove it */
 				array_remove_at(this->passive_tasks, enumerator);
 				if (!handle_collisions(this, task))
@@ -1252,6 +1195,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 				}
 				break;
 			case NEED_MORE:
+        printf("need more\n");
 				/* processed, but task needs another exchange */
 				if (handle_collisions(this, task))
 				{
@@ -1259,10 +1203,13 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 				}
 				break;
 			case FAILED:
+        printf("failed\n");
 			default:
+        printf("default\n");
 				hook = TRUE;
 				/* FALL */
 			case DESTROY_ME:
+        printf("destroy me\n");
 				/* destroy IKE_SA, but SEND response first */
 				if (handle_collisions(this, task))
 				{
@@ -1279,6 +1226,8 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 	enumerator->destroy(enumerator);
 
   ///// Added for VoWiFi /////
+  printf("before check_instance()\n");
+  printf("ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", ispi, rspi);
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     symbol = NULL;
@@ -1286,6 +1235,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     {
       printf("[VoWiFi] auth failed is marked!\n");
       symbol = "retest_required:auth_failed";
+      instance->sprev = NULL;
+      instance->ispi = 0;
+      instance->rspi = 0;
+      instance->imid = -1;
     } else if (instance->no_proposal_chosen)
     {
       printf("[VoWiFi] no proposal chosen is marked!\n");
@@ -1301,6 +1254,8 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
       instance->ispi = 0;
       instance->rspi = 0;
     }
+
+    printf("\n\n\n[VoWiFi] block end 3\n\n\n");
     msg = init_message(instance, MSG_TYPE_BLOCK_END, 
         symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
@@ -1308,6 +1263,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
     instance->no_proposal_chosen = 0;
     instance->invalid_ke_payload = 0;
   }
+  printf("after check_instance()\n");
   ////////////////////////////
 
 	/* RFC 5996, section 2.6 mentions that in the event of a failure during
@@ -1343,7 +1299,10 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
 		return DESTROY_ME;
 	}
 
+  printf("before send_packets()\n");
+  printf("ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n", ispi, rspi);
 	send_packets(this, this->responding.packets, NULL, NULL);
+  printf("after send_packets()\n");
 	if (delete)
 	{
 		if (hook)
@@ -1842,9 +1801,17 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    msg = init_message(instance, MSG_TYPE_BLOCK_END, 
-        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(instance, msg);
+    if (!(instance->retransmission))
+    {
+      printf("\n\n\n[VoWiFi] block end 4\n\n\n");
+      msg = init_message(instance, MSG_TYPE_BLOCK_END, 
+          NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+      instance->add_message_to_send_queue(instance, msg);
+    }
+    else
+    {
+      instance->retransmission--;
+    }
   }
   ////////////////////////////
 
@@ -2228,13 +2195,26 @@ METHOD(task_manager_t, process_message, status_t,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
+    printf("\n\n\n\n\n[VoWiFi] instance->imid: %d, msg->get_message_id(msg): %d\n\n\n\n\n",
+        instance->imid, msg->get_message_id(msg));
     if (instance->imid >= 0
         && instance->imid == msg->get_message_id(msg))
-      retransmission = 1;
+    {
+      instance->retransmission++;
+      ///// added to test whether it works /////
+      if (instance->imid > 0)
+        return DESTROY_ME;
+      //////////////////////////////////////////
+    }
     else
+    {
       instance->imid++;
+      if (instance->retransmission)
+        instance->retransmission = 0;
+    }
 
-    if (!retransmission)
+    printf("[VoWiFi] instance->retransmission: %d\n\n\n\n\n", instance->retransmission);
+    if (!(instance->retransmission))
     {
     	switch (msg->get_exchange_type(msg)) 
       {
@@ -2389,10 +2369,15 @@ METHOD(task_manager_t, process_message, status_t,
           symbol = "error in exchange_type";
           instance->rprev = "error";
       }
+      printf("\n\n\n[VoWiFi] send the symbol: %s\n\n\n", symbol);
       m = init_message(instance, MSG_TYPE_BLOCK_START,
           symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, m);
     }
+  }
+  else if (instance)
+  {
+    return DESTROY_ME;
   }
   ////////////////////////////
 
@@ -2402,11 +2387,16 @@ METHOD(task_manager_t, process_message, status_t,
     ///// Added for VoWiFi /////
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
-      if (!retransmission)
+      if (!(instance->retransmission))
       {
+        printf("\n\n\n[VoWiFi] block end 1: %s\n\n\n", symbol);
         m = init_message(instance, MSG_TYPE_BLOCK_END, 
             NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
         instance->add_message_to_send_queue(instance, m);
+      }
+      else
+      {
+        instance->retransmission--;
       }
     }
     ////////////////////////////

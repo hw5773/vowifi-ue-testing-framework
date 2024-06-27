@@ -47,12 +47,12 @@ public class LogExecutor {
   private static final int LIVENESS_SLEEP_TIME = 5*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
-  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
-  //private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
-  private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
-  //private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  //private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
+  private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  //private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
+  private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 15*1000;
-  private static final int UE_REBOOT_TIMEOUT_VALUE = 60*1000;
+  private static final int UE_REBOOT_TIMEOUT_VALUE = 120*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
   private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
@@ -64,7 +64,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    //initIMSConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -249,6 +249,10 @@ public class LogExecutor {
             testcase.resetIterator();
             logExecutor.rebootUE();
           }
+        }
+        else
+        {
+          testcase.resetIterator();
         }
         logger.debug("pairs: " + pairs);
       }
@@ -652,10 +656,19 @@ public class LogExecutor {
       }
 
       pair = null;
-      while (pair == null) {
+      while (pair == null)
+      {
         pair = logExecutor.step(message);
-        if (pair == null)
-          logger.info("the pair is null");
+      }
+      if (pair.getQueryName() != null && pair.getQueryName().equals("retest"))
+      {
+        logger.info("the experiment should be retested");
+        return null;
+      }
+      if (pair.getReplyName() != null && pair.getReplyName().equals("retest"))
+      {
+        logger.info("the experiment should be retested");
+        return null;
       }
 
       logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
@@ -930,7 +943,7 @@ public class LogExecutor {
 
     try {
 			ueSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
-      logger.info("Sending symbol: wifi_off to UE Controller to enable VoWiFi");
+      logger.info("Sending symbol: wifi_off to UE Controller to disable VoWiFi");
       ueOut.write("wifi_off\n");
       ueOut.flush();
 
@@ -1149,11 +1162,9 @@ public class LogExecutor {
           logger.info(print);
         }
 
-        ///// Added to test the result /////
         if (mlog.getType() == MessageLogType.ATTRIBUTE) {
           mlog = mlog.getParent();
         }
-        ////////////////////////////////////
       } while (stack.size() != 0);
   	  epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
 		} catch (SocketTimeoutException e) {
@@ -1273,6 +1284,9 @@ public class LogExecutor {
     boolean ret;
     logger.debug("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
     
+    query = null;
+    reply = null;
+
 		try {
 			sleep(50); //50 milliseconds
 		} catch (Exception e) {
@@ -1296,30 +1310,45 @@ public class LogExecutor {
       query.setName("enable_vowifi");
     }
     qname = query.getName();
-    logger.debug("Reporter: " + reporter);
-    reply = processResult(testcase, reporter);
-    rname = reply.getName();
-
     if (qname.equals("retest"))
     {
-      logger.info("pair is set to null");
-      pair = null;
-    } 
+      logger.info("qname is retest");
+      pair = new QueryReplyPair(testcase, query, reply, logger);
+    }
     else if (qname.equals("retransmission"))
     {
+      logger.info("qname is retransmission");
+      testcase.setIspi(query.getIspi());
+      testcase.setRspi(query.getRspi());
       pair = null;
-      testcase.setIspi(reply.getIspi());
-      testcase.setRspi(reply.getRspi());
-      //testcase.resetIterator();
     }
     else
     {
-      //logger.debug("Reporter: " + reporter);
-      //reply = processResult(testcase, reporter);
-      //rname = reply.getName();
+      logger.debug("Reporter: " + reporter);
+      reply = processResult(testcase, reporter);
+      rname = reply.getName();
 
-	    logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
-      pair = new QueryReplyPair(testcase, query, reply, logger);
+      if (rname.equals("retest"))
+      {
+        logger.info("pair is set to null");
+        pair = new QueryReplyPair(testcase, query, reply, logger);
+      } 
+      else if (rname.equals("retransmission"))
+      {
+        testcase.setIspi(reply.getIspi());
+        testcase.setRspi(reply.getRspi());
+        pair = null;
+        //testcase.resetIterator();
+      }
+      else
+      {
+        //logger.debug("Reporter: " + reporter);
+        //reply = processResult(testcase, reporter);
+        //rname = reply.getName();
+
+	      logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
+        pair = new QueryReplyPair(testcase, query, reply, logger);
+      }
     }
     
     logger.debug("FINISH: step()");
