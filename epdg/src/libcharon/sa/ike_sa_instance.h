@@ -127,6 +127,7 @@ struct instance_st
 
   int imid;
   int rmid;
+  int retransmission;
   int authentication_failed;
   int no_proposal_chosen;
   int invalid_ke_payload;
