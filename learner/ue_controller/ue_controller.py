@@ -27,7 +27,7 @@ def handle_turn_off_wifi_interface(device):
 
             cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.WifiSettings"]
             output = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(1)
+            time.sleep(3)
 
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             subprocess.run(cmd)
@@ -162,6 +162,16 @@ def handle_adb_server_restart(client):
     time.sleep(1)
     client.send(ACK)
 
+def is_screen_swiped():
+    cmd_check = ["adb", "shell", "dumpsys", "window", "windows"]
+    result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
+    return "specific_ui_element_after_swipe" in  result_check.stdout
+
+def is_wifi_enabled():
+    cmd_check =["adb", "shell", "dumpsys", "wifi" ]
+    result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
+    return "Wi-Fi is enabled" in result_check.stdout
+
 def handle_init_config(device):
     if device == "ZTE_State_5G":
         logging.debug("Enabling Menu")
@@ -181,6 +191,7 @@ def handle_init_config(device):
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
+        
     elif device == "A13_Pro":
         logging.debug("Swipe to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
@@ -191,6 +202,82 @@ def handle_init_config(device):
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
+
+        logging.debug("Toggle the WiFi Calling button")
+        for _ in range(3):
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+        logging.debug("Finish toggling the WiFi Calling button")
+    
+    elif device == "I14_Pro_Nax":
+        logging.debug("Menu to unlock the phone")
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        
+        #####start#### checking if screen is already swiped#######
+        logging.debug("Checking if screen is already swiped")
+        if is_screen_swiped():
+            time.sleep(3)
+            logging.debug("Screen is already swiped")
+        else:    
+            logging.debug("Enabling swipe")
+            cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+            logging.debug("Enabled swipe")
+        #####end### checking if screen is already swiped##########
+
+        #####start#### checking if wifi is already enabled#######
+        logging.debug("Checking if Wifi is already enabled")
+        if is_wifi_enabled():
+            time.sleep(3)
+            logging.debug("WiFi is already enabled")
+        else:
+            logging.debug("Enabling wifi")
+            cmd = ["adb", "shell", "svc", "wifi", "enable"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(4)
+            logging.debug("Enabled wifi")
+        #####end ##### checking if wifi is already enabled#######
+
+        logging.debug("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled Wifi Calling")
+ 
+        logging.debug("Toggle the WiFi Calling button")
+        for _ in range(2):
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+        logging.debug("Finish toggling the WiFi Calling button")
+
+    elif device == "Nokia_G100":
+        logging.debug("Menu to unlock the phone")
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+
+        logging.debug("Enabling swipe")
+        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled Swipe")
+
+        logging.debug("Enabling wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(4)
+        logging.debug("Enabled wifi")
+
+        logging.debug ("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled Wifi Calling")
 
         logging.debug("Toggle the WiFi Calling button")
         for _ in range(2):
