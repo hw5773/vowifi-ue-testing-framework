@@ -488,11 +488,11 @@ configure:14513: checking lex output file root
 configure:14527: result: lex.yy
 configure:14532: checking lex library
 configure:14546: gcc -o conftest -g -O2 -Wall -Wno-format -Wno-format-security -Wno-pointer-sign   conftest.c   >&5
-/usr/bin/ld: /tmp/ccQI4LEd.o: in function `input':
+/usr/bin/ld: /tmp/cc9LLMPH.o: in function `input':
 /home/esslab-03/vowifi-core-network/epdg/lex.yy.c:1180: undefined reference to `yywrap'
-/usr/bin/ld: /tmp/ccQI4LEd.o: in function `yylex':
+/usr/bin/ld: /tmp/cc9LLMPH.o: in function `yylex':
 /home/esslab-03/vowifi-core-network/epdg/lex.yy.c:871: undefined reference to `yywrap'
-/usr/bin/ld: /tmp/ccQI4LEd.o: in function `main':
+/usr/bin/ld: /tmp/cc9LLMPH.o: in function `main':
 /home/esslab-03/vowifi-core-network/epdg/conftest.l:17: undefined reference to `yywrap'
 collect2: error: ld returned 1 exit status
 configure:14546: $? = 1
@@ -2632,7 +2632,7 @@ configure: failed program was:
 configure:15374: result: no
 configure:15389: checking for library containing dlopen
 configure:15420: gcc -o conftest -g -O2 -Wall -Wno-format -Wno-format-security -Wno-pointer-sign   conftest.c  >&5
-/usr/bin/ld: /tmp/ccfAY1cN.o: in function `main':
+/usr/bin/ld: /tmp/cckqBFWg.o: in function `main':
 /home/esslab-03/vowifi-core-network/epdg/conftest.c:42: undefined reference to `dlopen'
 collect2: error: ld returned 1 exit status
 configure:15420: $? = 1
@@ -2699,7 +2699,7 @@ configure:15551: $? = 0
 configure:15568: result: none required
 configure:15622: checking for library containing pthread_create
 configure:15653: gcc -o conftest -g -O2 -Wall -Wno-format -Wno-format-security -Wno-pointer-sign   conftest.c -ldl  >&5
-/usr/bin/ld: /tmp/ccvP1n85.o: in function `main':
+/usr/bin/ld: /tmp/ccTgDJWA.o: in function `main':
 /home/esslab-03/vowifi-core-network/epdg/conftest.c:43: undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
 configure:15653: $? = 1
@@ -2773,7 +2773,7 @@ configure:15807: $? = 0
 configure:15807: result: yes
 configure:15819: checking for pthread_cond_timedwait_monotonic
 configure:15819: gcc -o conftest -g -O2 -Wall -Wno-format -Wno-format-security -Wno-pointer-sign   conftest.c -lpthread -ldl  >&5
-/usr/bin/ld: /tmp/ccEEJzTS.o: in function `main':
+/usr/bin/ld: /tmp/ccof8kfn.o: in function `main':
 /home/esslab-03/vowifi-core-network/epdg/conftest.c:69: undefined reference to `pthread_cond_timedwait_monotonic'
 collect2: error: ld returned 1 exit status
 configure:15819: $? = 1
@@ -2893,7 +2893,7 @@ configure:15997: $? = 0
 configure:15997: result: yes
 configure:15997: checking for closefrom
 configure:15997: gcc -o conftest -g -O2 -Wall -Wno-format -Wno-format-security -Wno-pointer-sign   conftest.c  >&5
-/usr/bin/ld: /tmp/ccTvM4JS.o: in function `main':
+/usr/bin/ld: /tmp/cc8iQEBr.o: in function `main':
 /home/esslab-03/vowifi-core-network/epdg/conftest.c:79: undefined reference to `closefrom'
 collect2: error: ld returned 1 exit status
 configure:15997: $? = 1
@@ -3003,7 +3003,7 @@ configure:16009: $? = 0
 configure:16009: result: yes
 configure:16009: checking for funopen
 configure:16009: gcc -o conftest -g -O2 -Wall -Wno-format -Wno-format-security -Wno-pointer-sign   conftest.c  >&5
-/usr/bin/ld: /tmp/ccSw6Ukp.o: in function `main':
+/usr/bin/ld: /tmp/ccRkgt70.o: in function `main':
 /home/esslab-03/vowifi-core-network/epdg/conftest.c:84: undefined reference to `funopen'
 collect2: error: ld returned 1 exit status
 configure:16009: $? = 1
