@@ -21,6 +21,7 @@ void *sender_run(void *data)
   uint8_t buf[MAX_MESSAGE_LEN] = {0, };
   uint8_t tmp[MAX_MESSAGE_LEN] = {0, };
   uint8_t *p;
+  int i;
 
   instance = (instance_t *)data;
   msg = NULL;
@@ -45,9 +46,14 @@ void *sender_run(void *data)
   	  //printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
 	    //printf(">>>>> Responder SPI: 0x%.16"PRIx64"\n", msg->rspi);
 
-      snprintf((char *)p, 17, "%.16"PRIx64, msg->ispi); 
+      // ispi (16 bytes)
+      for (i=0; i<16; i++)
+        p[i] = '0';
       p += 16;
-      snprintf((char *)p, 17, "%.16"PRIx64, msg->rspi); 
+
+      // rspi (16 bytes)
+      for (i=0; i<16; i++)
+        p[i] = '0';
       p += 16;
 
       LM_INFO("[VoWiFi] before key (length: %d)\n", msg->klen);
@@ -162,7 +168,6 @@ void *listener_run(void *data)
   fcntl(asock, F_SETFL, flags | O_NONBLOCK);
 
   instance = init_instance(asock);
-
   rc = pthread_create(arg->sender, arg->attr, sender_run, instance);
   if (rc < 0)
     perror("error in pthread_create");
@@ -211,8 +216,6 @@ void *listener_run(void *data)
         && !strncmp((const char *)buf, RESET_REQUEST, strlen(RESET_REQUEST)))
     {
       LM_INFO("receiver reset from LogExecutor!\n");
-      instance->ispi = 0;
-      instance->rspi = 0;
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -259,19 +262,17 @@ void *listener_run(void *data)
       offset -= 1;
       memcpy(ispi, p, 16);
       p += 16; offset -= 16;
-      snprintf((char *)spi, 17, "%.16"PRIx64, instance->ispi); 
+      memcpy(spi, "0", 16);
       if (strncmp((const char *)ispi, (const char *)spi, 16))
       {
-        LM_INFO("ispi: %s, instance->ispi: %s\n", ispi, spi);
         LM_ERR("ERROR: Initiator's SPIs are different\n");
       }
 
       memcpy(rspi, p, 16);
       p += 16; offset -= 16;
-      snprintf((char *)spi, 17, "%.16"PRIx64, instance->rspi); 
+      memcpy(spi, "0", 16);
       if (strncmp((const char *)rspi, (const char *)spi, 16))
       {
-        LM_INFO("rspi: %s, instance->rspi: %s\n", rspi, spi);
         LM_ERR("ERROR: Responder's SPIs are different\n");
       }
 
@@ -418,8 +419,8 @@ msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key,
   uint64_t ispi, rspi;
   msg_t *ret;
 
-  ispi = instance->ispi;
-  rspi = instance->rspi;
+  ispi = 0;
+  rspi = 0;
 
   ret = (msg_t *)shm_malloc(sizeof(msg_t));
   if (!ret)
@@ -482,7 +483,7 @@ instance_t *init_instance(int asock)
   int shmid;
   instance_t *ret;
 
-  shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666 | IPC_CREAT);
+  shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666|IPC_CREAT);
   if (shmid == -1)
   {
     perror("shmget failed");
@@ -505,6 +506,9 @@ instance_t *init_instance(int asock)
     LM_ERR("initializing a mutex for the send queue failed\n");
   }
 
+  ret->rprev = "ike_auth_3_request";
+  ret->sprev = "ike_auth_3_response";
+  ret->pid = getpid();
   ret->running = 1;
 
   return ret;
@@ -513,6 +517,24 @@ instance_t *init_instance(int asock)
 void free_instance(instance_t *instance)
 {
   shmctl(SHARED_MEMORY_INSTANCE_KEY, IPC_RMID, NULL);
+}
+
+int check_instance(instance_t *instance)
+{
+  int ret;
+  pid_t pid;
+  ret = 0;
+  pid = getpid();
+
+  if (!instance)
+    goto out;
+
+  LM_ERR("instance->pid: %d, pid: %d\n", instance->pid, pid);
+  if (pid >= (instance->pid - 5) && pid <= (instance->pid + 5))
+    ret = 1;
+
+out:
+  return ret;
 }
 
 query_t *init_query()
@@ -730,6 +752,36 @@ bool wait_query(instance_t *instance)
 bool is_query_finished(instance_t *instance)
 {
   return instance->finished;
+}
+
+query_t *get_next_query(instance_t *instance)
+{
+  query_t *ret;
+  query_t *query;
+  ret = NULL;
+
+  if (instance->running && !instance->finished)
+  {
+    query = get_query(instance);
+    while (is_query_name(query, instance->sprev))
+    {
+      LM_INFO("[VoWiFi] instance->query->name: %s\n", instance->query->name);
+      LM_INFO("[VoWiFi] instance->sprev: %s\n", instance->sprev);
+
+      if (instance->finished)
+        break;
+
+      sleep(1);
+      query = get_query(instance);
+    }
+
+    if (instance->finished)
+      ret = NULL;
+    else
+      ret = instance->query;
+  }
+
+  return ret;
 }
 
 query_t *get_query(instance_t *instance)

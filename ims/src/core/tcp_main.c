@@ -2006,6 +2006,9 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	long resp;
 	snd_flags_t t_send_flags;
 #endif /* USE_TLS */
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ////////////////////////////
 
 	if(unlikely(dst==NULL)) {
 		LM_ERR("no destination address provided\n");
@@ -2013,7 +2016,8 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	}
 
   ///// Added for VoWiFi /////
-  if (vowifi)
+  instance = get_instance();
+  if (check_instance(instance))
   {
     void *res;
     int rlen;
@@ -4893,35 +4897,38 @@ void tcp_main_loop()
     }
 
     LM_INFO("binding the socket with the associated address (port: %d)\n", DEFAULT_IMS_PORT);
-    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
+    if (!bind(sock, (struct sockaddr *)&addr, sizeof(addr)))
     {
-      perror("cannot bind port");
-    }
 
-    LM_INFO("starting the listening\n");
-    if (listen(sock, MAX_CLNT_SIZE) != 0)
+      LM_INFO("starting the listening\n");
+      if (listen(sock, MAX_CLNT_SIZE) != 0)
+      {
+        perror("cannot configure listening port");
+      }
+
+      attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
+      pthread_attr_init(attr);
+      pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
+
+      arg = (arg_t *)calloc(1, sizeof(arg_t));
+      arg->lsock = sock;
+      sender = (pthread_t *)calloc(1, sizeof(pthread_t));
+      listener = (pthread_t *)calloc(1, sizeof(pthread_t));
+
+      arg->sender = sender;
+      arg->attr = attr;
+      arg->io_h = (void *)&io_h;
+
+      LM_INFO("running the listener thread: opened socket: %d\n", sock);
+      rc = pthread_create(listener, attr, listener_run, arg);
+
+      if (rc < 0)
+        perror("error in pthread create");
+    }
+    else
     {
-      perror("cannot configure listening port");
+      perror("cannot bind the address");
     }
-
-    attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
-    pthread_attr_init(attr);
-    pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
-
-    arg = (arg_t *)calloc(1, sizeof(arg_t));
-    arg->lsock = sock;
-    sender = (pthread_t *)calloc(1, sizeof(pthread_t));
-    listener = (pthread_t *)calloc(1, sizeof(pthread_t));
-
-    arg->sender = sender;
-    arg->attr = attr;
-    arg->io_h = (void *)&io_h;
-
-    LM_INFO("running the listener thread: opened socket: %d\n", sock);
-    rc = pthread_create(listener, attr, listener_run, arg);
-
-    if (rc < 0)
-      perror("error in pthread create");
   }
   ////////////////////////////
 

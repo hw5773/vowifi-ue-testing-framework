@@ -440,7 +440,28 @@ int is_status_code_message(sip_message_t *message, const char *code)
 
 out:
   return ret;
+}
 
+int is_register_message(sip_message_t *message)
+{
+  assert(message != NULL);
+
+  int ret, vlen;
+  uint8_t *val;
+  kvp_t *kvp;
+
+  ret = SC_FALSE;
+  kvp = get_kvp_from_sip_message(message, "header", 6, 0);
+  if (!kvp) goto out;
+
+  val = get_value_from_kvp_by_idx(kvp, 0, &vlen);
+  LM_ERR("register? %.s\n", vlen, val);
+  if (!val) goto out;
+  if (strstr((const char *)val, "REGISTER"))
+    ret = SC_TRUE;
+
+out:
+  return ret;
 }
 
 int is_401_unauthorized_message(sip_message_t *message)

@@ -11,7 +11,7 @@
 #endif /* MAX_VALUE_LEN */
 
 #ifndef MAX_QUEUE_LEN
-#define MAX_QUEUE_LEN 10
+#define MAX_QUEUE_LEN 8
 #endif /* MAX_QUEUE_LEN */
 
 #ifndef MAX_NAME_LEN
@@ -58,6 +58,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <sys/shm.h>
+#include <sys/types.h>
 
 typedef struct msg_st
 {
@@ -91,8 +92,6 @@ typedef struct instance_st
 {
   int asock;
   int num;
-  uint64_t ispi;
-  uint64_t rspi;
 
   int slast;
   msg_t *sendq[MAX_QUEUE_LEN];
@@ -100,6 +99,11 @@ typedef struct instance_st
 
   query_t *query;
   query_t *curr;
+
+  pid_t pid;
+
+  const uint8_t *rprev;
+  const uint8_t *sprev;
 
   int running;
   bool finished;
@@ -113,7 +117,7 @@ typedef struct arg_st
   void *io_h;
 } arg_t;
 
-int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update);
+int check_instance(instance_t *instance);
 
 msg_t *add_message_to_send_queue(instance_t *instance, msg_t *msg);
 msg_t *fetch_message_from_send_queue(instance_t *instance);
@@ -146,6 +150,7 @@ void set_query_value(query_t *query, uint8_t *value);
 bool has_query(instance_t *instance);
 bool wait_query(instance_t *instance);
 bool is_query_finished(instance_t *instance);
+query_t *get_next_query(instance_t *instance);
 query_t *get_query(instance_t *instance);
 bool is_query_name(query_t *query, const uint8_t *name);
 query_t *get_sub_query_by_name(query_t *query, const uint8_t *name);
