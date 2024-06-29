@@ -632,6 +632,7 @@ int add_security_server_header(struct sip_msg* m, ipsec_t* s)
     // create a temporary buffer and set the value in it
     char sec_hdr_buf[1024];
     memset(sec_hdr_buf, 0, sizeof(sec_hdr_buf));
+    
     sec_header->len = snprintf(sec_hdr_buf, sizeof(sec_hdr_buf) - 1,
                                 "Security-Server: ipsec-3gpp;q=0.1;prot=esp;mod=trans;spi-c=%d;spi-s=%d;port-c=%d;port-s=%d;alg=%.*s;ealg=%.*s\r\n",
                                 s->spi_pc, s->spi_ps, s->port_pc, s->port_ps,
@@ -725,6 +726,7 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
         }
 
         ///// Added for VoWiFi /////
+        /*
         LM_ERR("\n\n\n[VoWiFi] Before changing the algorithms\n\n\n\n");
         if (vowifi)
         {
@@ -793,6 +795,7 @@ int ipsec_create(struct sip_msg* m, udomain_t* d)
             LM_INFO("alg: %.*s\n", STR_FMT(&(sec_params->data.ipsec->r_alg)));
           }
         }
+        */
         ////////////////////////////
 
         if (sec_params->data.ipsec->port_uc != pcontact->security_temp->data.ipsec->port_uc ||
@@ -1102,6 +1105,7 @@ int ipsec_forward(struct sip_msg* m, udomain_t* d)
    // Set destination info
     struct dest_info dst_info;
     dst_info.send_sock = client_sock;
+
 	set_force_socket(m, client_sock);
 #ifdef USE_DNS_FAILOVER
     if (!uri2dst(NULL, &dst_info, m, &m->dst_uri, dst_proto)) {
