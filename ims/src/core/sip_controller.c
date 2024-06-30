@@ -1,13 +1,13 @@
 #include "mem/shm.h"
-#include "sip_controller.h"
 #include "sip_instance.h"
+#include "sip_controller.h"
 
 #define SIP_VERSION_TOKEN "SIP/2.0"
 #define SIP_VERSION_TOKEN_LENGTH 7
 
 uint8_t *serialize_value(kvp_t *kvp, int *vlen);
 
-void parse_first_line(sip_message_t *sip, uint8_t *line)
+void parse_sip_first_line(sip_message_t *sip, uint8_t *line)
 {
   uint8_t *tok, *p;
   size_t len, tlen;
@@ -40,7 +40,7 @@ void parse_first_line(sip_message_t *sip, uint8_t *line)
         sip->mname = (uint8_t *)shm_malloc(tlen);
         if (!(sip->mname))
         {
-          LM_ERR("[VoWiFi] parse_first_line(): shm_malloc for sip->mname failed\n");
+          LM_ERR("[VoWiFi] parse_sip_first_line(): shm_malloc for sip->mname failed\n");
           exit(1);
         }
         memcpy(sip->mname, tok, tlen);
@@ -65,7 +65,7 @@ void parse_first_line(sip_message_t *sip, uint8_t *line)
       sip->additional = (uint8_t *)shm_malloc(tlen);
       if (!(sip->additional))
       {
-        LM_ERR("[VoWiFi] parse_first_line(): shm_malloc for sip->additional failed\n");
+        LM_ERR("[VoWiFi] parse_sip_first_line(): shm_malloc for sip->additional failed\n");
         exit(1);
       }
       memcpy(sip->additional, tok, tlen);
@@ -89,7 +89,7 @@ void parse_first_line(sip_message_t *sip, uint8_t *line)
     sip->mname = (uint8_t *)shm_malloc(tlen);
     if (!(sip->mname))
     {
-      LM_ERR("[VoWiFi] parse_first_line(): shm_malloc for sip->mname failed\n");
+      LM_ERR("[VoWiFi] parse_sip_first_line(): shm_malloc for sip->mname failed\n");
       exit(1);
     }
     memcpy(sip->mname, tok, tlen);
@@ -126,7 +126,7 @@ kvp_t *parse_key_value_line(sip_message_t *sip, uint8_t *line)
   while (*p == ' ')
     p++;
   vlen = len - (p - line);
-  value = (uint8_t *)shm_malloc(1, vlen);
+  value = (uint8_t *)shm_malloc(vlen);
   if (!value)
   {
     LM_ERR("[VoWiFi] parse_key_value_line(): shm_malloc for value failed\n");
@@ -150,14 +150,14 @@ sip_message_t *init_sip_message(char *buf, int len)
   uint8_t *line;
   int klen, vlen;
 
-  ret = (sip_message_t *)shm_malloc(1, sizeof(sip_message_t));
+  ret = (sip_message_t *)shm_malloc(sizeof(sip_message_t));
   if (!ret)
   {
     LM_ERR("[VoWiFi] init_sip_message(): shm_malloc for ret failed\n");
     exit(1);
   }
   line = strtok(buf, "\r\n");
-  parse_first_line(ret, line);
+  parse_sip_first_line(ret, line);
   while (line)
   {
     line = strtok(NULL, "\r\n");
@@ -175,8 +175,9 @@ int get_message_type(sip_message_t *message)
   return message->mtype;
 }
 
-const uint8_t *get_message_name(sip_message_t *message)
+uint8_t *get_message_name(sip_message_t *message, int *mlen)
 {
+  *mlen = message->mlen;
   return message->mname;
 }
 
@@ -999,7 +1000,7 @@ void process_query(instance_t *instance, sip_message_t *sip)
 {
   query_t *query;
   kvp_t *kvp;
-  uint8_t *tmp, *value;
+  uint8_t *tmp, *change, *value;
   int tlen, vlen, vtype, op;
   
   if ((query = get_query(instance))
@@ -1008,7 +1009,7 @@ void process_query(instance_t *instance, sip_message_t *sip)
       && (query = get_sub_query_by_name(query, "nonce")))
   {
     kvp = get_kvp_from_sip_message(sip, "WWW-Authenticate", 16, 0);
-    value = get_value_from_sip_message(kvp, "nonce", 5, &vlen);
+    value = get_value_from_kvp_by_name(kvp, "nonce", 5, &vlen);
     vtype = get_query_value_type(query);
     op = get_query_operator(query);
 
@@ -1017,7 +1018,7 @@ void process_query(instance_t *instance, sip_message_t *sip)
       tmp = get_query_value(query, &tlen);
       change = (uint8_t *)shm_malloc(tlen);
       memset(change, "8", vlen);
-      change_value_from_kvp_by_name(kvp, "nonce", change, vlen);
+      change_value_from_kvp_by_name(kvp, "nonce", 5, change, vlen);
     }
   }
 }
@@ -1071,10 +1072,10 @@ void report_message(instance_t *instance, sip_message_t *message)
   {
     msg = init_message(instance, MSG_TYPE_BLOCK_START,
         symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(instance, msg);
+    add_message_to_send_queue(instance, msg);
 
     msg = init_message(instance, MSG_TYPE_BLOCK_END,
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-    instance->add_message_to_send_queue(insatnce, msg);
+    add_message_to_send_queue(instance, msg);
   }
 }
