@@ -712,7 +712,7 @@ void free_sip_msg(struct sip_msg* const msg)
 	if (msg->reply_lump)   free_reply_lump(msg->reply_lump);
 
   ///// Added for VoWiFi /////
-  if (msg->sip_instance)    free_instance(msg->sip_instance);
+  //if (msg->sip_instance)    free_instance(msg->sip_instance);
   ////////////////////////////
   
 	msg_ldata_reset(msg);

@@ -187,7 +187,7 @@ uint8_t *serialize_sip_message(sip_message_t *message, int *len)
 
   uint8_t *ret, *p, *vtmp;
   uint8_t tmp[SC_BUF_LENGTH];
-  int flen, vlen;
+  int vlen;
   kvp_t *curr;
 
   p = tmp;
@@ -232,8 +232,8 @@ uint8_t *serialize_sip_message(sip_message_t *message, int *len)
 
     memcpy(p, ": ", 2);
     p += 2;
-
     vtmp = serialize_value(curr, &vlen);
+    LM_INFO("[VoWiFi] (serialize_sip_message()) val (%d bytes): %s\n", vlen, vtmp);
     memcpy(p, vtmp, vlen);
     p += vlen;
     *(p++) = '\r';
@@ -288,6 +288,7 @@ void free_sip_message(sip_message_t *message)
       curr = next;
     }
   }
+  shm_free(message);
 }
 
 val_t *init_val(uint8_t *val, int len, uint8_t delimiter, uint8_t space)
@@ -602,13 +603,32 @@ out:
   return ret;
 }
 
+int is_register_message(sip_message_t *message)
+{
+  assert(message != NULL);
+  const char *reg = "REGISTER";
+  int ret;
+
+  ret = SC_FALSE;
+  if (message->mlen != strlen(reg))
+    goto out;
+
+  if (!strncmp(message->mname, reg, message->mlen))
+    ret = SC_TRUE;
+
+out:
+  return ret;
+}
+
 int is_401_unauthorized_message(sip_message_t *message)
 {
+  assert(message != NULL);
   return is_status_code_message(message, "401");
 }
 
 int is_200_ok_message(sip_message_t *message)
 {
+  assert(message != NULL);
   return is_status_code_message(message, "200");
 }
 
@@ -974,3 +994,71 @@ void del_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen)
     vlst->head = curr->next;
   free_val(curr);
 }
+
+void *process_query(const char *buf, unsigned len, unsigned *rlen)
+{
+  instance_t *instance;
+  sip_message_t *msg;
+  kvp_t *kvp;
+
+  const char *str1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  const char *str2 = "5";
+  uint8_t *val, *res;
+  int vlen, is_401, is_200;
+  LM_INFO("\n\n\n[VoWiFi] tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
+
+  msg = init_sip_message((uint8_t *)buf, len);
+  if (is_401_unauthorized_message(msg))
+  {
+    LM_ERR("[VoWiFi] This SIP message is a 401 unauthorized message\n");
+    is_401 = 1;
+  }
+  else
+  {
+    LM_ERR("[VoWiFi] This SIP message is NOT a 401 unauthorized message\n");
+    is_401 = 0;
+  }
+
+  if (is_200_ok_message(msg))
+  {
+    LM_ERR("[VoWiFi] This SIP message is a 200 OK message\n");
+    is_200 = 1;
+  }
+  else
+  {
+    LM_ERR("[VoWiFi] This SIP message is NOT a 200 OK message\n");
+    is_200 = 0;
+  }
+    
+  if (!is_401 && !is_200)
+  {
+    res = NULL;
+    goto out;
+  }
+
+  kvp = get_kvp_from_sip_message(msg, (uint8_t *)"WWW-Authenticate", 16, 0);
+  if (is_401_unauthorized_message(msg))
+  {
+    val = (uint8_t *)shm_malloc(strlen(str1));
+    memcpy(val, str1, strlen(str1));
+    vlen = strlen(str1);
+    change_value_from_kvp_by_name(kvp, "nonce", 5, val, vlen);
+    shm_free(val);
+  }
+
+  if (is_200_ok_message(msg))
+  {
+    val = (uint8_t *)shm_malloc(strlen(str2));
+    memcpy(val, str2, strlen(str2));
+    vlen = strlen(str2);
+    change_value_from_kvp_by_idx(kvp, 0, val, vlen);
+    shm_free(val);
+  }
+    
+  res = serialize_sip_message(msg, rlen);
+  LM_INFO("changed message (%d bytes): %.*s\n", (*rlen), (*rlen), res);
+
+out:
+  return (void *)res;
+}
+

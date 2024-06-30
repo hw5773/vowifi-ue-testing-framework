@@ -391,9 +391,6 @@ typedef struct sip_msg {
 	 * - not cloned to shm, reset to 0 in the clone */
 	msg_ldata_t ldv;
 
-  ///// Added for VoWiFi /////
-  instance_t *sip_instance;
-  ////////////////////////////
 	/* IMPORTANT: when adding new fields in this structure (sip_msg_t),
 	 * be sure it is freed in free_sip_msg() and it is cloned or reset
 	 * to shm structure for transaction - see sip_msg_clone.c. In tm
