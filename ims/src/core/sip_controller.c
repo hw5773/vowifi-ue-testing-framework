@@ -995,70 +995,86 @@ void del_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen)
   free_val(curr);
 }
 
-void *process_query(const char *buf, unsigned len, unsigned *rlen)
+void process_query(instance_t *instance, sip_message_t *sip)
 {
-  instance_t *instance;
-  sip_message_t *msg;
+  query_t *query;
   kvp_t *kvp;
+  uint8_t *tmp, *value;
+  int tlen, vlen, vtype, op;
+  
+  if ((query = get_query(instance))
+      && is_query_name(query, "401_unauthorized")
+      && (query = get_sub_query_by_name(query, "www_authenticate"))
+      && (query = get_sub_query_by_name(query, "nonce")))
+  {
+    kvp = get_kvp_from_sip_message(sip, "WWW-Authenticate", 16, 0);
+    value = get_value_from_sip_message(kvp, "nonce", 5, &vlen);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
 
-  const char *str1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-  const char *str2 = "5";
-  uint8_t *val, *res;
-  int vlen, is_401, is_200;
-  LM_INFO("\n\n\n[VoWiFi] tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
-
-  msg = init_sip_message((uint8_t *)buf, len);
-  if (is_401_unauthorized_message(msg))
-  {
-    LM_ERR("[VoWiFi] This SIP message is a 401 unauthorized message\n");
-    is_401 = 1;
+    if ((vtype == VAL_TYPE_STRING) && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      change = (uint8_t *)shm_malloc(tlen);
+      memset(change, "8", vlen);
+      change_value_from_kvp_by_name(kvp, "nonce", change, vlen);
+    }
   }
-  else
-  {
-    LM_ERR("[VoWiFi] This SIP message is NOT a 401 unauthorized message\n");
-    is_401 = 0;
-  }
-
-  if (is_200_ok_message(msg))
-  {
-    LM_ERR("[VoWiFi] This SIP message is a 200 OK message\n");
-    is_200 = 1;
-  }
-  else
-  {
-    LM_ERR("[VoWiFi] This SIP message is NOT a 200 OK message\n");
-    is_200 = 0;
-  }
-    
-  if (!is_401 && !is_200)
-  {
-    res = NULL;
-    goto out;
-  }
-
-  kvp = get_kvp_from_sip_message(msg, (uint8_t *)"WWW-Authenticate", 16, 0);
-  if (is_401_unauthorized_message(msg))
-  {
-    val = (uint8_t *)shm_malloc(strlen(str1));
-    memcpy(val, str1, strlen(str1));
-    vlen = strlen(str1);
-    change_value_from_kvp_by_name(kvp, "nonce", 5, val, vlen);
-    shm_free(val);
-  }
-
-  if (is_200_ok_message(msg))
-  {
-    val = (uint8_t *)shm_malloc(strlen(str2));
-    memcpy(val, str2, strlen(str2));
-    vlen = strlen(str2);
-    change_value_from_kvp_by_idx(kvp, 0, val, vlen);
-    shm_free(val);
-  }
-    
-  res = serialize_sip_message(msg, rlen);
-  LM_INFO("changed message (%d bytes): %.*s\n", (*rlen), (*rlen), res);
-
-out:
-  return (void *)res;
 }
 
+void report_message(instance_t *instance, sip_message_t *message)
+{
+  const uint8_t *symbol;
+  uint8_t *mname;
+  int mtype, mlen;
+  msg_t *msg;
+  query_t *query;
+  symbol = NULL;
+  mtype = get_message_type(message);
+
+  if (mtype == SC_SIP_REQUEST)
+  {
+    if (!strncmp(instance->rprev, "ike_auth_3_request", strlen("ike_auth_3_request")))
+    {
+      symbol = "register_1";
+      instance->rprev = "register_1";
+    }
+    else if (!strncmp(instance->rprev, "register_1", strlen("register_1")))
+    {
+      symbol = "register_2";
+      instance->rprev = "register_2";
+    }
+  }
+  else if (mtype == SC_SIP_RESPONSE)
+  {
+    if ((query = get_next_query(instance)))
+    {
+      mname = get_message_name(message, &mlen);
+      if (is_query_name(query, mname)
+          && (!strncmp(instance->sprev, "ike_auth_3_response",
+              strlen("ike_auth_3_response"))))
+      {
+        symbol = "401_unauthorized";
+        instance->sprev = "401_unauthorized";
+      }
+      else if (is_query_name(query, mname)
+          && (!strncmp(instance->sprev, "401_unauthorized",
+              strlen("401_unauthorized"))))
+      {
+        symbol = "200_ok";
+        instance->sprev = "200_ok";
+      }
+    }
+  }
+
+  if (symbol)
+  {
+    msg = init_message(instance, MSG_TYPE_BLOCK_START,
+        symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(instance, msg);
+
+    msg = init_message(instance, MSG_TYPE_BLOCK_END,
+        NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+    instance->add_message_to_send_queue(insatnce, msg);
+  }
+}

@@ -74,7 +74,8 @@ sip_message_t *init_sip_message(char *buf, int len);
 void free_sip_message(sip_message_t *message);
 uint8_t *serialize_sip_message(sip_message_t *message, int *len);
 void print_sip_message(sip_message_t *message);
-void *process_query(const char *buf, unsigned len, unsigned *rlen);
+void process_query(instance_t *instance, sip_message_t *message);
+void report_message(instance_t *instance, sip_message_t *message);
 
 kvp_t *init_kvp(uint8_t *key, int klen, uint8_t *value, int vlen);
 void free_kvp(kvp_t *kvp);
