@@ -155,8 +155,6 @@ query_t *get_query(instance_t *instance);
 bool is_query_name(query_t *query, const uint8_t *name);
 query_t *get_sub_query_by_name(query_t *query, const uint8_t *name);
 
-void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len);
-
 void *sender_run(void *data);
 void *listener_run(void *data);
 
