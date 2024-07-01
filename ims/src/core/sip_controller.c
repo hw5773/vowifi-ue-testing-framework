@@ -103,6 +103,7 @@ kvp_t *parse_key_value_line(sip_message_t *sip, uint8_t *line)
   uint8_t *p, *key, *value;
   int len, klen, vlen;
 
+  ret = NULL;
   len = strlen(line);
   p = line;
 
@@ -114,10 +115,11 @@ kvp_t *parse_key_value_line(sip_message_t *sip, uint8_t *line)
   }
 
   klen = p - line;
+  LM_DBG("key (%d bytes): %.*s\n", klen, klen, line);
   key = (uint8_t *)shm_malloc(klen);
   if (!key)
   {
-    LM_ERR("[VoWiFi] parse_key_value_line(): shm_malloc for key failed\n");
+    LM_ERR("[VoWiFi] parse_key_value_line(): shm_malloc for key failed (klen: %d)\n", klen);
     exit(1);
   }
   memcpy(key, line, klen);
@@ -126,16 +128,20 @@ kvp_t *parse_key_value_line(sip_message_t *sip, uint8_t *line)
   while (*p == ' ')
     p++;
   vlen = len - (p - line);
-  value = (uint8_t *)shm_malloc(vlen);
-  if (!value)
+  LM_DBG("value (%d bytes): %.*s\n", vlen, vlen, p);
+
+  if (vlen > 0)
   {
-    LM_ERR("[VoWiFi] parse_key_value_line(): shm_malloc for value failed\n");
-    exit(1);
+    value = (uint8_t *)shm_malloc(vlen);
+    if (!value)
+    {
+      LM_ERR("[VoWiFi] parse_key_value_line(): shm_malloc for value failed (vlen: %d)\n", vlen);
+      exit(1);
+    }
+    memcpy(value, p, vlen);
+
+    ret = init_kvp(key, klen, value, vlen);
   }
-  memcpy(value, p, vlen);
-
-  ret = init_kvp(key, klen, value, vlen);
-
   return ret;
 }
 
@@ -148,24 +154,46 @@ sip_message_t *init_sip_message(char *buf, int len)
   kvp_t *kvp;
   uint8_t *value;
   uint8_t *line;
+  uint8_t *orig;
   int klen, vlen;
 
+  orig = (char *)shm_malloc(len);
+  memset(orig, 0, len);
+  memcpy(orig, buf, len);
   ret = (sip_message_t *)shm_malloc(sizeof(sip_message_t));
   if (!ret)
   {
     LM_ERR("[VoWiFi] init_sip_message(): shm_malloc for ret failed\n");
     exit(1);
   }
-  line = strtok(buf, "\r\n");
+  memset(ret, 0, sizeof(sip_message_t));
+  line = strtok(orig, "\r\n");
   parse_sip_first_line(ret, line);
-  while (line)
+
+  if (is_register_message(ret)
+      || is_401_unauthorized_message(ret)
+      || is_200_ok_message(ret))
   {
-    line = strtok(NULL, "\r\n");
-    if (!line)
-      break;
-    kvp = parse_key_value_line(ret, line);
-    add_kvp_to_sip_message(ret, kvp, NULL, 0, 0);
+    while (line)
+    {
+      line = strtok(NULL, "\r\n");
+      if (!line)
+        break;
+      LM_DBG("before parse_key_value_line(): %s\n", line);
+      kvp = parse_key_value_line(ret, line);
+      LM_DBG("after parse_key_value_line()\n");
+      LM_DBG("before add_kvp_to_sip_message()\n");
+      if (kvp)
+        add_kvp_to_sip_message(ret, kvp, NULL, 0, 0);
+      LM_DBG("after add_kvp_to_sip_message()\n");
+    }
   }
+  else
+  {
+    free_sip_message(ret);
+    ret = NULL;
+  }
+  shm_free(orig);
 
   return ret;
 }
@@ -308,6 +336,7 @@ val_t *init_val(uint8_t *val, int len, uint8_t delimiter, uint8_t space)
     LM_ERR("[VoWiFi] init_val(): shm_malloc for ret failed\n");
     exit(1);
   }
+  memset(ret, 0, sizeof(val_t));
   p = val;
   t = tmp;
   inside = 0;
@@ -451,6 +480,7 @@ vlst_t *init_vlst(uint8_t *value, int vlen)
     LM_ERR("[VoWiFi] init_vlst(): shm_malloc() failed\n");
     exit(1);
   }
+  memset(ret, 0, sizeof(vlst_t));
 
   p = value;
   q = tmp;
@@ -551,6 +581,7 @@ kvp_t *init_kvp(uint8_t *key, int klen, uint8_t *value, int vlen)
     LM_ERR("[VoWiFi] init_kvp(): shm_malloc() for ret failed\n");
     exit(1);
   }
+  memset(ret, 0, sizeof(kvp_t));
 
   ret->key = (uint8_t *)shm_malloc(klen);
   if (!(ret->key))
@@ -562,7 +593,6 @@ kvp_t *init_kvp(uint8_t *key, int klen, uint8_t *value, int vlen)
   ret->klen = klen;
 
   ret->vlst = init_vlst(value, vlen);
-
   return ret;
 }
 
@@ -1031,10 +1061,14 @@ void report_message(instance_t *instance, sip_message_t *message)
   msg_t *msg;
   query_t *query;
   symbol = NULL;
+  LM_ERR("report_message() 1\n");
   mtype = get_message_type(message);
+  LM_ERR("report_message() 2: mtype: %d\n", mtype);
 
   if (mtype == SC_SIP_REQUEST)
   {
+  LM_ERR("report_message() 3\n");
+  LM_ERR("instance->rprev: %s\n", instance->rprev);
     if (!strncmp(instance->rprev, "ike_auth_3_request", strlen("ike_auth_3_request")))
     {
       symbol = "register_1";
@@ -1048,17 +1082,23 @@ void report_message(instance_t *instance, sip_message_t *message)
   }
   else if (mtype == SC_SIP_RESPONSE)
   {
+  LM_ERR("report_message() 4\n");
     if ((query = get_next_query(instance)))
     {
       mname = get_message_name(message, &mlen);
-      if (is_query_name(query, mname)
+      LM_ERR("query->name: %s, mname: %s, instance->sprev: %s\n", query->name, mname, instance->sprev);
+      if (is_query_name(query, "401_unauthorized")
+          && (strlen(mname) >= strlen("Unauthorized"))
+          && (!strncmp(mname, "Unauthorized", strlen("Unauthorized")))
           && (!strncmp(instance->sprev, "ike_auth_3_response",
               strlen("ike_auth_3_response"))))
       {
         symbol = "401_unauthorized";
         instance->sprev = "401_unauthorized";
       }
-      else if (is_query_name(query, mname)
+      else if (is_query_name(query, "200_ok")
+          && (strlen(mname) >= strlen("OK"))
+          && (!strncmp(mname, "OK", strlen("OK")))
           && (!strncmp(instance->sprev, "401_unauthorized",
               strlen("401_unauthorized"))))
       {
@@ -1068,14 +1108,19 @@ void report_message(instance_t *instance, sip_message_t *message)
     }
   }
 
+  LM_ERR("report_message() 5: symbol: %s\n", symbol);
   if (symbol)
   {
+  LM_ERR("report_message() 6\n");
     msg = init_message(instance, MSG_TYPE_BLOCK_START,
         symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     add_message_to_send_queue(instance, msg);
 
+  LM_ERR("report_message() 7\n");
     msg = init_message(instance, MSG_TYPE_BLOCK_END,
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     add_message_to_send_queue(instance, msg);
+  LM_ERR("report_message() 8\n");
   }
+  LM_ERR("report_message() 9\n");
 }

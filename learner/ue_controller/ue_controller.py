@@ -214,33 +214,19 @@ def handle_init_config(device):
         logging.debug("Menu to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
+        time.sleep(1)
+            
+        logging.debug("Enabling swipe")
+        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(1)
+        logging.debug("Enabled swipe")
         
-        #####start#### checking if screen is already swiped#######
-        logging.debug("Checking if screen is already swiped")
-        if is_screen_swiped():
-            time.sleep(3)
-            logging.debug("Screen is already swiped")
-        else:    
-            logging.debug("Enabling swipe")
-            cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
-            logging.debug("Enabled swipe")
-        #####end### checking if screen is already swiped##########
-
-        #####start#### checking if wifi is already enabled#######
-        logging.debug("Checking if Wifi is already enabled")
-        if is_wifi_enabled():
-            time.sleep(3)
-            logging.debug("WiFi is already enabled")
-        else:
-            logging.debug("Enabling wifi")
-            cmd = ["adb", "shell", "svc", "wifi", "enable"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(4)
-            logging.debug("Enabled wifi")
-        #####end ##### checking if wifi is already enabled#######
+        logging.debug("Enabling wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled wifi")
 
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
@@ -264,6 +250,39 @@ def handle_init_config(device):
         logging.debug("Enabling swipe")
         cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        timedevice.sleep(3)
+        logging.debug("Enabled Swipe")
+
+        logging.debug("Enabling wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+      device  time.sleep(4)
+        logging.debug("Enabled wifi")
+
+        logging.debug ("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled Wifi Calling")
+
+        logging.debug("Toggle the WiFi Calling button")
+        for _ in range(2):
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+        logging.debug("Finish toggling the WiFi Calling button")
+
+   //////////////One Plus Nord N20/////////////// 
+
+    elif device == "One_Plus_Nord_N20"
+        logging.debug("Menu to unlock the phone")
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+
+        logging.debug("Enabling swipe")
+        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         logging.debug("Enabled Swipe")
 
@@ -278,7 +297,7 @@ def handle_init_config(device):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         logging.debug("Enabled Wifi Calling")
-
+        
         logging.debug("Toggle the WiFi Calling button")
         for _ in range(2):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
@@ -351,7 +370,7 @@ def check_device_model():
         logging.info("Device model: T-mobile Revvl4")
     elif "moto_e5_plus" in output:
         device = "moto_e5_plus"
-        logging.info("Device model: Motorola Moto E5 Plus")
+        logging.info("Device model: Motorola Motoinput E5 Plus")
     elif "moto_g_power" in output:
         device = "moto_g_power"
         logging.info("Device model: Motorola Moto G Power")
@@ -397,7 +416,7 @@ def check_device_model():
     elif "2201117TG" in output:
         device = "Redmi_Note2"
         logging.info("Device model: Redmi Note 2")
-    elif "LG_Q730" in output:
+device    elif "LG_Q730" in output:
         device = "LG_Q730"
         logging.info("Device model: LG Stylo 6")
     elif "T608M" in output:

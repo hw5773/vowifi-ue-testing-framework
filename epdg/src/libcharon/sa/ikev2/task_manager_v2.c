@@ -1802,7 +1802,7 @@ static status_t process_request(private_task_manager_t *this,
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     if (!(instance->retransmission))
-    {
+    {	    
       printf("\n\n\n[VoWiFi] block end 4\n\n\n");
       msg = init_message(instance, MSG_TYPE_BLOCK_END, 
           NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
@@ -1816,7 +1816,7 @@ static status_t process_request(private_task_manager_t *this,
   ////////////////////////////
 
 	return build_response(this, message);
-}
+}1804
 
 METHOD(task_manager_t, incr_mid, void,
 	private_task_manager_t *this, bool initiate)
@@ -1851,7 +1851,7 @@ static status_t handle_fragment(private_task_manager_t *this,
 	status_t status;
 
 	if (*defrag && (*defrag)->get_message_id(*defrag) < msg->get_message_id(msg))
-	{
+	{build_response
 		/* clear fragments of an incompletely received retransmitted message */
 		(*defrag)->destroy(*defrag);
 		*defrag = NULL;
@@ -1965,7 +1965,7 @@ static status_t parse_message(private_task_manager_t *this, message_t *msg)
 			{
 				unknown = (unknown_payload_t*)payload;
 				if (unknown->is_critical(unknown))
-				{
+				{build_response
 					type = unknown->get_type(unknown);
 					DBG1(DBG_ENC, "payload type %N is not supported, "
 						 "but payload is critical!", payload_type_names, type);
@@ -2119,7 +2119,7 @@ static inline bool reject_request(private_task_manager_t *this,
 	{
 		switch (state)
 		{
-			/* after rekeying we only expect a DELETE in an INFORMATIONAL */
+			/* after rekeying we only build_responseexpect a DELETE in an INFORMATIONAL */
 			case IKE_REKEYED:
 				reject = type != INFORMATIONAL;
 				break;
