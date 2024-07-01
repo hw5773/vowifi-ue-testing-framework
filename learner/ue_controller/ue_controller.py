@@ -214,18 +214,18 @@ def handle_init_config(device):
         logging.debug("Menu to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
+        time.sleep(1)
             
         logging.debug("Enabling swipe")
         cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
+        time.sleep(1)
         logging.debug("Enabled swipe")
         
         logging.debug("Enabling wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(4)
+        time.sleep(3)
         logging.debug("Enabled wifi")
 
         logging.debug("Enable WiFi Calling")
