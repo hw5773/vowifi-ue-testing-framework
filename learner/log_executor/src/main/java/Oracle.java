@@ -85,11 +85,15 @@ public class Oracle {
         ret = 1;
 
       if (query.contains("ike_auth_3_response")
-          && !(reply.contains("timeout") || reply.contains("register")))
+          && !(reply.contains("timeout") || reply.contains("register_1")))
         ret = 1;
 
       if (query.contains("401_unauthorized")
-          && !reply.contains("register"))
+          && !reply.contains("register_2"))
+        ret = 1;
+
+      if (query.contains("200_ok")
+          && !reply.contains("done"))
         ret = 1;
 
       if (reply.contains("client_error"))
@@ -123,11 +127,15 @@ public class Oracle {
       ret = false;
 
     if (query.contains("ike_auth_3_response")
-        && !reply.contains("ike_auth_4_request"))
+        && !reply.contains("register_1"))
       ret = false;
 
-    if (query.contains("ike_auth_4_response")
-        && !reply.contains("register"))
+    if (query.contains("401_unauthorized")
+        && !reply.contains("register_2"))
+      ret = false;
+
+    if (query.contains("200_ok")
+        && !reply.contains("done"))
       ret = false;
 
     return ret;
