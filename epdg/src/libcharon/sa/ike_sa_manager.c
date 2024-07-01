@@ -1962,7 +1962,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	}
 
   ///// Added for VoWiFi /////        
-  printf("[VoWiFi] entry: %p\n", entry);
+  printf("\n\n\n\n\n[VoWiFi] entry: %p\n\n\n\n\n", entry);
   if (entry > 0x7f0000000000
       && ((ike_sa = entry->ike_sa) > 0x1000000)
       && (ispi = id->get_initiator_spi(id))
@@ -1983,6 +1983,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
       */
     }
   }
+  /*
   else
   {
     instance = this->instance;
@@ -2162,6 +2163,7 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
       instance->add_message_to_send_queue(instance, msg);
     }
   }
+  */
   ////////////////////////////
 
 	id->destroy(id);

@@ -64,7 +64,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    //initIMSConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -339,13 +339,13 @@ public class LogExecutor {
   }
 
   private void sendMSGToIMS(Testcase testcase) {
-    logger.debug("START: sendMSGToEPDG()");
+    logger.debug("START: sendMSGToIMS()");
     int depth;
 
     depth = 0;
     sendMessage(testcase, depth, "ims");
 
-    logger.debug("FINISH: sendMSGToEPDG()");
+    logger.debug("FINISH: sendMSGToIMS()");
   }
 
   private void sendMessage(Testcase testcase, int depth, String receiver) {
@@ -1062,110 +1062,116 @@ public class LogExecutor {
       } else if (reporter.contains("ims")) {
         imsSocket.setSoTimeout(IMS_SOCKET_TIMEOUT_VALUE);
         sockIn = imsIn;
+      } else if (reporter.contains("none")) {
+        sockIn = null;
       }
-      do {
-        print = "";
-        for (int i=0; i<depth; i++) {
-          print += "  ";
-        }
 
-        while (true) {
-        	result = sockIn.readLine();
-          len = result.length();
-          if (len > 16)
-            break;
-        }
-        logger.debug("Result from " + reporter + ": " + result);
-        idx = 0;
-        rcvd = result.getBytes();
-        type = (char) rcvd[idx++];
-
-        logger.debug("mlog before switch: " + mlog);
-        switch (type) {
-          case 1:
-            if (mlog == null) {
-              logger.error("The attribute should be within the block");
-            } else {
-              mlog = mlog.addSubmessage(MessageLogType.ATTRIBUTE);
-            }
-            break;
-
-          case 2:
-            if (mlog == null) {
-              logger.info("mlog is initialized");
-              mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
-            } else {
-              logger.info("mlog add the submessage");
-              mlog = mlog.addSubmessage(MessageLogType.PAYLOAD);
-            }
-            depth++;
-            stack.push(1);
-            logger.debug("mlog in case 2: " + mlog);
-            break;
-
-          case 3:
-            logger.debug("mlog in case 3: " + mlog);
-            if (mlog.hasParent()) {
-              logger.info("mlog moves to the parent");
-              mlog = mlog.getParent();
-            }
-            depth--;
-            stack.pop();
-            break;
-
-          default:
-            logger.error("Unknown type: " + type);
-        }
-
-        len -= 1;
-        ispi = result.substring(idx, idx + 16);
-        idx += 16; len -= 16;
-        spi = mlog.getIspi();
-        if (spi == null) {
-          mlog.setIspi(ispi);
-        } else {
-          if (!spi.equals(ispi)) {
-            logger.error("Initiator's SPIs are different");
+      if (sockIn != null)
+      {
+        do {
+          print = "";
+          for (int i=0; i<depth; i++) {
+            print += "  ";
           }
-        }
 
-        rspi = result.substring(idx, idx + 16);
-        idx += 16; len -= 16;
-        spi = mlog.getRspi();
-        if (spi == null) {
-          mlog.setRspi(rspi);
-        } else {
-          if (!spi.equals(rspi)) {
-            logger.error("Responder's SPIs are different");
+          while (true) {
+        	  result = sockIn.readLine();
+            len = result.length();
+            if (len > 16)
+              break;
           }
-        }
+          logger.debug("Result from " + reporter + ": " + result);
+          idx = 0;
+          rcvd = result.getBytes();
+          type = (char) rcvd[idx++];
 
-        if (len > 0)
-        {
-          String[] arr;
-          rstr = result.substring(idx);
-          print += rstr;
-          arr = rstr.split(":", 0);
+          logger.debug("mlog before switch: " + mlog);
+          switch (type) {
+            case 1:
+              if (mlog == null) {
+                logger.error("The attribute should be within the block");
+              } else {
+                mlog = mlog.addSubmessage(MessageLogType.ATTRIBUTE);
+              }
+              break;
 
-          logger.info("name is set to " + arr[0]);
-          mlog.setName(arr[0]);
+            case 2:
+              if (mlog == null) {
+                logger.info("mlog is initialized");
+                mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+              } else {
+                logger.info("mlog add the submessage");
+                mlog = mlog.addSubmessage(MessageLogType.PAYLOAD);
+              }
+              depth++;
+              stack.push(1);
+              logger.debug("mlog in case 2: " + mlog);
+              break;
 
-          if (arr.length > 1) {
-            if (arr.length != 3) {
-              logger.error("The array length should be 3. It is " + arr.length);
-            }
-            else {
-              mlog.setValueType(arr[1]);
-              mlog.setValue(arr[2]);
+            case 3:
+              logger.debug("mlog in case 3: " + mlog);
+              if (mlog.hasParent()) {
+                logger.info("mlog moves to the parent");
+                mlog = mlog.getParent();
+              }
+              depth--;
+              stack.pop();
+              break;
+
+            default:
+              logger.error("Unknown type: " + type);
+          }
+
+          len -= 1;
+          ispi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = mlog.getIspi();
+          if (spi == null) {
+            mlog.setIspi(ispi);
+          } else {
+            if (!spi.equals(ispi)) {
+              logger.error("Initiator's SPIs are different");
             }
           }
-          logger.info(print);
-        }
 
-        if (mlog.getType() == MessageLogType.ATTRIBUTE) {
-          mlog = mlog.getParent();
-        }
-      } while (stack.size() != 0);
+          rspi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = mlog.getRspi();
+          if (spi == null) {
+            mlog.setRspi(rspi);
+          } else {
+            if (!spi.equals(rspi)) {
+              logger.error("Responder's SPIs are different");
+            }
+          }
+
+          if (len > 0)
+          {
+            String[] arr;
+            rstr = result.substring(idx);
+            print += rstr;
+            arr = rstr.split(":", 0);
+
+            logger.info("name is set to " + arr[0]);
+            mlog.setName(arr[0]);
+
+            if (arr.length > 1) {
+              if (arr.length != 3) {
+                logger.error("The array length should be 3. It is " + arr.length);
+              }
+              else {
+                mlog.setValueType(arr[1]);
+                mlog.setValue(arr[2]);
+              }
+            }
+            logger.info(print);
+          }
+
+          if (mlog.getType() == MessageLogType.ATTRIBUTE) {
+            mlog = mlog.getParent();
+          }
+        } while (stack.size() != 0);
+      }
   	  epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
 		} catch (SocketTimeoutException e) {
 			logger.info("Timeout occured for " + testcase.getName());
@@ -1202,6 +1208,14 @@ public class LogExecutor {
         mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
         mlog.setName("retransmission");
         testcase.resetIterator();
+      }
+    }
+    else
+    {
+      if (reporter.contains("none"))
+      {
+        mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("done");
       }
     }
 
