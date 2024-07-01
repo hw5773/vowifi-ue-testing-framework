@@ -1,5 +1,5 @@
 stroke_control.lo: stroke_control.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h stroke_control.h \
+ /home/hyun/vowifi-core-network/epdg/config.h stroke_control.h \
  ../../../../src/stroke/stroke_msg.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -274,7 +274,7 @@ stroke_control.lo: stroke_control.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 stroke_control.h:
 

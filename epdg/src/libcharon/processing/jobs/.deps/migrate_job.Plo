@@ -1,6 +1,5 @@
 processing/jobs/migrate_job.lo: processing/jobs/migrate_job.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  processing/jobs/migrate_job.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -237,7 +236,7 @@ processing/jobs/migrate_job.lo: processing/jobs/migrate_job.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 processing/jobs/migrate_job.h:
 

@@ -2203,7 +2203,7 @@ METHOD(task_manager_t, process_message, status_t,
       instance->retransmission++;
       ///// added to test whether it works /////
       if (instance->imid > 0)
-        return DESTROY_ME;
+        return FAILED;
       //////////////////////////////////////////
     }
     else
@@ -2377,7 +2377,7 @@ METHOD(task_manager_t, process_message, status_t,
   }
   else if (instance)
   {
-    return DESTROY_ME;
+    return FAILED;
   }
   ////////////////////////////
 

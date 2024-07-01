@@ -1,5 +1,5 @@
 control/controller.lo: control/controller.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h control/controller.h \
+ /home/hyun/vowifi-core-network/epdg/config.h control/controller.h \
  bus/bus.h /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../src/libstrongswan/utils/debug.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -243,7 +243,7 @@ control/controller.lo: control/controller.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 control/controller.h:
 

@@ -1,5 +1,5 @@
 commands/self.o: commands/self.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h /usr/include/time.h \
+ /home/hyun/vowifi-core-network/epdg/config.h /usr/include/time.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
@@ -207,7 +207,7 @@ commands/self.o: commands/self.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/time.h:
 

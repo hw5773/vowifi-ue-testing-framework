@@ -1,5 +1,5 @@
 simaka_manager.lo: simaka_manager.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h simaka_manager.h \
+ /home/hyun/vowifi-core-network/epdg/config.h simaka_manager.h \
  ../../src/libstrongswan/crypto/hashers/hasher.h \
  ../../src/libstrongswan/crypto/prfs/prf.h \
  ../../src/libstrongswan/utils/utils.h \
@@ -207,7 +207,7 @@ simaka_manager.lo: simaka_manager.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 simaka_manager.h:
 

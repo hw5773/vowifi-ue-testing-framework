@@ -1,5 +1,5 @@
 x509_ac.lo: x509_ac.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h x509_ac.h \
+ /home/hyun/vowifi-core-network/epdg/config.h x509_ac.h \
  ../../../../src/libstrongswan/credentials/builder.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  ../../../../src/libstrongswan/library.h \
@@ -206,7 +206,7 @@ x509_ac.lo: x509_ac.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 x509_ac.h:
 

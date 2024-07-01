@@ -1,6 +1,5 @@
 collections/blocking_queue.lo: collections/blocking_queue.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  collections/blocking_queue.h library.h utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -150,7 +149,7 @@ collections/blocking_queue.lo: collections/blocking_queue.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 collections/blocking_queue.h:
 

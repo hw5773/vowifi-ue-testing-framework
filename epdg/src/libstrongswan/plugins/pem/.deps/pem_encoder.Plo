@@ -1,5 +1,5 @@
 pem_encoder.lo: pem_encoder.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h pem_encoder.h \
+ /home/hyun/vowifi-core-network/epdg/config.h pem_encoder.h \
  ../../../../src/libstrongswan/credentials/cred_encoding.h \
  ../../../../src/libstrongswan/utils/chunk.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -196,7 +196,7 @@ pem_encoder.lo: pem_encoder.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 pem_encoder.h:
 

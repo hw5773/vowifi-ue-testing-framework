@@ -1,6 +1,5 @@
 sa/xauth/xauth_method.lo: sa/xauth/xauth_method.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/xauth/xauth_method.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -236,7 +235,7 @@ sa/xauth/xauth_method.lo: sa/xauth/xauth_method.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/xauth/xauth_method.h:
 

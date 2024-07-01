@@ -1,6 +1,5 @@
 encoding/payloads/auth_payload.lo: encoding/payloads/auth_payload.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  encoding/payloads/auth_payload.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -228,7 +227,7 @@ encoding/payloads/auth_payload.lo: encoding/payloads/auth_payload.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 encoding/payloads/auth_payload.h:
 

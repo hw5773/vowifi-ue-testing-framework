@@ -1,5 +1,5 @@
 des_crypter.lo: des_crypter.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h des_crypter.h \
+ /home/hyun/vowifi-core-network/epdg/config.h des_crypter.h \
  ../../../../src/libstrongswan/crypto/crypters/crypter.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -197,7 +197,7 @@ des_crypter.lo: des_crypter.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 des_crypter.h:
 

@@ -1,5 +1,5 @@
 commands/pkcs7.o: commands/pkcs7.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h pki.h command.h \
+ /home/hyun/vowifi-core-network/epdg/config.h pki.h command.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -204,7 +204,7 @@ commands/pkcs7.o: commands/pkcs7.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 pki.h:
 

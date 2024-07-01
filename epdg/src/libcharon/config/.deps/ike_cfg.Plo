@@ -1,5 +1,5 @@
 config/ike_cfg.lo: config/ike_cfg.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h /usr/include/string.h \
+ /home/hyun/vowifi-core-network/epdg/config.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -240,7 +240,7 @@ config/ike_cfg.lo: config/ike_cfg.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/string.h:
 

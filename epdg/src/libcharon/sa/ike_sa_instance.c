@@ -430,22 +430,22 @@ query_t *get_next_query(instance_t *instance)
   if (instance->initiated && !instance->finished)
   {
     query = get_query(instance);
-    while (is_query_name(query, instance->sprev))
+    while (!query || is_query_name(query, instance->sprev))
     {
-      printf("[VoWiFi] instance->query->name: %s\n", instance->query->name);
-      printf("[VoWiFi] instance->sprev: %s\n", instance->sprev);
-
       if (instance->finished) 
         break;
+
+      if (query)
+      {
+        printf("[VoWiFi] instance->query->name: %s\n", instance->query->name);
+        printf("[VoWiFi] instance->sprev: %s\n", instance->sprev);
+      }
 
       sleep(1);
       query = get_query(instance);
     }
 
-    if (instance->finished)
-      ret = NULL;
-    else
-      ret = instance->query;
+    ret = query;
   }
 
   return ret;

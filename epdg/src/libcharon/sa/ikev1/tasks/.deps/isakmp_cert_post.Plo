@@ -1,6 +1,5 @@
 sa/ikev1/tasks/isakmp_cert_post.lo: sa/ikev1/tasks/isakmp_cert_post.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  sa/ikev1/tasks/isakmp_cert_post.h ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -239,7 +238,7 @@ sa/ikev1/tasks/isakmp_cert_post.lo: sa/ikev1/tasks/isakmp_cert_post.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/ikev1/tasks/isakmp_cert_post.h:
 

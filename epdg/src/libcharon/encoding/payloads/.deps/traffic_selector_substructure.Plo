@@ -1,7 +1,6 @@
 encoding/payloads/traffic_selector_substructure.lo: \
  encoding/payloads/traffic_selector_substructure.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  encoding/payloads/traffic_selector_substructure.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -203,7 +202,7 @@ encoding/payloads/traffic_selector_substructure.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 encoding/payloads/traffic_selector_substructure.h:
 
