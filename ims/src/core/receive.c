@@ -246,6 +246,8 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
 	int exectime = 0;
   ///// Added for VoWiFi /////
   instance_t *instance;
+  int mtype, rlen;
+  char *revised;
   instance = NULL;
   ////////////////////////////
 
@@ -305,21 +307,21 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
 		msg_set_time(msg);
 
   ///// Added for VoWiFi /////
+  sip_message_t *sip;
   instance = get_instance();
   if (check_instance(instance))
   {
-    const uint8_t *symbol;
-    msg_t *msg;
-    msg = NULL;
-    sip_message_t *sip;
-
-    LM_INFO("received buffer (len: %d bytes): %s\n", len, buf);
-    LM_INFO("before init_sip_message()\n");
     sip = init_sip_message(buf, len);
-    LM_INFO("after init_sip_message()\n");
-    LM_ERR("\n\n\n\n\nis_register_message(): %d\n", is_register_message(sip));
-    LM_ERR("is_401_unauthorized(): %d\n", is_401_unauthorized_message(sip));
-    LM_ERR("is_200_ok(): %d\n\n\n\n\n", is_200_ok_message(sip));
+    report_message(instance, sip);
+    mtype = get_message_type(sip);
+    if (mtype == SC_SIP_RESPONSE)
+    {
+      process_query(instance, sip);
+      revised = serialize_sip_message(sip, &rlen);
+      memset(buf, 0, sizeof(buf));
+      memcpy(buf, revised, rlen);
+      len = rlen;
+    }
   }
   ////////////////////////////
 

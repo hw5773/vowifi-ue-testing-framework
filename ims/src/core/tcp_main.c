@@ -2007,7 +2007,7 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	snd_flags_t t_send_flags;
 #endif /* USE_TLS */
   ///// Added for VoWiFi /////
-  instance_t *instance;
+  //instance_t *instance;
   ////////////////////////////
 
 	if(unlikely(dst==NULL)) {
@@ -2016,21 +2016,21 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	}
 
   ///// Added for VoWiFi /////
-  instance = get_instance();
-  if (check_instance(instance))
-  {
-    void *res;
-    int rlen;
+  //instance = get_instance();
+  //if (check_instance(instance))
+  //{
+  //  void *res;
+  //  int rlen;
+  //
+  //  res = process_query(buf, len, &rlen);
 
-    res = process_query(buf, len, &rlen);
-
-    if (res)
-    {
-      buf = (const char *)res;
-      len = rlen;
-    }
-    LM_INFO("to be sent (%d bytes): %.*s\n", len, len, buf);
-  }
+  //  if (res)
+  //  {
+  //    buf = (const char *)res;
+  //    len = rlen;
+  //  }
+  //  LM_INFO("to be sent (%d bytes): %.*s\n", len, len, buf);
+  //}
   ////////////////////////////
 
 	port=su_getport(&dst->to);
