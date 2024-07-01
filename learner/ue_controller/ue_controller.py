@@ -215,32 +215,18 @@ def handle_init_config(device):
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
+            
+        logging.debug("Enabling swipe")
+        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled swipe")
         
-        #####start#### checking if screen is already swiped#######
-        logging.debug("Checking if screen is already swiped")
-        if is_screen_swiped():
-            time.sleep(3)
-            logging.debug("Screen is already swiped")
-        else:    
-            logging.debug("Enabling swipe")
-            cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
-            logging.debug("Enabled swipe")
-        #####end### checking if screen is already swiped##########
-
-        #####start#### checking if wifi is already enabled#######
-        logging.debug("Checking if Wifi is already enabled")
-        if is_wifi_enabled():
-            time.sleep(3)
-            logging.debug("WiFi is already enabled")
-        else:
-            logging.debug("Enabling wifi")
-            cmd = ["adb", "shell", "svc", "wifi", "enable"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(4)
-            logging.debug("Enabled wifi")
-        #####end ##### checking if wifi is already enabled#######
+        logging.debug("Enabling wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(4)
+        logging.debug("Enabled wifi")
 
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
@@ -249,7 +235,7 @@ def handle_init_config(device):
         logging.debug("Enabled Wifi Calling")
  
         logging.debug("Toggle the WiFi Calling button")
-        for _ in range(3):
+        for _ in range(2):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
