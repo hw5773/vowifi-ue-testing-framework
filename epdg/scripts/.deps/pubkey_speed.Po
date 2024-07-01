@@ -1,5 +1,5 @@
 pubkey_speed.o: pubkey_speed.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h /usr/include/stdio.h \
+ /home/hyun/vowifi-core-network/epdg/config.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -198,7 +198,7 @@ pubkey_speed.o: pubkey_speed.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/include/stdio.h:
 

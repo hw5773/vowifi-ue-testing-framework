@@ -1,6 +1,5 @@
 curve25519_identity_hasher.lo: curve25519_identity_hasher.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  curve25519_identity_hasher.h \
  ../../../../src/libstrongswan/crypto/hashers/hasher.h \
  ../../../../src/libstrongswan/crypto/prfs/prf.h \
@@ -138,7 +137,7 @@ curve25519_identity_hasher.lo: curve25519_identity_hasher.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 curve25519_identity_hasher.h:
 

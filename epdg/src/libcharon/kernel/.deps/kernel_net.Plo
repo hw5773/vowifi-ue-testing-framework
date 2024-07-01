@@ -1,5 +1,5 @@
 kernel/kernel_net.lo: kernel/kernel_net.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h kernel/kernel_net.h \
+ /home/hyun/vowifi-core-network/epdg/config.h kernel/kernel_net.h \
  ../../src/libstrongswan/collections/enumerator.h \
  ../../src/libstrongswan/utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
@@ -241,7 +241,7 @@ kernel/kernel_net.lo: kernel/kernel_net.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 kernel/kernel_net.h:
 

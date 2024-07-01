@@ -1,6 +1,6 @@
 encoding/payloads/transform_substructure.lo: \
  encoding/payloads/transform_substructure.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /home/hyun/vowifi-core-network/epdg/config.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  encoding/payloads/transform_substructure.h \
  ../../src/libstrongswan/library.h \
@@ -237,7 +237,7 @@ encoding/payloads/transform_substructure.lo: \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

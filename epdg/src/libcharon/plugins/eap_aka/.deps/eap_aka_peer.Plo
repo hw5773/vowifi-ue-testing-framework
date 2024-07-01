@@ -1,5 +1,5 @@
 eap_aka_peer.lo: eap_aka_peer.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h eap_aka_peer.h \
+ /home/hyun/vowifi-core-network/epdg/config.h eap_aka_peer.h \
  ../../../../src/libcharon/sa/eap/eap_method.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -279,7 +279,7 @@ eap_aka_peer.lo: eap_aka_peer.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 eap_aka_peer.h:
 

@@ -1,5 +1,5 @@
 rc2_plugin.lo: rc2_plugin.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h rc2_plugin.h \
+ /home/hyun/vowifi-core-network/epdg/config.h rc2_plugin.h \
  ../../../../src/libstrongswan/plugins/plugin.h \
  ../../../../src/libstrongswan/library.h \
  ../../../../src/libstrongswan/utils/printf_hook/printf_hook.h \
@@ -202,7 +202,7 @@ rc2_plugin.lo: rc2_plugin.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 rc2_plugin.h:
 

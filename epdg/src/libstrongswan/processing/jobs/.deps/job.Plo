@@ -1,5 +1,5 @@
 processing/jobs/job.lo: processing/jobs/job.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h processing/jobs/job.h \
+ /home/hyun/vowifi-core-network/epdg/config.h processing/jobs/job.h \
  library.h utils/printf_hook/printf_hook.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -147,7 +147,7 @@ processing/jobs/job.lo: processing/jobs/job.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 processing/jobs/job.h:
 

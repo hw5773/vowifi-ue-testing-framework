@@ -1,5 +1,5 @@
 sa/child_sa.lo: sa/child_sa.c /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h sa/child_sa.h \
+ /home/hyun/vowifi-core-network/epdg/config.h sa/child_sa.h \
  ../../src/libstrongswan/library.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  /usr/include/stdlib.h \
@@ -241,7 +241,7 @@ sa/child_sa.lo: sa/child_sa.c /usr/include/stdc-predef.h \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 sa/child_sa.h:
 

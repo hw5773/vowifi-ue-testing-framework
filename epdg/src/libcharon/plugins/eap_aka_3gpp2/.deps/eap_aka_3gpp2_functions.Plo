@@ -1,6 +1,5 @@
 eap_aka_3gpp2_functions.lo: eap_aka_3gpp2_functions.c \
- /usr/include/stdc-predef.h \
- /home/esslab-03/vowifi-core-network/epdg/config.h \
+ /usr/include/stdc-predef.h /home/hyun/vowifi-core-network/epdg/config.h \
  eap_aka_3gpp2_functions.h ../../../../src/libsimaka/simaka_manager.h \
  ../../../../src/libstrongswan/crypto/hashers/hasher.h \
  ../../../../src/libstrongswan/crypto/prfs/prf.h \
@@ -283,7 +282,7 @@ eap_aka_3gpp2_functions.lo: eap_aka_3gpp2_functions.c \
 
 /usr/include/stdc-predef.h:
 
-/home/esslab-03/vowifi-core-network/epdg/config.h:
+/home/hyun/vowifi-core-network/epdg/config.h:
 
 eap_aka_3gpp2_functions.h:
 
