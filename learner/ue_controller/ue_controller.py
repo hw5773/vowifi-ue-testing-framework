@@ -256,7 +256,7 @@ def handle_init_config(device):
         logging.debug("Enabling wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-      device  time.sleep(4)
+        time.sleep(4)
         logging.debug("Enabled wifi")
 
         logging.debug ("Enable WiFi Calling")
@@ -272,9 +272,7 @@ def handle_init_config(device):
             time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
 
-   //////////////One Plus Nord N20/////////////// 
-
-    elif device == "One_Plus_Nord_N20"
+    elif device == "One_Plus_Nord_N20":
         logging.debug("Menu to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -416,7 +414,7 @@ def check_device_model():
     elif "2201117TG" in output:
         device = "Redmi_Note2"
         logging.info("Device model: Redmi Note 2")
-device    elif "LG_Q730" in output:
+    elif "LG_Q730" in output:
         device = "LG_Q730"
         logging.info("Device model: LG Stylo 6")
     elif "T608M" in output:
