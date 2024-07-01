@@ -311,17 +311,33 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
   instance = get_instance();
   if (check_instance(instance))
   {
+    LM_ERR("received (%d bytes): %.*s\n", len, len, buf);
+    LM_INFO("before init_sip_message()\n");
     sip = init_sip_message(buf, len);
-    report_message(instance, sip);
-    mtype = get_message_type(sip);
-    if (mtype == SC_SIP_RESPONSE)
+    LM_INFO("after init_sip_message()\n");
+
+    if (sip)
     {
-      process_query(instance, sip);
-      revised = serialize_sip_message(sip, &rlen);
-      memset(buf, 0, sizeof(buf));
-      memcpy(buf, revised, rlen);
-      len = rlen;
+      LM_INFO("before report_message()\n");
+      report_message(instance, sip);
+      LM_INFO("after report_message()\n");
+      mtype = get_message_type(sip);
+      if (mtype == SC_SIP_RESPONSE)
+      {
+        LM_INFO("before process_query()\n");
+        process_query(instance, sip);
+        LM_INFO("after process_query()\n");
+        LM_INFO("before serialize_sip_message()\n");
+        revised = serialize_sip_message(sip, &rlen);
+        LM_INFO("after serialize_sip_message()\n");
+        memset(buf, 0, sizeof(buf));
+        memcpy(buf, revised, rlen);
+        len = rlen;
+      }
     }
+    LM_ERR("before free_sip_message()\n");
+    free_sip_message(sip);
+    LM_ERR("after free_sip_message()\n");
   }
   ////////////////////////////
 

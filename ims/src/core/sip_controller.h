@@ -82,6 +82,7 @@ void free_kvp(kvp_t *kvp);
 
 int get_message_type(sip_message_t *message);
 uint8_t *get_message_name(sip_message_t *message, int *mlen);
+int is_register_message(sip_message_t *message);
 int is_401_unauthorized_message(sip_message_t *message);
 int is_200_ok_message(sip_message_t *message);
 uint8_t *get_additional_info(sip_message_t *message, int *alen);
