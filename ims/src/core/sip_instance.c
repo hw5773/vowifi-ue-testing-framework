@@ -174,7 +174,6 @@ void *listener_run(void *data)
 
   while (instance->running)
   {
-    LM_ERR("query 1: %p\n", query);
     reading = 1;
     offset = 0;
     memset(buf, 0, MAX_MESSAGE_LEN);
@@ -194,14 +193,12 @@ void *listener_run(void *data)
       }
     }
 
-    LM_ERR("query 2: %p\n", query);
     LM_INFO("received message (%d bytes): %s\n", offset, buf);
 
     if (offset == strlen(HELLO_REQUEST) 
         && !strncmp((const char *)buf, HELLO_REQUEST, strlen(HELLO_REQUEST)))
     {
       LM_INFO("received Hello from LogExecutor!\n");
-    LM_ERR("query 3: %p\n", query);
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -214,13 +211,11 @@ void *listener_run(void *data)
           offset += sent;
       }
       LM_INFO("sent ACK to LogExecutor\n");
-    LM_ERR("query 4: %p\n", query);
     }
     else if (offset == strlen(RESET_REQUEST)
         && !strncmp((const char *)buf, RESET_REQUEST, strlen(RESET_REQUEST)))
     {
       LM_INFO("receiver reset from LogExecutor!\n");
-    LM_ERR("query 5: %p\n", query);
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -232,13 +227,11 @@ void *listener_run(void *data)
         if (sent > 0)
           offset += sent;
       }
-    LM_ERR("query 6: %p\n", query);
       LM_INFO("sent ACK to LogExecutor\n");
     }
     else if (offset > 0)
     {
       LM_INFO("The offset is larger than 0\n");
-    LM_ERR("query 7: %p\n", query);
       p = buf;
       mtype = char_to_int((char *)p, 1, 10);
       p++;
@@ -246,12 +239,10 @@ void *listener_run(void *data)
       switch (mtype)
       {
         case MSG_TYPE_ATTRIBUTE:
-    LM_ERR("query 8: %p\n", query);
           query = add_query_sub_message(query, ptype, mtype);
           break;
 
         case MSG_TYPE_BLOCK_START:
-    LM_ERR("query 9: %p\n", query);
           if (!query)
             query = init_query();
           else
@@ -260,17 +251,14 @@ void *listener_run(void *data)
           break;
 
         case MSG_TYPE_BLOCK_END:
-    LM_ERR("query 10: %p\n", query);
           if (has_query_parent(query))
             query = get_query_parent(query);
-    LM_ERR("query 11: %p\n", query);
           depth--;
         default:
           break;
       }
       ptype = mtype;
         
-    LM_ERR("query 12: %p\n", query);
       offset -= 1;
       memcpy(ispi, p, 16);
       p += 16; offset -= 16;
@@ -280,7 +268,6 @@ void *listener_run(void *data)
         LM_ERR("ERROR: Initiator's SPIs are different\n");
       }
 
-    LM_ERR("query 13: %p\n", query);
       memcpy(rspi, p, 16);
       p += 16; offset -= 16;
       memset(spi, '0', 16);
@@ -289,7 +276,6 @@ void *listener_run(void *data)
         LM_ERR("ERROR: Responder's SPIs are different\n");
       }
 
-    LM_ERR("query 14: %p\n", query);
       // if offset == 1, it means that there is only '\n'
       if (offset > 1)
       {
@@ -334,7 +320,6 @@ void *listener_run(void *data)
         LM_INFO("Block Finish: offset > 1: query: %p\n", query);
       }
 
-    LM_ERR("query 15: %p\n", query);
       if (!depth)
       {
         LM_INFO("Block Start: depth == 0: query: %p\n", query);
@@ -361,8 +346,6 @@ void *listener_run(void *data)
         LM_INFO("Block Start: depth != 0: query: %p\n", query);
         LM_INFO("Block Finish: depth != 0: query: %p\n", query);
       }
-
-    LM_ERR("query 16: %p\n", query);
     }
   }
 
