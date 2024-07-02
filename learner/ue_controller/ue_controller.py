@@ -273,11 +273,18 @@ def handle_init_config(device):
         logging.debug("Finish toggling the WiFi Calling button")
 
     elif device == "One_Plus_Nord_N20":
-        logging.debug("Permission of wifi use")
-        cmd = ["adb", "shell", "input", "tab", "592", "1927"]
+        logging.debug("Enabling wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-        logging.debug("Permission taped")
+        logging.debug("Enabled wifi")
+
+
+        #logging.debug("Permission of wifi use")
+        #cmd = ["adb", "shell", "input", "tab", "592", "1927"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        #logging.debug("Permission taped")
 
 def handle_client_connection(client, server, device):
     logging.info("Client handler initiated")
