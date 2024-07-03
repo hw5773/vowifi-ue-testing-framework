@@ -193,11 +193,10 @@ def handle_init_config(device):
                 cmd = ["adb", "shell", "input", "keyevent", "20"]
                 result = subprocess.run(cmd, stdout=subprocess.PIPE)
                 time.sleep(3)
+
         cmd = ["adb", "shell", "input", "keyevent", "23"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-        else:
-            logging.debug("Permssion already given")
         
         logging.debug("Checking if wifi is enabled")
     
@@ -208,7 +207,7 @@ def handle_init_config(device):
             cmd = ["adb", "shell", "svc", "wifi", "enable"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
-        logging.debug("Enabled Wifi")
+            logging.debug("Enabled Wifi")
 
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
