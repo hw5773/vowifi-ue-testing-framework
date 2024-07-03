@@ -362,7 +362,6 @@ def handle_init_config(device):
         
         if is_vowifi_enabled():
             logging.debug("Wifi is enabled")
-            continue
         else:
             cmd = ["adb", "shell", "input", "keyevent", "20"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
