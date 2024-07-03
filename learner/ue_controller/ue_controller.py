@@ -199,21 +199,23 @@ def handle_init_config(device):
         else:
             logging.debug("Permssion already given")
         
-        logging.debug("Checking if wifi is enabled")
-        if is_wifi_enabled():
-            logging.debug("Wifi is already enabled")
-        else:
-            logging.debug("Enabling Wifi")
-            cmd = ["adb", "shell", "svc", "wifi", "enable"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
-            logging.debug("Enabled Wifi")
-
-        logging.debug("Enable WiFi Calling")
-        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+    logging.debug("Checking if wifi is enabled")
+    
+    if is_wifi_enabled():
+        logging.debug("Wifi is already enabled")
+    else:
+        logging.debug("Enabling Wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-        if is_vowifi_enabled():
+        logging.debug("Enabled Wifi")
+
+    logging.debug("Enable WiFi Calling")
+    cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+    result = subprocess.run(cmd, stdout=subprocess.PIPE)
+    time.sleep(3)
+    
+    if is_vowifi_enabled():
             logging.debug("Vowifi already enabled")
         else:
             for _ in range(2): 
