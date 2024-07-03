@@ -87,6 +87,11 @@ def ue_wakeup(device):
     time.sleep(2)
     cmd = ["adb", "shell", "input", "keyevent", "82"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
+
+    if device == "ZTE_Stage_5G":
+        cmd = ["adb", "shell", "input", "tap", "576", "1707"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
  
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
