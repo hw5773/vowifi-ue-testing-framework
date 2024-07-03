@@ -299,6 +299,12 @@ def handle_init_config(device):
         #result = subprocess.run(cmd, stdout=subprocess.PIPE)
         #time.sleep(3)
         #logging.debug("Permission taped")
+    elif device =="TCL40XL":
+        logging.debug("Enabling Wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        result=subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled Wifi")
 
 def handle_client_connection(client, server, device):
     logging.info("Client handler initiated")
