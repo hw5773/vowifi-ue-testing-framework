@@ -84,6 +84,7 @@ def handle_turn_on_wifi_interface(device):
 def ue_wakeup(device):
     cmd = ["adb", "shell", "input", "keyevent", "224"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
+    time.sleep(3)
     if device == "ZTE_Stage_5G":
         if is_usb_dialog_present():
             logging.debug("Permission already given")
