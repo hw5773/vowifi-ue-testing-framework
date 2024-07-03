@@ -85,18 +85,19 @@ def ue_wakeup(device):
     cmd = ["adb", "shell", "input", "keyevent", "224"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
     time.sleep(3)
-    if device == "ZTE_Stage_5G":
-        if is_usb_dialog_present():
-            logging.debug("Permission already given")
-        else:
-            for _ in range(3):
-                cmd = ["adb", "shell", "input", "keyevent", "20"]
-                result = subprocess.run(cmd, stdout=subprocess.PIPE)
-                time.sleep(3)
-    cmd = ["adb", "shell", "input", "keyevent", "23"]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE)
-    time.sleep(3)
-    logging.debug("Enable Permisssion")
+    if is_usb_dialog_present():
+        for _ in range(3):
+            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)          
+        cmd = ["adb", "shell", "input", "keyevent", "23"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enable Permisssion")
+        logging.debug("Permission already given")
+    else:   
+        logging.debug("Permssion already given")
+    break
     
     cmd = ["adb", "shell", "input", "keyevent", "82"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -189,17 +190,17 @@ def is_usb_dialog_present():
 def handle_init_config(device):
     if device == "ZTE_Stage_5G":
         if is_usb_dialog_present():
-            logging.debug("Permission already given")
-        else:
             for _ in range(3):
                 cmd = ["adb", "shell", "input", "keyevent", "20"]
                 result = subprocess.run(cmd, stdout=subprocess.PIPE)
                 time.sleep(3)
-        cmd = ["adb", "shell", "input", "keyevent", "23"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enable Permisssion")
-
+         cmd = ["adb", "shell", "input", "keyevent", "23"]
+         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+         time.sleep(3)
+         logging.debug("Enable Permisssion")
+            logging.debug("Permission already given")
+        else:
+            logging.debug("Permssion already given")
         
         logging.debug("Checking if wifi is enabled")
         if is_wifi_enabled():
