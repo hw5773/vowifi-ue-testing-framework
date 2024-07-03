@@ -177,9 +177,9 @@ def handle_init_config(device):
             cmd = ["adb", "shell", "input", "keyevent", "20"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
-            cmd = ["adb", "shell", "input", "keyevent", "23"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
+        cmd = ["adb", "shell", "input", "keyevent", "23"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
         
         logging.debug("Enabling Wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
