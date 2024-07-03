@@ -360,7 +360,7 @@ def handle_init_config(device):
         time.sleep(3)
         logging.debug("Enabled Wifi Calling")
         
-        if is_wifi_enabled():
+        if is_vowifi_enabled():
             logging.debug("Wifi is enabled")
         else:
             for _ in range(1):
