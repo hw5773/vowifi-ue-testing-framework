@@ -174,17 +174,22 @@ def is_wifi_enabled():
 
 def handle_init_config(device):
     if device == "ZTE_Stage_5G":
-        logging.debug("Enabling Menu")
-        cmd = ["adb", "shell", "input", "keyevent", "82"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Menu enabled successfully")
-
         logging.debug("Swipe to unlock the phone")
         cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(1)
         logging.debug("Swiped Completed")
+        
+        logging.debug("Permission Given")
+        for _ in range(3):
+            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+        
+        cmd = ["adb", "shell", "input", "keyevent", "23"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)    
+        logging.debug("Enable Permission")
 
         logging.debug("Enabling Wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
@@ -198,10 +203,10 @@ def handle_init_config(device):
         time.sleep(3)
         
         logging.debug("Toggle the WiFi Calling button")
-        for _ in range(2):
-            cmd = ["adb", "shell", "input", "keyevent", "23"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
+        #for _ in range(2):
+        cmd = ["adb", "shell", "input", "keyevent", "23"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
         
     elif device == "A13_Pro":
