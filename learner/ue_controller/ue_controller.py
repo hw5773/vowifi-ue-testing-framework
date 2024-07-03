@@ -170,8 +170,13 @@ def is_vowifi_enabled():
 
 def handle_init_config(device):
     if device == "ZTE_Stage_5G":
-        logging.debug("Permission Given")
-        for _ in range(3):
+        logging.debug("Enable menu")
+        cmd = ["adb", "shell", "input", "keyevent", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        
+        logging.debug("Permission given")
+        for _ in range(3)
             cmd = ["adb", "shell", "input", "keyevent", "20"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
@@ -198,10 +203,11 @@ def handle_init_config(device):
         if is_vowifi_enabled():
             logging.debug("Vowifi already enabled")
         else:
-            logging.debug("Toggle the WiFi Calling button")
-            cmd = ["adb", "shell", "input", "keyevent", "23"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
+            for _ in range(2) 
+                logging.debug("Toggle the WiFi Calling button")
+                cmd = ["adb", "shell", "input", "keyevent", "23"]
+                result = subprocess.run(cmd, stdout=subprocess.PIPE)
+                time.sleep(3)
             logging.debug("Finish toggling the WiFi Calling button")
         
     elif device == "A13_Pro":
