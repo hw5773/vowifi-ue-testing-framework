@@ -95,13 +95,6 @@ def ue_wakeup(device):
         cmd = ["adb", "shell", "input", "tap", "576", "1707"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-        
-        
-        logging.debug("Enabling Wifi")
-        cmd = ["adb", "shell", "svc", "wifi", "enable"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled Wifi")
 
 
         logging.debug("Enable WiFi Calling")
