@@ -213,7 +213,7 @@ def is_wifi_enabled():
     result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
     return "Wi-Fi is enabled" in result_check.stdout
 def is_vowifi_enabled():
-    cmd_check = ["adb", "shell", "dumpsys", "telephony.registry"]
+    cmd_check = ["adb", "shell", "dumpsys", "telephony.registry", "|", "grep", "-i", "vowifi"]
     result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
     return "VoWifi enabled" in result_check.stdout
 
