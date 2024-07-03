@@ -349,7 +349,7 @@ def handle_init_config(device):
         logging.debug("Enabled Wifi Calling")
 
         logging.debug("Toggle the WiFi Calling button")
-        for _ in range(2):
+        for _ in range(3):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
