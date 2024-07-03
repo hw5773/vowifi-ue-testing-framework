@@ -176,7 +176,7 @@ def handle_init_config(device):
     if device == "ZTE_Stage_5G":
         if is_usb_dialog_present():
             logging.debug("Permission already given")
-        else
+        else:
             for _ in range(3):
                 cmd = ["adb", "shell", "input", "keyevent", "20"]
                 result = subprocess.run(cmd, stdout=subprocess.PIPE)
