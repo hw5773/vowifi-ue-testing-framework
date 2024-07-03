@@ -286,40 +286,6 @@ def handle_init_config(device):
             time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
 
-    elif device == "One_Plus_Nord_N20":
-        logging.debug("Enabling wifi")
-        cmd = ["adb", "shell", "svc", "wifi", "enable"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled wifi")
-
-
-        #logging.debug("Permission of wifi use")
-        #cmd = ["adb", "shell", "input", "tab", "592", "1927"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-        #logging.debug("Permission taped")
-    
-    elif device == "TCL40XL":
-        logging.debug("Enabling Wifi")
-        cmd = ["adb", "shell", "svc", "wifi", "enable"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled Wifi")
-
-        #logging.debug("Enable WiFi Calling")
-        #cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-        #logging.debug("Enabled Wifi Calling")
-
-        #logging.debug("Toggle the WiFi Calling button")
-        #for _ in range(2):
-        #    cmd = ["adb", "shell", "input", "keyevent", "23"]
-        #    result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #    time.sleep(3)
-        #logging.debug("Finish toggling the WiFi Calling button")
-
 
 def handle_client_connection(client, server, device):
     logging.info("Client handler initiated")
