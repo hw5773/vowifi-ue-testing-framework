@@ -133,9 +133,6 @@ def handle_ue_reboot(client, device):
         cmd = ["adb", "devices", "-l"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         output = result.stdout.decode()
-        logging.info("device: {}".format(device))
-        logging.info("output: {}".format(output))
-        logging.info("device in output: {}".format(device in output))
         if device in output:
             logging.info("UE reboot success")
             success = True
@@ -435,6 +432,9 @@ def check_device_model():
     elif "CPH2459" in output:
         device = "One_Plus_Nord_N20"
         logging.info("Device mode: One Plus Nord N20")
+    elif "motorola_edge_30_pro":
+        device = "Motorola_Edge_30_Pro"
+        logging.info("Device model: Motorola Edge 30 Pro")
     else:
         device = "others"
         logging.info("Device model: Others")

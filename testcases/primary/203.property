@@ -41,7 +41,7 @@
                   "name": "algorithm",
                   "op": ["update", "drop"],
                   "type": "string",
-                  "value": VALUE
+                  "value": VALUE(["AKAv1-MD5", "AKAv1-MD5-sess", "AKAv1-SHA-256", "MD5", "SHA-256"], ["AKAv1-MD5"])
                 }
               ]
             }

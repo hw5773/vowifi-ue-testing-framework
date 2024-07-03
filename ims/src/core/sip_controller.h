@@ -87,7 +87,7 @@ int is_401_unauthorized_message(sip_message_t *message);
 int is_200_ok_message(sip_message_t *message);
 uint8_t *get_additional_info(sip_message_t *message, int *alen);
 int get_num_of_kvps_from_sip_message(sip_message_t *message, uint8_t *key, int klen);
-kvp_t *get_kvp_from_sip_message(sip_message_t *message, uint8_t *key, int klen, int idx);
+kvp_t *get_kvp_from_sip_message(sip_message_t *message, const uint8_t *key, int klen, int idx);
 int add_kvp_to_sip_message(sip_message_t *message, kvp_t *kvp, uint8_t *key, int klen, int idx);
 void del_kvp_from_sip_message(sip_message_t *message, uint8_t *key, int klen, int idx);
 
@@ -96,7 +96,7 @@ int get_num_of_values_from_kvp(kvp_t *kvp);
 uint8_t *get_value_from_kvp_by_idx(kvp_t *kvp, int idx, int *vlen);
 uint8_t *get_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen, int *vlen);
 void change_value_from_kvp_by_idx(kvp_t *kvp, int idx, uint8_t *value, int vlen);
-void change_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen, uint8_t *value, int vlen);
+void change_value_from_kvp_by_name(kvp_t *kvp, const uint8_t *attr, int alen, const uint8_t *value, int vlen);
 void del_value_from_kvp_by_idx(kvp_t *kvp, int idx);
 void del_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen);
 
