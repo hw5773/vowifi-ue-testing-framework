@@ -337,11 +337,6 @@ def handle_init_config(device):
         logging.debug("Finish toggling the WiFi Calling button")
 
     elif device == "Pixel_6a":
-        #logging.debug("Menu to unlock the phone")
-        #cmd = ["adb", "shell", "input", "keyevent", "82"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-
         logging.debug("Enabling swipe")
         cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -351,26 +346,14 @@ def handle_init_config(device):
         logging.debug("Enabling wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(4)
+        time.sleep(3)
         logging.debug("Enabled wifi")
 
-        logging.debug ("Enable WiFi Calling")
+        logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         logging.debug("Enabled Wifi Calling")
-        
-        if is_vowifi_enabled():
-            logging.debug("Wifi is enabled")
-        else:
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(2)
-            
-            cmd = ["adb", "shell", "input", "keyevent", "23"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(2)
-        logging.debug("Finish toggling the WiFi Calling button")
 
 
 def handle_client_connection(client, server, device):
