@@ -165,7 +165,7 @@ def is_wifi_enabled():
     return "Wi-Fi is enabled" in result_check.stdout
 def is_vowifi_enabled():
     cmd_check = ["adb", "shell", "dumpsys", "telephony.registry"]
-    result_check = subprocess.run(cmd_check, stdou-subprocess.PIPE, text=True)
+    result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
     return "VoWifi enabled" in result_check.stdout
 
 def handle_init_config(device):
