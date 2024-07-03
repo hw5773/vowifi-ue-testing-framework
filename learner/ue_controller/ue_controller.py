@@ -361,7 +361,7 @@ def handle_init_config(device):
         logging.debug("Enabled Wifi Calling")
         
         if is_enabled_wifi():
-        logging.debug("Wifi is enabled!")
+            logging.debug("Wifi is enabled")
         else:
             for _ in range(1):
                 cmd = ["adb", "shell", "input", "keyevent", "23"]
