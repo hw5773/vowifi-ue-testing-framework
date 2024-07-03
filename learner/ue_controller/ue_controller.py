@@ -299,14 +299,15 @@ def handle_init_config(device):
         #result = subprocess.run(cmd, stdout=subprocess.PIPE)
         #time.sleep(3)
         #logging.debug("Permission taped")
-    elif device =="TCL40XL":
+    
+    elif device == "TCL40XL":
         logging.debug("Enabling Wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
-        result=subprocess.run(cmd, stdout=subprocess.PIPE)
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         logging.debug("Enabled Wifi")
 
-        logging.debug ("Enable WiFi Calling")
+        logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
