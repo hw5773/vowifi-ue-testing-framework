@@ -176,7 +176,7 @@ def handle_init_config(device):
         time.sleep(3)
         
         logging.debug("Permission given")
-        for _ in range(3)
+        for _ in range(3):
             cmd = ["adb", "shell", "input", "keyevent", "20"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
