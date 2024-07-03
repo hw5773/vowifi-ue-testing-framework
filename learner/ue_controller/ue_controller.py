@@ -287,10 +287,10 @@ def handle_init_config(device):
         logging.debug("Finish toggling the WiFi Calling button")
 
     elif device == "Pixel_6a":
-        logging.debug("Menu to unlock the phone")
-        cmd = ["adb", "shell", "input", "keyevent", "82"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
+        #logging.debug("Menu to unlock the phone")
+        #cmd = ["adb", "shell", "input", "keyevent", "82"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
 
         logging.debug("Enabling swipe")
         cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
@@ -309,12 +309,14 @@ def handle_init_config(device):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         logging.debug("Enabled Wifi Calling")
-
-        logging.debug("Toggle the WiFi Calling button")
-        for _ in range(2):
-            cmd = ["adb", "shell", "input", "keyevent", "23"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
+        
+        if is_enabled_wifi():
+        logging.debug("Wifi is enabled!")
+        else:
+            for _ in range(1):
+                cmd = ["adb", "shell", "input", "keyevent", "23"]
+                result = subprocess.run(cmd, stdout=subprocess.PIPE)
+                time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
 
 
