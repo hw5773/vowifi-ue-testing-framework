@@ -82,31 +82,36 @@ def handle_turn_on_wifi_interface(device):
     time.sleep(1)
 
 def ue_wakeup(device):
-    cmd = ["adb", "shell", "input", "keyevent", "224"]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE)
-    time.sleep(2)
-    cmd = ["adb", "shell", "input", "keyevent", "82"]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE)
-    time.sleep(2)
-
     if device == "ZTE_Stage_5G":
+        cmd = ["adb", "shell", "input", "tap", "576", "1707"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+
+        logging.debug("Enabling Wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled Wifi")
+
+
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-
-        cmd = ["adb", "shell", "input", "tap", "576", "1707"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            
+        logging.debug("Enabling Wifi")
+        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)             
         time.sleep(3)
-        
-        if is_wifi_enabled():
-            logging.debug("Wifi is already enabled")
-        else:
-            logging.debug("Enabling Wifi")
-            cmd = ["adb", "shell", "svc", "wifi", "enable"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)             
-            time.sleep(3)
-            logging.debug("Enabled Wifi")
+        logging.debug("Enabled Wifi")
+    else:
+        cmd = ["adb", "shell", "input", "keyevent", "224"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(2)
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(2)
+
 
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
