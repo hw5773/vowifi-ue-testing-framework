@@ -384,76 +384,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-median-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "responder_spi",
-              "op": "update",
-              "type": "uint64h",
-              "value": "median"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-mean-2"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "responder_spi",
-              "op": "update",
-              "type": "uint64h",
-              "value": "mean"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-max-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "responder_spi",
-              "op": "update",
-              "type": "uint64h",
-              "value": "max"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-random-4"
+          "id": "update-ike_sa_init_response-responder_spi-random-1"
         },
         {
           "receiver": "epdg",
@@ -476,7 +407,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-min-5"
+          "id": "update-ike_sa_init_response-responder_spi-min-2"
         },
         {
           "receiver": "epdg",
@@ -488,6 +419,75 @@
               "op": "update",
               "type": "uint64h",
               "value": "min"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-responder_spi-median-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "responder_spi",
+              "op": "update",
+              "type": "uint64h",
+              "value": "median"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-responder_spi-mean-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "responder_spi",
+              "op": "update",
+              "type": "uint64h",
+              "value": "mean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-responder_spi-max-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "responder_spi",
+              "op": "update",
+              "type": "uint64h",
+              "value": "max"
             }
           ]
         }
@@ -1764,30 +1764,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"initiator\"-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "flags",
-              "op": "update",
-              "type": "uint8",
-              "value": " \"initiator\""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"no_initiator\"-2"
+          "id": "update-ike_sa_init_response-flags- \"no_initiator\"-1"
         },
         {
           "receiver": "epdg",
@@ -1810,76 +1787,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"encryption\"-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "flags",
-              "op": "update",
-              "type": "uint8",
-              "value": " \"encryption\""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"authonly\"-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "flags",
-              "op": "update",
-              "type": "uint8",
-              "value": " \"authonly\""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"no_authonly\"-5"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "flags",
-              "op": "update",
-              "type": "uint8",
-              "value": " \"no_authonly\""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"no_responder\"-6"
+          "id": "update-ike_sa_init_response-flags- \"no_responder\"-2"
         },
         {
           "receiver": "epdg",
@@ -1891,6 +1799,98 @@
               "op": "update",
               "type": "uint8",
               "value": " \"no_responder\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-flags- \"no_version\"-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "flags",
+              "op": "update",
+              "type": "uint8",
+              "value": " \"no_version\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-flags- \"version\"-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "flags",
+              "op": "update",
+              "type": "uint8",
+              "value": " \"version\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-flags- \"initiator\"-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "flags",
+              "op": "update",
+              "type": "uint8",
+              "value": " \"initiator\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-flags- \"commit\"-6"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "flags",
+              "op": "update",
+              "type": "uint8",
+              "value": " \"commit\""
             }
           ]
         }
@@ -1925,7 +1925,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"commit\"-8"
+          "id": "update-ike_sa_init_response-flags- \"authonly\"-8"
         },
         {
           "receiver": "epdg",
@@ -1936,7 +1936,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": " \"commit\""
+              "value": " \"authonly\""
             }
           ]
         }
@@ -1948,30 +1948,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"version\"-9"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "flags",
-              "op": "update",
-              "type": "uint8",
-              "value": " \"version\""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"no_commit\"-10"
+          "id": "update-ike_sa_init_response-flags- \"no_commit\"-9"
         },
         {
           "receiver": "epdg",
@@ -1994,7 +1971,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags- \"no_version\"-11"
+          "id": "update-ike_sa_init_response-flags- \"no_authonly\"-10"
         },
         {
           "receiver": "epdg",
@@ -2005,7 +1982,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": " \"no_version\""
+              "value": " \"no_authonly\""
             }
           ]
         }
@@ -2017,7 +1994,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-median-1"
+          "id": "update-ike_sa_init_response-flags- \"encryption\"-11"
         },
         {
           "receiver": "epdg",
@@ -2025,10 +2002,10 @@
           "reporter": "epdg",
           "sub": [
             {
-              "name": "message_id",
+              "name": "flags",
               "op": "update",
-              "type": "uint32",
-              "value": "median"
+              "type": "uint8",
+              "value": " \"encryption\""
             }
           ]
         }
@@ -2040,53 +2017,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-mean-2"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "mean"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-max-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "max"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-random-4"
+          "id": "update-ike_sa_init_response-message_id-random-1"
         },
         {
           "receiver": "epdg",
@@ -2109,7 +2040,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-min-5"
+          "id": "update-ike_sa_init_response-message_id-min-2"
         },
         {
           "receiver": "epdg",
@@ -2121,6 +2052,75 @@
               "op": "update",
               "type": "uint32",
               "value": "min"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-message_id-median-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": "median"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-message_id-mean-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": "mean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-message_id-max-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": "max"
             }
           ]
         }
@@ -2224,106 +2224,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-median-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "proposal_number",
-                      "op": "update",
-                      "type": "uint8",
-                      "value": "median"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-mean-2"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "proposal_number",
-                      "op": "update",
-                      "type": "uint8",
-                      "value": "mean"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-max-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "proposal_number",
-                      "op": "update",
-                      "type": "uint8",
-                      "value": "max"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-random-4"
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-random-1"
         },
         {
           "receiver": "epdg",
@@ -2356,7 +2257,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-min-5"
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-min-2"
         },
         {
           "receiver": "epdg",
@@ -2374,6 +2275,105 @@
                       "op": "update",
                       "type": "uint8",
                       "value": "min"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-median-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "proposal_number",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "median"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-mean-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "proposal_number",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "mean"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-max-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "proposal_number",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "max"
                     }
                   ]
                 }
@@ -2488,106 +2488,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-median-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "spi",
-                      "op": "update",
-                      "type": "string",
-                      "value": "median"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-mean-2"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "spi",
-                      "op": "update",
-                      "type": "string",
-                      "value": "mean"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-max-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "spi",
-                      "op": "update",
-                      "type": "string",
-                      "value": "max"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-random-4"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-random-1"
         },
         {
           "receiver": "epdg",
@@ -2620,7 +2521,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-min-5"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-min-2"
         },
         {
           "receiver": "epdg",
@@ -2653,7 +2554,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-median-1"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-median-3"
         },
         {
           "receiver": "epdg",
@@ -2667,9 +2568,9 @@
                   "name": "proposal",
                   "sub": [
                     {
-                      "name": "num_transforms",
+                      "name": "spi",
                       "op": "update",
-                      "type": "uint8",
+                      "type": "string",
                       "value": "median"
                     }
                   ]
@@ -2686,7 +2587,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-mean-2"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-mean-4"
         },
         {
           "receiver": "epdg",
@@ -2700,9 +2601,9 @@
                   "name": "proposal",
                   "sub": [
                     {
-                      "name": "num_transforms",
+                      "name": "spi",
                       "op": "update",
-                      "type": "uint8",
+                      "type": "string",
                       "value": "mean"
                     }
                   ]
@@ -2719,7 +2620,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-max-3"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-max-5"
         },
         {
           "receiver": "epdg",
@@ -2733,9 +2634,9 @@
                   "name": "proposal",
                   "sub": [
                     {
-                      "name": "num_transforms",
+                      "name": "spi",
                       "op": "update",
-                      "type": "uint8",
+                      "type": "string",
                       "value": "max"
                     }
                   ]
@@ -2752,7 +2653,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-random-4"
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-random-1"
         },
         {
           "receiver": "epdg",
@@ -2785,7 +2686,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-min-5"
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-min-2"
         },
         {
           "receiver": "epdg",
@@ -2803,6 +2704,105 @@
                       "op": "update",
                       "type": "uint8",
                       "value": "min"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-median-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "num_transforms",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "median"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-mean-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "num_transforms",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "mean"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-max-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "num_transforms",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "max"
                     }
                   ]
                 }
@@ -7622,91 +7622,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-median-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "nonce",
-              "sub": [
-                {
-                  "name": "nonce_data",
-                  "op": "update",
-                  "type": "string",
-                  "value": "median"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-mean-2"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "nonce",
-              "sub": [
-                {
-                  "name": "nonce_data",
-                  "op": "update",
-                  "type": "string",
-                  "value": "mean"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-max-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "nonce",
-              "sub": [
-                {
-                  "name": "nonce_data",
-                  "op": "update",
-                  "type": "string",
-                  "value": "max"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-random-4"
+          "id": "update-ike_sa_init_response-nonce-nonce_data-random-1"
         },
         {
           "receiver": "epdg",
@@ -7734,7 +7650,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-min-5"
+          "id": "update-ike_sa_init_response-nonce-nonce_data-min-2"
         },
         {
           "receiver": "epdg",
@@ -7762,7 +7678,119 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip- \"received\"-1"
+          "id": "update-ike_sa_init_response-nonce-nonce_data-median-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "sub": [
+                {
+                  "name": "nonce_data",
+                  "op": "update",
+                  "type": "string",
+                  "value": "median"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-nonce-nonce_data-mean-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "sub": [
+                {
+                  "name": "nonce_data",
+                  "op": "update",
+                  "type": "string",
+                  "value": "mean"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-nonce-nonce_data-max-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "sub": [
+                {
+                  "name": "nonce_data",
+                  "op": "update",
+                  "type": "string",
+                  "value": "max"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip-\"min\"-1"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "notify",
+              "sub": [
+                {
+                  "name": "nat_detection_source_ip",
+                  "op": "update",
+                  "type": "string",
+                  "value": "\"min\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip- \"received\"-2"
         },
         {
           "receiver": "epdg",
@@ -7790,7 +7818,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip- \"median\"-2"
+          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip- \"median\"-3"
         },
         {
           "receiver": "epdg",
@@ -7805,34 +7833,6 @@
                   "op": "update",
                   "type": "string",
                   "value": " \"median\""
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip-\"min\"-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "notify",
-              "sub": [
-                {
-                  "name": "nat_detection_source_ip",
-                  "op": "update",
-                  "type": "string",
-                  "value": "\"min\""
                 }
               ]
             }
@@ -7874,7 +7874,35 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip- \"received\"-1"
+          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip-\"min\"-1"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "notify",
+              "sub": [
+                {
+                  "name": "nat_detection_destination_ip",
+                  "op": "update",
+                  "type": "string",
+                  "value": "\"min\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip- \"received\"-2"
         },
         {
           "receiver": "epdg",
@@ -7902,7 +7930,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip- \"median\"-2"
+          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip- \"median\"-3"
         },
         {
           "receiver": "epdg",
@@ -7917,34 +7945,6 @@
                   "op": "update",
                   "type": "string",
                   "value": " \"median\""
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip-\"min\"-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "notify",
-              "sub": [
-                {
-                  "name": "nat_detection_destination_ip",
-                  "op": "update",
-                  "type": "string",
-                  "value": "\"min\""
                 }
               ]
             }
@@ -7986,91 +7986,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-median-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "notify",
-              "sub": [
-                {
-                  "name": "childless_ikev2_supported",
-                  "op": "update",
-                  "type": "string",
-                  "value": "median"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-mean-2"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "notify",
-              "sub": [
-                {
-                  "name": "childless_ikev2_supported",
-                  "op": "update",
-                  "type": "string",
-                  "value": "mean"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-max-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "notify",
-              "sub": [
-                {
-                  "name": "childless_ikev2_supported",
-                  "op": "update",
-                  "type": "string",
-                  "value": "max"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-random-4"
+          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-random-1"
         },
         {
           "receiver": "epdg",
@@ -8098,7 +8014,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-min-5"
+          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-min-2"
         },
         {
           "receiver": "epdg",
@@ -8113,6 +8029,90 @@
                   "op": "update",
                   "type": "string",
                   "value": "min"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-median-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "notify",
+              "sub": [
+                {
+                  "name": "childless_ikev2_supported",
+                  "op": "update",
+                  "type": "string",
+                  "value": "median"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-mean-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "notify",
+              "sub": [
+                {
+                  "name": "childless_ikev2_supported",
+                  "op": "update",
+                  "type": "string",
+                  "value": "mean"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-notify-childless_ikev2_supported-max-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "notify",
+              "sub": [
+                {
+                  "name": "childless_ikev2_supported",
+                  "op": "update",
+                  "type": "string",
+                  "value": "max"
                 }
               ]
             }
@@ -12333,7 +12333,7 @@
               "name": "responder_spi",
               "op": "drop",
               "type": "uint64h",
-              "value": "min"
+              "value": "max"
             }
           ]
         }
@@ -12425,7 +12425,7 @@
               "name": "flags",
               "op": "drop",
               "type": "uint8",
-              "value": " \"no_version\""
+              "value": " \"encryption\""
             }
           ]
         }
@@ -12448,7 +12448,7 @@
               "name": "message_id",
               "op": "drop",
               "type": "uint32",
-              "value": "min"
+              "value": "max"
             }
           ]
         }
@@ -12500,7 +12500,7 @@
                       "name": "proposal_number",
                       "op": "drop",
                       "type": "uint8",
-                      "value": "min"
+                      "value": "max"
                     }
                   ]
                 }
@@ -12566,7 +12566,7 @@
                       "name": "spi",
                       "op": "drop",
                       "type": "string",
-                      "value": "min"
+                      "value": "max"
                     }
                   ]
                 }
@@ -12599,7 +12599,7 @@
                       "name": "num_transforms",
                       "op": "drop",
                       "type": "uint8",
-                      "value": "min"
+                      "value": "max"
                     }
                   ]
                 }
@@ -12847,7 +12847,7 @@
                   "name": "nonce_data",
                   "op": "drop",
                   "type": "string",
-                  "value": "min"
+                  "value": "max"
                 }
               ]
             }
@@ -12931,7 +12931,7 @@
                   "name": "childless_ikev2_supported",
                   "op": "drop",
                   "type": "string",
-                  "value": "min"
+                  "value": "max"
                 }
               ]
             }
