@@ -568,8 +568,6 @@ void *sender_run(void *data)
         {
           tint = *((uint16_t *)(msg->val));
           tlen = int_to_char(tint, tmp, 10);
-          //printf("*((uint16_t *)(msg->val): %u, tint: %d, tlen: %d\n", 
-          //    *((uint16_t *)(msg->val)), tint, tlen);
           memcpy(p, tmp, tlen);
           p += tlen;
         }
@@ -585,9 +583,6 @@ void *sender_run(void *data)
 
       tbs = p - buf;
       offset = 0;
-
-      ///// for the debug purpose
-      //printf("Type: %d > %s", buf[0], buf + 1);
 
       while (offset < tbs)
       {
@@ -1520,17 +1515,6 @@ static bool get_init_hash(hasher_t *hasher, message_t *message, chunk_t *hash)
   len = tmp.len;
   p = tmp.ptr;
 
-  /*
-  printf("\n\n\n[VoWiFi] packet data (to be hashed):\n");
-  for (i=0; i<len; i++)
-  {
-    printf("%02x ", p[i]);
-    if (i % 16 == 15)
-      printf("\n");
-  }
-  printf("\n\n\n");
-  */
-
 	return hasher->allocate_hash(hasher, message->get_packet_data(message), hash);
 }
 
@@ -1692,7 +1676,6 @@ METHOD(ike_sa_manager_t, create_new, ike_sa_t*,
 	{
 		ike_sa_id = ike_sa_id_create(ike_version, 0, spi, FALSE);
 	}
-  printf("create(): before ike_sa_create()\n");
 	ike_sa = ike_sa_create(ike_sa_id, initiator, version);
 	ike_sa_id->destroy(ike_sa_id);
 
@@ -1823,20 +1806,10 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
     hptr = hash.ptr;
     hlen = hash.len;
 
-    printf("[VoWiFi] hash value (ispi: %.16"PRIx64"):\n", id->get_initiator_spi(id));
-    for (i=0; i<hlen; i++)
-    {
-      printf("%02x ", hptr[i]);
-      if (i % 16 == 15)
-        printf("\n");
-    }
-    printf("\n");
-
 		switch (check_and_put_init_hash(this, hash, &our_spi))
 		{
 			case NOT_FOUND:
 			{	/* we've not seen this packet yet, create a new IKE_SA */
-        //printf("\n\n[VoWiFi] Not Found\n\n\n");
 				if (!this->ikesa_limit ||
 					this->public.get_count(&this->public) < this->ikesa_limit)
 				{
@@ -1962,7 +1935,6 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	}
 
   ///// Added for VoWiFi /////        
-  printf("\n\n\n\n\n[VoWiFi] entry: %p\n\n\n\n\n", entry);
   if (entry > 0x7f0000000000
       && ((ike_sa = entry->ike_sa) > 0x1000000)
       && (ispi = id->get_initiator_spi(id))
@@ -1972,198 +1944,9 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 
     if (check_instance(this->instance, ispi, rspi, UPDATE))
     {
-      printf("[VoWiFi] ike_sa_manager.c: checkout_by_message() 2: setting the instance\n");
-      /*
-      ike_sa->set_instance(ike_sa, this->instance);
-      instance = ike_sa->get_instance(ike_sa);
-      printf("\n\n[VoWiFi] ike_sa_manager.c: checkout_by_message(): instance: %p\n\n", instance);
-      asock = -1;
-      if (instance)
-        asock = instance->asock;
-      */
+      printf("[VoWiFi] The security association is updated (ispi: 0x%.16"PRIx64", rspi: 0x%.16"PRIx64")\n");
     }
   }
-  /*
-  else
-  {
-    instance = this->instance;
-    printf("[VoWiFi] this->instance: %p\n", this->instance);
-    printf("[VoWiFi] instance->imid: %d\n", instance->imid);
-    printf("[VoWiFi] message->get_message_id(message): %d\n", message->get_message_id(message));
-    if (instance->imid > 0
-        && instance->imid == message->get_message_id(message))
-      retransmission = 1;
-    else
-      instance->imid++;
-
-    printf("[VoWiFi] instance->ispi: %.16"PRIx64"): \n", instance->ispi);
-    printf("[VoWiFi] instance->rspi: %.16"PRIx64"): \n", instance->rspi);
-    printf("[VoWiFi] instance->rprev: %s\n", instance->rprev);
-
-    if (!retransmission)
-    {
-      switch (message->get_exchange_type(message)) 
-      {
-        case IKE_SA_INIT:
-          symbol = "ike_sa_init_request";
-          instance->rprev = "ike_sa_init_request";
-          instance->imid = 0;
-          break;
-
-        case IKE_AUTH:
-          if (!strncmp(instance->rprev, "ike_sa_init_request", strlen("ike_sa_init_request")))
-          {
-            symbol = "ike_auth_1_request";
-            instance->rprev = "ike_auth_1_request";
-          }
-          else if (!strncmp(instance->rprev, "ike_auth_1_request", strlen("ike_auth_1_request")))
-          {
-            symbol = "ike_auth_2_request";
-            instance->rprev = "ike_auth_2_request";
-          }
-          else if (!strncmp(instance->rprev, "ike_auth_2_request", strlen("ike_auth_2_request")))
-          {
-            symbol = "ike_auth_3_request";
-            instance->rprev = "ike_auth_3_request";
-          }
-          else if (!strncmp(instance->rprev, "ike_auth_3_request", strlen("ike_auth_3_request")))
-          {
-            symbol = "ike_auth_4_request";
-            instance->rprev = "ike_auth_4_request";
-          }
-          else if (!strncmp(instance->rprev, "ike_auth_4_request", strlen("ike_auth_4_request")))
-          {
-            symbol = "ike_auth_5_request";
-            instance->rprev = "ike_auth_5_request";
-          }
-          else
-          {
-            symbol = "error in ike_auth";
-            instance->rprev = "error";
-          }
-          epload = (eap_payload_t *)message->get_payload(message, PLV2_EAP);
-          if (epload)
-          {
-            ehdr = (ehdr_t *)epload->get_data(epload).ptr;
-            if (ehdr->subtype == AKA_CLIENT_ERROR)
-              symbol = "client_error";
-          }
-          break;
-
-      	case INFORMATIONAL:
-          enumer = message->create_payload_enumerator(message);
-        	while (enumer->enumerate(enumer, &pload))
-          {      			
-            if (pload->get_type(pload) == PLV2_DELETE)
-        	  {
-              symbol = "delete";
-            }
-            else if (pload->get_type(pload) == PLV2_NOTIFY)
-          	{
-		  	      noti = (notify_payload_t*)pload;
-        	  	switch (noti->get_notify_type(noti))
-        	  	{
-        	      case UNSUPPORTED_CRITICAL_PAYLOAD:
-                  symbol = "unsupported_critical_payload";
-                  break;
-    	          case INVALID_IKE_SPI:
-                  symbol = "invalid_ike_spi";
-                  break;
-                case INVALID_MAJOR_VERSION:
-                  symbol = "invalid_major_version";
-                  break;
-                case INVALID_SYNTAX:
-                  symbol = "invalid_syntax";
-                  break;
-        	      case INVALID_MESSAGE_ID:
-                  symbol = "invalid_message_id";
-                  break;
-          	    case INVALID_SPI:
-                  symbol = "invalid_spi";
-                  break;
-          	    case ATTRIBUTES_NOT_SUPPORTED:
-                  symbol = "attributes_not_supported";
-                  break;
-        	      case NO_PROPOSAL_CHOSEN:
-                  symbol = "no_proposal_chosen";
-                  break;
-          	    case INVALID_KE_PAYLOAD:
-                  symbol = "invalid_ke_payload";
-                  break;
-          	    case INVALID_CERT_ENCODING:
-                  symbol = "invalid_cert_encoding";
-                  break;
-        	      case INVALID_CERTIFICATE:
-                  symbol = "invalid_certificate";
-                  break;
-          	    case CERT_TYPE_UNSUPPORTED:
-                  symbol = "cert_type_unsupported";
-                  break;
-          	    case INVALID_CERT_AUTHORITY:
-                  symbol = "invalid_cert_authority";
-                  break;
-        	      case INVALID_HASH_INFORMATION:
-                  symbol = "invalid_hash_information";
-                  break;
-            	  case AUTHENTICATION_FAILED:
-                  symbol = "authentication_failed";
-                  break;
-          	    case SINGLE_PAIR_REQUIRED:
-                  symbol = "single_pair_required";
-                  break;
-          	    case NO_ADDITIONAL_SAS:
-                  symbol = "no_additional_sas";
-                  break;
-            	  case INTERNAL_ADDRESS_FAILURE:
-                  symbol = "internal_address_failure";
-                  break;
-          	    case FAILED_CP_REQUIRED:
-                  symbol = "failed_cp_required";
-                  break;
-          	    case TS_UNACCEPTABLE:
-                  symbol = "ts_unacceptable";
-                  break;
-        	      case INVALID_SELECTORS:
-                  symbol = "invalid_selectors";
-                  break;
-          	    case UNACCEPTABLE_ADDRESSES:
-                  symbol = "unacceptable_addresses";
-                  break;
-          	    case UNEXPECTED_NAT_DETECTED:
-                  symbol = "unexpected_nat_detected";
-                  break;
-        	      case USE_ASSIGNED_HoA:
-                  symbol = "use_assigned_hoa";
-                  break;
-          	    case TEMPORARY_FAILURE:
-                  symbol = "temporary_failure";
-                  break;
-          	    case CHILD_SA_NOT_FOUND:
-                  symbol = "chile_sa_not_found";
-                  break;
-			  		    default:
-                  symbol = "unknown";
-					  	    break;
-              }
-		    		}
-    	    	enumer->destroy(enumer);
-          }
-            break;
-
-    		case CREATE_CHILD_SA:
-        default:
-          symbol = "error in exchange_type";
-          instance->rprev = "error";
-      }
-      msg = init_message(instance, MSG_TYPE_BLOCK_START,
-          symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-      instance->add_message_to_send_queue(instance, msg);
-      msg = init_message(instance, MSG_TYPE_BLOCK_END,
-          NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-      instance->add_message_to_send_queue(instance, msg);
-    }
-  }
-  */
   ////////////////////////////
 
 	id->destroy(id);
