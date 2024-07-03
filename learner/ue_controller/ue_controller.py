@@ -90,12 +90,12 @@ def ue_wakeup(device):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(2)
 
-        for _ in range(2):
-            logging.debug("Enabling USB Permission")
-            cmd = ["adb", "shell", "input", "tap", "576", "1707"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
-        logging.debug("USB Permission Enabled")
+        
+        logging.debug("Enabling USB Permission")
+        cmd = ["adb", "shell", "input", "tap", "576", "1707"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        
         
         logging.debug("Enabling Wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
@@ -108,12 +108,6 @@ def ue_wakeup(device):
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-            
-        logging.debug("Enabling Wifi")
-        cmd = ["adb", "shell", "svc", "wifi", "enable"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)             
-        time.sleep(3)
-        logging.debug("Enabled Wifi")
     
     elif device == "I14_Pro_Nax":
         cmd = ["adb", "shell", "input", "keyevent", "224"]
