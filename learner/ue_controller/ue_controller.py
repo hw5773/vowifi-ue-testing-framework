@@ -167,19 +167,21 @@ def is_vowifi_enabled():
     cmd_check = ["adb", "shell", "dumpsys", "telephony.registry"]
     result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
     return "VoWifi enabled" in result_check.stdout
+def is_usb_dialog_present():
+    cmd_check = ["adb", "shell", "uianimator", "dump"]
+    result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
+    return "Use USB for" in result_check.stdout
 
 def handle_init_config(device):
     if device == "ZTE_Stage_5G":
-        logging.debug("Enable menu")
-        cmd = ["adb", "shell", "input", "keyevent", "input", "keyevent", "82"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
+        if is_usb_dialog_present():
+            logging.debug("Permission already given")
+        else
+            for _ in range(3):
+                cmd = ["adb", "shell", "input", "keyevent", "20"]
+                result = subprocess.run(cmd, stdout=subprocess.PIPE)
+                time.sleep(3)
         
-        logging.debug("Permission given")
-        for _ in range(3):
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
         logging.debug("Checking if wifi is enabled")
         if is_wifi_enabled():
             logging.debug("Wifi is already enabled")
