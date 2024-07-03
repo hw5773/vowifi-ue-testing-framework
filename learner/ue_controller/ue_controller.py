@@ -83,6 +83,13 @@ def handle_turn_on_wifi_interface(device):
 
 def ue_wakeup(device):
     if device == "ZTE_Stage_5G":
+        cmd = ["adb", "shell", "input", "keyevent", "224"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(2)
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(2)
+
         for _ in range(2):
             logging.debug("Enabling USB Permission")
             cmd = ["adb", "shell", "input", "tap", "576", "1707"]
@@ -109,6 +116,13 @@ def ue_wakeup(device):
         logging.debug("Enabled Wifi")
     
     elif device == "I14_Pro_Nax":
+        cmd = ["adb", "shell", "input", "keyevent", "224"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(2)
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(2)
+
         logging.debug("Menu to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
