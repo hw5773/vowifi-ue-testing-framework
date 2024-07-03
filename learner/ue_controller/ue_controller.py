@@ -306,6 +306,13 @@ def handle_init_config(device):
         time.sleep(3)
         logging.debug("Enabled Wifi")
 
+        logging.debug ("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enabled Wifi Calling")
+
+
 def handle_client_connection(client, server, device):
     logging.info("Client handler initiated")
     count_enable_vowifi = 0
