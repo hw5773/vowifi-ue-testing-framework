@@ -168,7 +168,7 @@ def is_vowifi_enabled():
     result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
     return "VoWifi enabled" in result_check.stdout
 def is_usb_dialog_present():
-    cmd_check = ["adb", "shell", "uianimator", "dump"]
+    cmd_check = ["adb", "shell", "uiautomator", "dump"]
     result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
     return "Use USB for" in result_check.stdout
 
