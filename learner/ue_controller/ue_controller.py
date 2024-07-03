@@ -173,10 +173,14 @@ def is_vowifi_enabled():
 
 def handle_init_config(device):
     if device == "ZTE_Stage_5G":
-        cmd = ["adb", "shell", "input", "tap", "576", "1707"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-    
+        for _ in range(3):
+            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+        
         logging.debug("Enabling Wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
