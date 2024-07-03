@@ -84,18 +84,7 @@ def handle_turn_on_wifi_interface(device):
 def ue_wakeup(device):
     cmd = ["adb", "shell", "input", "keyevent", "224"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
-    time.sleep(3)
-    if is_usb_dialog_present():
-        for _ in range(3):
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
-        cmd = ["adb", "shell", "input", "keyevent", "23"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enable Permisssion")
-    else:   
-        logging.debug("Permssion already given")
+    time.sleep(2)
     cmd = ["adb", "shell", "input", "keyevent", "82"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
  
@@ -179,20 +168,10 @@ def is_vowifi_enabled():
     cmd_check = ["adb", "shell", "dumpsys", "telephony.registry"]
     result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
     return "VoWifi enabled" in result_check.stdout
-def is_usb_dialog_present():
-    cmd_check = ["adb", "shell", "uiautomator", "dump"]
-    result_check = subprocess.run(cmd_check, stdout=subprocess.PIPE, text=True)
-    return "Use USB for" in result_check.stdout
 
 def handle_init_config(device):
     if device == "ZTE_Stage_5G":
-        if is_usb_dialog_present():
-            for _ in range(3):
-                cmd = ["adb", "shell", "input", "keyevent", "20"]
-                result = subprocess.run(cmd, stdout=subprocess.PIPE)
-                time.sleep(3)
-
-        cmd = ["adb", "shell", "input", "keyevent", "23"]
+        cmd = ["adb", "shell", "input", "tap", "500 200"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         
