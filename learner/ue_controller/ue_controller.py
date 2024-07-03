@@ -87,6 +87,45 @@ def ue_wakeup(device):
     cmd = ["adb", "shell", "input", "keyevent", "82"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
+    if device == "ZTE_Stage_5G":
+        if is_usb_dialog_present():
+            logging.debug("Permission already given")
+        else:
+            for _ in range(3):
+                cmd = ["adb", "shell", "input", "keyevent", "20"]
+                result = subprocess.run(cmd, stdout=subprocess.PIPE)
+                time.sleep(3)
+ 
+        logging.debug("Checking if wifi is enabled")
+        if is_wifi_enabled():
+            logging.debug("Wifi is already enabled")
+        else:
+            logging.debug("Enabling Wifi")
+            cmd = ["adb", "shell", "svc", "wifi", "enable"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(3)
+            logging.debug("Enabled Wifi")
+ 
+ 
+        cmd = ["adb", "shell", "input", "keyevent", "23"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        logging.debug("Enable Permisssion")
+ 
+        logging.debug("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+        if is_vowifi_enabled():
+            logging.debug("Vowifi already enabled")
+        else:
+            for _ in range(2):
+                logging.debug("Toggle the WiFi Calling button")
+                cmd = ["adb", "shell", "input", "keyevent", "23"]
+                result = subprocess.run(cmd, stdout=subprocess.PIPE)
+                time.sleep(3)
+            logging.debug("Finish toggling the WiFi Calling button")
+ 
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
     subprocess.run(cmd)
