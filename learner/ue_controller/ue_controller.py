@@ -173,7 +173,7 @@ def is_wifi_enabled():
     return "Wi-Fi is enabled" in result_check.stdout
 
 def handle_init_config(device):
-    if device == "ZTE_State_5G":
+    if device == "A2020N3":
         logging.debug("Enabling Menu")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
