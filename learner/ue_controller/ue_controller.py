@@ -92,7 +92,20 @@ def ue_wakeup(device):
         cmd = ["adb", "shell", "input", "tap", "576", "1707"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
- 
+        if is_wifi_enabled():
+            logging.debug("Wifi is already enabled")
+        else:
+            logging.debug("Enabling Wifi")
+            cmd = ["adb", "shell", "svc", "wifi", "enable"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)             
+            time.sleep(3)
+            logging.debug("Enabled Wifi")
+
+        logging.debug("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
     subprocess.run(cmd)
