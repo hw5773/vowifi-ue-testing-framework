@@ -173,7 +173,7 @@ def is_wifi_enabled():
     return "Wi-Fi is enabled" in result_check.stdout
 
 def handle_init_config(device):
-    if device == "A2020N3":
+    if device == "ZTE_Stage_5G":
         logging.debug("Enabling Menu")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -374,7 +374,7 @@ def check_device_model():
         device = "Blackview_A55"
         logging.info("Device model: A55")
     elif "Z8850K" in output:
-        device = "ZTE_State_5G"
+        device = "ZTE_Stage_5G"
         logging.info("Device model: ZTE STAGE 5G")
     elif "A55" in output:
         device = "A55"
@@ -382,9 +382,6 @@ def check_device_model():
     elif "A13_Pro" in output:
         device = "A13_Pro"
         logging.info("Device model: UMIDIGI A13 Pro")
-    elif "A2020N3" in output:
-        device = "A2020N3"
-        logging.info("Device model: ZTE Stage 5G")
     elif "Pixel_4a" in output:
         device = "Pixel_4a"
         logging.info("Device model: Google Pixel 4a")
