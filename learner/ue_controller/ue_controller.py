@@ -194,12 +194,19 @@ def handle_init_config(device):
         if is_vowifi_enabled():
             logging.debug("Vowifi already enabled")
         else:
-            for _ in range(2): 
-                logging.debug("Toggle the WiFi Calling button")
-                cmd = ["adb", "shell", "input", "keyevent", "23"]
-                result = subprocess.run(cmd, stdout=subprocess.PIPE)
-                time.sleep(3)
+             
+            logging.debug("Toggle the WiFi Calling button")
+            cmd = ["adb", "shell", "input", "keyevent", "20"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(2)
             logging.debug("Finish toggling the WiFi Calling button")
+
+            logging.debug("Toggle the WiFi Calling button")
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(2)
+            logging.debug("Finish toggling the WiFi Calling button")
+
         
     elif device == "A13_Pro":
         logging.debug("Swipe to unlock the phone")
