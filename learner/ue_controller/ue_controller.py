@@ -89,15 +89,14 @@ def ue_wakeup(device):
         for _ in range(3):
             cmd = ["adb", "shell", "input", "keyevent", "20"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)          
+            time.sleep(3)
         cmd = ["adb", "shell", "input", "keyevent", "23"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
         logging.debug("Enable Permisssion")
     else:   
         logging.debug("Permssion already given")
-        break
-    
+    break
     cmd = ["adb", "shell", "input", "keyevent", "82"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
  
