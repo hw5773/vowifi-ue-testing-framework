@@ -87,11 +87,18 @@ def ue_wakeup(device):
     time.sleep(2)
     cmd = ["adb", "shell", "input", "keyevent", "82"]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
+    time.sleep(2)
 
     if device == "ZTE_Stage_5G":
+        logging.debug("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(3)
+
         cmd = ["adb", "shell", "input", "tap", "576", "1707"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
+        
         if is_wifi_enabled():
             logging.debug("Wifi is already enabled")
         else:
@@ -100,11 +107,6 @@ def ue_wakeup(device):
             result = subprocess.run(cmd, stdout=subprocess.PIPE)             
             time.sleep(3)
             logging.debug("Enabled Wifi")
-
-        logging.debug("Enable WiFi Calling")
-        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
 
 def ue_reboot(device):
     cmd = ["adb", "reboot"]
