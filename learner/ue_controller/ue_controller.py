@@ -119,7 +119,8 @@ def handle_reset(client, device):
     logging.debug("Before waking up the device")
     ue_wakeup(device)
     logging.debug("After waking up the device")
-com.telephony.service/com.telephony.service.wfc.WfcAliasActivity    #time.sleep(1)
+    com.telephony.service/com.telephony.service.wfc.WfcAliasActivity    
+    #time.sleep(1)
     logging.debug("Before sending ACK to the statelearner")
     client.send(ACK)
     logging.debug("After sending ACK to the statelearner")
