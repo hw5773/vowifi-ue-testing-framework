@@ -299,18 +299,18 @@ def handle_init_config(device):
         time.sleep(4)
         logging.debug("Enabled wifi")
  
-        logging.debug ("Enable WiFi Calling")
-        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled Wifi Calling")
+        #logging.debug ("Enable WiFi Calling")
+        #cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        #logging.debug("Enabled Wifi Calling")
  
-        logging.debug("Toggle the WiFi Calling button")
-        for _ in range(2):
-            cmd = ["adb", "shell", "input", "keyevent", "23"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
-        logging.debug("Finish toggling the WiFi Calling button")
+        #logging.debug("Toggle the WiFi Calling button")
+        #for _ in range(2):
+            #cmd = ["adb", "shell", "input", "keyevent", "23"]
+            #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            #time.sleep(3)
+        #logging.debug("Finish toggling the WiFi Calling button")
 
     elif device == "One_Plus_Nord_N20":
         logging.debug("Menu to unlock the phone")
