@@ -283,7 +283,7 @@ def handle_init_config(device):
         logging.debug("Enabling swipe")
         cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        timedevice.sleep(3)
+        time.sleep(3)
         logging.debug("Enabled Swipe")
  
         logging.debug("Enabling wifi")
