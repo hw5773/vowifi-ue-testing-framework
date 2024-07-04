@@ -218,22 +218,17 @@ def handle_init_config(device):
         logging.debug("Finish toggling the WiFi Calling button")
     
     elif device == "I14_Pro_Nax":
-        logging.debug("Menu to unlock the phone")
-        cmd = ["adb", "shell", "input", "keyevent", "82"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(1)
-            
         logging.debug("Enabling swipe")
-        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(1)
         logging.debug("Enabled swipe")
         
-        logging.debug("Enabling wifi")
-        cmd = ["adb", "shell", "svc", "wifi", "enable"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled wifi")
+        #logging.debug("Enabling wifi")
+        #cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        #logging.debug("Enabled wifi")
 
         logging.debug("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
@@ -242,7 +237,7 @@ def handle_init_config(device):
         logging.debug("Enabled Wifi Calling")
  
         logging.debug("Toggle the WiFi Calling button")
-        for _ in range(2):
+        for _ in range(3):
             cmd = ["adb", "shell", "input", "keyevent", "23"]
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
