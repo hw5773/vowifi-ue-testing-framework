@@ -119,7 +119,7 @@ def handle_reset(client, device):
     logging.debug("Before waking up the device")
     ue_wakeup(device)
     logging.debug("After waking up the device")
-    #time.sleep(1)
+com.telephony.service/com.telephony.service.wfc.WfcAliasActivity    #time.sleep(1)
     logging.debug("Before sending ACK to the statelearner")
     client.send(ACK)
     logging.debug("After sending ACK to the statelearner")
@@ -317,11 +317,11 @@ def handle_init_config(device):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
 
-        logging.debug("Enabling swipe")
-        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled Swipe")
+        #logging.debug("Enabling swipe")
+        #cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        #logging.debug("Enabled Swipe")
 
         logging.debug("Enabling wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
