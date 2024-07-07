@@ -415,7 +415,7 @@
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
-/* #undef YYTEXT_POINTER */
+#define YYTEXT_POINTER 1
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 /* #undef size_t */

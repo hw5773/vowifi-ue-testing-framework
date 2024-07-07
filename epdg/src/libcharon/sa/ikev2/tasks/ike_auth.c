@@ -948,6 +948,16 @@ METHOD(task_t, build_r, status_t,
 {
 	identification_t *gateway;
 	auth_cfg_t *cfg;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  uint64_t ispi, rspi;
+  ike_sa_id_t *id;
+
+  instance = message->get_instance(message);
+  id = message->get_ike_sa_id(message);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
 
 	if (message->get_exchange_type(message) == IKE_SA_INIT)
 	{
@@ -1110,6 +1120,7 @@ METHOD(task_t, build_r, status_t,
 	{
 		DBG1(DBG_IKE, "canceling IKE_SA setup due to uniqueness policy");
 		charon->bus->alert(charon->bus, ALERT_UNIQUE_KEEP);
+    //printf("\n\n\n\n\n[VoWiFi] auth failed here 1?\n\n\n\n\n");
 		message->add_notify(message, TRUE, AUTHENTICATION_FAILED,
 							chunk_empty);
 		return FAILED;
@@ -1153,6 +1164,11 @@ METHOD(task_t, build_r, status_t,
 
 peer_auth_failed:
 	message->add_notify(message, TRUE, AUTHENTICATION_FAILED, chunk_empty);
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    printf("[VoWiFi] authentication failed\n");
+    instance->authentication_failed = 1;
+  }
 peer_auth_failed_no_notify:
 	charon->bus->alert(charon->bus, ALERT_PEER_AUTH_FAILED);
 	return FAILED;
@@ -1179,6 +1195,7 @@ static void send_auth_failed_informational(private_ike_auth_t *this,
 	host = this->ike_sa->get_other_host(this->ike_sa);
 	message->set_destination(message, host->clone(host));
 	message->set_exchange_type(message, INFORMATIONAL);
+  printf("\n\n\n\n\n[VoWiFi] auth failed here 4?\n\n\n\n\n");
 	message->add_notify(message, FALSE, AUTHENTICATION_FAILED, chunk_empty);
 
 	if (this->ike_sa->generate_message(this->ike_sa, message,

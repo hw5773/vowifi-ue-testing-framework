@@ -191,7 +191,6 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
   int vtype, tlen, op;
   query_t *query;
 
-  printf("\n\n[VoWiFi] this: %p, this->ike_sa: %p\n\n", this, this->ike_sa);
   instance = this->ike_sa->get_instance(this->ike_sa);
   ////////////////////////////
 
@@ -206,8 +205,6 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
   ///// Added for VoWiFi /////
   ispi = ike_sa_id->get_initiator_spi(ike_sa_id);
   rspi = ike_sa_id->get_responder_spi(ike_sa_id);
-  if (instance)
-    printf("\n\n\n[VoWiFi] ispi: %.16"PRIx64", instance->ispi: %.16"PRIx64", rspi: %.16"PRIx64", instance->rspi: %.16"PRIx64"\n\n\n", ispi, instance->ispi, rspi, instance->rspi);
   ////////////////////////////
 	
 	DBG3(DBG_IKE, "precalculated src_hash %B", &src_hash);
@@ -265,8 +262,7 @@ static void process_payloads(private_ike_natd_t *this, message_t *message)
         printf("[VoWiFi] before check_instance in NAT_DETECTION_SOURCE_IP\n");
           if (check_instance(instance, ispi, rspi, NON_UPDATE))
           {
-        printf("[VoWiFi] after check_instance in NAT_DETECTION_SOURCE_IP\n");
-					  printf("\n\n\n[VoWiFi] (ike_natd.c) received src_hash %B\n\n\n", &hash);
+            printf("[VoWiFi] after check_instance in NAT_DETECTION_SOURCE_IP\n");
             instance->rcvd_src_hash = chunk_clone(hash);
           }
           ////////////////////////////
@@ -446,9 +442,7 @@ METHOD(task_t, build_r, status_t,
 METHOD(task_t, process_r, status_t,
 	private_ike_natd_t *this, message_t *message)
 {
-  printf("\n\n\n\n\n[VoWiFi] before process_payloads\n\n\n\n\n");
 	process_payloads(this, message);
-  printf("\n\n\n\n\n[VoWiFi] after process_payloads\n\n\n\n\n");
 
 	return NEED_MORE;
 }

@@ -21,6 +21,7 @@ void *sender_run(void *data)
   uint8_t buf[MAX_MESSAGE_LEN] = {0, };
   uint8_t tmp[MAX_MESSAGE_LEN] = {0, };
   uint8_t *p;
+  int i;
 
   instance = (instance_t *)data;
   msg = NULL;
@@ -45,12 +46,17 @@ void *sender_run(void *data)
   	  //printf(">>>>> Initiator SPI: 0x%.16"PRIx64"\n", msg->ispi);
 	    //printf(">>>>> Responder SPI: 0x%.16"PRIx64"\n", msg->rspi);
 
-      snprintf((char *)p, 17, "%.16"PRIx64, msg->ispi); 
-      p += 16;
-      snprintf((char *)p, 17, "%.16"PRIx64, msg->rspi); 
+      // ispi (16 bytes)
+      for (i=0; i<16; i++)
+        p[i] = '0';
       p += 16;
 
-      LM_INFO("[VoWiFi] before key\n");
+      // rspi (16 bytes)
+      for (i=0; i<16; i++)
+        p[i] = '0';
+      p += 16;
+
+      LM_INFO("[VoWiFi] before key (length: %d)\n", msg->klen);
       if (msg->klen > 0)
       {
         memcpy(p, msg->key, msg->klen);
@@ -100,6 +106,7 @@ void *sender_run(void *data)
       offset = 0;
 
       LM_INFO("[VoWiFi] To be sent: %d bytes\n", tbs);
+      LM_INFO("[VoWiFi] Message: %s\n", buf);
       while (offset < tbs)
       {
         sent = write(asock, buf + offset, tbs - offset);
@@ -108,7 +115,9 @@ void *sender_run(void *data)
       }
       LM_INFO("[VoWiFi] Sent bytes: %d bytes\n", offset);
 
+      LM_INFO("[VoWiFi] before free_message()\n");
       free_message(msg);
+      LM_INFO("[VoWiFi] after free_message()\n");
       msg = NULL;
     }
   }
@@ -159,7 +168,6 @@ void *listener_run(void *data)
   fcntl(asock, F_SETFL, flags | O_NONBLOCK);
 
   instance = init_instance(asock);
-
   rc = pthread_create(arg->sender, arg->attr, sender_run, instance);
   if (rc < 0)
     perror("error in pthread_create");
@@ -208,8 +216,6 @@ void *listener_run(void *data)
         && !strncmp((const char *)buf, RESET_REQUEST, strlen(RESET_REQUEST)))
     {
       LM_INFO("receiver reset from LogExecutor!\n");
-      instance->ispi = 0;
-      instance->rspi = 0;
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -238,7 +244,7 @@ void *listener_run(void *data)
 
         case MSG_TYPE_BLOCK_START:
           if (!query)
-            query = init_query(SHARED_MEMORY_QUERY_KEY);
+            query = init_query();
           else
             query = add_query_sub_message(query, ptype, mtype);
           depth++;
@@ -256,26 +262,24 @@ void *listener_run(void *data)
       offset -= 1;
       memcpy(ispi, p, 16);
       p += 16; offset -= 16;
-      snprintf((char *)spi, 17, "%.16"PRIx64, instance->ispi); 
+      memset(spi, '0', 16);
       if (strncmp((const char *)ispi, (const char *)spi, 16))
       {
-        LM_INFO("ispi: %s, instance->ispi: %s\n", ispi, spi);
         LM_ERR("ERROR: Initiator's SPIs are different\n");
       }
 
       memcpy(rspi, p, 16);
       p += 16; offset -= 16;
-      snprintf((char *)spi, 17, "%.16"PRIx64, instance->rspi); 
+      memset(spi, '0', 16);
       if (strncmp((const char *)rspi, (const char *)spi, 16))
       {
-        LM_INFO("rspi: %s, instance->rspi: %s\n", rspi, spi);
         LM_ERR("ERROR: Responder's SPIs are different\n");
       }
 
       // if offset == 1, it means that there is only '\n'
       if (offset > 1)
       {
-        LM_INFO("Block Start: offset > 1\n");
+        LM_INFO("Block Start: offset > 1: query: %p\n", query);
         token = (uint8_t *)strtok((char *)p, ":");
         idx = 0;
         while (token)
@@ -296,7 +300,6 @@ void *listener_run(void *data)
               LM_INFO("  the operator is set to %d\n", get_query_operator(query));
               break;
 
-
             case 2:
               LM_INFO("value type: %s\n", token);
               set_query_value_type(query, token);
@@ -314,12 +317,12 @@ void *listener_run(void *data)
           token = (uint8_t *)strtok(NULL, ":");
           idx++;
         }
-        LM_INFO("Block Finish: offset > 1\n");
+        LM_INFO("Block Finish: offset > 1: query: %p\n", query);
       }
 
       if (!depth)
       {
-        LM_INFO("Block Start: depth == 0\n");
+        LM_INFO("Block Start: depth == 0: query: %p\n", query);
         print_query(query);
         /*
         tbs = strlen(ACK_RESPONSE);
@@ -335,44 +338,19 @@ void *listener_run(void *data)
         printf("sent ACK to LogExecutor\n");
         */
         set_query(instance, query);
-        LM_INFO("Block Finish: depth == 0\n");
+        query = NULL;
+        LM_INFO("Block Finish: depth == 0, query: %p\n", query);
       }
       else
       {
-        LM_INFO("Block Start: depth != 0\n");
-        LM_INFO("Block Finish: depth != 0\n");
+        LM_INFO("Block Start: depth != 0: query: %p\n", query);
+        LM_INFO("Block Finish: depth != 0: query: %p\n", query);
       }
     }
   }
 
 out:
   return NULL;
-}
-
-int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
-{
-  int ret;
-
-  if (instance)
-    LM_INFO("\n[check_instance] instance->ispi: %.16"PRIx64", instance->rspi: %.16"PRIx64", ispi: %.16"PRIx64", rspi: %.16"PRIx64"\n\n", instance->ispi, instance->rspi, ispi, rspi);
-
-  if (!instance) 
-    ret = 0;
-  else if (!(instance->ispi) && !(instance->rspi))
-  {
-    if (update)
-    {
-      instance->ispi = ispi;
-      instance->rspi = rspi;
-    }
-    ret = 1;
-  }
-  else if (instance->ispi == ispi && instance->rspi == rspi)
-    ret = 1;
-  else
-    ret = 0;
-
-  return ret;
 }
 
 msg_t *add_message_to_send_queue(instance_t *instance, msg_t *msg)
@@ -442,8 +420,8 @@ msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key,
   uint64_t ispi, rspi;
   msg_t *ret;
 
-  ispi = instance->ispi;
-  rspi = instance->rspi;
+  ispi = 0;
+  rspi = 0;
 
   ret = (msg_t *)shm_malloc(sizeof(msg_t));
   if (!ret)
@@ -456,9 +434,20 @@ msg_t *init_message(instance_t *instance, int mtype, const uint8_t *key,
   ret->mtype = mtype;
   ret->ispi = ispi;
   ret->rspi = rspi;
+
+  if (key)
+  {
+    memcpy(ret->key, key, strlen(key));
+    ret->klen = strlen(key);
+  }
+
   ret->vtype = vtype;
-  memcpy(ret->val, val, vlen);
-  ret->vlen = vlen;
+
+  if (val)
+  {
+    memcpy(ret->val, val, ret->vlen);
+    ret->vlen = vlen;
+  }
 
   LM_INFO("[init_message()] ret: %p, mtype: %d\n", ret, mtype);
 
@@ -495,7 +484,7 @@ instance_t *init_instance(int asock)
   int shmid;
   instance_t *ret;
 
-  shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666 | IPC_CREAT);
+  shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666|IPC_CREAT);
   if (shmid == -1)
   {
     perror("shmget failed");
@@ -509,6 +498,7 @@ instance_t *init_instance(int asock)
     exit(0);
   }
   LM_INFO("[VoWiFi] address of instance: %p\n", ret);
+  memset(ret, 0, sizeof(instance_t));
 
   ret->asock = asock;
 
@@ -518,6 +508,9 @@ instance_t *init_instance(int asock)
     LM_ERR("initializing a mutex for the send queue failed\n");
   }
 
+  ret->rprev = "ike_auth_3_request";
+  ret->sprev = "ike_auth_3_response";
+  ret->pid = getpid();
   ret->running = 1;
 
   return ret;
@@ -528,6 +521,24 @@ void free_instance(instance_t *instance)
   shmctl(SHARED_MEMORY_INSTANCE_KEY, IPC_RMID, NULL);
 }
 
+int check_instance(instance_t *instance)
+{
+  int ret;
+  pid_t pid;
+  ret = 0;
+  pid = getpid();
+
+  if (!instance)
+    goto out;
+
+  LM_ERR("instance->pid: %d, pid: %d\n", instance->pid, pid);
+  if (pid >= (instance->pid - 5) && pid <= (instance->pid + 5))
+    ret = 1;
+
+out:
+  return ret;
+}
+
 query_t *init_query()
 {
   LM_INFO("Start: init_query()\n");
@@ -536,7 +547,7 @@ query_t *init_query()
   ret = (query_t *)shm_malloc(sizeof(query_t));
   if (!ret)
   {
-    perror("shm_malloc() failed");
+    perror("shm_malloc() for query failed");
     exit(1);
   }
   memset(ret, 0, sizeof(query_t));
@@ -713,7 +724,7 @@ uint8_t *get_query_value(query_t *query, int *vlen)
 void set_query_value(query_t *query, uint8_t *value)
 {
   int vlen = (int) strlen((const char *)value);
-  LM_INFO("set_query_value()> value: %s, vlen: %d\n", value, vlen);
+  LM_INFO("_value()> value: %s, vlen: %d\n", value, vlen);
   if (value[vlen-1] == '\n')
     vlen -= 1;
   memcpy(query->value, value, vlen);
@@ -743,6 +754,35 @@ bool wait_query(instance_t *instance)
 bool is_query_finished(instance_t *instance)
 {
   return instance->finished;
+}
+
+query_t *get_next_query(instance_t *instance)
+{
+  query_t *ret;
+  ret = NULL;
+
+  LM_ERR("instance->running: %d, instance->finished: %d\n", instance->running, instance->finished);
+  if (instance->running && !instance->finished)
+  {
+    ret = get_query(instance);
+    LM_ERR("query: %p\n", ret);
+    while (!ret || is_query_name(ret, instance->sprev))
+    {
+      if (instance->finished)
+        break;
+
+      if (ret)
+      {
+        LM_INFO("[VoWiFi] query->name: %s\n", ret->name);
+        LM_INFO("[VoWiFi] instance->sprev: %s\n", instance->sprev);
+      }
+
+      sleep(1);
+      ret = get_query(instance);
+    }
+  }
+
+  return ret;
 }
 
 query_t *get_query(instance_t *instance)
@@ -790,196 +830,6 @@ query_t *get_sub_query_by_name(query_t *query, const uint8_t *name)
   }
 
   return ret;
-}
-
-void parse_sip_message(instance_t *instance, uint8_t *buf, size_t len)
-{
-  int first_line;
-  uint8_t *start, *p;
-  const uint8_t *symbol;
-  const uint8_t *version;
-  uint8_t receiver[1024] = {0, };
-  uint8_t attr[1024] = {0, };
-  uint8_t key[1024] = {0, };
-  uint8_t mem[1024] = {0, };
-  msg_t *msg;
-
-  int receiver_set;
-  int attr_set;
-  int key_set;
-  int within;
-
-  first_line = 1;
-  start = buf;
-  p = buf;
-  symbol = version = NULL;
-  receiver_set = 0;
-  attr_set = 0;
-  key_set = 0;
-  within = 0;
-  
-  LM_INFO("[VoWiFi] before parsing the message\n");
-  while (p - buf < len)
-  {
-    if (*p == ' ')
-    {
-      if (first_line)
-      {
-        if (!symbol)
-        {
-          memcpy(mem, start, p - start);
-          start = p + 1;
-
-          if (!strncmp(mem, "REGISTER", strlen("REGISTER")))
-          {
-            symbol = "register";
-          }
-          else
-          {
-            symbol = "unknown";
-          }
-        }
-        else if (!receiver_set)
-        {
-          memcpy(receiver, start, p - start);
-          start = p + 1;
-          receiver_set = 1;
-        }
-        else if (!version)
-        {
-          memcpy(mem, start, p - start);
-          start = p + 1;
-
-          if (!strncmp(mem, "SIP/2.0", strlen("SIP/2.0")))
-          {
-            version = "sip/2.0";
-          }
-          memset(mem, 0, 1024);
-        }
-      }
-    }
-    else if (*p == '\n')
-    {
-      if (first_line)
-      {
-        if (!version)
-        {
-          memcpy(mem, start, p - start);
-          start = p + 1;
-
-          if (!strncmp(mem, "SIP/2.0", strlen("SIP/2.0")))
-          {
-            version = "sip/2.0";
-          }
-          memset(mem, 0, 1024);
-        }
-
-        LM_INFO("[VoWiFi] before init_message() type 2 (block start)\n");
-        msg = init_message(instance, MSG_TYPE_BLOCK_START, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-        add_message_to_send_queue(instance, msg);
-        LM_INFO("[VoWiFi] after init_message() type 2 (block start): msg: %p\n", msg);
-        memset(mem, 0, 1024);
-
-        first_line = 0;
-        LM_INFO("%s (%s)\n", symbol, version);
-      }
-      else
-      {
-        if (!key_set)
-        {
-          memcpy(key, "value", strlen("value"));
-        }
-        memcpy(mem, start, p - start);
-        start = p + 1;
-        LM_INFO("    %s: %s\n", key, mem);
-        memset(attr, 0, sizeof(attr));
-        memset(key, 0, sizeof(key));
-        memset(mem, 0, sizeof(mem));
-        attr_set = 0;
-        key_set = 0;
-      }
-    }
-    else if (!within && *p == ':')
-    {
-      if (!first_line)
-      {
-        if (!attr_set)
-        {
-          memcpy(attr, start, p - start);
-          start = p + 1;
-          attr_set = 1;
-          LM_INFO("  %s\n", attr);
-        }
-      }
-    }
-    else if (!within && *p == '=')
-    {
-      if (!key_set)
-      {
-        memcpy(key, start, p - start);
-        start = p + 1;
-        key_set = 1;
-      }
-      else
-      {
-        perror("error happened in '='");
-        exit(1);
-      }
-    }
-    else if (!within && *p == ';')
-    {
-      if (!key_set)
-      {
-        memcpy(key, "value", strlen("value"));
-      }
-      memcpy(mem, start, p - start);
-      start = p + 1;
-      LM_INFO("    %s: %s\n", key, mem);
-      memset(key, 0, sizeof(key));
-      memset(mem, 0, sizeof(mem));
-      key_set = 0;
-    }
-    else if (!within && *p == ',')
-    {
-      if (!key_set)
-      {
-        memcpy(key, "value", strlen("value"));
-      }
-      memcpy(mem, start, p - start);
-      start = p + 1;
-      LM_INFO("    %s: %s\n", key, mem);
-      memset(key, 0, sizeof(key));
-      memset(mem, 0, sizeof(mem));
-      key_set = 0;
-    }
-    else if (*p == '\"')
-    {
-      within = (within + 1) % 2;
-    }
-    else if (*p == '<')
-    {
-      within = 1;
-    }
-    else if (*p == '>')
-    {
-      within = 0;
-    }
-    else if (*p == '[')
-    {
-      within = 1;
-    }
-    else if (*p == ']')
-    {
-      within = 0;
-    }
-    p++;
-  }
-  LM_INFO("[VoWiFi] after parsing the message\n");
-
-  LM_INFO("[VoWiFi] before init_message() type 3 (block end)\n");
-  msg = init_message(instance, MSG_TYPE_BLOCK_END, symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-  add_message_to_send_queue(instance, msg);
-  LM_INFO("[VoWiFi] after init_message() type 3 (block end): msg: %p\n", msg);
 }
 
 int int_to_char(int num, uint8_t *str, int base)

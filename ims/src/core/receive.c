@@ -61,10 +61,8 @@
 
 ///// Added for VoWiFi /////
 #include "sip_instance.h"
+#include "sip_controller.h"
 #include <sys/shm.h>
-//#define SHARED_MEMORY_INSTANCE_KEY 1234
-//#define SHARED_MEMORY_MESSAGE_KEY 1235
-//#define SHARED_MEMORY_QUERY_KEY 1236
 ////////////////////////////
 
 int _sr_ip_free_bind = 0;
@@ -248,6 +246,8 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
 	int exectime = 0;
   ///// Added for VoWiFi /////
   instance_t *instance;
+  int mtype, rlen;
+  char *revised;
   instance = NULL;
   ////////////////////////////
 
@@ -307,28 +307,37 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
 		msg_set_time(msg);
 
   ///// Added for VoWiFi /////
-  if (vowifi)
+  sip_message_t *sip;
+  instance = get_instance();
+  if (check_instance(instance))
   {
-    const uint8_t *symbol;
-    msg_t *msg;
-    msg = NULL;
+    LM_ERR("received (%d bytes): %.*s\n", len, len, buf);
+    LM_INFO("before init_sip_message()\n");
+    sip = init_sip_message(buf, len);
+    LM_INFO("after init_sip_message()\n");
 
-    int shmid = shmget((key_t)SHARED_MEMORY_INSTANCE_KEY, sizeof(instance_t), 0666);
-    if (shmid == -1)
+    if (sip)
     {
-      LM_ERR("[VoWiFi] error in shmget()\n");
-    }
-    else
-    {
-      instance = (instance_t *)shmat(shmid, NULL, 0);
-      LM_DBG("received buffer (len: %d bytes): %s\n", len, buf);
-      if (instance)
+      LM_INFO("before report_message()\n");
+      report_message(instance, sip);
+      LM_INFO("after report_message()\n");
+      mtype = get_message_type(sip);
+      if (mtype == SC_SIP_RESPONSE)
       {
-        LM_INFO("before parse_sip_message()\n");
-        parse_sip_message(instance, buf, len);
-        LM_INFO("after parse_sip_message()\n");
+        LM_INFO("before process_query()\n");
+        process_query(instance, sip);
+        LM_INFO("after process_query()\n");
+        LM_INFO("before serialize_sip_message()\n");
+        revised = serialize_sip_message(sip, &rlen);
+        LM_INFO("after serialize_sip_message()\n");
+        memset(buf, 0, sizeof(buf));
+        memcpy(buf, revised, rlen);
+        len = rlen;
       }
     }
+    LM_ERR("before free_sip_message()\n");
+    free_sip_message(sip);
+    LM_ERR("after free_sip_message()\n");
   }
   ////////////////////////////
 

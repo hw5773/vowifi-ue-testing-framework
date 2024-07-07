@@ -1,4 +1,4 @@
-# RFC 5996 (page 10, figure): the first IKE_AUTH response MUST contain the correct IKE version number
+# RFC 5996 (page 10, figure): the IKE_SA_INIT response MUST contain the key exchange payload
 
 {
   "testcases": [
@@ -7,22 +7,23 @@
         { 
           "receiver": "ue", 
           "name": "enable_vowifi",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "ue", 
-          "name": "ike_sa_init_response",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
         { 
           "receiver": "epdg", 
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "ike_version",
-              "type": "uint8",
-              "value": VALUE([0, 16, 32, 255], [32])
+              "name": "key_exchange",
+              "sub": [
+                {
+                  "name": "diffie_hellman_group",
+                  "type": "uint16",
+                  "op": ["update", "drop"],
+                  "value": VALUE([0, 1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 65535], [2])
+                }
+              ]
             }
           ]
         }

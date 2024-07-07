@@ -200,8 +200,7 @@ CSCOPE = cscope
 DIST_SUBDIRS = src man conf init testing fuzz scripts
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.h.in AUTHORS \
 	COPYING ChangeLog INSTALL NEWS README TODO compile \
-	config.guess config.sub depcomp install-sh ltmain.sh missing \
-	ylwrap
+	config.guess config.sub install-sh ltmain.sh missing ylwrap
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -291,7 +290,7 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LCOV = 
-LD = /usr/local/bin/ld -m elf_x86_64
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LEX = flex
 LEXLIB = -lfl
@@ -309,7 +308,7 @@ MKDIR_P = /usr/bin/mkdir -p
 MYSQLCFLAG = 
 MYSQLCONFIG = 
 MYSQLLIB = 
-NM = /usr/local/bin/nm -B
+NM = /usr/bin/nm -B
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -340,7 +339,7 @@ PYTHON_EXEC_PREFIX = ${exec_prefix}
 PYTHON_PACKAGE_VERSION = 
 PYTHON_PLATFORM = linux
 PYTHON_PREFIX = ${prefix}
-PYTHON_VERSION = 3.8
+PYTHON_VERSION = 3.9
 PY_TEST = 
 RANLIB = ranlib
 RTLIB = 
@@ -442,8 +441,8 @@ pool_plugins =
 prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
-pyexecdir = ${exec_prefix}/lib/python3.8/site-packages
-pythondir = ${prefix}/lib/python3.8/site-packages
+pyexecdir = ${exec_prefix}/lib/python3.9/site-packages
+pythondir = ${prefix}/lib/python3.9/site-packages
 random_device = /dev/random
 resolv_conf = ${prefix}/etc/resolv.conf
 routing_table = 220

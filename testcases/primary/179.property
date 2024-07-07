@@ -1,0 +1,48 @@
+# RFC 4555 (page 10): Implementations that wish to use MOBIKE for a particular IKE_SA MUST include a MOBIKE_SUPPORTED notification in the IKE_AUTH exchange. The addresses are taken from the IKE_AUTH request because IKEv2 requires changing from port 500 to 4500 if a NAT is discovered. To simplify things, implementations that support both this specification and NAT tranversal MUST change to port 4500 if the correspondent also supports both, even if no NAT was detected between them.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "notify",
+              "sub": [
+                {
+                  "name": "mobike_supported",
+                  "op": ["insert", "update"],
+                  "type": "uint32",
+                  "value": VALUE
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

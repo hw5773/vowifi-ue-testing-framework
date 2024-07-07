@@ -47,10 +47,12 @@ public class LogExecutor {
   private static final int LIVENESS_SLEEP_TIME = 5*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
   private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
+  //private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
+  //private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
   private static final int IMS_SOCKET_TIMEOUT_VALUE = 30*1000; 
   private static final int HELLO_MESSAGE_TIMEOUT_VALUE = 15*1000;
-  private static final int UE_REBOOT_TIMEOUT_VALUE = 60*1000;
+  private static final int UE_REBOOT_TIMEOUT_VALUE = 120*1000;
   private static final int UE_REBOOT_SLEEP_TIME = 45*1000;
   private static final String DEFAULT_CONF_FILE = "vowifi-ue.properties";
   private static final int DEFAULT_NUMBER_OF_TRIALS = 3;
@@ -62,7 +64,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    //initIMSConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -131,6 +133,7 @@ public class LogExecutor {
 
     try {
       vowifiUEConfig = new VoWiFiUEConfig(configFilePath);
+      vowifiUEConfig.loadProperties();
     } catch (Exception e) {
       logger.error("Error happened while processing the configuration file");
       e.printStackTrace();
@@ -186,7 +189,7 @@ public class LogExecutor {
     List<QueryReplyPair> pairs;
     QueryReplyPair pair;
     Iterator iter;
-    String rpath;
+    String rpath, home;
     Testcases livenessTestcase = null;
     int r1, r2;
     boolean needReboot;
@@ -197,6 +200,8 @@ public class LogExecutor {
       matched = true;
 
     rpath = config.getLivenessTestcasePath();
+    home = System.getProperty("user.home");
+    logger.info("Home directory: " + home);
     logger.info("Load the liveness testcase from: " + rpath);
     try (FileReader reader = new FileReader(rpath)) {
       JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
@@ -244,6 +249,10 @@ public class LogExecutor {
             testcase.resetIterator();
             logExecutor.rebootUE();
           }
+        }
+        else
+        {
+          testcase.resetIterator();
         }
         logger.debug("pairs: " + pairs);
       }
@@ -330,13 +339,13 @@ public class LogExecutor {
   }
 
   private void sendMSGToIMS(Testcase testcase) {
-    logger.debug("START: sendMSGToEPDG()");
+    logger.debug("START: sendMSGToIMS()");
     int depth;
 
     depth = 0;
     sendMessage(testcase, depth, "ims");
 
-    logger.debug("FINISH: sendMSGToEPDG()");
+    logger.debug("FINISH: sendMSGToIMS()");
   }
 
   private void sendMessage(Testcase testcase, int depth, String receiver) {
@@ -361,8 +370,18 @@ public class LogExecutor {
       } else {
         msg = "1";
       }
-      msg += ispi;
-      msg += rspi;
+      if (ispi == null) {
+        msg += "0000000000000000";
+      } else {
+        msg += ispi;
+      }
+
+      if (rspi == null) {
+        msg += "0000000000000000";
+      } else {
+        msg += rspi;
+      }
+
       msg += name;
       logger.debug("msg 1: " + msg);
       logger.debug("getOperator(): " + testcase.getOperator());
@@ -395,6 +414,7 @@ public class LogExecutor {
       }
       logger.debug(print);
 
+      logger.debug("testcase.getHasSubTestcase(): " + testcase.getHasNextSubTestcase());
       if (testcase.getHasSubTestcase()) {
         depth++;
         while (testcase.getHasNextSubTestcase()) {
@@ -412,8 +432,17 @@ public class LogExecutor {
         print += "end";
         logger.debug(print);
 
-        msg += ispi;
-        msg += rspi;
+        if (ispi == null) {
+          msg += "0000000000000000";
+        } else {
+          msg += ispi;
+        }
+
+        if (rspi == null) {
+          msg += "0000000000000000";
+        } else {
+          msg += rspi;
+        }
         msg += "\n";
         if (receiver.startsWith("epdg")) {
           epdgOut.write(msg);
@@ -596,11 +625,13 @@ public class LogExecutor {
     double insec;
     String ispi = null;
     String rspi = null;
+    QueryReplyPair tmp;
     List<QueryReplyPair> pairs;
 
     logExecutor.pre();
     pairs = new ArrayList<>();
 
+    startTime = System.currentTimeMillis();
     while (testcase.hasNextMessage()) {
       Testcase message = testcase.getNextMessage();
       QueryReplyPair pair;
@@ -624,14 +655,23 @@ public class LogExecutor {
         continue;
       }
 
-      startTime = System.currentTimeMillis();
-      pair = logExecutor.step(message);
-      endTime = System.currentTimeMillis();
+      pair = null;
+      while (pair == null)
+      {
+        pair = logExecutor.step(message);
+      }
+      if (pair.getQueryName() != null && pair.getQueryName().equals("retest"))
+      {
+        logger.info("the experiment should be retested");
+        return null;
+      }
+      if (pair.getReplyName() != null && pair.getReplyName().equals("retest"))
+      {
+        logger.info("the experiment should be retested");
+        return null;
+      }
 
       logger.info(">>>>> Query: " + pair.getQueryName() + " / Reply: " + pair.getReplyName() + " <<<<<");
-      duration = (endTime - startTime);
-      insec = duration/1000.0;
-      logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
       
       if (ispi == null) {
         ispi = pair.getIspi();
@@ -659,11 +699,21 @@ public class LogExecutor {
 
       logger.info("RESULT: " + pair.getReplyName());
     }
+    endTime = System.currentTimeMillis();
+    duration = (endTime - startTime);
+    insec = duration/1000.0;
+    logger.info("Elapsed Time in prefix: " + duration + " ms (" + insec + " s)");
+
     sleep(TESTCASE_SLEEP_TIME);
     logExecutor.post();
 
     if (exceptionOccured)
       pairs = null;
+
+    if (pairs != null) {
+      tmp = pairs.get(0);
+      tmp.setDuration(duration);
+    }
 
     logger.debug("FINISH: executeTestcase()");
     return pairs;
@@ -893,7 +943,7 @@ public class LogExecutor {
 
     try {
 			ueSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
-      logger.info("Sending symbol: wifi_off to UE Controller to enable VoWiFi");
+      logger.info("Sending symbol: wifi_off to UE Controller to disable VoWiFi");
       ueOut.write("wifi_off\n");
       ueOut.flush();
 
@@ -1003,6 +1053,7 @@ public class LogExecutor {
     int idx, type, len, depth;
     BufferedReader sockIn = null;
 
+    print = null;
     depth = 0;
     try {
       if (reporter.contains("epdg")) {
@@ -1011,99 +1062,116 @@ public class LogExecutor {
       } else if (reporter.contains("ims")) {
         imsSocket.setSoTimeout(IMS_SOCKET_TIMEOUT_VALUE);
         sockIn = imsIn;
+      } else if (reporter.contains("none")) {
+        sockIn = null;
       }
-      do {
-        print = "";
-        for (int i=0; i<depth; i++) {
-          print += "  ";
-        }
 
-        while (true) {
-        	result = sockIn.readLine();
-          len = result.length();
-          if (len > 16)
-            break;
-        }
-        logger.debug("Result from " + reporter + ": " + result);
-        idx = 0;
-        rcvd = result.getBytes();
-        type = (char) rcvd[idx++];
-
-        switch (type) {
-          case 1:
-            if (mlog == null) {
-              logger.error("The attribute should be within the block");
-            } else {
-              mlog = mlog.addSubmessage(MessageLogType.ATTRIBUTE);
-            }
-            break;
-
-          case 2:
-            if (mlog == null) {
-              mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
-            } else {
-              mlog = mlog.addSubmessage(MessageLogType.PAYLOAD);
-            }
-            depth++;
-            stack.push(1);
-            break;
-
-          case 3:
-            if (mlog.hasParent()) {
-              mlog = mlog.getParent();
-            }
-            depth--;
-            stack.pop();
-            break;
-
-          default:
-            logger.error("Unknown type: " + type);
-        }
-
-        len -= 1;
-        ispi = result.substring(idx, idx + 16);
-        idx += 16; len -= 16;
-        spi = mlog.getIspi();
-        if (spi == null) {
-          mlog.setIspi(ispi);
-        } else {
-          if (!spi.equals(ispi)) {
-            logger.error("Initiator's SPIs are different");
+      if (sockIn != null)
+      {
+        do {
+          print = "";
+          for (int i=0; i<depth; i++) {
+            print += "  ";
           }
-        }
 
-        rspi = result.substring(idx, idx + 16);
-        idx += 16; len -= 16;
-        spi = mlog.getRspi();
-        if (spi == null) {
-          mlog.setRspi(rspi);
-        } else {
-          if (!spi.equals(rspi)) {
-            logger.error("Responder's SPIs are different");
+          while (true) {
+        	  result = sockIn.readLine();
+            len = result.length();
+            if (len > 16)
+              break;
           }
-        }
+          logger.debug("Result from " + reporter + ": " + result);
+          idx = 0;
+          rcvd = result.getBytes();
+          type = (char) rcvd[idx++];
 
-        if (len > 0)
-        {
-          String[] arr;
-          rstr = result.substring(idx);
-          print += rstr;
-          arr = rstr.split(":", 0);
+          logger.debug("mlog before switch: " + mlog);
+          switch (type) {
+            case 1:
+              if (mlog == null) {
+                logger.error("The attribute should be within the block");
+              } else {
+                mlog = mlog.addSubmessage(MessageLogType.ATTRIBUTE);
+              }
+              break;
 
-          mlog.setName(arr[0]);
+            case 2:
+              if (mlog == null) {
+                logger.info("mlog is initialized");
+                mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+              } else {
+                logger.info("mlog add the submessage");
+                mlog = mlog.addSubmessage(MessageLogType.PAYLOAD);
+              }
+              depth++;
+              stack.push(1);
+              logger.debug("mlog in case 2: " + mlog);
+              break;
 
-          if (arr.length > 1) {
-            if (arr.length != 3) {
-              logger.error("The array length should be 3");
-            }
-            else {
-              mlog.setValueType(arr[1]);
-              mlog.setValue(arr[2]);
+            case 3:
+              logger.debug("mlog in case 3: " + mlog);
+              if (mlog.hasParent()) {
+                logger.info("mlog moves to the parent");
+                mlog = mlog.getParent();
+              }
+              depth--;
+              stack.pop();
+              break;
+
+            default:
+              logger.error("Unknown type: " + type);
+          }
+
+          len -= 1;
+          ispi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = mlog.getIspi();
+          if (spi == null) {
+            mlog.setIspi(ispi);
+          } else {
+            if (!spi.equals(ispi)) {
+              logger.error("Initiator's SPIs are different");
             }
           }
-          logger.info(print);
-        }
-      } while (stack.size() != 0);
+
+          rspi = result.substring(idx, idx + 16);
+          idx += 16; len -= 16;
+          spi = mlog.getRspi();
+          if (spi == null) {
+            mlog.setRspi(rspi);
+          } else {
+            if (!spi.equals(rspi)) {
+              logger.error("Responder's SPIs are different");
+            }
+          }
+
+          if (len > 0)
+          {
+            String[] arr;
+            rstr = result.substring(idx);
+            print += rstr;
+            arr = rstr.split(":", 0);
+
+            logger.info("name is set to " + arr[0]);
+            mlog.setName(arr[0]);
+
+            if (arr.length > 1) {
+              if (arr.length != 3) {
+                logger.error("The array length should be 3. It is " + arr.length);
+              }
+              else {
+                mlog.setValueType(arr[1]);
+                mlog.setValue(arr[2]);
+              }
+            }
+            logger.info(print);
+          }
+
+          if (mlog.getType() == MessageLogType.ATTRIBUTE) {
+            mlog = mlog.getParent();
+          }
+        } while (stack.size() != 0);
+      }
   	  epdgSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
 		} catch (SocketTimeoutException e) {
 			logger.info("Timeout occured for " + testcase.getName());
@@ -1112,12 +1180,46 @@ public class LogExecutor {
       mlog.setName("timeout");
     } catch (Exception e) {
 			e.printStackTrace();
-			logger.info("Some error happened. Restart UE.");
+			logger.info("Some error happened. Simple exception. Need to check");
 			rebootUE();
 			mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       mlog.setName("null_action");
 		}
 
+    if (print != null) 
+    {
+      if (print.contains("retest_required:auth_failed"))
+      {
+        logger.info("Authentication is failed. So, we reboot the UE");
+        rebootUE();
+    		mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("retest");
+      }
+      else if (print.contains("retransmission:no_proposal_chosen"))
+      {
+        logger.info("No proposal chosen received. There will be a retransmission");
+        mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("retransmission");
+        testcase.resetIterator();
+      }
+      else if (print.contains("retransmission:invalid_ke_payload"))
+      {
+        logger.info("Invalid key payload received. There will be a retransmission");
+        mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("retransmission");
+        testcase.resetIterator();
+      }
+    }
+    else
+    {
+      if (reporter.contains("none"))
+      {
+        mlog = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
+        mlog.setName("done");
+      }
+    }
+
+    mlog.printMessageLog(0);
     return mlog;
   }
 
@@ -1191,11 +1293,14 @@ public class LogExecutor {
     QueryReplyPair pair;
     String tname = testcase.getName();
     String receiver = testcase.getQueryReceiver();
-    String sender = testcase.getReplySender();
+    String reporter = testcase.getReplyReporter();
     String qname, rname;
     boolean ret;
     logger.debug("Testcase (" + tname + ")'s ISPI: " + testcase.getIspi() + ", RSPI: " + testcase.getRspi());
     
+    query = null;
+    reply = null;
+
 		try {
 			sleep(50); //50 milliseconds
 		} catch (Exception e) {
@@ -1218,12 +1323,47 @@ public class LogExecutor {
       query = new MessageLog(testcase, MessageLogType.MESSAGE, logger);
       query.setName("enable_vowifi");
     }
-    logger.debug("Sender: " + sender);
-    reply = processResult(testcase, sender);
-    rname = reply.getName();
+    qname = query.getName();
+    if (qname.equals("retest"))
+    {
+      logger.info("qname is retest");
+      pair = new QueryReplyPair(testcase, query, reply, logger);
+    }
+    else if (qname.equals("retransmission"))
+    {
+      logger.info("qname is retransmission");
+      testcase.setIspi(query.getIspi());
+      testcase.setRspi(query.getRspi());
+      pair = null;
+    }
+    else
+    {
+      logger.debug("Reporter: " + reporter);
+      reply = processResult(testcase, reporter);
+      rname = reply.getName();
 
-	  logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
-    pair = new QueryReplyPair(testcase, query, reply, logger);
+      if (rname.equals("retest"))
+      {
+        logger.info("pair is set to null");
+        pair = new QueryReplyPair(testcase, query, reply, logger);
+      } 
+      else if (rname.equals("retransmission"))
+      {
+        testcase.setIspi(reply.getIspi());
+        testcase.setRspi(reply.getRspi());
+        pair = null;
+        //testcase.resetIterator();
+      }
+      else
+      {
+        //logger.debug("Reporter: " + reporter);
+        //reply = processResult(testcase, reporter);
+        //rname = reply.getName();
+
+	      logger.info("##### " + query.getName() + " -> " + reply.getName() + " #####");
+        pair = new QueryReplyPair(testcase, query, reply, logger);
+      }
+    }
     
     logger.debug("FINISH: step()");
 		return pair;

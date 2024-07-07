@@ -7,13 +7,14 @@ import json
 import copy
 
 def check(ldir, ofname):
-    devices = ["{}/{}".format(ldir, d) for d in os.listdir(ldir) if os.path.isdir("{}/{}".format(ldir, d))]
+    devices = ["{}/{}".format(ldir, d) for d in os.listdir(ldir) if os.path.isdir("{}/{}".format(ldir, d)) and d != "__pycache__"]
     of = open(ofname, "w")
     for dev in devices:
         device = dev.split("/")[-1]
         of.write("===== {} =====\n".format(device))
         results = sorted(["{}/{}".format(dev, f) for f in os.listdir(dev) if "swp" not in f])
         for result in results:
+            logging.info("result: {}".format(result))
             with open(result, "r") as f:
                 for line in f:
                     line = line.strip()
@@ -48,7 +49,10 @@ def main():
         logging.error("No directory exists: {}".format(args.log_directory))
         sys.exit(1)
 
-    check(args.log_directory, args.output)
+    ts = int(time.time())
+    ofname = "{}.{}".format(args.output, ts)
+
+    check(args.log_directory, ofname)
 
 if __name__ == "__main__":
     main()

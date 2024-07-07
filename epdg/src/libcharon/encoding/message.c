@@ -1965,6 +1965,7 @@ METHOD(message_t, generate, status_t,
 	encrypted_payload_t *encrypted = NULL;
 	status_t status;
 
+  printf("[VoWiFi] before generate_message() in generate() of message.c\n");
 	status = generate_message(this, keymat, &generator, &encrypted);
 	if (status != SUCCESS)
 	{

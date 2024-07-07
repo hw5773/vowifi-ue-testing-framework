@@ -1,26 +1,32 @@
-# RFC 5996 (page 96): the size of the nonce value MUST be between 16 and 256 octets
+# RFC 5996 (page 75): The security association payload is used to negotiate attributes of a security association. The proposal transforms spcifies the number of transforms in the proposal.
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "sender": "epdg",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "nonce",
+              "name": "security_association",
               "sub": [
                 {
-                  "name": "nonce_length",
-                  "type": "uint16",
-                  "value": VALUE([0, 20, 260, 1000, 65535], [20])
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "num_transforms",
+                      "op": ["update"],
+                      "type": "uint8",
+                      "value": VALUE
+                    }
+                  ]
                 }
               ]
             }

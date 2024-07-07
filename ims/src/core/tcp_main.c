@@ -2006,6 +2006,9 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	long resp;
 	snd_flags_t t_send_flags;
 #endif /* USE_TLS */
+  ///// Added for VoWiFi /////
+  //instance_t *instance;
+  ////////////////////////////
 
 	if(unlikely(dst==NULL)) {
 		LM_ERR("no destination address provided\n");
@@ -2013,76 +2016,21 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	}
 
   ///// Added for VoWiFi /////
-  if (vowifi)
-  {
-    sip_message_t *msg;
-    kvp_t *kvp;
-    //const char *str1 = "0000000000000000000000000000000000000000000=";
-    const char *str1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-    const char *str2 = "5";
-    uint8_t *val, *res;
-    int vlen, rlen;
-    LM_DBG("tcp_send(): sending buffer (%d bytes): %s\n", len, buf);
+  //instance = get_instance();
+  //if (check_instance(instance))
+  //{
+  //  void *res;
+  //  int rlen;
+  //
+  //  res = process_query(buf, len, &rlen);
 
-    /*
-    FILE *fp;
-    fp = fopen("/home/vagrant/tmp.txt", "w");
-    fwrite(buf, 1, len, fp);
-    fclose(fp);
-    LM_INFO("write the file tmp.txt\n");
-    */
-
-    /*
-    msg = init_sip_message((uint8_t *)buf, len);
-    if (is_401_unauthorized_message(msg))
-    {
-      LM_INFO("This SIP message is a 401 unauthorized message\n");
-    }
-    else
-    {
-      LM_INFO("This SIP message is NOT a 401 unauthorized message\n");
-    }
-
-    if (is_200_ok_message(msg))
-    {
-      LM_INFO("This SIP message is a 200 OK message\n");
-    }
-    else
-    {
-      LM_INFO("This SIP message is NOT a 200 OK message\n");
-    }
-    
-    kvp = get_kvp_from_sip_message(msg, (uint8_t *)"WWW-Authenticate", 16, 0);
-    if (is_401_unauthorized_message(msg))
-    {
-      val = (uint8_t *)malloc(strlen(str1));
-      memcpy(val, str1, strlen(str1));
-      vlen = strlen(str1);
-      change_value_from_kvp_by_name(kvp, "nonce", 5, val, vlen);
-      free(val);
-    }
-
-    if (is_200_ok_message(msg))
-    {
-      val = (uint8_t *)malloc(strlen(str2));
-      memcpy(val, str2, strlen(str2));
-      vlen = strlen(str2);
-      change_value_from_kvp_by_idx(kvp, 0, val, vlen);
-      free(val);
-    }
-
-    
-    res = serialize_sip_message(msg, &rlen);
-    LM_INFO("changed message (%d bytes): %.*s\n", rlen, rlen, res);
-
-    buf = (const char *)res;
-    len = rlen;
-    */
-    LM_INFO("to be sent (%d bytes): %.*s\n", len, len, buf);
-    
-    //if (instance)
-    //  LM_INFO("[VoWiFi] want to send the message via a socket: %d\n", instance->asock);
-  }
+  //  if (res)
+  //  {
+  //    buf = (const char *)res;
+  //    len = rlen;
+  //  }
+  //  LM_INFO("to be sent (%d bytes): %.*s\n", len, len, buf);
+  //}
   ////////////////////////////
 
 	port=su_getport(&dst->to);
@@ -4949,35 +4897,38 @@ void tcp_main_loop()
     }
 
     LM_INFO("binding the socket with the associated address (port: %d)\n", DEFAULT_IMS_PORT);
-    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0)
+    if (!bind(sock, (struct sockaddr *)&addr, sizeof(addr)))
     {
-      perror("cannot bind port");
-    }
 
-    LM_INFO("starting the listening\n");
-    if (listen(sock, MAX_CLNT_SIZE) != 0)
+      LM_INFO("starting the listening\n");
+      if (listen(sock, MAX_CLNT_SIZE) != 0)
+      {
+        perror("cannot configure listening port");
+      }
+
+      attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
+      pthread_attr_init(attr);
+      pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
+
+      arg = (arg_t *)calloc(1, sizeof(arg_t));
+      arg->lsock = sock;
+      sender = (pthread_t *)calloc(1, sizeof(pthread_t));
+      listener = (pthread_t *)calloc(1, sizeof(pthread_t));
+
+      arg->sender = sender;
+      arg->attr = attr;
+      arg->io_h = (void *)&io_h;
+
+      LM_INFO("running the listener thread: opened socket: %d\n", sock);
+      rc = pthread_create(listener, attr, listener_run, arg);
+
+      if (rc < 0)
+        perror("error in pthread create");
+    }
+    else
     {
-      perror("cannot configure listening port");
+      perror("cannot bind the address");
     }
-
-    attr = (pthread_attr_t *)calloc(1, sizeof(pthread_attr_t));
-    pthread_attr_init(attr);
-    pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE);
-
-    arg = (arg_t *)calloc(1, sizeof(arg_t));
-    arg->lsock = sock;
-    sender = (pthread_t *)calloc(1, sizeof(pthread_t));
-    listener = (pthread_t *)calloc(1, sizeof(pthread_t));
-
-    arg->sender = sender;
-    arg->attr = attr;
-    arg->io_h = (void *)&io_h;
-
-    LM_INFO("running the listener thread: opened socket: %d\n", sock);
-    rc = pthread_create(listener, attr, listener_run, arg);
-
-    if (rc < 0)
-      perror("error in pthread create");
   }
   ////////////////////////////
 

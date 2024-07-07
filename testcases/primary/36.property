@@ -1,4 +1,4 @@
-# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the nonce value should be specified)
+# RFC 5996 (page 24): The UE should accept the same message id only if the message is retransmitted
 
 {
   "testcases": [
@@ -7,42 +7,22 @@
         { 
           "receiver": "ue", 
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_auth_1_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_2_response",
-          "sender": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_3_response",
-          "sender": "ims"
-        },
-        {
-          "receiver": "ims",
-          "name": "401_unauthorized",
-          "sender": "ims",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "www_authenticate",
-              "sub": [
-                {
-                  "name": "nonce",
-                  "type": "string",
-                  "value": VALUE
-                }
-              ]
+              "name": "message_id",
+              "type": "uint32",
+              "value": VALUE
             }
           ]
         }

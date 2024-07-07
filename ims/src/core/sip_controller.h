@@ -21,6 +21,9 @@
 #define SC_KEY_IDX 0
 #define SC_VALUE_IDX 1
 
+#define SC_SIP_REQUEST 1
+#define SC_SIP_RESPONSE 2
+
 typedef struct sip_message_st sip_message_t;
 typedef struct kvp_st kvp_t;
 typedef struct vlst_st vlst_t;
@@ -53,6 +56,14 @@ struct kvp_st
 
 struct sip_message_st
 {
+  const uint8_t *version;
+  int mtype;
+  uint8_t *mname;
+  int mlen;
+
+  uint8_t *additional;
+  int alen;
+
   int num;
   struct kvp_st *head;
   struct kvp_st *tail;
@@ -63,14 +74,20 @@ sip_message_t *init_sip_message(char *buf, int len);
 void free_sip_message(sip_message_t *message);
 uint8_t *serialize_sip_message(sip_message_t *message, int *len);
 void print_sip_message(sip_message_t *message);
+void process_query(instance_t *instance, sip_message_t *message);
+void report_message(instance_t *instance, sip_message_t *message);
 
 kvp_t *init_kvp(uint8_t *key, int klen, uint8_t *value, int vlen);
 void free_kvp(kvp_t *kvp);
 
+int get_message_type(sip_message_t *message);
+uint8_t *get_message_name(sip_message_t *message, int *mlen);
+int is_register_message(sip_message_t *message);
 int is_401_unauthorized_message(sip_message_t *message);
 int is_200_ok_message(sip_message_t *message);
+uint8_t *get_additional_info(sip_message_t *message, int *alen);
 int get_num_of_kvps_from_sip_message(sip_message_t *message, uint8_t *key, int klen);
-kvp_t *get_kvp_from_sip_message(sip_message_t *message, uint8_t *key, int klen, int idx);
+kvp_t *get_kvp_from_sip_message(sip_message_t *message, const uint8_t *key, int klen, int idx);
 int add_kvp_to_sip_message(sip_message_t *message, kvp_t *kvp, uint8_t *key, int klen, int idx);
 void del_kvp_from_sip_message(sip_message_t *message, uint8_t *key, int klen, int idx);
 
@@ -79,7 +96,7 @@ int get_num_of_values_from_kvp(kvp_t *kvp);
 uint8_t *get_value_from_kvp_by_idx(kvp_t *kvp, int idx, int *vlen);
 uint8_t *get_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen, int *vlen);
 void change_value_from_kvp_by_idx(kvp_t *kvp, int idx, uint8_t *value, int vlen);
-void change_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen, uint8_t *value, int vlen);
+void change_value_from_kvp_by_name(kvp_t *kvp, const uint8_t *attr, int alen, const uint8_t *value, int vlen);
 void del_value_from_kvp_by_idx(kvp_t *kvp, int idx);
 void del_value_from_kvp_by_name(kvp_t *kvp, uint8_t *attr, int alen);
 

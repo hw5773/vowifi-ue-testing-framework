@@ -1,0 +1,53 @@
+# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the protocol can be specified). The values are specified in 3329. If no Protocol parameter is present, the protocol will be ESP by default.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "mod",
+                  "op": ["update", "drop"],
+                  "type": "string",
+                  "value": VALUE(["tun", "trans", "null"], ["trans"])
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

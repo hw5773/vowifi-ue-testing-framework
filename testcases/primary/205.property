@@ -1,0 +1,53 @@
+# RFC3261 Section 10.3: A registrar SHOULD authenticate the UAC (the algorithm should be specified). The values are specified in 3329. If no Encrypt-algorithm parameter is present, encryption is not used.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "ealg",
+                  "op": ["update", "drop"],
+                  "type": "string",
+                  "value": VALUE(["des-ede3-cbc", "null", "aes-cbc"], ["null"])
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

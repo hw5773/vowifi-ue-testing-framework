@@ -1,0 +1,42 @@
+# RFC 5996 11 (page 82): If the initiator guesses wrong (a DH group), the responder will respond with a notify payload of the type INVALID\_KE\_PAYLOAD indicating the selected group. In this case, the initiator MUST retry the IKE\_SA\_INIT with the corrected DH group
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "transform",
+                      "sub": [
+                        {
+                          "name": "diffie_hellman_group",
+                          "type": "uint16",
+                          "value": VALUE([0, 1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 65535], [2])
+                        }
+                      ]             
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

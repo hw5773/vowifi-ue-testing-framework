@@ -30,13 +30,18 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   int ret;
 
   if (!instance) 
+  {
     ret = 0;
+    goto out;
+  }
   else if (!(instance->ispi) && !(instance->rspi))
   {
     if (update)
     {
       instance->ispi = ispi;
       instance->rspi = rspi;
+      instance->imid = -1;
+      instance->rmid = -1;
       ret = 1;
     }
     else
@@ -46,11 +51,21 @@ int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int updat
   }
   else if (instance->ispi == ispi && instance->rspi == rspi)
     ret = 1;
-  else if (instance->ispi == ispi && !rspi)
+  else if (instance->ispi == ispi && (instance->pispi == ispi || !instance->pispi) && !rspi)
+  {
     ret = 1;
+  }
   else
+  {
     ret = 0;
+  }
 
+  if (!rspi)
+  {
+    instance->pispi = instance->ispi;
+  }
+
+out:
   return ret;
 }
 
@@ -415,22 +430,22 @@ query_t *get_next_query(instance_t *instance)
   if (instance->initiated && !instance->finished)
   {
     query = get_query(instance);
-    while (is_query_name(query, instance->sprev))
+    while (!query || is_query_name(query, instance->sprev))
     {
-      printf("[VoWiFi] instance->query->name: %s\n", instance->query->name);
-      printf("[VoWiFi] instance->sprev: %s\n", instance->sprev);
-
       if (instance->finished) 
         break;
+
+      if (query)
+      {
+        printf("[VoWiFi] instance->query->name: %s\n", instance->query->name);
+        printf("[VoWiFi] instance->sprev: %s\n", instance->sprev);
+      }
 
       sleep(1);
       query = get_query(instance);
     }
 
-    if (instance->finished)
-      ret = NULL;
-    else
-      ret = instance->query;
+    ret = query;
   }
 
   return ret;
@@ -544,6 +559,10 @@ int check_drop_next(instance_t *instance, payload_t *next)
   query_t *query;
 
   ret = COMPLETED;
+
+  if (!next)
+    goto out;
+
   type = next->get_type(next);
 
   if ((query = get_query(instance))
@@ -558,11 +577,13 @@ int check_drop_next(instance_t *instance, payload_t *next)
     }
   }
 
+  printf("\n\n\n[VoWiFi] check drop next\n\n\n");
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "key_exchange"))
       && (type == PLV2_KEY_EXCHANGE))
   {
+    printf("\n\n\nkey exchange - drop\n\n\n");
     op = get_query_operator(query);
     if (op == OP_TYPE_DROP)
     {    
@@ -666,6 +687,7 @@ int check_drop_next(instance_t *instance, payload_t *next)
     }
   }
 
+out:
   return ret;
 }
 
@@ -946,10 +968,11 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   algo = (uint16_t *)calloc(1, sizeof(uint16_t));
   klen = (uint16_t *)calloc(1, sizeof(uint16_t));
 
-  // ike_sa_init_response - security_association - transform - encryption_algorithm
+  // ike_sa_init_response - security_association - proposal - transform - encryption_algorithm
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "encryption_algorithm")))
   {
@@ -966,6 +989,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
     if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "encryption_key_length")))
     {
@@ -984,6 +1008,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
   {
@@ -1002,6 +1027,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "pseudo_random_function")))
   {
@@ -1020,6 +1046,7 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
       && (query = get_sub_query_by_name(query, "transform"))
       && (query = get_sub_query_by_name(query, "integrity_algorithm")))
   {
@@ -1032,6 +1059,40 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
       *algo = (uint16_t) char_to_int(tmp, tlen, 10);
     }
     proposal->set_algorithm(proposal, INTEGRITY_ALGORITHM, *algo, *klen);
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
+      && (query = get_sub_query_by_name(query, "proposal_number")))
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT8 && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      v8 = char_to_int(tmp, tlen, 10);
+
+      proposal->set_number(proposal, v8);
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "security_association"))
+      && (query = get_sub_query_by_name(query, "proposal"))
+      && (query = get_sub_query_by_name(query, "spi")))
+  {
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+    if (vtype == VAL_TYPE_UINT64H && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+      v64 = char_to_int(tmp, tlen, 16);
+
+      proposal->set_spi(proposal, v64);
+    }
   }
 
   free(algo);
@@ -1072,7 +1133,6 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
           if (tlen >= 8
               && !strncmp(tmp, "received", 8))
           {
-            printf("\n\n\n[VoWiFi] rcvd_dst_hash: %B\n\n\n", &(instance->rcvd_dst_hash));
             notify->set_notification_data(notify, instance->rcvd_dst_hash); 
           }
           else if (tlen >= 20)
@@ -1104,8 +1164,6 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
           if (tlen >= 8
               && !strncmp(tmp, "received", 8))
           {
-            
-            printf("\n\n\n[VoWiFi] rcvd_src_hash: %B\n\n\n", &(instance->rcvd_src_hash));
             notify->set_notification_data(notify, instance->rcvd_src_hash); 
           }
           else if (tlen >= 20)
@@ -1396,6 +1454,45 @@ int process_identification_responder(instance_t *instance, ike_sa_id_t *ike_sa_i
   return ret;
 }
 
+int check_exceptional_case(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_t *notify)
+{
+  int i, ret;
+  query_t *query;
+  const uint8_t *mname;
+  const uint8_t *messages[5] =
+  {
+    "ike_sa_init_response",
+    "ike_auth_1_response",
+    "ike_auth_2_response",
+    "ike_auth_3_response",
+    "ike_auth_4_response",
+  };
+
+  ret = FALSE;
+
+  printf("\n\n\n[VoWiFi] in check_exceptional_case()\n");
+  switch (notify->get_notify_type(notify))
+  {
+    case AUTHENTICATION_FAILED:
+      for (i=0; i<5; i++)
+      {
+        if ((query = get_query(instance)) 
+            && is_query_name(query, mname)
+            && (query = get_sub_query_by_name(query, "authentication_failed")))
+        {
+          ret = TRUE;
+          break;
+        }
+      }
+      printf("[VoWiFi] Authentication failed: %d\n", ret);
+      break;
+    default:
+      ret = FALSE;
+  }
+
+  return ret;
+}
+
 int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_id, eap_payload_t *eap)
 {
   int ret;
@@ -1418,9 +1515,13 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
   mname = NULL;
 
 
+  printf("[VoWiFi] in process_extensible_authentication()\n");
+  query = get_query(instance);
+  print_query(query);
   for (idx=0; idx<2; idx++)
   {
     mname = messages[idx];
+    printf("[VoWiFi] mname: %s\n", mname);
     // ike_auth_1_response/ike_auth_2_response - extensible_authentication - code
     if ((query = get_query(instance))
         && is_query_name(query, mname)
@@ -1655,6 +1756,7 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
         && (query = get_sub_query_by_name(query, "at_mac")))
 
     {
+      printf("\n\n\n\n\n[VoWiFi] extensible_authentication / eap_aka_attribute / at_mac\n\n\n\n\n");
       payload = eap->get_data(eap);
       vtype = get_query_value_type(query);
       op = get_query_operator(query);
@@ -1686,8 +1788,10 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
 
       if (plen > 0)
       {
+        printf("[VoWiFi] ike_auth_1_response / extensible_authentication / eap_aka_attribute / at_mac - value update\n");
         if (vtype == VAL_TYPE_STRING && op == OP_TYPE_UPDATE)
         {
+          printf("[VoWiFi] minimum value is going to be assigned\n");
           if (tlen >= 3 && !strncmp(tmp, "min", 3))
           {
             for (i=2; i<abytes; i++)
@@ -1832,6 +1936,7 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   notify_payload_t *notify;
   id_payload_t *id;
   eap_payload_t *eap;
+  sa_payload_t *sa;
 
   ret = NOT_SET;
   ike_header = NULL;
@@ -1843,34 +1948,51 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
     goto out;
   }
 
+  printf("[VoWiFi] in process_query(): %p\n", payload);
+
   switch (payload->get_type(payload))
   {
     case PL_HEADER:
+      printf("[VoWiFi] before process_ike_header()\n");
       ike_header = (ike_header_t *)payload;
       ret = process_ike_header(instance, ike_sa_id, ike_header);
       break;
 
     case PLV2_KEY_EXCHANGE:
+      printf("[VoWiFi] before process_key_exchange()\n");
       ke = (ke_payload_t *)payload;
       ret = process_key_exchange(instance, ike_sa_id, ke);
       break;
 
     case PLV2_NONCE:
+      printf("[VoWiFi] before process_nonce()\n");
       np = (nonce_payload_t *)payload;
       ret = process_nonce(instance, ike_sa_id, np);
       break;
 
     case PLV2_NOTIFY:
+      printf("[VoWiFi] before process_notify()\n");
       notify = (notify_payload_t *)payload;
-      ret = process_notify(instance, ike_sa_id, notify);
+
+      if (!check_exceptional_case(instance, ike_sa_id, notify))
+      {
+        ret = process_notify(instance, ike_sa_id, notify);
+      }
+      else
+      {
+        // TODO: need to assign an appropriate value below
+        ret = COMPLETED; 
+      }
       break;
 
     case PLV2_ID_RESPONDER:
+      printf("[VoWiFi] before process_identification_responder()\n");
       id = (id_payload_t *)payload;
       ret = process_identification_responder(instance, ike_sa_id, id);
       break;
 
     case PLV2_EAP:
+      printf("[VoWiFi] before process_extensible_authentication()\n");
       eap = (eap_payload_t *)payload;
       ret = process_extensible_authentication(instance, ike_sa_id, eap);
       break;

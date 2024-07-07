@@ -1,29 +1,25 @@
-# RFC 4187 (page 49): In EAP-Request/AKA-Challenge delivered by the first IKE AUTH message, AT_AUTN MUST be included
+# TBA
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication",
+              "name": "notify",
               "sub": [
                 {
-                  "name": "at_autn",
+                  "name": "childless_ikev2_supported",
+                  "op": ["insert", "drop"],
                   "type": "string",
                   "value": VALUE
                 }

@@ -1,33 +1,24 @@
-# RFC5996 6 (page 81): The IKE_SA_INIT response message should include an encryption algorithm that is supported by the peer
+# RFC 5996: Implementations based on this version of IKE MUST set the minor version to 0. They MUST ignore the minor version number of received messages. (the functional oracle should be positive)
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "sender": "epdg",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "transform",
-                  "sub": [
-                    {
-                      "name": "encryption_algorithm",
-                      "type": "uint16",
-                      "value": VALUE([0, 3, 6, 7, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 65535], [12])
-                    }
-                  ]
-                }
-              ]
+              "name": "ike_minor_version",
+              "op": ["update"],
+              "type": "uint8",
+              "value": VALUE([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], [0])
             }
           ]
         }

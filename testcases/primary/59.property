@@ -1,0 +1,38 @@
+# TS: The Responder Identifier (IDr) will be in ID_FQDN form.
+
+{
+  "testcases": [
+    {
+      "testcase": [
+        { 
+          "receiver": "ue", 
+          "name": "enable_vowifi",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "identification_responder",
+              "sub": [
+                {
+                  "name": "id_type",
+                  "op": ["update"],
+                  "type": "uint8",
+                  "value": VALUE
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

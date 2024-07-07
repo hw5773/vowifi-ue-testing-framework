@@ -1,4 +1,4 @@
-# TS 33.402 (page 35, figure): The IKE_AUTH response message includes the EAP-Request/AKA-Challenge message to start the EAP procedure over IKEv2
+# RFC 5996 (page 96): the IKE_SA_INIT response MUST contain the correct nonce value
 
 {
   "testcases": [
@@ -7,20 +7,23 @@
         { 
           "receiver": "ue", 
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication"
+              "name": "nonce",
+              "sub": [
+                {
+                  "name": "nonce_data",
+                  "op": ["update", "drop"],
+                  "type": "string",
+                  "value": VALUE
+                }
+              ]
             }
           ]
         }

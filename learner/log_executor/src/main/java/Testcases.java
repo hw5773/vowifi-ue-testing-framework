@@ -80,7 +80,7 @@ class Testcase {
   private JSONObject orig;
   private String name;
   private String receiver;
-  private String sender;
+  private String reporter;
   private String id = null;
   private String op = null;
   private String value = null;
@@ -101,7 +101,7 @@ class Testcase {
     this.logger = logger;
 
     this.receiver = (String) testcase.get("receiver");
-    this.sender = (String) testcase.get("sender");
+    this.reporter = (String) testcase.get("reporter");
     this.name = (String) testcase.get("name");
     this.id = (String) testcase.get("id");
 
@@ -193,6 +193,29 @@ class Testcase {
     return this.type;
   }
 
+  void resetIterator() {
+    if (this.sub != null)
+      this.iter = this.sub.iterator();
+    /*
+    JSONObject testcase = this.orig;
+    JSONArray testcaseArr = (JSONArray) testcase.get("sub");
+    if (testcaseArr != null) {
+      Iterator i = testcaseArr.iterator();
+      Testcase tmp;
+
+      while (i.hasNext()) {
+        if (this.sub == null)
+          this.sub = new ArrayList<>();
+
+        JSONObject subtestcase = (JSONObject) i.next();
+        this.sub.add(new Testcase(subtestcase, this, this.logger));
+      }
+
+      this.iter = this.sub.iterator();
+    }
+    */
+  }
+
   void setTestcaseType(TestcaseType type) {
     this.type = type;
   }
@@ -213,12 +236,12 @@ class Testcase {
     this.receiver = receiver;
   }
 
-  String getReplySender() {
-    return this.sender;
+  String getReplyReporter() {
+    return this.reporter;
   }
 
-  void setReplySender(String sender) {
-    this.sender = sender;
+  void setReplyReporter(String reporter) {
+    this.reporter = reporter;
   }
 
   boolean hasID() {

@@ -1,4 +1,14 @@
+===== OnePlus7T =====
+===============
+===== SM_A21 =====
+/home/hyun/vowifi-log/SM_A21/result.substitution-ike_sa_init_response--unsupported_critical_payload-1.1.1717369334003: Functional Oracle: positive
+===============
 ===== SM_G920T =====
+/home/hyun/vowifi-log/SM_G920T/result.init-invalid-flags.3.1716539947184: Functional Oracle: positive
+/home/hyun/vowifi-log/SM_G920T/result.init-modify-responder-spi.1.1713338223901: Functional Oracle: positive
+===============
+===== OnePlus9R =====
+/home/hyun/vowifi-log/OnePlus9R/result.3-1.1.1697626069626: Liveness Oracle: positive (eap-aka client error)
 ===============
 ===== SOV41 =====
 /home/hyun/vowifi-log/SOV41/result.init-dh-group--1.122.1694258235481: Liveness Oracle: positive (eap-aka client error)
@@ -215,5 +225,68 @@
 /home/hyun/vowifi-log/SOV41/result.init-prf-6.66.1694250337119: Liveness Oracle: positive (eap-aka client error)
 /home/hyun/vowifi-log/SOV41/result.init-prf-8.68.1694250607079: Liveness Oracle: positive (eap-aka client error)
 ===============
+===== OnePlusN20 =====
+/home/hyun/vowifi-log/OnePlusN20/result.init-drop-nonce-drop-kex.3.1695150087268: Functional Oracle: positive
+/home/hyun/vowifi-log/OnePlusN20/result.init-drop-nonce.1.1695149918467: Functional Oracle: positive
+===============
 ===== A13_Pro =====
+===============
+===== others =====
+===============
+===== HTC_U11 =====
+/home/hyun/vowifi-log/HTC_U11/result.init-dh-group-5.124.1695208259919: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-dh-group-5.124.1695208259919: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.145.1695213478096: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.145.1695213478096: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.148.1695214094470: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-enc-algo.148.1695214094470: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-int-algo.146.1695213732299: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-int-algo.146.1695213732299: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-nonce-drop-kex.3.1695156031276: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-drop-nonce.1.1695155600531: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-enc-algo-15-key-192.49.1695169053789: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-enc-algo-21-key-128.36.1695166170828: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group--1.100.1695203704970: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group--1.100.1695203704970: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-15.104.1695204672979: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-15.104.1695204672979: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-16.105.1695204841467: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-16.105.1695204841467: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-17.106.1695205014270: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-17.106.1695205014270: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-18.107.1695205189351: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-18.107.1695205189351: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-19.108.1695205363131: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-19.108.1695205363131: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-20.109.1695205536003: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-20.109.1695205536003: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-21.110.1695205708762: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-21.110.1695205708762: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-22.111.1695205883091: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-22.111.1695205883091: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-23.112.1695206057343: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-23.112.1695206057343: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-24.113.1695206230245: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-24.113.1695206230245: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-25.114.1695206402546: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-25.114.1695206402546: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-26.115.1695206569081: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-26.115.1695206569081: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-27.116.1695206743180: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-27.116.1695206743180: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-28.117.1695206917264: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-28.117.1695206917264: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-29.118.1695207094191: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-29.118.1695207094191: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-30.119.1695207266941: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-30.119.1695207266941: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-31.120.1695207438561: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-31.120.1695207438561: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-32.121.1695207613817: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-32.121.1695207613817: Liveness Oracle: positive (not sending IKE_SA_INIT)
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-5.102.1695204200660: Functional Oracle: positive
+/home/hyun/vowifi-log/HTC_U11/result.init-invalid-ke-dh-group-5.102.1695204200660: Liveness Oracle: positive (not sending IKE_SA_INIT)
+===============
+===== TCL40XL =====
+/home/hyun/vowifi-log/TCL40XL/result.31-1.1.1700153836752: Liveness Oracle: positive (not sending IKE_SA_INIT)
 ===============

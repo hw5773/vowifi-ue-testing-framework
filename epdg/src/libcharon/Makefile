@@ -661,8 +661,8 @@ am_libcharon_la_OBJECTS = attributes/attributes.lo \
 	processing/jobs/initiate_tasks_job.lo sa/eap/eap_method.lo \
 	sa/eap/eap_manager.lo sa/xauth/xauth_method.lo \
 	sa/xauth/xauth_manager.lo sa/authenticator.lo sa/child_sa.lo \
-	sa/ike_sa_instance.lo sa/child_sa_manager.lo \
 	sa/ike_sa.lo sa/ike_sa_id.lo sa/keymat.lo sa/ike_sa_manager.lo \
+	sa/ike_sa_instance.lo sa/child_sa_manager.lo \
 	sa/task_manager.lo sa/shunt_manager.lo sa/trap_manager.lo \
 	sa/redirect_manager.lo sa/task.lo $(am__objects_1) \
 	$(am__objects_2) $(am__objects_3) $(am__objects_4)
@@ -969,7 +969,7 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LCOV = 
-LD = /usr/local/bin/ld -m elf_x86_64
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LEX = flex
 LEXLIB = -lfl
@@ -987,7 +987,7 @@ MKDIR_P = /usr/bin/mkdir -p
 MYSQLCFLAG = 
 MYSQLCONFIG = 
 MYSQLLIB = 
-NM = /usr/local/bin/nm -B
+NM = /usr/bin/nm -B
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -1018,7 +1018,7 @@ PYTHON_EXEC_PREFIX = ${exec_prefix}
 PYTHON_PACKAGE_VERSION = 
 PYTHON_PLATFORM = linux
 PYTHON_PREFIX = ${prefix}
-PYTHON_VERSION = 3.8
+PYTHON_VERSION = 3.9
 PY_TEST = 
 RANLIB = ranlib
 RTLIB = 
@@ -1120,8 +1120,8 @@ pool_plugins =
 prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
-pyexecdir = ${exec_prefix}/lib/python3.8/site-packages
-pythondir = ${prefix}/lib/python3.8/site-packages
+pyexecdir = ${exec_prefix}/lib/python3.9/site-packages
+pythondir = ${prefix}/lib/python3.9/site-packages
 random_device = /dev/random
 resolv_conf = ${prefix}/etc/resolv.conf
 routing_table = 220
@@ -1704,8 +1704,8 @@ sa/child_sa.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/ike_sa.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/ike_sa_id.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/keymat.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
-sa/ike_sa_instance.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/ike_sa_manager.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
+sa/ike_sa_instance.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)
 sa/child_sa_manager.lo: sa/$(am__dirstamp) \
 	sa/$(DEPDIR)/$(am__dirstamp)
 sa/task_manager.lo: sa/$(am__dirstamp) sa/$(DEPDIR)/$(am__dirstamp)

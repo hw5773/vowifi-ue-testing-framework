@@ -1,23 +1,24 @@
-# RFC 5996 (page 10, figure): the IKE_SA_INIT response MUST contain the correct message ID
+# RFC 4718: Normal IKE messages include the initiator's and responder's Security Parameter Indexes (SPIs), both of which are non-zero, int he IKE header.
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "sender": "epdg",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "message_id",
-              "type": "uint32",
-              "value": VALUE([0, 512, 1024], [0])
+              "name": "responder_spi",
+              "op": ["update"],
+              "type": "uint64h",
+              "value": VALUE
             }
           ]
         }

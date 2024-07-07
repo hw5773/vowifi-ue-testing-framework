@@ -209,6 +209,7 @@
     - `sudo apt-get install mysql-client mysql-server`
     - `sudo mysql`
     - `alter user 'root'@'localhost' identified with mysql_native_password by '<password>';`
+    - `quit;`
 
   - [Guest] IMS Server Installation and Configuration
     - S/W: Kamailio

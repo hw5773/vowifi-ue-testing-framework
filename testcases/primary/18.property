@@ -1,29 +1,37 @@
-# Conformance Testing: with a UE has transmitted an IKE_SA_INIT Request message addressed to the ePDG to initiate security association establishment, ensure that when a UE receives an IKE_SA_INIT Response message, then a UE transmits an IKE_AUTH Request message containing the configuration payload to request IP addresses for a UE and for a P-CSCF
+# RFC 5996 8: (page 81): The IKE_SA_INIT response message should include an integrity algorithm that is supported by the peer
 
 {
   "testcases": [
     {
       "testcase": [
-        { 
-          "receiver": "ue", 
+        {
+          "receiver": "ue",
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
-        { 
-          "receiver": "epdg", 
+        {
+          "receiver": "epdg",
           "name": "ike_sa_init_response",
-          "sender": "epdg"
-        },
-        { 
-          "receiver": "epdg", 
-          "name": "ike_auth_1_response",
-          "sender": "epdg",
+          "reporter": "epdg",
           "sub": [
             {
-              "name": "configuration",
+              "name": "security_association",
               "sub": [
                 {
-                  "name": "internal_ip6_address"
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "transform",
+                      "sub": [
+                        {
+                          "name": "integrity_algorithm",
+                          "op": ["update"],
+                          "type": "uint16",
+                          "value": VALUE([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1025, 1026, 1027, 1028, 1029, 1030, 65535], [2])
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }

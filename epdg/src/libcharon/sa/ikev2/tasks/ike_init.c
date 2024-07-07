@@ -563,6 +563,7 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
   uint16_t *algo, *klen;
   bool found;
 
+  printf("[VoWiFi] send security association\n");
   msg = init_message(instance, MSG_TYPE_BLOCK_START,
       "security_association", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
   instance->add_message_to_send_queue(instance, msg);
@@ -818,12 +819,14 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
       free(klen);
     }
 
+    printf("\n\n\n[VoWiFi] block end 5\n\n\n");
     msg = init_message(instance, MSG_TYPE_BLOCK_END,
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
   }
   enumerator->destroy(enumerator);
 
+  printf("\n\n\n[VoWiFi] block end 6\n\n\n");
   msg = init_message(instance, MSG_TYPE_BLOCK_END,
       NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
   instance->add_message_to_send_queue(instance, msg);
@@ -1133,6 +1136,16 @@ METHOD(task_t, build_r, status_t,
 	private_ike_init_t *this, message_t *message)
 {
 	identification_t *gateway;
+  ///// Added for VoWiFi /////
+  instance_t *instance;
+  ike_sa_id_t *id;
+  uint64_t ispi, rspi;
+
+  instance = message->get_instance(message);
+  id = message->get_ike_sa_id(message);
+  ispi = id->get_initiator_spi(id);
+  rspi = id->get_responder_spi(id);
+  ////////////////////////////
 
 	/* check if we have everything we need */
 	if (this->proposal == NULL ||
@@ -1174,11 +1187,23 @@ METHOD(task_t, build_r, status_t,
 			group = htons(group);
 			message->add_notify(message, FALSE, INVALID_KE_PAYLOAD,
 								chunk_from_thing(group));
+
+      if (check_instance(instance, ispi, rspi, NON_UPDATE))
+      {
+        printf("[VoWiFi] invalid ke payload\n");
+        instance->invalid_ke_payload = 1;
+      }
 		}
 		else
 		{
 			DBG1(DBG_IKE, "no acceptable proposal found");
 			message->add_notify(message, TRUE, NO_PROPOSAL_CHOSEN, chunk_empty);
+
+      if (check_instance(instance, ispi, rspi, NON_UPDATE))
+      {
+        printf("[VoWiFi] no proposal chosen\n");
+        instance->no_proposal_chosen = 1;
+      }
 		}
 		return FAILED;
 	}

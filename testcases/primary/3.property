@@ -1,4 +1,4 @@
-# Conformance Testing: with a UE has transmitted an IKE_SA_INIT Request message addressed to the ePDG to initiate security association establishmemt, when a UE should receive an IKE_SA_INIT response message
+# RFC 5996 1 (page 5): All IKE_SA_INIT exchanges MUST complete before any other exchange type, then all IKE_AUTH exchanges MUST complete
 
 {
   "testcases": [
@@ -7,12 +7,23 @@
         { 
           "receiver": "ue", 
           "name": "enable_vowifi",
-          "sender": "epdg"
+          "reporter": "epdg"
         },
         { 
           "receiver": "epdg", 
           "name": "ike_sa_init_response",
-          "sender": "epdg"
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        { 
+          "receiver": "epdg", 
+          "name": "ike_auth_2_response",
+          "op": ["update"],
+          "reporter": "epdg"
         }
       ]
     }

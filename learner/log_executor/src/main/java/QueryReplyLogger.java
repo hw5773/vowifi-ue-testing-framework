@@ -91,6 +91,10 @@ class QueryReplyLogger {
     } else if (r2result == 2) {
       writer.write("  Liveness Oracle: positive (eap-aka client error)\n");
     }
+
+    writer.write("Elapsed Time: ");
+    tmp = plst.get(0);
+    writer.write(tmp.getDuration() + " ms");
     writer.close();
   }
 
@@ -137,12 +141,14 @@ class QueryReplyPair {
   private MessageLog reply;
   static Log logger;
   private int deviated;
+  private long duration;
 
   QueryReplyPair(Testcase testcase, MessageLog query, MessageLog reply, Log logger) {
     setLogger(logger);
     this.testcase = testcase;
     this.query = query;
     this.reply = reply;
+    this.duration = -1;
   }
 
   QueryReplyPair(Testcase testcase, MessageLog query, MessageLog reply) {
@@ -158,10 +164,14 @@ class QueryReplyPair {
   }
 
   public String getQueryName() {
+    if (this.query == null)
+      return null;
     return this.query.getName();
   }
 
   public String getReplyName() {
+    if (this.reply == null)
+      return null;
     return this.reply.getName();
   }
 
@@ -175,6 +185,14 @@ class QueryReplyPair {
 
   public void setLogger(Log logger) {
     this.logger = logger;
+  }
+
+  public void setDuration(long duration) {
+    this.duration = duration;
+  }
+
+  public long getDuration() {
+    return this.duration;
   }
 }
 
@@ -211,8 +229,38 @@ class MessageLog {
     this(testcase, type, null, null);
   }
 
+  void printMessageLog(int indent) {
+    String msg;
+    MessageLog tmp;
+    Iterator<MessageLog> iter;
+    logger = this.logger;
+    msg = "";
+
+    for (int i=0; i<indent; i++)
+      msg += " ";
+
+    msg += this.name;
+    logger.info(msg);
+
+    if (this.sub != null) {
+      indent += 2;
+      iter = this.sub.iterator();
+      while (iter.hasNext()) {
+        tmp = iter.next();
+        tmp.printMessageLog(indent);
+      }
+    }
+  }
+
   public MessageLog addSubmessage(MessageLogType type) {
     MessageLog ret;
+    ret = new MessageLog(this.testcase, type, this, this.logger);
+    if (this.sub == null) {
+      this.sub = new ArrayList<MessageLog>();
+    }
+    this.sub.add(ret);
+
+    /*
     if (this.type == MessageLogType.ATTRIBUTE) {
       ret = new MessageLog(this.testcase, type, this.getParent(), this.logger);
       this.getParent().sub.add(ret);
@@ -223,6 +271,8 @@ class MessageLog {
       }
       this.sub.add(ret);
     }
+    */
+
     return ret;
   }
 

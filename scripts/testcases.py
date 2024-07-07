@@ -8,7 +8,12 @@ class Testcases:
         self.possible_values = {}
         self.correct_values = {}
         self.pnum = int(fname.split("/")[-1].split(".")[0])
+        self.state = None
+        self.message = None
         target = None
+        names = []
+        self.id = None
+        messages = ["enable_vowifi", "ike_sa_init_response", "ike_auth_1_response", "ike_auth_2_response", "ike_auth_3_response", "401_unauthorized", "200_ok"]
 
         with open(fname, "r") as f:
             js = ""
@@ -32,6 +37,7 @@ class Testcases:
                         target = target[1:]
                     if target[-1] == '\"':
                         target = target[:-1]
+                    names.append(target)
 
                 if "VALUE" in line:
                     if line[-1] == ',':
@@ -48,14 +54,20 @@ class Testcases:
                         args = values[values.index("(")+1 : values.index(")")]
                         pvals = args[args.index("[")+1 : args.index("]")].split(",")
                         for v in pvals:
-                            possible_values.add(int(v))
+                            try:
+                                possible_values.add(int(v))
+                            except:
+                                possible_values.add(v)
                         self.possible_values[target] = possible_values
 
                         tmp = args[args.index("]")+1:].strip()
                         if len(tmp) > 0:
                             cvals = tmp[tmp.index("[")+1 : tmp.index("]")].split(",")
                             for v in cvals:
-                                correct_values.add(int(v))
+                                try:
+                                    correct_values.add(int(v))
+                                except:
+                                    correct_values.add(v)
                         else:
                             cvals = []
                     else:
@@ -77,8 +89,27 @@ class Testcases:
 
             self.default_object = json.loads(js)
 
+            tmp = []
+            for name in names:
+                if name in messages:
+                    self.message = name
+                else:
+                    name = name.strip()
+                    if len(name) > 0:
+                        tmp.append(name)
+            if len(tmp) > 0:
+                self.id = "{}-{}".format(self.message, '-'.join(tmp))
+            else:
+                self.id = self.message
+
     def get_filename(self):
         return self.fname
+
+    def get_id(self):
+        return self.id
+
+    def get_message_name(self):
+        return self.message
 
     def get_default_object(self):
         return self.default_object

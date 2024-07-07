@@ -59,7 +59,7 @@ public class Oracle {
     String query, reply;
     Iterator i;
 
-    ret = 1;
+    ret = 0;
 
     i = pairs.iterator();
 
@@ -69,11 +69,38 @@ public class Oracle {
       reply = pair.getReplyName();
 
       if (query.contains("enable_vowifi")
-          && reply.contains("ike_sa_init_request"))
-        ret = 0;
+          && !reply.contains("ike_sa_init_request"))
+        ret = 1;
+
+      if (query.contains("ike_sa_init_response")
+          && !reply.contains("ike_auth_1_request"))
+        ret = 1;
+
+      if (query.contains("ike_auth_1_response")
+          && !reply.contains("ike_auth_2_request"))
+        ret = 1;
+
+      if (query.contains("ike_auth_2_response")
+          && !reply.contains("ike_auth_3_request"))
+        ret = 1;
+
+      if (query.contains("ike_auth_3_response")
+          && !reply.contains("register_1"))
+        ret = 1;
+
+      if (query.contains("401_unauthorized")
+          && !reply.contains("register_2"))
+        ret = 1;
+
+      if (query.contains("200_ok")
+          && !reply.contains("done"))
+        ret = 1;
 
       if (reply.contains("client_error"))
+      {
         ret = 2;
+        break;
+      }
     }
 
     return ret;
@@ -100,11 +127,15 @@ public class Oracle {
       ret = false;
 
     if (query.contains("ike_auth_3_response")
-        && !reply.contains("ike_auth_4_request"))
+        && !reply.contains("register_1"))
       ret = false;
 
-    if (query.contains("ike_auth_4_response")
-        && !reply.contains("register"))
+    if (query.contains("401_unauthorized")
+        && !reply.contains("register_2"))
+      ret = false;
+
+    if (query.contains("200_ok")
+        && !reply.contains("done"))
       ret = false;
 
     return ret;
