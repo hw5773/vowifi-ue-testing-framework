@@ -286,6 +286,37 @@ def handle_init_config(device):
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
             time.sleep(3)
         logging.debug("Finish toggling the WiFi Calling button")
+    
+    elif device == "Note_14":
+        logging.debug("Menu to unlock the phone")
+         cmd = ["adb", "shell", "input", "keyevent", "82"]
+         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+         time.sleep(3)
+
+         logging.debug("Enabling swipe")
+         cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
+         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+         time.sleep(3)
+         logging.debug("Enabled Swipe")
+
+         logging.debug("Enabling wifi")
+         cmd = ["adb", "shell", "svc", "wifi", "enable"]
+         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+         time.sleep(4)
+         logging.debug("Enabled wifi")
+
+         logging.debug ("Enable WiFi Calling")
+         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+         result = subprocess.run(cmd, stdout=subprocess.PIPE)
+         time.sleep(3)
+         logging.debug("Enabled Wifi Calling")
+
+         logging.debug("Toggle the WiFi Calling button")
+         for _ in range(3):
+             cmd = ["adb", "shell", "input", "keyevent", "23"]
+             result = subprocess.run(cmd, stdout=subprocess.PIPE)
+             time.sleep(3)
+         logging.debug("Finish toggling the WiFi Calling button")
 
     elif device == "TCL40XL":
         logging.debug("Menu to unlock the phone")
@@ -358,7 +389,7 @@ def handle_client_connection(client, server, device):
             opcode = ""
             while not opcode.endswith("\n"):
                 rcvd = client.recv(1)
-                opcode += rcvd.decode()
+       Note_14         opcode += rcvd.decode()
             opcode = opcode.strip()
             logging.info("Received opcode: {}".format(opcode))
 
@@ -382,7 +413,7 @@ def handle_client_connection(client, server, device):
             elif opcode == "wifi_off":
                 handle_turn_off_wifi_interface(device)
                 client.send(ACK)
-            elif opcode == "wifi_on":
+Note_14            elif opcode == "wifi_on":
                 handle_turn_on_wifi_interface(device)
                 client.send(ACK)
             else:
