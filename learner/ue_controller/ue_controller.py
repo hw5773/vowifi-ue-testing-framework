@@ -399,7 +399,9 @@ def handle_client_connection(client, server, device):
                 handle_adb_server_restart(client)
             elif opcode == "wifi_off":
                 handle_turn_off_wifi_interface(device)
+                logging.info("before send ACK to VWAttacker")
                 client.send(ACK)
+                logging.info("after send ACK to VWAttacker")
             elif opcode == "wifi_on":
                 handle_turn_on_wifi_interface(device)
                 client.send(ACK)

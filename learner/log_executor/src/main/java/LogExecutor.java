@@ -46,7 +46,7 @@ public class LogExecutor {
   private static final int COOLING_TIME = 1*1000;
   private static final int LIVENESS_SLEEP_TIME = 5*1000;
   private static final int TESTCASE_SLEEP_TIME = 3*1000;
-  private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 20*1000; 
+  private static final int DEFAULT_SOCKET_TIMEOUT_VALUE = 30*1000; 
   //private static final int EPDG_SOCKET_TIMEOUT_VALUE = 15*1000; 
   private static final int EPDG_SOCKET_TIMEOUT_VALUE = 30*1000; 
   //private static final int IMS_SOCKET_TIMEOUT_VALUE = 15*1000; 
@@ -64,7 +64,7 @@ public class LogExecutor {
 
     initUEConnection();
     initEPDGConnection();
-    //initIMSConnection();
+    initIMSConnection();
   }
 
   public static void main(String[] args) throws Exception {
@@ -1329,13 +1329,6 @@ public class LogExecutor {
       logger.info("qname is retest");
       pair = new QueryReplyPair(testcase, query, reply, logger);
     }
-    else if (qname.equals("retransmission"))
-    {
-      logger.info("qname is retransmission");
-      testcase.setIspi(query.getIspi());
-      testcase.setRspi(query.getRspi());
-      pair = null;
-    }
     else
     {
       logger.debug("Reporter: " + reporter);
@@ -1344,10 +1337,9 @@ public class LogExecutor {
 
       if (rname.equals("retest"))
       {
-        logger.info("pair is set to null");
         pair = new QueryReplyPair(testcase, query, reply, logger);
       } 
-      else if (rname.equals("retransmission"))
+      else if (qname.equals("retransmission") || rname.equals("retransmission"))
       {
         testcase.setIspi(reply.getIspi());
         testcase.setRspi(reply.getRspi());
