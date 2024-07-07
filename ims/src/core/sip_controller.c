@@ -60,7 +60,9 @@ void parse_sip_first_line(sip_message_t *sip, uint8_t *line)
         }
         memset(sip->mname, 0, tlen + 1);
         memcpy(sip->mname, tok, tlen);
+        LM_ERR("[VoWiFi] before to_lower(): %s\n", sip->mname);
         to_lower(sip->mname);
+        LM_ERR("[VoWiFi] after to_lower(): %s\n", sip->mname);
         sip->mlen = tlen;
       }
       break;
@@ -111,6 +113,7 @@ void parse_sip_first_line(sip_message_t *sip, uint8_t *line)
     }
     memset(sip->mname, 0, tlen + 1);
     memcpy(sip->mname, tok, tlen);
+    to_lower(sip->mname);
     sip->mlen = tlen;
   }
 }
@@ -650,7 +653,7 @@ out:
 int is_register_message(sip_message_t *message)
 {
   assert(message != NULL);
-  const char *reg = "REGISTER";
+  const char *reg = "register";
   int ret;
 
   ret = SC_FALSE;
@@ -717,6 +720,7 @@ kvp_t *get_kvp_from_sip_message(sip_message_t *message, const uint8_t *key, int 
 
   while (curr)
   {
+    LM_ERR("curr->key: %.*s, key: %.*s\n", curr->klen, curr->key, klen, key);
     if (curr->klen == klen
         && !strncmp((const char *)(curr->key), (const char *)key, curr->klen))
     {
@@ -1120,15 +1124,20 @@ void process_query(instance_t *instance, sip_message_t *sip)
     key = "WWW-Authenticate";
     attr = "algorithm";
     kvp = get_kvp_from_sip_message(sip, key, strlen(key), 0);
+    LM_ERR("kvp: %p\n", kvp);
     vtype = get_query_value_type(query);
+    LM_ERR("vtype: %d\n", vtype);
     op = get_query_operator(query);
+    LM_ERR("op: %d\n", op);
 
     if ((vtype == VAL_TYPE_STRING) && op == OP_TYPE_UPDATE)
     {
       tmp = get_query_value(query, &tlen);
+      LM_ERR("tmp: %.*s\n", tlen, tmp);
 
       if (strstr(tmp, "AKAv1"))
       {
+        LM_ERR("here in strstr(tmp, AKAv1)");
         if (strstr(tmp, "sess"))
         {
           val = "AKAv1-MD5-sess";
@@ -1148,6 +1157,7 @@ void process_query(instance_t *instance, sip_message_t *sip)
       }
       else
       {
+        LM_ERR("here in not strstr(tmp, AKAv1)");
         if (strstr(tmp, "SHA-256"))
         {
           val = "SHA-256";
@@ -1162,12 +1172,14 @@ void process_query(instance_t *instance, sip_message_t *sip)
         }
       }
 
+      LM_ERR("[VoWiFi] before change_value_from_kvp_by_name(): kvp: %p, attr: %s, strlen(attr): %lu, val: %s, strlen(val): %lu\n", kvp, attr, strlen(attr), val, strlen(val));
       change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
     }
     else if (op == OP_TYPE_DROP)
     {
       del_value_from_kvp_by_name(kvp, attr, strlen(attr));
     }
+    LM_ERR("[VoWiFi] after change_value_from_kvp_by_name(): attr: %s, strlen(attr): %lu, val: %s, strlen(val): %lu\n", attr, strlen(attr), val, strlen(val));
   }
 
   if ((query = get_query(instance))
@@ -1243,65 +1255,6 @@ void process_query(instance_t *instance, sip_message_t *sip)
       del_value_from_kvp_by_name(kvp, attr, strlen(attr));
     }
   }
-
-  if ((query = get_query(instance))
-      && is_query_name(query, "401_unauthorized")
-      && (query = get_sub_query_by_name(query, "www_authenticate"))
-      && (query = get_sub_query_by_name(query, "algorithm")))
-  {
-    key = "WWW-Authenticate";
-    attr = "algorithm";
-    kvp = get_kvp_from_sip_message(sip, key, strlen(key), 0);
-    vtype = get_query_value_type(query);
-    op = get_query_operator(query);
-
-    if ((vtype == VAL_TYPE_STRING) && op == OP_TYPE_UPDATE)
-    {
-      tmp = get_query_value(query, &tlen);
-
-      if (strstr(tmp, "AKAv1"))
-      {
-        if (strstr(tmp, "sess"))
-        {
-          val = "AKAv1-MD5-sess";
-        }
-        else if (strstr(tmp, "SHA-256"))
-        {
-          val = "AKAv1-SHA-256";
-        }
-        else if (strstr(tmp, "MD5"))
-        {
-          val = "AKAv1-MD5";
-        }
-        else
-        {
-          val = "AKAv1-MD5";
-        }
-      }
-      else
-      {
-        if (strstr(tmp, "SHA-256"))
-        {
-          val = "SHA-256";
-        }
-        else if (strstr(tmp, "MD5"))
-        {
-          val = "MD5";
-        }
-        else
-        {
-          val = "MD5";
-        }
-      }
-
-      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
-    }
-    else if (op == OP_TYPE_DROP)
-    {
-      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
-    }
-  }
-
 }
 
 void report_message(instance_t *instance, sip_message_t *message)
@@ -1342,7 +1295,7 @@ void report_message(instance_t *instance, sip_message_t *message)
       mname = get_message_name(message, &mlen);
       LM_ERR("query->name: %s, mname: %s, instance->sprev: %s\n", query->name, mname, instance->sprev);
       if (is_query_name(query, "401_unauthorized")
-          && (strlen(mname) >= strlen("Unauthorized"))
+          && (strlen(mname) >= strlen("unauthorized"))
           && (!strncmp(mname, "unauthorized", strlen("unauthorized")))
           && (!strncmp(instance->sprev, "ike_auth_3_response",
               strlen("ike_auth_3_response"))))
@@ -1362,6 +1315,7 @@ void report_message(instance_t *instance, sip_message_t *message)
     }
   }
 
+  LM_ERR("symbol: %s\n", symbol);
   if (symbol)
   {
     msg = init_message(instance, MSG_TYPE_BLOCK_START,
