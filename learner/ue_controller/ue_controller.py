@@ -358,13 +358,13 @@ def handle_init_config(device):
         logging.debug("Enabling wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(4)
+        time.sleep(2)
         logging.debug("Enabled wifi")
         
         logging.debug ("Enable WiFi Calling")
         cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(4)
+        time.sleep(3)
         logging.debug("Enabled Wifi Calling")
  
         logging.debug("Toggle the WiFi Calling button")
