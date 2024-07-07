@@ -389,7 +389,7 @@ def handle_client_connection(client, server, device):
             opcode = ""
             while not opcode.endswith("\n"):
                 rcvd = client.recv(1)
-       Note_14         opcode += rcvd.decode()
+                opcode += rcvd.decode()
             opcode = opcode.strip()
             logging.info("Received opcode: {}".format(opcode))
 
@@ -413,7 +413,7 @@ def handle_client_connection(client, server, device):
             elif opcode == "wifi_off":
                 handle_turn_off_wifi_interface(device)
                 client.send(ACK)
-Note_14            elif opcode == "wifi_on":
+            elif opcode == "wifi_on":
                 handle_turn_on_wifi_interface(device)
                 client.send(ACK)
             else:
