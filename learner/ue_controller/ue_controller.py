@@ -173,15 +173,6 @@ def is_vowifi_enabled():
     return "VoWifi enabled" in result_check.stdout
 
 def handle_init_config(device):
-    cmd = ["adb", "shell", "svc", "power", "stayon", "true"]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE)
-
-    if device == "SM_G920T":
-        logging.debug("Enabling Swipe")
-        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-        result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(3)
-        logging.debug("Enabled Swipe")
 
     if device == "Z8850K":
         #for _ in range(3):
