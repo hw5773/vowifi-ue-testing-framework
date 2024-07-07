@@ -51,7 +51,7 @@ def handle_turn_on_wifi_interface(device):
     if device == "SM_G920T":
         cmd = ["adb", "shell", "su", "-c", "svc", "wifi", "enable"]
         subprocess.run(cmd)
-    elif device == "moto_e5_plus" or device =="Pixel_4a" or "device == "HTC_U11" or device == "Blackview_A55" or device =="OnePlus_Nord_N20" or device == "T-mobile_Revvl4":
+    elif device == "moto_e5_plus" or device == "Pixel_4a" or "device == "HTC_U11" or device == "Blackview_A55" or device =="OnePlus_Nord_N20" or device == "T-mobile_Revvl4":
         cmd = ["adb", "shell", "dumpsys", "wifi", "|", "grep", "\"Wi-Fi is\""]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
