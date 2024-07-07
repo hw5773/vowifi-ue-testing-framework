@@ -177,10 +177,11 @@ def handle_init_config(device):
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
     if device == "SM_G920T":
-        logging.debug("Enable WiFi Calling")
-        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+        logging.debug("Enabling Swipe")
+        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
+        logging.debug("Enabled Swipe")
 
     if device == "Z8850K":
         #for _ in range(3):
