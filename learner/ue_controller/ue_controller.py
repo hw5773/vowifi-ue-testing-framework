@@ -349,7 +349,7 @@ def handle_init_config(device):
             #time.sleep(3)
         #logging.debug("Finish toggling the WiFi Calling button")
 
-    elif device == "Pixel_6a"
+    elif device == "Pixel_6a":
         logging.debug("Enabling swipe")
         cmd =["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(run, stdout=subprocess.PIPE)
