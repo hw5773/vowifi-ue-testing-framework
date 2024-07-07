@@ -174,14 +174,20 @@ def is_vowifi_enabled():
 
 def handle_init_config(device):
     if device == "ZTE_Stage_5G":
-        for _ in range(3):
-            cmd = ["adb", "shell", "input", "keyevent", "20"]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            time.sleep(3)
-        cmd = ["adb", "shell", "input", "keyevent", "23"]
+        #for _ in range(3):
+            #cmd = ["adb", "shell", "input", "keyevent", "20"]
+            #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            #time.sleep(3)
+        #cmd = ["adb", "shell", "input", "keyevent", "23"]
+        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        #time.sleep(3)
+        
+        logging.debug("Enabling Menu")
+        cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
-        
+        logging.debug("Enabled Menu")
+
         logging.debug("Enabling Wifi")
         cmd = ["adb", "shell", "svc", "wifi", "enable"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -299,18 +305,18 @@ def handle_init_config(device):
         time.sleep(4)
         logging.debug("Enabled wifi")
  
-        #logging.debug ("Enable WiFi Calling")
-        #cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-        #logging.debug("Enabled Wifi Calling")
+        logging.debug ("Enable WiFi Calling")
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.android.settings/.wifi.calling.WifiCallingSuggestionActivity"]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE)
+        time.sleep(4)
+        logging.debug("Enabled Wifi Calling")
  
-        #logging.debug("Toggle the WiFi Calling button")
-        #for _ in range(2):
-            #cmd = ["adb", "shell", "input", "keyevent", "23"]
-            #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            #time.sleep(3)
-        #logging.debug("Finish toggling the WiFi Calling button")
+        logging.debug("Toggle the WiFi Calling button")
+        for _ in range(2):
+            cmd = ["adb", "shell", "input", "keyevent", "23"]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            time.sleep(4)
+        logging.debug("Finish toggling the WiFi Calling button")
 
     elif device == "One_Plus_Nord_N20":
         logging.debug("Menu to unlock the phone")
