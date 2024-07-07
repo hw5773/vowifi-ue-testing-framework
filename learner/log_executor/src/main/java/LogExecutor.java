@@ -824,13 +824,12 @@ public class LogExecutor {
     String result = "";
     boolean ret = false;
 
-    /*
     logger.info("Sending symbol: fin to IMS");
     try {
       imsOut.write("fin\n");
       imsOut.flush();
-      result = epdgIn.readLine();
-      logger.info("ACK for finIMS(): " + result);
+      //result = imsIn.readLine();
+      //logger.info("ACK for finIMS(): " + result);
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -839,6 +838,7 @@ public class LogExecutor {
       e.printStackTrace();
     }
 
+    /*
     if(result.contains("ACK")) {
       logger.info("PASSED: Finalizing the IMS is succeeded");
       ret = true;
@@ -1365,7 +1365,7 @@ public class LogExecutor {
     logger.debug("START: post()");
 
     finEPDG();
-    //finIMS();
+    finIMS();
 
     logger.debug("FINISH: post()");
   }
