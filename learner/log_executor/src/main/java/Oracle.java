@@ -85,7 +85,7 @@ public class Oracle {
         ret = 1;
 
       if (query.contains("ike_auth_3_response")
-          && !reply.contains("register_1"))
+          && !(reply.contains("timeout") || reply.contains("register_1")))
         ret = 1;
 
       if (query.contains("401_unauthorized")

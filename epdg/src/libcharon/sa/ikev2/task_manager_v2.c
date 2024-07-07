@@ -2173,9 +2173,13 @@ METHOD(task_manager_t, process_message, status_t,
           symbol = "error in exchange_type";
           instance->rprev = "error";
       }
-      m = init_message(instance, MSG_TYPE_BLOCK_START,
-          symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
-      instance->add_message_to_send_queue(instance, m);
+
+      if (!(instance->retransmission))
+      {
+        m = init_message(instance, MSG_TYPE_BLOCK_START,
+            symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
+        instance->add_message_to_send_queue(instance, m);
+      }
     }
   }
   else if (instance)

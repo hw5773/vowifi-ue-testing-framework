@@ -26,16 +26,19 @@ def check(ldir, ofname):
                     if enum not in enums:
                         enums.append(enum)
                         num += 1
-            result[device][m] = num
-            logging.info("device: {} / m: {} / num: {}".format(device, m, result[device][m]))
+            enums = sorted(enums)
+            if len(enums) > 0:
+                result[device][m] = (num, enums[-1])
+            else:
+                result[device][m] = (num, 0)
 
     for device in result:
         logging.info("Device name: {}".format(device))
         
         s = 0
         for msg in messages:
-            logging.info(" - {}: {}".format(msg, result[device][m]))
-            s += result[device][m]
+            logging.info(" - {}: {} (max: {})".format(msg, result[device][msg][0], result[device][msg][1]))
+            s += result[device][msg][0]
 
         logging.info(" - Total: {}".format(s))
 
