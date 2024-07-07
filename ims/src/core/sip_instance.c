@@ -229,6 +229,15 @@ void *listener_run(void *data)
       }
       LM_INFO("sent ACK to LogExecutor\n");
     }
+    else if (offset == strlen(FIN_REQUEST)
+        && !strncmp((const char *)buf, FIN_REQUEST, strlen(FIN_REQUEST)))
+    {
+      LM_INFO("receive FIN from LogExecutor!\n");
+      instance->finished = 1;
+      instance->query = NULL;
+      instance->rprev = "ike_auth_3_request";
+      instance->sprev = "ike_auth_3_response";
+    }
     else if (offset > 0)
     {
       LM_INFO("The offset is larger than 0\n");

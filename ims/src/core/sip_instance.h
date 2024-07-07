@@ -45,7 +45,8 @@
 #define VAL_LENGTH_UINT64 8
 
 #define HELLO_REQUEST "Hello\n"
-#define RESET_REQUEST "reset\n"
+#define RESET_REQUEST "init\n"
+#define FIN_REQUEST "fin\n"
 #define ACK_RESPONSE "ACK\n"
 
 #define UPDATE  1
