@@ -112,14 +112,14 @@ METHOD(simaka_provider_t, get_quintuplet, bool,
 		 AKA_K_LEN, opc, AKA_OPC_LEN);
 
   ///// Added for VoWiFi /////
-  int i;
-  printf("!!!!! SQN Value !!!!!\n");
-  for (i=0; i<AKA_SQN_LEN; i++)
-  {
-    this->sqn[i] = 0x00;
-    printf("%02x ", (this->sqn)[i]);
-  }
-  printf("\n");
+  //int i;
+  //printf("!!!!! SQN Value !!!!!\n");
+  //for (i=0; i<AKA_SQN_LEN; i++)
+  //{
+  //  this->sqn[i] = 0x00;
+  //  printf("%02x ", (this->sqn)[i]);
+  //}
+  //printf("\n");
   ////////////////////////////
 
 	/* generate MAC and XRES, CK, IK, AK */

@@ -1727,7 +1727,6 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
 	bool is_init = FALSE;
 
   ///// Added for VoWiFi /////
-  const uint8_t *symbol;
   enumerator_t *enumer;
   notify_payload_t *noti;
   payload_t *pload;
@@ -1744,7 +1743,6 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
   int vtype, op, tlen;
   init_hash_t *thash;
 
-  symbol = "unknown";
   ////////////////////////////
 
 	id = message->get_ike_sa_id(message);

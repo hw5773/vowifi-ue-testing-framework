@@ -1164,17 +1164,22 @@ METHOD(task_t, build_r, status_t,
 
 peer_auth_failed:
 	message->add_notify(message, TRUE, AUTHENTICATION_FAILED, chunk_empty);
-  if (check_instance(instance, ispi, rspi, NON_UPDATE))
-  {
-    printf("[VoWiFi] authentication failed\n");
-    instance->authentication_failed = 1;
-  }
 peer_auth_failed_no_notify:
 	charon->bus->alert(charon->bus, ALERT_PEER_AUTH_FAILED);
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    printf("[VoWiFi] authentication failed 1\n");
+    instance->authentication_failed = 1;
+  }
 	return FAILED;
 local_auth_failed:
 	message->add_notify(message, TRUE, AUTHENTICATION_FAILED, chunk_empty);
 	charon->bus->alert(charon->bus, ALERT_LOCAL_AUTH_FAILED);
+  if (check_instance(instance, ispi, rspi, NON_UPDATE))
+  {
+    printf("[VoWiFi] authentication failed 2\n");
+    instance->authentication_failed = 1;
+  }
 	return FAILED;
 }
 

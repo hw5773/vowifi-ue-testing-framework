@@ -233,6 +233,7 @@ public class LogExecutor {
       pairs = null;
       while (pairs == null) {
         pairs = executeTestcase(logExecutor, testcase);
+        logger.info("Result of executeTestcase(): " + pairs);
 
         if (pairs != null) {
           if (pairs.size() > 0) {
@@ -252,6 +253,7 @@ public class LogExecutor {
         }
         else
         {
+          pairs = null;
           testcase.resetIterator();
         }
         logger.debug("pairs: " + pairs);
