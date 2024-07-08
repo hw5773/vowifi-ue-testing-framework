@@ -791,13 +791,13 @@ public class LogExecutor {
     String result = "";
     boolean ret = false;
 
-    logger.info("Sending symbol: init to ePDG");
+    logger.info("Sending symbol: init to IMS");
     try {
       sleep(COOLING_TIME);
-      epdgOut.write("init\n");
-      epdgOut.flush();
-      initEPDGCount++;
-      result = epdgIn.readLine();
+      imsOut.write("init\n");
+      imsOut.flush();
+      initIMSCount++;
+      result = imsIn.readLine();
       logger.info("ACK for initIMS(): " + result);
     } catch(SocketException e) {
       e.printStackTrace();
@@ -808,10 +808,10 @@ public class LogExecutor {
     }
 
     if(result.contains("ACK")) {
-      logger.info("PASSED: Initializing the ePDG is succeeded");
+      logger.info("PASSED: Initializing the IMS is succeeded");
       ret = true;
     } else {
-      logger.error("FAILED: Initializing the ePDG is failed");
+      logger.error("FAILED: Initializing the IMS is failed");
       ret = false;
     }
 
@@ -824,13 +824,12 @@ public class LogExecutor {
     String result = "";
     boolean ret = false;
 
-    /*
     logger.info("Sending symbol: fin to IMS");
     try {
       imsOut.write("fin\n");
       imsOut.flush();
-      result = epdgIn.readLine();
-      logger.info("ACK for finIMS(): " + result);
+      //result = imsIn.readLine();
+      //logger.info("ACK for finIMS(): " + result);
     } catch(SocketException e) {
       e.printStackTrace();
     } catch(IOException e) {
@@ -839,6 +838,7 @@ public class LogExecutor {
       e.printStackTrace();
     }
 
+    /*
     if(result.contains("ACK")) {
       logger.info("PASSED: Finalizing the IMS is succeeded");
       ret = true;
@@ -1006,7 +1006,7 @@ public class LogExecutor {
 
       while (enabled == false && retry > 0) {
         if (sendDisableWiFi()) {
-          if (initEPDG()) {
+          if (initEPDG() && initIMS()) {
             enabled = sendEnableWiFi();
           }
         }
@@ -1240,8 +1240,14 @@ public class LogExecutor {
 
 			do {
 				try {
+          trial = 0;
+          do {
+            trial++;
+            ret = initEPDG();
+          } while (ret == false && trial < DEFAULT_NUMBER_OF_TRIALS);
+
           if (trial == DEFAULT_NUMBER_OF_TRIALS) {
-            logger.error("Resetting UE failed");
+            logger.error("Resetting ePDG failed");
             System.exit(1);
           }
 
@@ -1365,7 +1371,7 @@ public class LogExecutor {
     logger.debug("START: post()");
 
     finEPDG();
-    //finIMS();
+    finIMS();
 
     logger.debug("FINISH: post()");
   }
@@ -1416,6 +1422,7 @@ public class LogExecutor {
 
         if(result.contains("ACK")) {
           logger.debug("PASSED: Testing the connection between the statelearner and ePDG");
+          logger.debug("FINISH: isEPDGAlive()");
           return true;
         } 
         /*
@@ -1429,11 +1436,13 @@ public class LogExecutor {
       logger.error("Timeout in Socket with ePDG. Reconnecting to the ePDG");
       //e.printStackTrace();
       initEPDGConnection();
+      logger.debug("FINISH: isEPDGAlive()");
       return false;
     } catch (Exception e) {
       logger.error("Socket error. Reconnecting to the ePDG");
       //e.printStackTrace();
       initEPDGConnection();
+      logger.debug("FINISH: isEPDGAlive()");
       return false;
     }
   }
@@ -1441,36 +1450,44 @@ public class LogExecutor {
   public boolean isIMSAlive() {
     logger.debug("START: isIMSAlive()");
 
-    /*
     String result;
 
     try {
       imsSocket.setSoTimeout(HELLO_MESSAGE_TIMEOUT_VALUE);
       imsOut.write("Hello\n");
       imsOut.flush();
-      logger.info("Sent the Hello message to IMS Server");
-      result = imsIn.readLine();
-      System.out.println("Received the Hello messge from IMS Server in isIMSAlive() = " + result);
-      imsSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+      logger.debug("Sent the hello message to IMS");
+
+      while (true) {
+        result = imsIn.readLine();
+        logger.debug("Received the hello message from ePDG in isIMSAlive() = " + result);
+        imsSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT_VALUE);
+
+        if(result.contains("ACK")) {
+          logger.debug("PASSED: Testing the connection between the statelearner and IMS");
+          logger.debug("FINISH: isEPDGAlive()");
+          return true;
+        } 
+        /*
+        else {
+          logger.error("FAILED: Testing the connection between the statelearner and ePDG");
+          return false;
+        }
+        */
+      }
     } catch(SocketTimeoutException e) {
-      logger.error("Timeout in Socket with IMS Server");
-      e.printStackTrace();
+      logger.error("Timeout in Socket with IMS. Reconnecting to the IMS");
+      //e.printStackTrace();
+      initIMSConnection();
+      logger.debug("FINISH: isIMSAlive()");
       return false;
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error("Socket error. Reconnecting to the IMS");
+      //e.printStackTrace();
+      logger.debug("FINISH: isIMSAlive()");
+      initIMSConnection();
       return false;
     }
-
-    if(result.contains("ACK")) {
-      logger.info("PASSED: Testing the connection between the statelearner and the srsEPC");
-      return true;
-    } else {
-      logger.error("FAILED: Testing the connection between the statelearner and the srsEPC");
-      return false;
-    }
-    */
-    logger.debug("FINISH: isIMSAlive()");
-    return true;
   }
 
   public static void startEPDG() {
