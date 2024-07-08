@@ -28,16 +28,25 @@
 #define VAL_TYPE_NONE 1
 #define VAL_TYPE_INTEGER  2
 #define VAL_TYPE_UINT8 3
-#define VAL_TYPE_UINT16 4
-#define VAL_TYPE_STRING 5
+#define VAL_TYPE_UINT8H 4
+#define VAL_TYPE_UINT16 5
+#define VAL_TYPE_UINT16H 6
+#define VAL_TYPE_UINT32 7
+#define VAL_TYPE_UINT32H 8
+#define VAL_TYPE_UINT64 9
+#define VAL_TYPE_UINT64H 10
+#define VAL_TYPE_STRING 11
 
 #define VAL_LENGTH_NONE 0
 #define VAL_LENGTH_INTEGER 4
 #define VAL_LENGTH_UINT8 1
 #define VAL_LENGTH_UINT16 2
+#define VAL_LENGTH_UINT32 4
+#define VAL_LENGTH_UINT64 8
 
 #define HELLO_REQUEST "Hello\n"
-#define RESET_REQUEST "reset\n"
+#define RESET_REQUEST "init\n"
+#define FIN_REQUEST "fin\n"
 #define ACK_RESPONSE "ACK\n"
 
 #define UPDATE  1

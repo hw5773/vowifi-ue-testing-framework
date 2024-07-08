@@ -26,7 +26,17 @@
         { 
           "receiver": "epdg", 
           "name": "ike_auth_3_response",
-          "reporter": "epdg"
+          "reporter": "ims"
+        },
+        { 
+          "receiver": "ims", 
+          "name": "401_unauthorized",
+          "reporter": "ims"
+        },
+        { 
+          "receiver": "ims", 
+          "name": "200_ok",
+          "reporter": "none"
         }
       ]
     }

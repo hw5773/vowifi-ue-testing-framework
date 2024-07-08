@@ -1188,9 +1188,10 @@ METHOD(task_t, build_r, status_t,
 			message->add_notify(message, FALSE, INVALID_KE_PAYLOAD,
 								chunk_from_thing(group));
 
+      printf("\n\n\n\n\n[VoWiFi] invalid ke payload\n\n\n\n\n");
       if (check_instance(instance, ispi, rspi, NON_UPDATE))
       {
-        printf("[VoWiFi] invalid ke payload\n");
+        printf("[VoWiFi] invalid ke payload is set\n");
         instance->invalid_ke_payload = 1;
       }
 		}
