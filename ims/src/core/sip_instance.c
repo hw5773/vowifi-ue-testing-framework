@@ -216,6 +216,12 @@ void *listener_run(void *data)
         && !strncmp((const char *)buf, RESET_REQUEST, strlen(RESET_REQUEST)))
     {
       LM_INFO("receiver reset from LogExecutor!\n");
+      if (instance->query)
+        free_query(instance->query);
+      instance->query = NULL;
+      instance->finished = false;
+      instance->rprev = "ike_auth_3_request";
+      instance->sprev = "ike_auth_3_response";
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -233,7 +239,9 @@ void *listener_run(void *data)
         && !strncmp((const char *)buf, FIN_REQUEST, strlen(FIN_REQUEST)))
     {
       LM_INFO("receive FIN from LogExecutor!\n");
-      instance->finished = 1;
+      instance->finished = true;
+      if (instance->query)
+        free_query(instance->query);
       instance->query = NULL;
       instance->rprev = "ike_auth_3_request";
       instance->sprev = "ike_auth_3_response";
