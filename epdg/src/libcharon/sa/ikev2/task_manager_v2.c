@@ -1609,7 +1609,7 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    if (!(instance->retransmission))
+    if (!(instance->not_report) && !(instance->retransmission))
     {	    
       msg = init_message(instance, MSG_TYPE_BLOCK_END, 
           NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
@@ -1618,6 +1618,7 @@ static status_t process_request(private_task_manager_t *this,
     else
     {
       instance->retransmission--;
+      instance->not_report = 0;
     }
   }
   ////////////////////////////
@@ -1991,7 +1992,7 @@ METHOD(task_manager_t, process_message, status_t,
   id = this->ike_sa->get_id(this->ike_sa);
   ispi = id->get_initiator_spi(id);
   rspi = id->get_responder_spi(id);
-  symbol = "unknown";
+  symbol = NULL;
   retransmission = 0;
   ////////////////////////////
 
@@ -2069,6 +2070,9 @@ METHOD(task_manager_t, process_message, status_t,
           break;
 
     		case INFORMATIONAL:
+          symbol = NULL;
+          instance->not_report = 1;
+          /*
         	enumer = msg->create_payload_enumerator(msg);
       	  while (enumer->enumerate(enumer, &pload))
         	{      			
@@ -2166,15 +2170,18 @@ METHOD(task_manager_t, process_message, status_t,
             }
 		  		}
     	  	enumer->destroy(enumer);
+          */
           break;
 
   			case CREATE_CHILD_SA:
         default:
-          symbol = "error in exchange_type";
-          instance->rprev = "error";
+          symbol = NULL;
+          instance->not_report = 1;
+          //symbol = "error in exchange_type";
+          //instance->rprev = "error";
       }
 
-      if (!(instance->retransmission))
+      if (!(instance->not_report) && !(instance->retransmission))
       {
         m = init_message(instance, MSG_TYPE_BLOCK_START,
             symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
@@ -2194,7 +2201,7 @@ METHOD(task_manager_t, process_message, status_t,
     ///// Added for VoWiFi /////
     if (check_instance(instance, ispi, rspi, NON_UPDATE))
     {
-      if (!(instance->retransmission))
+      if (!(instance->not_report) && !(instance->retransmission))
       {
         m = init_message(instance, MSG_TYPE_BLOCK_END, 
             NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
@@ -2203,6 +2210,7 @@ METHOD(task_manager_t, process_message, status_t,
       else
       {
         instance->retransmission--;
+        instance->not_report = 0;
       }
     }
     ////////////////////////////
