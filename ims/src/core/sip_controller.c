@@ -136,7 +136,7 @@ kvp_t *parse_key_value_line(sip_message_t *sip, uint8_t *line)
   }
 
   klen = p - line;
-  LM_DBG("key (%d bytes): %.*s\n", klen, klen, line);
+  LM_ERR("key (%d bytes): %.*s\n", klen, klen, line);
   key = (uint8_t *)shm_malloc(klen);
   if (!key)
   {
