@@ -300,7 +300,7 @@ def handle_init_config(device):
         time.sleep(3)
         logging.debug("Enabled Swipe")
  
-    elif device == "OP5159L1":
+    elif device == "One_Plus_Nord_N20":
         logging.debug("Menu to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -448,7 +448,7 @@ def check_device_model():
         device = "Nokia_G100"
         logging.info("Device model: Nokia G100")
     elif "OP5159L1" in output:
-        device = "OP5159L1"
+        device = "One_Plus_Nord_N20"
         logging.info("Device mode: One Plus Nord N20")
     elif "motorola_edge_30_pro":
         device = "Motorola_Edge_30_Pro"
