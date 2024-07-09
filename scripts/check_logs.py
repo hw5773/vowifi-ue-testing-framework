@@ -38,7 +38,7 @@ def check(ldir, ofname):
 def command_line_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--log-directory", metavar="<log directory>", help="Log directory", type=str, required=True)
-    parser.add_argument("-o", "--output", metavar="<output filename>", help="Output filename", type=str, default="result.txt")
+    parser.add_argument("-o", "--output", metavar="<output filename>", help="Output filename", type=str, default="check_log.txt")
     parser.add_argument("-l", "--log", metavar="<log level (DEBUG/INFO/WARNING/ERROR/CRITICAL>", help="Log level (DEBUG/INFO/WARNING/ERROR/CRITICAL)", type=str, default="INFO")
     args = parser.parse_args()
     return args
