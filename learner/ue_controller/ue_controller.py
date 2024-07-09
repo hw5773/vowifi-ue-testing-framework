@@ -300,36 +300,17 @@ def handle_init_config(device):
         time.sleep(3)
         logging.debug("Enabled Swipe")
  
-    elif device == "One_Plus_Nord_N20":
+    elif device == "OP5159L1":
         logging.debug("Menu to unlock the phone")
         cmd = ["adb", "shell", "input", "keyevent", "82"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         time.sleep(3)
 
-        #logging.debug("Enabling swipe")
-        #cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-        #logging.debug("Enabled Swipe")
-
-        logging.debug("Enabling wifi")
-        cmd = ["adb", "shell", "svc", "wifi", "enable"]
+        logging.debug("Enabling swipe")
+        cmd = ["adb", "shell", "input", "swipe", "200", "500", "200", "0"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        time.sleep(4)
-        logging.debug("Enabled wifi")
-
-        #logging.debug ("Enable WiFi Calling")
-        #cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.MAIN", "-n", "com.telephony.service/.wfc.WfcAliasActivity"]
-        #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        #time.sleep(3)
-        #logging.debug("Enabled Wifi Calling")
-
-        #logging.debug("Toggle the WiFi Calling button")
-        #for _ in range(2):
-            #cmd = ["adb", "shell", "input", "keyevent", "23"]
-            #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            #time.sleep(3)
-        #logging.debug("Finish toggling the WiFi Calling button")
+        time.sleep(3)
+        logging.debug("Enabled Swipe")
 
 def handle_client_connection(client, server, device):
     logging.info("Client handler initiated")
@@ -467,7 +448,7 @@ def check_device_model():
         device = "Nokia_G100"
         logging.info("Device model: Nokia G100")
     elif "OP5159L1" in output:
-        device = "One_Plus_Nord_N20"
+        device = "OP5159L1"
         logging.info("Device mode: One Plus Nord N20")
     elif "motorola_edge_30_pro":
         device = "Motorola_Edge_30_Pro"
