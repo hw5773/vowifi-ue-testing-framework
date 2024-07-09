@@ -382,6 +382,8 @@ def check_device_model():
         logging.info("Device model: Nokia G100")
     elif "CPH2459" in output:
         device = "CPH2459"
+    elif "OP5159L1" in output:
+        device = "One_Plus_Nord_N20"
         logging.info("Device mode: One Plus Nord N20")
     elif "motorola_edge_30_pro" in output:
         device = "Motorola_Edge_30_Pro"
