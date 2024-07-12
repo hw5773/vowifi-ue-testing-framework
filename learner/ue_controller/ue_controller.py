@@ -366,7 +366,7 @@ def check_device_model():
         device = "T608M"
         logging.info("Device model: TCL 40XL")
     elif "I14_Pro_max" in output:
-        device = "I14_Pro_Nax"
+        device = "I14_Pro_max"
         logging.info("Device model: Blackcyber I14 Pro Max")
     elif "I15_Pro_Max" in output:
         device = "I15_Pro_Max"
