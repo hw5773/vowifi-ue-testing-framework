@@ -577,13 +577,12 @@ int check_drop_next(instance_t *instance, payload_t *next)
     }
   }
 
-  printf("\n\n\n[VoWiFi] check drop next\n\n\n");
+  printf("[VoWiFi] check drop next\n");
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "key_exchange"))
       && (type == PLV2_KEY_EXCHANGE))
   {
-    printf("\n\n\nkey exchange - drop\n\n\n");
     op = get_query_operator(query);
     if (op == OP_TYPE_DROP)
     {    
@@ -595,6 +594,30 @@ int check_drop_next(instance_t *instance, payload_t *next)
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "nonce"))
       && (type == PLV2_NONCE))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "nat_detection_source_ip"))
+      && (type == PLV2_NOTIFY))
+  {
+    op = get_query_operator(query);
+    if (op == OP_TYPE_DROP)
+    {    
+      ret = NEED_DROP_NEXT;
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "nat_detection_destination_ip"))
+      && (type == PLV2_NOTIFY))
   {
     op = get_query_operator(query);
     if (op == OP_TYPE_DROP)
