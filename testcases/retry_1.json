@@ -1,0 +1,388 @@
+{
+  "testcases": [
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "drop-401_unauthorized-security_server-mod-1"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "mod",
+                  "op": "drop",
+                  "type": "string",
+                  "value": "\"tun\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "drop-401_unauthorized-security_server-prot-1"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "prot",
+                  "op": "drop",
+                  "type": "string",
+                  "value": "\"ah\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-prot- \"null\"-1"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "prot",
+                  "op": "update",
+                  "type": "string",
+                  "value": " \"null\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-prot- \"esp\"-2"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "prot",
+                  "op": "update",
+                  "type": "string",
+                  "value": " \"esp\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-prot-\"ah\"-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "prot",
+                  "op": "update",
+                  "type": "string",
+                  "value": "\"ah\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-mod- \"trans\"-1"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "mod",
+                  "op": "update",
+                  "type": "string",
+                  "value": " \"trans\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-mod- \"null\"-2"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "mod",
+                  "op": "update",
+                  "type": "string",
+                  "value": " \"null\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-401_unauthorized-security_server-mod-\"tun\"-3"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_2_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_3_response",
+          "reporter": "ims"
+        },
+        {
+          "receiver": "ims",
+          "name": "401_unauthorized",
+          "reporter": "ims",
+          "sub": [
+            {
+              "name": "security_server",
+              "sub": [
+                {
+                  "name": "mod",
+                  "op": "update",
+                  "type": "string",
+                  "value": "\"tun\""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
