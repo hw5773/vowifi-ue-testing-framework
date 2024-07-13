@@ -1,6 +1,0 @@
-Loaded Learning Config correctly
-false
-Starting EPC & eNodeB
-Finished starting up EPC & eNodeB
-Connecting to srsEPC...
-command to run: src/kill_enb.sh

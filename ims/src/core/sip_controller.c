@@ -1255,6 +1255,89 @@ void process_query(instance_t *instance, sip_message_t *sip)
       del_value_from_kvp_by_name(kvp, attr, strlen(attr));
     }
   }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "401_unauthorized")
+      && (query = get_sub_query_by_name(query, "security_server"))
+      && (query = get_sub_query_by_name(query, "prot")))
+  {
+    key = "Security-Server";
+    attr = "prot";
+    kvp = get_kvp_from_sip_message(sip, key, strlen(key), 0);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+
+    if ((vtype == VAL_TYPE_STRING) && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+
+      if (strstr(tmp, "null"))
+      {
+        val = "null";
+      }
+      else if (strstr(tmp, "esp"))
+      {
+        val = "esp";
+      }
+      else if (strstr(tmp, "ah"))
+      {
+        val = "ah";
+      }
+      else if (strstr(tmp, "trans"))
+      {
+        val = "trans";
+      }
+      else
+      {
+        val = "null";
+      }
+      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+    }
+    else if (op == OP_TYPE_DROP)
+    {
+      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+    }
+  }
+
+  if ((query = get_query(instance))
+      && is_query_name(query, "401_unauthorized")
+      && (query = get_sub_query_by_name(query, "security_server"))
+      && (query = get_sub_query_by_name(query, "mod")))
+  {
+    key = "Security-Server";
+    attr = "mod";
+    kvp = get_kvp_from_sip_message(sip, key, strlen(key), 0);
+    vtype = get_query_value_type(query);
+    op = get_query_operator(query);
+
+    if ((vtype == VAL_TYPE_STRING) && op == OP_TYPE_UPDATE)
+    {
+      tmp = get_query_value(query, &tlen);
+
+      if (strstr(tmp, "trans"))
+      {
+        val = "trans";
+      }
+      else if (strstr(tmp, "null"))
+      {
+        val = "null";
+      }
+      else if (strstr(tmp, "tun"))
+      {
+        val = "tun";
+      }
+      else
+      {
+        val = "null";
+      }
+      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+    }
+    else if (op == OP_TYPE_DROP)
+    {
+      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+    }
+  }
+
 }
 
 void report_message(instance_t *instance, sip_message_t *message)
