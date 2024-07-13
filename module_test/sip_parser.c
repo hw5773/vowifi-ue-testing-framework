@@ -37,8 +37,9 @@ int main(int argc, char *argv[])
     serialized = serialize_sip_message(reg, &slen);
     printf("serialized:\n%.*s\n", slen, serialized);
   }
-
   printf("\n");
+
+  /*
   memset(buf, 0, sizeof(buf));
   fp = fopen("401-2.txt", "r");
   len = fread(buf, 1, sizeof(buf), fp);
@@ -69,6 +70,7 @@ int main(int argc, char *argv[])
     serialized = serialize_sip_message(unauth, &slen);
     printf("serialized:\n%.*s\n", slen, serialized);
   }
+  */
 
   return 0;
 }
