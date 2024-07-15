@@ -189,12 +189,16 @@ def update_values(ptcs):
                 avals = pvals - cvals
                 msg = _find_target(testcase["testcase"], target)
                 if msg != None:
+                    ops = msg.get("op", [])
+                    if "update" not in ops:
+                        continue
                     for val in avals:
-                        msg["value"] = val
-                        msg["op"] = "update"
                         t = copy.deepcopy(testcase)
                         tnum += 1
                         t["testcase"][0]["id"] = "update-{}-{}-{}".format(tc.get_id(), val, tnum)
+                        m = _find_target(t["testcase"], target)
+                        m["value"] = val
+                        m["op"] = "update"
 
                         ret[key]["testcases"].append(t)
                         cnt += 1
@@ -233,10 +237,14 @@ def drop_payloads(ptcs):
             for target in targets:
                 msg = _find_target(testcase["testcase"], target)
                 if msg != None:
-                    msg["op"] = "drop"
+                    ops = msg.get("op", [])
+                    if "drop" not in ops:
+                        continue
                     t = copy.deepcopy(testcase)
                     tnum += 1
                     t["testcase"][0]["id"] = "drop-{}-{}".format(ptc.get_id(), tnum)
+                    m = _find_target(t["testcase"], target)
+                    m["op"] = "drop"
 
                     ret[key]["testcases"].append(t)
                     msg.pop("op", None)

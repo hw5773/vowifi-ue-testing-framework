@@ -697,6 +697,15 @@ void *listener_run(void *data)
       instance->initiated = true;
       instance->sprev = NULL;
       instance->rprev = NULL;
+      instance->imid = -1;
+      instance->rmid = -1;
+      instance->running = 1;
+      instance->retransmission = 0;
+      instance->not_report = 0;
+      instance->authentication_failed = 0;
+      instance->no_proposal_chosen = 0;
+      instance->invalid_ke_payload = 0;
+      instance->ike_sa = NULL;
 
       tbs = strlen(ACK_RESPONSE);
       offset = 0;
@@ -715,6 +724,8 @@ void *listener_run(void *data)
     {
       printf("[VoWiFi] Received fin from LogExecutor!\n");
       instance->finished = true;
+      if (instance->query)
+        free_query(instance->query);
       instance->query = NULL;
       instance->ispi = -1;
       instance->rspi = -1;
