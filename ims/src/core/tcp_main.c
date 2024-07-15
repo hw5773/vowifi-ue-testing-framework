@@ -2029,7 +2029,7 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
   //    buf = (const char *)res;
   //    len = rlen;
   //  }
-  //  LM_INFO("to be sent (%d bytes): %.*s\n", len, len, buf);
+    LM_ERR("to be sent (%d bytes): %.*s\n", len, len, buf);
   //}
   ////////////////////////////
 

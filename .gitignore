@@ -88,3 +88,4 @@ tags
 # ignore
 learner/log_executor/log_executor.log.1
 
+**.properties
