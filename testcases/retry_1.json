@@ -40,7 +40,7 @@
                   "name": "mod",
                   "op": "drop",
                   "type": "string",
-                  "value": "\"tun\""
+                  "value": "trans"
                 }
               ]
             }
@@ -88,7 +88,7 @@
                   "name": "prot",
                   "op": "drop",
                   "type": "string",
-                  "value": "\"ah\""
+                  "value": "esp"
                 }
               ]
             }
@@ -102,7 +102,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-prot- \"null\"-1"
+          "id": "update-401_unauthorized-security_server-prot-null-3"
         },
         {
           "receiver": "epdg",
@@ -136,7 +136,7 @@
                   "name": "prot",
                   "op": "update",
                   "type": "string",
-                  "value": " \"null\""
+                  "value": "null"
                 }
               ]
             }
@@ -150,7 +150,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-prot- \"esp\"-2"
+          "id": "update-401_unauthorized-security_server-prot-esp-2"
         },
         {
           "receiver": "epdg",
@@ -184,7 +184,7 @@
                   "name": "prot",
                   "op": "update",
                   "type": "string",
-                  "value": " \"esp\""
+                  "value": "esp"
                 }
               ]
             }
@@ -198,7 +198,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-prot-\"ah\"-3"
+          "id": "update-401_unauthorized-security_server-prot-ah-1"
         },
         {
           "receiver": "epdg",
@@ -232,7 +232,7 @@
                   "name": "prot",
                   "op": "update",
                   "type": "string",
-                  "value": "\"ah\""
+                  "value": "ah"
                 }
               ]
             }
@@ -246,7 +246,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-mod- \"trans\"-1"
+          "id": "update-401_unauthorized-security_server-mod-trans-1"
         },
         {
           "receiver": "epdg",
@@ -280,7 +280,7 @@
                   "name": "mod",
                   "op": "update",
                   "type": "string",
-                  "value": " \"trans\""
+                  "value": "trans"
                 }
               ]
             }
@@ -294,7 +294,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-mod- \"null\"-2"
+          "id": "update-401_unauthorized-security_server-mod-null-3"
         },
         {
           "receiver": "epdg",
@@ -328,7 +328,7 @@
                   "name": "mod",
                   "op": "update",
                   "type": "string",
-                  "value": " \"null\""
+                  "value": "null"
                 }
               ]
             }
@@ -342,7 +342,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-401_unauthorized-security_server-mod-\"tun\"-3"
+          "id": "update-401_unauthorized-security_server-mod-tun-2"
         },
         {
           "receiver": "epdg",
@@ -376,7 +376,7 @@
                   "name": "mod",
                   "op": "update",
                   "type": "string",
-                  "value": "\"tun\""
+                  "value": "tun"
                 }
               ]
             }

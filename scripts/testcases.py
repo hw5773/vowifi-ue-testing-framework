@@ -57,6 +57,11 @@ class Testcases:
                             try:
                                 possible_values.add(int(v))
                             except:
+                                v = v.strip()
+                                if v[0] == "\"":
+                                    v = v[1:]
+                                if v[-1] == "\"":
+                                    v = v[:-1]
                                 possible_values.add(v)
                         self.possible_values[target] = possible_values
 

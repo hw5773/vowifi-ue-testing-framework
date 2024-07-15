@@ -195,7 +195,13 @@ class Testcase {
 
   void resetIterator() {
     if (this.sub != null)
+    {
       this.iter = this.sub.iterator();
+      for (Testcase tc: this.sub)
+      {
+        tc.resetIterator();
+      }
+    }
     /*
     JSONObject testcase = this.orig;
     JSONArray testcaseArr = (JSONArray) testcase.get("sub");

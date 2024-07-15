@@ -564,17 +564,20 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
   bool found;
 
   printf("[VoWiFi] send security association\n");
+  /*
   msg = init_message(instance, MSG_TYPE_BLOCK_START,
       "security_association", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
   instance->add_message_to_send_queue(instance, msg);
-
+  */
 	proposal_list = sa_payload->get_proposals(sa_payload);
   enumerator = proposal_list->create_enumerator(proposal_list);
   while (enumerator->enumerate(enumerator, &proposal))
   {
+    /*
     msg = init_message(instance, MSG_TYPE_BLOCK_START,
         "transform", VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
+    */
 
     algo = (uint16_t *)calloc(1, sizeof(uint16_t));
     klen = (uint16_t *)calloc(1, sizeof(uint16_t));
@@ -582,14 +585,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> Encryption algorithm: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "encryption algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "encryption key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -604,14 +611,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> Pseudo random function: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "pseudo random function", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "pseudo random function key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -626,14 +637,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> Integrity algorithm: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "integrity algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "integrity key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -648,14 +663,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> Diffie-Hellman group: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "diffie-hellman group", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "diffie-hellman group key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -670,14 +689,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> extended sequence numbers: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "extended sequence numbers", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "extended sequence number key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -692,14 +715,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> hash algorithm: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "hash algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "hash key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -714,14 +741,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> random number generator: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "random number generator", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "random number generator key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -736,14 +767,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> aead algorithm: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "aead algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "aead algorithm key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -758,14 +793,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> compression algorithm: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "compression algorithm", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (*klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "compression algorithm key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -780,14 +819,18 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> extended output function: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "extended output function", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "extended output function key length", VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -802,15 +845,19 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
     if (found)
     {
       printf(">>>>> deterministic random bit generator: %u (size: %u)\n", *algo, *klen);
+      /*
       msg = init_message(instance, MSG_TYPE_ATTRIBUTE, 
           "deterministic random bit generator", VAL_TYPE_UINT16, algo, VAL_LENGTH_UINT16);
       instance->add_message_to_send_queue(instance, msg);
+      */
       if (klen)
       {
+        /*
         msg = init_message(instance, MSG_TYPE_ATTRIBUTE,
             "deterministic random bit generator key length", 
             VAL_TYPE_UINT16, klen, VAL_LENGTH_UINT16);
         instance->add_message_to_send_queue(instance, msg);
+        */
       }
     }
     else
@@ -819,17 +866,19 @@ static void report_sa_payload(sa_payload_t *sa_payload, instance_t *instance, ui
       free(klen);
     }
 
-    printf("\n\n\n[VoWiFi] block end 5\n\n\n");
+    /*
     msg = init_message(instance, MSG_TYPE_BLOCK_END,
         NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
     instance->add_message_to_send_queue(instance, msg);
+    */
   }
   enumerator->destroy(enumerator);
 
-  printf("\n\n\n[VoWiFi] block end 6\n\n\n");
+  /*
   msg = init_message(instance, MSG_TYPE_BLOCK_END,
       NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
   instance->add_message_to_send_queue(instance, msg);
+  */
 }
 ///////////////////////////
 
@@ -1188,7 +1237,7 @@ METHOD(task_t, build_r, status_t,
 			message->add_notify(message, FALSE, INVALID_KE_PAYLOAD,
 								chunk_from_thing(group));
 
-      printf("\n\n\n\n\n[VoWiFi] invalid ke payload\n\n\n\n\n");
+      printf("[VoWiFi] invalid ke payload\n");
       if (check_instance(instance, ispi, rspi, NON_UPDATE))
       {
         printf("[VoWiFi] invalid ke payload is set\n");

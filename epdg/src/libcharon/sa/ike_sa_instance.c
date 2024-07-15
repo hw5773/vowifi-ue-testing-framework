@@ -399,6 +399,7 @@ bool is_query_finished(instance_t *instance)
 
 query_t *get_query(instance_t *instance)
 {
+  /*
   query_t *ret;
 
   ret = NULL;
@@ -419,6 +420,8 @@ query_t *get_query(instance_t *instance)
   }
 
   return ret;
+  */
+  return instance->query;
 }
 
 query_t *get_next_query(instance_t *instance)
@@ -441,7 +444,7 @@ query_t *get_next_query(instance_t *instance)
         printf("[VoWiFi] instance->sprev: %s\n", instance->sprev);
       }
 
-      sleep(1);
+      sleep(0.2);
       query = get_query(instance);
     }
 
@@ -557,6 +560,8 @@ int check_drop_next(instance_t *instance, payload_t *next)
 {
   int ret, type, op;
   query_t *query;
+  notify_payload_t *notify;
+  notify_type_t ntype;
 
   ret = COMPLETED;
 
@@ -564,6 +569,11 @@ int check_drop_next(instance_t *instance, payload_t *next)
     goto out;
 
   type = next->get_type(next);
+  if (type == PLV2_NOTIFY)
+  {
+    notify = (notify_payload_t *)next;
+    ntype = notify->get_notify_type(notify);
+  }
 
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
@@ -577,7 +587,6 @@ int check_drop_next(instance_t *instance, payload_t *next)
     }
   }
 
-  printf("[VoWiFi] check drop next\n");
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
       && (query = get_sub_query_by_name(query, "key_exchange"))
@@ -604,25 +613,35 @@ int check_drop_next(instance_t *instance, payload_t *next)
 
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "notify"))
       && (query = get_sub_query_by_name(query, "nat_detection_source_ip"))
       && (type == PLV2_NOTIFY))
   {
-    op = get_query_operator(query);
-    if (op == OP_TYPE_DROP)
-    {    
-      ret = NEED_DROP_NEXT;
+    if (ntype == NAT_DETECTION_SOURCE_IP)
+    {
+      op = get_query_operator(query);
+      if (op == OP_TYPE_DROP)
+      {    
+        printf("\n\n\n[VoWiFi] Should drop nat_detection_source_ip\n\n\n");
+        ret = NEED_DROP_NEXT;
+      }
     }
   }
 
   if ((query = get_query(instance))
       && is_query_name(query, "ike_sa_init_response")
+      && (query = get_sub_query_by_name(query, "notify"))
       && (query = get_sub_query_by_name(query, "nat_detection_destination_ip"))
       && (type == PLV2_NOTIFY))
   {
-    op = get_query_operator(query);
-    if (op == OP_TYPE_DROP)
-    {    
-      ret = NEED_DROP_NEXT;
+    if (ntype == NAT_DETECTION_DESTINATION_IP)
+    {
+      op = get_query_operator(query);
+      if (op == OP_TYPE_DROP)
+      {    
+        printf("\n\n\n[VoWiFi] Should drop nat_detection_destination_ip\n\n\n");
+        ret = NEED_DROP_NEXT;
+      }
     }
   }
 
@@ -1144,6 +1163,7 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
   switch (notify->get_notify_type(notify))
   {
     case NAT_DETECTION_DESTINATION_IP:
+      printf("[VoWiFi] nat detection destination ip\n");
       if ((query = get_query(instance)) 
           && is_query_name(query, "ike_sa_init_response")
           && (query = get_sub_query_by_name(query, "nat_detection_destination_ip")))
@@ -1175,6 +1195,7 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
       break;
 
     case NAT_DETECTION_SOURCE_IP:
+      printf("[VoWiFi] nat detection source ip\n");
       if ((query = get_query(instance)) 
           && is_query_name(query, "ike_sa_init_response")
           && (query = get_sub_query_by_name(query, "nat_detection_source_ip")))
@@ -1206,6 +1227,7 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
       break;
 
     case SIGNATURE_HASH_ALGORITHMS:
+      printf("[VoWiFi] signature hash algorithms\n");
       if ((query = get_query(instance))
           && is_query_name(query, "ike_sa_init_response")
           && (query = get_sub_query_by_name(query, "signature_hash_algorithms")))
@@ -1221,6 +1243,7 @@ int process_notify(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_payload_
       break;
 
     case CHILDLESS_IKEV2_SUPPORTED:
+      printf("[VoWiFi] childless ikev2 supported\n");
       if ((query = get_query(instance))
           && is_query_name(query, "ike_sa_init_response")
           && (query = get_sub_query_by_name(query, "childless_ikev2_supported")))
@@ -1493,7 +1516,6 @@ int check_exceptional_case(instance_t *instance, ike_sa_id_t *ike_sa_id, notify_
 
   ret = FALSE;
 
-  printf("\n\n\n[VoWiFi] in check_exceptional_case()\n");
   switch (notify->get_notify_type(notify))
   {
     case AUTHENTICATION_FAILED:
@@ -1540,7 +1562,7 @@ int process_extensible_authentication(instance_t *instance, ike_sa_id_t *ike_sa_
 
   printf("[VoWiFi] in process_extensible_authentication()\n");
   query = get_query(instance);
-  print_query(query);
+  //print_query(query);
   for (idx=0; idx<2; idx++)
   {
     mname = messages[idx];
@@ -1966,10 +1988,13 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   ke = NULL;
   np = NULL;
 
+  printf("\n\n\n[VoWiFi] before check_drop_next()\n\n\n");
   if ((ret = check_drop_next(instance, next)))
   {
+    printf("\n\n\n[VoWiFi] after check_drop_next(): true\n\n\n");
     goto out;
   }
+  printf("\n\n\n[VoWiFi] after check_drop_next(): false\n\n\n");
 
   printf("[VoWiFi] in process_query(): %p\n", payload);
 
