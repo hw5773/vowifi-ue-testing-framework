@@ -161,7 +161,8 @@ kvp_t *parse_key_value_line(sip_message_t *sip, uint8_t *line)
     }
     memcpy(value, p, vlen);
 
-    ret = init_kvp(key, klen, value, vlen);
+    if (klen > 0)
+      ret = init_kvp(key, klen, value, vlen);
   }
   return ret;
 }
@@ -199,6 +200,8 @@ sip_message_t *init_sip_message(char *buf, int len)
     {
       line = strtok(NULL, "\r\n");
       if (!line)
+        break;
+      if (!strlen(line))
         break;
       LM_DBG("before parse_key_value_line(): %s\n", line);
       kvp = parse_key_value_line(ret, line);

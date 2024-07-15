@@ -2007,7 +2007,10 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	snd_flags_t t_send_flags;
 #endif /* USE_TLS */
   ///// Added for VoWiFi /////
-  //instance_t *instance;
+  instance_t *instance;
+  int mtype, rlen;
+  char *revised;
+  instance = NULL;
   ////////////////////////////
 
 	if(unlikely(dst==NULL)) {
@@ -2016,21 +2019,41 @@ int tcp_send(struct dest_info* dst, union sockaddr_union* from,
 	}
 
   ///// Added for VoWiFi /////
-  //instance = get_instance();
-  //if (check_instance(instance))
-  //{
-  //  void *res;
-  //  int rlen;
-  //
-  //  res = process_query(buf, len, &rlen);
-
-  //  if (res)
-  //  {
-  //    buf = (const char *)res;
-  //    len = rlen;
-  //  }
+  sip_message_t *sip;
+  instance = get_instance();
+  if (check_instance(instance))
+  {
     LM_ERR("to be sent (%d bytes): %.*s\n", len, len, buf);
-  //}
+    LM_INFO("before init_sip_message()\n");
+    sip = init_sip_message(buf, len);
+    LM_INFO("after init_sip_message()\n");
+
+    if (sip)
+    {
+      LM_INFO("before report_message()\n");
+      mtype = get_message_type(sip);
+      if (mtype == SC_SIP_RESPONSE)
+      {
+        report_message(instance, sip);
+        LM_INFO("before process_query()\n");
+        process_query(instance, sip);
+        LM_INFO("after process_query()\n");
+        LM_INFO("before serialize_sip_message()\n");
+        revised = serialize_sip_message(sip, &rlen);
+        LM_INFO("after serialize_sip_message()\n");
+        memset(buf, 0, sizeof(buf));
+        memcpy(buf, revised, rlen);
+        len = rlen;
+      }
+      LM_INFO("after report_message()\n");
+
+      LM_ERR("before free_sip_message()\n");
+      free_sip_message(sip);
+      LM_ERR("after free_sip_message()\n");
+    }
+
+  LM_ERR("to be sent (%d bytes): %.*s\n", len, len, buf);
+  }
   ////////////////////////////
 
 	port=su_getport(&dst->to);

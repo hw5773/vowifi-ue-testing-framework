@@ -309,6 +309,7 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
   ///// Added for VoWiFi /////
   sip_message_t *sip;
   instance = get_instance();
+  LM_ERR("before check_instanc()\n");
   if (check_instance(instance))
   {
     LM_ERR("received (%d bytes): %.*s\n", len, len, buf);
@@ -319,8 +320,11 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
     if (sip)
     {
       LM_INFO("before report_message()\n");
-      report_message(instance, sip);
+      mtype = get_message_type(sip);
+      if (mtype == SC_SIP_REQUEST)
+        report_message(instance, sip);
       LM_INFO("after report_message()\n");
+      /*
       mtype = get_message_type(sip);
       if (mtype == SC_SIP_RESPONSE)
       {
@@ -334,11 +338,13 @@ int receive_msg(char *buf, unsigned int len, receive_info_t *rcv_info)
         memcpy(buf, revised, rlen);
         len = rlen;
       }
+      */
+      LM_ERR("before free_sip_message()\n");
+      free_sip_message(sip);
+      LM_ERR("after free_sip_message()\n");
     }
-    LM_ERR("before free_sip_message()\n");
-    free_sip_message(sip);
-    LM_ERR("after free_sip_message()\n");
   }
+  LM_ERR("after check_instance()\n");
   ////////////////////////////
 
 	if(parse_msg(buf, len, msg) != 0) {
