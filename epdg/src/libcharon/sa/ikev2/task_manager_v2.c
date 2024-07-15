@@ -939,7 +939,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     failed = 0; send = 0;
-    printf("\n\n\n[VoWiFi] before get_next_query()\n\n\n");
+    printf("[VoWiFi] before get_next_query()\n");
     if ((query = get_next_query(instance)))
     {
       printf("[VoWiFi] query name: %s, instance->sprev: %s\n", query->name, instance->sprev);
@@ -1055,7 +1055,7 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
   		switch (message->get_exchange_type(message)) 
       {
         case IKE_SA_INIT:
-          printf("[VoWiFi/IKE_AUTH] instance->sprev: %s\n", instance->sprev);
+          printf("[VoWiFi/IKE_SA_INIT] instance->sprev: %s\n", instance->sprev);
           if (is_query_name(query, "ike_sa_init_response"))
           {
             symbol = "ike_sa_init_response";
@@ -1622,23 +1622,17 @@ static status_t process_request(private_task_manager_t *this,
   ///// Added for VoWiFi /////
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
-    printf("[VoWiFi] end 1\n");
     if (!(instance->not_report) && !(instance->retransmission))
     {	    
-    printf("[VoWiFi] end 2\n");
       msg = init_message(instance, MSG_TYPE_BLOCK_END, 
           NULL, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
       instance->add_message_to_send_queue(instance, msg);
-    printf("[VoWiFi] end 3\n");
     }
     else
     {
-    printf("[VoWiFi] end 4\n");
       instance->retransmission--;
       instance->not_report = 0;
-    printf("[VoWiFi] end 5\n");
     }
-    printf("[VoWiFi] end 6\n");
   }
   ////////////////////////////
 
@@ -2020,13 +2014,11 @@ METHOD(task_manager_t, process_message, status_t,
   // TODO: Need to report the messages at this point (before decryption and integrity checking) 
 
   ///// Added for VoWiFi /////
-  printf("\n\n\n[VoWiFi] before check_instance()\n\n\n");
   if (check_instance(instance, ispi, rspi, NON_UPDATE))
   {
     if (instance->imid >= 0
         && instance->imid == msg->get_message_id(msg))
     {
-      printf("[VoWiFi] 1\n");
       instance->retransmission++;
       ///// added to test whether it works /////
       if (instance->imid > 0)
@@ -2035,27 +2027,22 @@ METHOD(task_manager_t, process_message, status_t,
     }
     else
     {
-      printf("[VoWiFi] 2\n");
       instance->imid++;
       if (instance->retransmission)
         instance->retransmission = 0;
     }
 
-      printf("[VoWiFi] 3\n");
     if (!(instance->retransmission))
     {
-      printf("[VoWiFi] 4\n");
     	switch (msg->get_exchange_type(msg)) 
       {
         case IKE_SA_INIT:
-      printf("[VoWiFi] 5\n");
           symbol = "ike_sa_init_request";
           instance->rprev = "ike_sa_init_request";
           instance->imid = 0;
           break;
 
         case IKE_AUTH:
-      printf("[VoWiFi] 6\n");
           if (!strncmp(instance->rprev, "ike_sa_init_request", strlen("ike_sa_init_request")))
           {
             symbol = "ike_auth_1_request";
@@ -2096,7 +2083,6 @@ METHOD(task_manager_t, process_message, status_t,
           break;
 
     		case INFORMATIONAL:
-      printf("[VoWiFi] 7\n");
           symbol = NULL;
           instance->not_report = 1;
           /*
@@ -2202,30 +2188,24 @@ METHOD(task_manager_t, process_message, status_t,
 
   			case CREATE_CHILD_SA:
         default:
-      printf("[VoWiFi] 8\n");
           symbol = NULL;
           instance->not_report = 1;
           //symbol = "error in exchange_type";
           //instance->rprev = "error";
       }
 
-      printf("[VoWiFi] 9\n");
       if (!(instance->not_report) && !(instance->retransmission))
       {
-      printf("[VoWiFi] 10\n");
         m = init_message(instance, MSG_TYPE_BLOCK_START,
             symbol, VAL_TYPE_NONE, NULL, VAL_LENGTH_NONE);
         instance->add_message_to_send_queue(instance, m);
       }
-      printf("[VoWiFi] 11\n");
     }
   }
   else if (instance)
   {
-      printf("[VoWiFi] failed\n");
     return FAILED;
   }
-  printf("\n\n\n[VoWiFi] after check_instance()\n\n\n");
   ////////////////////////////
 
 	status = parse_message(this, msg);
