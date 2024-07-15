@@ -1107,12 +1107,18 @@ void process_query(instance_t *instance, sip_message_t *sip)
         memset(change, '0', vlen);
       }
       change[vlen-1] = '=';
-      change_value_from_kvp_by_name(kvp, attr, strlen(attr), change, vlen);
+      if (kvp)
+      {
+        change_value_from_kvp_by_name(kvp, attr, strlen(attr), change, vlen);
+      }
       shm_free(change);
     }
     else if (op == OP_TYPE_DROP)
     {
-      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      if (kvp)
+      {
+        del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      }
     }
   }
 
@@ -1173,11 +1179,17 @@ void process_query(instance_t *instance, sip_message_t *sip)
       }
 
       LM_ERR("[VoWiFi] before change_value_from_kvp_by_name(): kvp: %p, attr: %s, strlen(attr): %lu, val: %s, strlen(val): %lu\n", kvp, attr, strlen(attr), val, strlen(val));
-      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      if (kvp)
+      {
+        change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      }
     }
     else if (op == OP_TYPE_DROP)
     {
-      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      if (kvp)
+      {
+        del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      }
     }
     LM_ERR("[VoWiFi] after change_value_from_kvp_by_name(): attr: %s, strlen(attr): %lu, val: %s, strlen(val): %lu\n", attr, strlen(attr), val, strlen(val));
   }
@@ -1209,11 +1221,17 @@ void process_query(instance_t *instance, sip_message_t *sip)
       {
         val = "hmac-md5-96";
       }
-      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      if (kvp)
+      {
+        change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      }
     }
     else if (op == OP_TYPE_DROP)
     {
-      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      if (kvp)
+      {
+        del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      }
     }
   }
 
@@ -1248,11 +1266,17 @@ void process_query(instance_t *instance, sip_message_t *sip)
       {
         val = "null";
       }
-      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      if (kvp)
+      {
+        change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      }
     }
     else if (op == OP_TYPE_DROP)
     {
-      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      if (kvp)
+      {
+        del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      }
     }
   }
 
@@ -1291,11 +1315,17 @@ void process_query(instance_t *instance, sip_message_t *sip)
       {
         val = "null";
       }
-      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      if (kvp)
+      {
+        change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      }
     }
     else if (op == OP_TYPE_DROP)
     {
-      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      if (kvp)
+      {
+        del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      }
     }
   }
 
@@ -1330,11 +1360,17 @@ void process_query(instance_t *instance, sip_message_t *sip)
       {
         val = "null";
       }
-      change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      if (kvp)
+      {
+        change_value_from_kvp_by_name(kvp, attr, strlen(attr), val, strlen(val));
+      }
     }
     else if (op == OP_TYPE_DROP)
     {
-      del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      if (kvp)
+      {
+        del_value_from_kvp_by_name(kvp, attr, strlen(attr));
+      }
     }
   }
 
