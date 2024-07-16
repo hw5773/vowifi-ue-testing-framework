@@ -384,30 +384,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-max-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "responder_spi",
-              "op": "update",
-              "type": "uint64h",
-              "value": "max"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-random-2"
+          "id": "update-ike_sa_init_response-responder_spi-random-1"
         },
         {
           "receiver": "epdg",
@@ -430,7 +407,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-mean-3"
+          "id": "update-ike_sa_init_response-responder_spi-median-2"
         },
         {
           "receiver": "epdg",
@@ -441,7 +418,7 @@
               "name": "responder_spi",
               "op": "update",
               "type": "uint64h",
-              "value": "mean"
+              "value": "median"
             }
           ]
         }
@@ -453,7 +430,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-min-4"
+          "id": "update-ike_sa_init_response-responder_spi-min-3"
         },
         {
           "receiver": "epdg",
@@ -476,7 +453,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-responder_spi-median-5"
+          "id": "update-ike_sa_init_response-responder_spi-max-4"
         },
         {
           "receiver": "epdg",
@@ -487,7 +464,30 @@
               "name": "responder_spi",
               "op": "update",
               "type": "uint64h",
-              "value": "median"
+              "value": "max"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-responder_spi-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "responder_spi",
+              "op": "update",
+              "type": "uint64h",
+              "value": "mean"
             }
           ]
         }
@@ -1764,7 +1764,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-no_commit-1"
+          "id": "update-ike_sa_init_response-flags-initiator-1"
         },
         {
           "receiver": "epdg",
@@ -1775,7 +1775,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "no_commit"
+              "value": "initiator"
             }
           ]
         }
@@ -1787,7 +1787,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-commit-2"
+          "id": "update-ike_sa_init_response-flags-no_encryption-2"
         },
         {
           "receiver": "epdg",
@@ -1798,7 +1798,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "commit"
+              "value": "no_encryption"
             }
           ]
         }
@@ -1810,30 +1810,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-authonly-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "flags",
-              "op": "update",
-              "type": "uint8",
-              "value": "authonly"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-no_version-4"
+          "id": "update-ike_sa_init_response-flags-no_version-3"
         },
         {
           "receiver": "epdg",
@@ -1856,7 +1833,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-encryption-5"
+          "id": "update-ike_sa_init_response-flags-encryption-4"
         },
         {
           "receiver": "epdg",
@@ -1879,7 +1856,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-no_responder-6"
+          "id": "update-ike_sa_init_response-flags-no_responder-5"
         },
         {
           "receiver": "epdg",
@@ -1902,7 +1879,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-no_initiator-7"
+          "id": "update-ike_sa_init_response-flags-no_commit-6"
         },
         {
           "receiver": "epdg",
@@ -1913,7 +1890,30 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "no_initiator"
+              "value": "no_commit"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-flags-version-7"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "flags",
+              "op": "update",
+              "type": "uint8",
+              "value": "version"
             }
           ]
         }
@@ -1948,7 +1948,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-version-9"
+          "id": "update-ike_sa_init_response-flags-no_initiator-9"
         },
         {
           "receiver": "epdg",
@@ -1959,7 +1959,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "version"
+              "value": "no_initiator"
             }
           ]
         }
@@ -1971,7 +1971,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-no_encryption-10"
+          "id": "update-ike_sa_init_response-flags-authonly-10"
         },
         {
           "receiver": "epdg",
@@ -1982,7 +1982,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "no_encryption"
+              "value": "authonly"
             }
           ]
         }
@@ -2017,7 +2017,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-flags-initiator-12"
+          "id": "update-ike_sa_init_response-flags-commit-12"
         },
         {
           "receiver": "epdg",
@@ -2028,7 +2028,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "initiator"
+              "value": "commit"
             }
           ]
         }
@@ -2040,30 +2040,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-max-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "max"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-random-2"
+          "id": "update-ike_sa_init_response-message_id-random-1"
         },
         {
           "receiver": "epdg",
@@ -2086,53 +2063,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "mean"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "min"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-message_id-median-5"
+          "id": "update-ike_sa_init_response-message_id-median-2"
         },
         {
           "receiver": "epdg",
@@ -2155,7 +2086,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-max-1"
+          "id": "update-ike_sa_init_response-message_id-min-3"
         },
         {
           "receiver": "epdg",
@@ -2163,20 +2094,10 @@
           "reporter": "epdg",
           "sub": [
             {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "proposal_number",
-                      "op": "update",
-                      "type": "uint8",
-                      "value": "max"
-                    }
-                  ]
-                }
-              ]
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": "min"
             }
           ]
         }
@@ -2188,7 +2109,53 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-random-2"
+          "id": "update-ike_sa_init_response-message_id-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": "max"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-message_id-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": "mean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-random-1"
         },
         {
           "receiver": "epdg",
@@ -2221,7 +2188,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-mean-3"
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-median-2"
         },
         {
           "receiver": "epdg",
@@ -2238,7 +2205,7 @@
                       "name": "proposal_number",
                       "op": "update",
                       "type": "uint8",
-                      "value": "mean"
+                      "value": "median"
                     }
                   ]
                 }
@@ -2254,7 +2221,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-min-4"
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-min-3"
         },
         {
           "receiver": "epdg",
@@ -2287,7 +2254,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-median-5"
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-max-4"
         },
         {
           "receiver": "epdg",
@@ -2304,7 +2271,40 @@
                       "name": "proposal_number",
                       "op": "update",
                       "type": "uint8",
-                      "value": "median"
+                      "value": "max"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-proposal_number-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "proposal_number",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "mean"
                     }
                   ]
                 }
@@ -2419,40 +2419,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-max-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "spi",
-                      "op": "update",
-                      "type": "string",
-                      "value": "max"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-random-2"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-random-1"
         },
         {
           "receiver": "epdg",
@@ -2485,73 +2452,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "spi",
-                      "op": "update",
-                      "type": "string",
-                      "value": "mean"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "spi",
-                      "op": "update",
-                      "type": "string",
-                      "value": "min"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-spi-median-5"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-median-2"
         },
         {
           "receiver": "epdg",
@@ -2584,7 +2485,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-max-1"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-min-3"
         },
         {
           "receiver": "epdg",
@@ -2598,9 +2499,42 @@
                   "name": "proposal",
                   "sub": [
                     {
-                      "name": "num_transforms",
+                      "name": "spi",
                       "op": "update",
-                      "type": "uint8",
+                      "type": "string",
+                      "value": "min"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "spi",
+                      "op": "update",
+                      "type": "string",
                       "value": "max"
                     }
                   ]
@@ -2617,7 +2551,40 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-random-2"
+          "id": "update-ike_sa_init_response-security_association-proposal-spi-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "spi",
+                      "op": "update",
+                      "type": "string",
+                      "value": "mean"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-random-1"
         },
         {
           "receiver": "epdg",
@@ -2650,7 +2617,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-mean-3"
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-median-2"
         },
         {
           "receiver": "epdg",
@@ -2667,7 +2634,7 @@
                       "name": "num_transforms",
                       "op": "update",
                       "type": "uint8",
-                      "value": "mean"
+                      "value": "median"
                     }
                   ]
                 }
@@ -2683,7 +2650,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-min-4"
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-min-3"
         },
         {
           "receiver": "epdg",
@@ -2716,7 +2683,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-median-5"
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-max-4"
         },
         {
           "receiver": "epdg",
@@ -2733,7 +2700,40 @@
                       "name": "num_transforms",
                       "op": "update",
                       "type": "uint8",
-                      "value": "median"
+                      "value": "max"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-security_association-proposal-num_transforms-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "security_association",
+              "sub": [
+                {
+                  "name": "proposal",
+                  "sub": [
+                    {
+                      "name": "num_transforms",
+                      "op": "update",
+                      "type": "uint8",
+                      "value": "mean"
                     }
                   ]
                 }
@@ -7553,35 +7553,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-max-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "nonce",
-              "sub": [
-                {
-                  "name": "nonce_data",
-                  "op": "update",
-                  "type": "string",
-                  "value": "max"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-random-2"
+          "id": "update-ike_sa_init_response-nonce-nonce_data-random-1"
         },
         {
           "receiver": "epdg",
@@ -7609,7 +7581,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-mean-3"
+          "id": "update-ike_sa_init_response-nonce-nonce_data-median-2"
         },
         {
           "receiver": "epdg",
@@ -7623,7 +7595,7 @@
                   "name": "nonce_data",
                   "op": "update",
                   "type": "string",
-                  "value": "mean"
+                  "value": "median"
                 }
               ]
             }
@@ -7637,7 +7609,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-min-4"
+          "id": "update-ike_sa_init_response-nonce-nonce_data-min-3"
         },
         {
           "receiver": "epdg",
@@ -7665,7 +7637,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-nonce-nonce_data-median-5"
+          "id": "update-ike_sa_init_response-nonce-nonce_data-max-4"
         },
         {
           "receiver": "epdg",
@@ -7679,7 +7651,35 @@
                   "name": "nonce_data",
                   "op": "update",
                   "type": "string",
-                  "value": "median"
+                  "value": "max"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_sa_init_response-nonce-nonce_data-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "nonce",
+              "sub": [
+                {
+                  "name": "nonce_data",
+                  "op": "update",
+                  "type": "string",
+                  "value": "mean"
                 }
               ]
             }
@@ -7721,7 +7721,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip-min-2"
+          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip-received-2"
         },
         {
           "receiver": "epdg",
@@ -7735,7 +7735,7 @@
                   "name": "nat_detection_source_ip",
                   "op": "update",
                   "type": "string",
-                  "value": "min"
+                  "value": "received"
                 }
               ]
             }
@@ -7777,7 +7777,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip-received-4"
+          "id": "update-ike_sa_init_response-notify-nat_detection_source_ip-min-4"
         },
         {
           "receiver": "epdg",
@@ -7791,7 +7791,7 @@
                   "name": "nat_detection_source_ip",
                   "op": "update",
                   "type": "string",
-                  "value": "received"
+                  "value": "min"
                 }
               ]
             }
@@ -7833,7 +7833,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip-min-2"
+          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip-received-2"
         },
         {
           "receiver": "epdg",
@@ -7847,7 +7847,7 @@
                   "name": "nat_detection_destination_ip",
                   "op": "update",
                   "type": "string",
-                  "value": "min"
+                  "value": "received"
                 }
               ]
             }
@@ -7889,7 +7889,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip-received-4"
+          "id": "update-ike_sa_init_response-notify-nat_detection_destination_ip-min-4"
         },
         {
           "receiver": "epdg",
@@ -7903,7 +7903,7 @@
                   "name": "nat_detection_destination_ip",
                   "op": "update",
                   "type": "string",
-                  "value": "received"
+                  "value": "min"
                 }
               ]
             }
@@ -7917,7 +7917,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-0-1"
+          "id": "drop-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1"
         },
         {
           "receiver": "epdg",
@@ -7935,9 +7935,9 @@
                       "sub": [
                         {
                           "name": "encryption_algorithm",
-                          "op": "update",
+                          "op": "drop",
                           "type": "uint16",
-                          "value": 0
+                          "value": 12
                         }
                       ]
                     }
@@ -7955,7 +7955,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1-2"
+          "id": "drop-ike_sa_init_response-security_association-proposal-transform-integrity_algorithm-1"
         },
         {
           "receiver": "epdg",
@@ -7972,46 +7972,8 @@
                       "name": "transform",
                       "sub": [
                         {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-2-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
+                          "name": "integrity_algorithm",
+                          "op": "drop",
                           "type": "uint16",
                           "value": 2
                         }
@@ -8031,1527 +7993,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-3-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 3
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-4-5"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 4
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-5-6"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 5
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-6-7"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 6
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-7-8"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 7
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-8-9"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 8
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-9-10"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 9
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-10-11"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 10
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-11-12"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 11
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-13-13"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 13
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-14-14"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 14
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-15-15"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 15
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-16-16"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 16
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-17-17"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 17
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-18-18"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 18
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-19-19"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 19
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-20-20"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 20
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-21-21"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 21
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-22-22"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 22
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-23-23"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 23
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-24-24"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 24
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-25-25"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 25
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-26-26"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 26
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-27-27"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 27
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-28-28"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 28
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-29-29"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 29
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-30-30"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 30
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-31-31"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 31
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-32-32"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 32
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-33-33"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 33
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-34-34"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 34
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-35-35"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 35
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1024-36"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1024
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1025-37"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1025
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1026-38"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1026
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1027-39"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1027
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1028-40"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1028
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1029-41"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1029
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-1030-42"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1030
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-encryption_algorithm-65535-43"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "encryption_algorithm",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 65535
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-0-1"
+          "id": "drop-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-1"
         },
         {
           "receiver": "epdg",
@@ -9569,9 +8011,9 @@
                       "sub": [
                         {
                           "name": "pseudo_random_function",
-                          "op": "update",
+                          "op": "drop",
                           "type": "uint16",
-                          "value": 0
+                          "value": 2
                         }
                       ]
                     }
@@ -9589,7 +8031,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-1-2"
+          "id": "drop-ike_sa_init_response-security_association-proposal-transform-diffie_hellman_group-1"
         },
         {
           "receiver": "epdg",
@@ -9606,504 +8048,10 @@
                       "name": "transform",
                       "sub": [
                         {
-                          "name": "pseudo_random_function",
-                          "op": "update",
+                          "name": "diffie_hellman_group",
+                          "op": "drop",
                           "type": "uint16",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-3-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 3
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-4-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 4
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-5-5"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 5
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-6-6"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 6
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-7-7"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 7
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-8-8"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 8
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-9-9"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 9
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-1025-10"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1025
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-1026-11"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1026
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-1028-12"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1028
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-1024-13"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1024
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-1027-14"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 1027
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_sa_init_response-security_association-proposal-transform-pseudo_random_function-65535-15"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "security_association",
-              "sub": [
-                {
-                  "name": "proposal",
-                  "sub": [
-                    {
-                      "name": "transform",
-                      "sub": [
-                        {
-                          "name": "pseudo_random_function",
-                          "op": "update",
-                          "type": "uint16",
-                          "value": 65535
+                          "value": 2
                         }
                       ]
                     }

@@ -995,6 +995,12 @@ METHOD(proposal_t, destroy, void,
 	free(this);
 }
 
+METHOD(proposal_t, get_transforms, void *,
+	private_proposal_t *this)
+{
+	return this->transforms;
+}
+
 /*
  * Described in header
  */
@@ -1019,6 +1025,7 @@ proposal_t *proposal_create_v1(protocol_id_t protocol, uint8_t number,
 			.get_number = _get_number,
       ///// Added for VoWiFi /////
       .set_number = _set_number,
+      .get_transforms = _get_transforms,
       ////////////////////////////
 			.get_transform_number = _get_transform_number,
 			.equals = _equals,

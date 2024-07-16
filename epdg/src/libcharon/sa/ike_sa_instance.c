@@ -1,7 +1,9 @@
 ///// Added for VoWiFi /////
 #include <inttypes.h>
 #include <unistd.h>
+#include <collections/array.h>
 #include "ike_sa_instance.h"
+
 
 typedef struct table_item_t table_item_t;
 struct table_item_t {
@@ -23,6 +25,14 @@ struct eap_header_t
   uint16_t length;
   uint8_t subtype;
   uint16_t reserved;
+} __attribute__((__packed__));
+
+typedef struct entry_t entry_t;
+struct entry_t
+{
+  int type;
+  uint16_t alg;
+  uint16_t key_size;
 } __attribute__((__packed__));
 
 int check_instance(instance_t *instance, uint64_t ispi, uint64_t rspi, int update)
@@ -1006,6 +1016,8 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
   ret = COMPLETED;
   tmp = NULL;
 
+  ret = process_transforms(instance, proposal);
+
   // encryption related
   algo = (uint16_t *)calloc(1, sizeof(uint16_t));
   klen = (uint16_t *)calloc(1, sizeof(uint16_t));
@@ -1139,6 +1151,90 @@ int process_proposal(instance_t *instance, proposal_t *proposal)
 
   free(algo);
   free(klen);
+
+out:
+  return ret;
+}
+
+int process_transforms(instance_t *instance, proposal_t *proposal)
+{
+  int ret, op;
+  query_t *query;
+  enumerator_t *e;
+  entry_t *entry;
+  array_t *transforms;
+
+  ret = COMPLETED;
+
+  transforms = (array_t *)proposal->get_transforms(proposal);
+  e = array_create_enumerator(transforms);
+  while (e->enumerate(e, &entry))
+  {
+    printf("[VoWiFi] entry->type: %d, ENCRYPTION_ALGORITHM: %d, INTEGRITY_ALGORITHM: %d\n", entry->type, ENCRYPTION_ALGORITHM, INTEGRITY_ALGORITHM);
+    if (entry->type == ENCRYPTION_ALGORITHM)
+    {
+      // ike_sa_init_response - security_association - proposal - transform - encryption_algorithm
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "proposal"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "encryption_algorithm")))
+      {
+        op = get_query_operator(query);
+        if (op == OP_TYPE_DROP)
+          array_remove_at(transforms, e);
+      }
+    }
+
+    if (entry->type == DIFFIE_HELLMAN_GROUP)
+    {
+      // ike_sa_init_response - security_association - proposal - transform - diffie_hellman_group
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "proposal"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "diffie_hellman_group")))
+      {
+        op = get_query_operator(query);
+        if (op == OP_TYPE_DROP)
+          array_remove_at(transforms, e);
+      }
+    }
+
+    if (entry->type == PSEUDO_RANDOM_FUNCTION)
+    {
+      // ike_sa_init_response - security_association - proposal - transform - pseudo_random_function
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "proposal"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "pseudo_random_function")))
+      {
+        op = get_query_operator(query);
+        if (op == OP_TYPE_DROP)
+          array_remove_at(transforms, e);
+      }
+    }
+
+    if (entry->type == INTEGRITY_ALGORITHM)
+    {
+      // ike_sa_init_response - security_association - proposal - transform - integrity_algorithm
+      if ((query = get_query(instance))
+          && is_query_name(query, "ike_sa_init_response")
+          && (query = get_sub_query_by_name(query, "security_association"))
+          && (query = get_sub_query_by_name(query, "proposal"))
+          && (query = get_sub_query_by_name(query, "transform"))
+          && (query = get_sub_query_by_name(query, "integrity_algorithm")))
+      {
+        op = get_query_operator(query);
+        if (op == OP_TYPE_DROP)
+          array_remove_at(transforms, e);
+      }
+    }
+  }
 
 out:
   return ret;
@@ -1988,13 +2084,10 @@ int process_query(instance_t *instance, ike_sa_id_t *ike_sa_id, payload_t *paylo
   ke = NULL;
   np = NULL;
 
-  printf("\n\n\n[VoWiFi] before check_drop_next()\n\n\n");
   if ((ret = check_drop_next(instance, next)))
   {
-    printf("\n\n\n[VoWiFi] after check_drop_next(): true\n\n\n");
     goto out;
   }
-  printf("\n\n\n[VoWiFi] after check_drop_next(): false\n\n\n");
 
   printf("[VoWiFi] in process_query(): %p\n", payload);
 

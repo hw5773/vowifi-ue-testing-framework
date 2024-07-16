@@ -474,35 +474,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-responder_spi-max-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "responder_spi",
-              "op": "update",
-              "type": "uint64h",
-              "value": "max"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-responder_spi-random-2"
+          "id": "update-ike_auth_1_response-responder_spi-random-1"
         },
         {
           "receiver": "epdg",
@@ -530,7 +502,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-responder_spi-mean-3"
+          "id": "update-ike_auth_1_response-responder_spi-median-2"
         },
         {
           "receiver": "epdg",
@@ -546,7 +518,7 @@
               "name": "responder_spi",
               "op": "update",
               "type": "uint64h",
-              "value": "mean"
+              "value": "median"
             }
           ]
         }
@@ -558,7 +530,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-responder_spi-min-4"
+          "id": "update-ike_auth_1_response-responder_spi-min-3"
         },
         {
           "receiver": "epdg",
@@ -586,7 +558,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-responder_spi-median-5"
+          "id": "update-ike_auth_1_response-responder_spi-max-4"
         },
         {
           "receiver": "epdg",
@@ -602,7 +574,35 @@
               "name": "responder_spi",
               "op": "update",
               "type": "uint64h",
-              "value": "median"
+              "value": "max"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-responder_spi-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "responder_spi",
+              "op": "update",
+              "type": "uint64h",
+              "value": "mean"
             }
           ]
         }
@@ -2154,7 +2154,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-no_commit-1"
+          "id": "update-ike_auth_1_response-flags-initiator-1"
         },
         {
           "receiver": "epdg",
@@ -2170,7 +2170,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "no_commit"
+              "value": "initiator"
             }
           ]
         }
@@ -2182,7 +2182,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-commit-2"
+          "id": "update-ike_auth_1_response-flags-no_encryption-2"
         },
         {
           "receiver": "epdg",
@@ -2198,7 +2198,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "commit"
+              "value": "no_encryption"
             }
           ]
         }
@@ -2210,35 +2210,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-authonly-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "flags",
-              "op": "update",
-              "type": "uint8",
-              "value": "authonly"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-no_version-4"
+          "id": "update-ike_auth_1_response-flags-no_version-3"
         },
         {
           "receiver": "epdg",
@@ -2266,7 +2238,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-encryption-5"
+          "id": "update-ike_auth_1_response-flags-encryption-4"
         },
         {
           "receiver": "epdg",
@@ -2294,7 +2266,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-no_responder-6"
+          "id": "update-ike_auth_1_response-flags-no_responder-5"
         },
         {
           "receiver": "epdg",
@@ -2322,7 +2294,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-no_initiator-7"
+          "id": "update-ike_auth_1_response-flags-no_commit-6"
         },
         {
           "receiver": "epdg",
@@ -2338,7 +2310,35 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "no_initiator"
+              "value": "no_commit"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-flags-version-7"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "flags",
+              "op": "update",
+              "type": "uint8",
+              "value": "version"
             }
           ]
         }
@@ -2378,7 +2378,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-version-9"
+          "id": "update-ike_auth_1_response-flags-no_initiator-9"
         },
         {
           "receiver": "epdg",
@@ -2394,7 +2394,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "version"
+              "value": "no_initiator"
             }
           ]
         }
@@ -2406,7 +2406,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-no_encryption-10"
+          "id": "update-ike_auth_1_response-flags-authonly-10"
         },
         {
           "receiver": "epdg",
@@ -2422,7 +2422,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "no_encryption"
+              "value": "authonly"
             }
           ]
         }
@@ -2462,7 +2462,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-flags-initiator-12"
+          "id": "update-ike_auth_1_response-flags-commit-12"
         },
         {
           "receiver": "epdg",
@@ -2478,7 +2478,7 @@
               "name": "flags",
               "op": "update",
               "type": "uint8",
-              "value": "initiator"
+              "value": "commit"
             }
           ]
         }
@@ -2490,35 +2490,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_id-max-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "max"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_id-random-2"
+          "id": "update-ike_auth_1_response-message_id-random-1"
         },
         {
           "receiver": "epdg",
@@ -2546,63 +2518,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_id-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "mean"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_id-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_id",
-              "op": "update",
-              "type": "uint32",
-              "value": "min"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_id-median-5"
+          "id": "update-ike_auth_1_response-message_id-median-2"
         },
         {
           "receiver": "epdg",
@@ -2630,7 +2546,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_authentication_code-max-1"
+          "id": "update-ike_auth_1_response-message_id-min-3"
         },
         {
           "receiver": "epdg",
@@ -2643,9 +2559,37 @@
           "reporter": "epdg",
           "sub": [
             {
-              "name": "message_authentication_code",
+              "name": "message_id",
               "op": "update",
-              "type": "string",
+              "type": "uint32",
+              "value": "min"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-message_id-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
               "value": "max"
             }
           ]
@@ -2658,7 +2602,35 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_authentication_code-random-2"
+          "id": "update-ike_auth_1_response-message_id-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_id",
+              "op": "update",
+              "type": "uint32",
+              "value": "mean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-message_authentication_code-random-1"
         },
         {
           "receiver": "epdg",
@@ -2686,63 +2658,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_authentication_code-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_authentication_code",
-              "op": "update",
-              "type": "string",
-              "value": "mean"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_authentication_code-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "message_authentication_code",
-              "op": "update",
-              "type": "string",
-              "value": "min"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-message_authentication_code-median-5"
+          "id": "update-ike_auth_1_response-message_authentication_code-median-2"
         },
         {
           "receiver": "epdg",
@@ -2770,7 +2686,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-identification_responder-id_type-max-1"
+          "id": "update-ike_auth_1_response-message_authentication_code-min-3"
         },
         {
           "receiver": "epdg",
@@ -2783,15 +2699,10 @@
           "reporter": "epdg",
           "sub": [
             {
-              "name": "identification_responder",
-              "sub": [
-                {
-                  "name": "id_type",
-                  "op": "update",
-                  "type": "uint8",
-                  "value": "max"
-                }
-              ]
+              "name": "message_authentication_code",
+              "op": "update",
+              "type": "string",
+              "value": "min"
             }
           ]
         }
@@ -2803,7 +2714,63 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-identification_responder-id_type-random-2"
+          "id": "update-ike_auth_1_response-message_authentication_code-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_authentication_code",
+              "op": "update",
+              "type": "string",
+              "value": "max"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-message_authentication_code-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "message_authentication_code",
+              "op": "update",
+              "type": "string",
+              "value": "mean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-identification_responder-id_type-random-1"
         },
         {
           "receiver": "epdg",
@@ -2836,73 +2803,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-identification_responder-id_type-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "identification_responder",
-              "sub": [
-                {
-                  "name": "id_type",
-                  "op": "update",
-                  "type": "uint8",
-                  "value": "mean"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-identification_responder-id_type-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "identification_responder",
-              "sub": [
-                {
-                  "name": "id_type",
-                  "op": "update",
-                  "type": "uint8",
-                  "value": "min"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-identification_responder-id_type-median-5"
+          "id": "update-ike_auth_1_response-identification_responder-id_type-median-2"
         },
         {
           "receiver": "epdg",
@@ -2935,7 +2836,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-max-1"
+          "id": "update-ike_auth_1_response-identification_responder-id_type-min-3"
         },
         {
           "receiver": "epdg",
@@ -2948,18 +2849,13 @@
           "reporter": "epdg",
           "sub": [
             {
-              "name": "extensible_authentication",
+              "name": "identification_responder",
               "sub": [
                 {
-                  "name": "eap_aka_attribute",
-                  "sub": [
-                    {
-                      "name": "at_rand",
-                      "op": "update",
-                      "type": "string",
-                      "value": "max"
-                    }
-                  ]
+                  "name": "id_type",
+                  "op": "update",
+                  "type": "uint8",
+                  "value": "min"
                 }
               ]
             }
@@ -2973,7 +2869,73 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-random-2"
+          "id": "update-ike_auth_1_response-identification_responder-id_type-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "identification_responder",
+              "sub": [
+                {
+                  "name": "id_type",
+                  "op": "update",
+                  "type": "uint8",
+                  "value": "max"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-identification_responder-id_type-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "identification_responder",
+              "sub": [
+                {
+                  "name": "id_type",
+                  "op": "update",
+                  "type": "uint8",
+                  "value": "mean"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-random-1"
         },
         {
           "receiver": "epdg",
@@ -3011,83 +2973,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "eap_aka_attribute",
-                  "sub": [
-                    {
-                      "name": "at_rand",
-                      "op": "update",
-                      "type": "string",
-                      "value": "mean"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "eap_aka_attribute",
-                  "sub": [
-                    {
-                      "name": "at_rand",
-                      "op": "update",
-                      "type": "string",
-                      "value": "min"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-median-5"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-median-2"
         },
         {
           "receiver": "epdg",
@@ -3125,7 +3011,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-max-1"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-min-3"
         },
         {
           "receiver": "epdg",
@@ -3144,7 +3030,45 @@
                   "name": "eap_aka_attribute",
                   "sub": [
                     {
-                      "name": "at_autn",
+                      "name": "at_rand",
+                      "op": "update",
+                      "type": "string",
+                      "value": "min"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "eap_aka_attribute",
+                  "sub": [
+                    {
+                      "name": "at_rand",
                       "op": "update",
                       "type": "string",
                       "value": "max"
@@ -3163,7 +3087,45 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-random-2"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_rand-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "eap_aka_attribute",
+                  "sub": [
+                    {
+                      "name": "at_rand",
+                      "op": "update",
+                      "type": "string",
+                      "value": "mean"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-random-1"
         },
         {
           "receiver": "epdg",
@@ -3201,83 +3163,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "eap_aka_attribute",
-                  "sub": [
-                    {
-                      "name": "at_autn",
-                      "op": "update",
-                      "type": "string",
-                      "value": "mean"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "eap_aka_attribute",
-                  "sub": [
-                    {
-                      "name": "at_autn",
-                      "op": "update",
-                      "type": "string",
-                      "value": "min"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-median-5"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-median-2"
         },
         {
           "receiver": "epdg",
@@ -3315,7 +3201,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-max-1"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-min-3"
         },
         {
           "receiver": "epdg",
@@ -3334,7 +3220,45 @@
                   "name": "eap_aka_attribute",
                   "sub": [
                     {
-                      "name": "at_mac",
+                      "name": "at_autn",
+                      "op": "update",
+                      "type": "string",
+                      "value": "min"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "eap_aka_attribute",
+                  "sub": [
+                    {
+                      "name": "at_autn",
                       "op": "update",
                       "type": "string",
                       "value": "max"
@@ -3353,7 +3277,45 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-random-2"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_autn-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "eap_aka_attribute",
+                  "sub": [
+                    {
+                      "name": "at_autn",
+                      "op": "update",
+                      "type": "string",
+                      "value": "mean"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-random-1"
         },
         {
           "receiver": "epdg",
@@ -3391,83 +3353,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-mean-3"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "eap_aka_attribute",
-                  "sub": [
-                    {
-                      "name": "at_mac",
-                      "op": "update",
-                      "type": "string",
-                      "value": "mean"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-min-4"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "eap_aka_attribute",
-                  "sub": [
-                    {
-                      "name": "at_mac",
-                      "op": "update",
-                      "type": "string",
-                      "value": "min"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-median-5"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-median-2"
         },
         {
           "receiver": "epdg",
@@ -3505,7 +3391,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-max-1"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-min-3"
         },
         {
           "receiver": "epdg",
@@ -3524,9 +3410,47 @@
                   "name": "eap_aka_attribute",
                   "sub": [
                     {
-                      "name": "at_checkcode",
+                      "name": "at_mac",
                       "op": "update",
-                      "type": "uint32",
+                      "type": "string",
+                      "value": "min"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-max-4"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "eap_aka_attribute",
+                  "sub": [
+                    {
+                      "name": "at_mac",
+                      "op": "update",
+                      "type": "string",
                       "value": "max"
                     }
                   ]
@@ -3543,7 +3467,45 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-random-2"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_mac-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "eap_aka_attribute",
+                  "sub": [
+                    {
+                      "name": "at_mac",
+                      "op": "update",
+                      "type": "string",
+                      "value": "mean"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-random-1"
         },
         {
           "receiver": "epdg",
@@ -3581,7 +3543,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-mean-3"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-median-2"
         },
         {
           "receiver": "epdg",
@@ -3603,7 +3565,7 @@
                       "name": "at_checkcode",
                       "op": "update",
                       "type": "uint32",
-                      "value": "mean"
+                      "value": "median"
                     }
                   ]
                 }
@@ -3619,7 +3581,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-min-4"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-min-3"
         },
         {
           "receiver": "epdg",
@@ -3657,7 +3619,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-median-5"
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-max-4"
         },
         {
           "receiver": "epdg",
@@ -3679,7 +3641,45 @@
                       "name": "at_checkcode",
                       "op": "update",
                       "type": "uint32",
-                      "value": "median"
+                      "value": "max"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-eap_aka_attribute-at_checkcode-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "eap_aka_attribute",
+                  "sub": [
+                    {
+                      "name": "at_checkcode",
+                      "op": "update",
+                      "type": "uint32",
+                      "value": "mean"
                     }
                   ]
                 }
@@ -3827,40 +3827,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-id-max-1"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_sa_init_response",
-          "reporter": "epdg"
-        },
-        {
-          "receiver": "epdg",
-          "name": "ike_auth_1_response",
-          "reporter": "epdg",
-          "sub": [
-            {
-              "name": "extensible_authentication",
-              "sub": [
-                {
-                  "name": "id",
-                  "op": "update",
-                  "type": "uint8",
-                  "value": "max"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "testcase": [
-        {
-          "receiver": "ue",
-          "name": "enable_vowifi",
-          "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-id-random-2"
+          "id": "update-ike_auth_1_response-extensible_authentication-id-random-1"
         },
         {
           "receiver": "epdg",
@@ -3893,7 +3860,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-id-mean-3"
+          "id": "update-ike_auth_1_response-extensible_authentication-id-median-2"
         },
         {
           "receiver": "epdg",
@@ -3912,7 +3879,7 @@
                   "name": "id",
                   "op": "update",
                   "type": "uint8",
-                  "value": "mean"
+                  "value": "median"
                 }
               ]
             }
@@ -3926,7 +3893,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-id-min-4"
+          "id": "update-ike_auth_1_response-extensible_authentication-id-min-3"
         },
         {
           "receiver": "epdg",
@@ -3959,7 +3926,7 @@
           "receiver": "ue",
           "name": "enable_vowifi",
           "reporter": "epdg",
-          "id": "update-ike_auth_1_response-extensible_authentication-id-median-5"
+          "id": "update-ike_auth_1_response-extensible_authentication-id-max-4"
         },
         {
           "receiver": "epdg",
@@ -3978,7 +3945,40 @@
                   "name": "id",
                   "op": "update",
                   "type": "uint8",
-                  "value": "median"
+                  "value": "max"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "testcase": [
+        {
+          "receiver": "ue",
+          "name": "enable_vowifi",
+          "reporter": "epdg",
+          "id": "update-ike_auth_1_response-extensible_authentication-id-mean-5"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_sa_init_response",
+          "reporter": "epdg"
+        },
+        {
+          "receiver": "epdg",
+          "name": "ike_auth_1_response",
+          "reporter": "epdg",
+          "sub": [
+            {
+              "name": "extensible_authentication",
+              "sub": [
+                {
+                  "name": "id",
+                  "op": "update",
+                  "type": "uint8",
+                  "value": "mean"
                 }
               ]
             }
