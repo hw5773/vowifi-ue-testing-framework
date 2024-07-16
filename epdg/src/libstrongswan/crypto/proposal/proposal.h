@@ -187,6 +187,7 @@ struct proposal_t {
 	uint8_t (*get_number)(proposal_t *this);
   ///// Added for VoWiFi /////
   void (*set_number)(proposal_t *this, uint8_t number);
+  void *(*get_transforms)(proposal_t *this);
   ////////////////////////////
 
 	/**
