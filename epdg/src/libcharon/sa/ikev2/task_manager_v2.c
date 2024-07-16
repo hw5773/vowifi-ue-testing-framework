@@ -1052,6 +1052,8 @@ static status_t build_response(private_task_manager_t *this, message_t *request)
         failed = 1;
       }
 
+      printf("[VoWiFi] symbol: %s, failed: %d\n", symbol, failed);
+
   		switch (message->get_exchange_type(message)) 
       {
         case IKE_SA_INIT:
