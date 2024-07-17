@@ -271,9 +271,9 @@
     - `flush privileges;`
 
     - `use icscf;`
-    - `insert into `nds_trusted_domains` values (1, 'ims.mnc210.mcc310.3gppnetwork.org');`
-    - `insert into `s_cscf` values (1, 'First and only S-CSCF', 'sip:scscf.ims.mnc210.mcc310.3gppnetwork.org:6060');`
-    - `insert into `s_cscf_capabilities` values (1,1,0),(2,1,1);`
+    - `insert into 'nds_trusted_domains' values (1, 'ims.mnc210.mcc310.3gppnetwork.org');`
+    - `insert into 's_cscf' values (1, 'First and only S-CSCF', 'sip:scscf.ims.mnc210.mcc310.3gppnetwork.org:6060');`
+    - `insert into 's_cscf_capabilities' values (1,1,0),(2,1,1);`
 
 ## DNS Setting
   - [Guest] Bind9 Installation
