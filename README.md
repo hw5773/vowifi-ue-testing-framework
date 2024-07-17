@@ -581,6 +581,15 @@
   | 26 | ZTE | Stage 5G (A2020N3) | 9 | Qualcomm | Snapdragon 855 (SM8150) |
 
 ## How to run the testbed
+ - UE controller
+   - Attach the target UE to a laptop (or a desktop) through a USB cable (UE must be in a USB debugging mode)
+   - Run the script ue_controller.py under the control/ue_controller directory by `python3 ue_controller.py`
+ - ePDG controller
+   - Run the script 310210.sh or 310260.sh according to the IMSI of the target UE
+ - IMS controller
+   - Run the ims components in the order of P-CSCF, I-CSCF, and S-CSCF
+ - Main controller
+   - Run the main controller by `java -cp build/libs -jar build/libs/main_controller.jar --config ../config/310210.properties --file ../../testcases/epdg.json
 
 ## Note
 We have been working on the development of an open-source VoWiFi testbed and testing framework for the last 3 years. Recently, Osmocom () open-sourced their Osmo-epdg for creating open-source VoWiFi networks. We are really happy that the community is finally aiming to fill the gap of VoWiFi testbeds and testing. 
