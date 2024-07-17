@@ -592,4 +592,4 @@
    - Run the main controller by `java -cp build/libs -jar build/libs/main_controller.jar --config ../config/310210.properties --file ../../testcases/epdg.json
 
 ## Note
-We have been working on the development of an open-source VoWiFi testbed and testing framework for the last 3 years. Recently, Osmocom () open-sourced their Osmo-epdg for creating open-source VoWiFi networks. We are really happy that the community is finally aiming to fill the gap of VoWiFi testbeds and testing. 
+We have been working on the development of an open-source VoWiFi testbed and testing framework for the last 3 years. Recently, Osmocom (https://osmocom.org/projects/osmo-epdg) open-sourced their Osmo-epdg for creating open-source VoWiFi networks. We are really happy that the community is finally aiming to fill the gap of VoWiFi testbeds and testing. 
