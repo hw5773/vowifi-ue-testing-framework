@@ -4,6 +4,17 @@
 - Tested with 24 UEs
 - Includes capability to generate adversarial and out-of-order messages in testcases
 
+# Directories
+- control: includes the source files of the controllers
+- epdg: includes the source files of the ePDG (StrongSwan)
+- hss: includes the source files of the HSS
+- ims: includes the source files of the IMS (Kamailio)
+- scripts: includes useful Python scripts
+- settings: includes configuration files in running modules in the VoWiFi testbed
+- simcard: includes setting/configuration files to make SIM cards
+- testcaess: includes example testcases
+- vagrant: includes VM configuration files
+
 # How to setup the VoWiFi testbed
 
 ## Overview
