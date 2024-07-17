@@ -240,9 +240,9 @@
 
   - [Guest] Database for P-CSCF, I-CSCF, and S-CSCF
     - `mysql -u root -p`
-    - `create database `pcscf`;`
-    - `create database `icscf`;`
-    - `create database `scscf`;`
+    - `create database 'pcscf';`
+    - `create database 'icscf';`
+    - `create database 'scscf';`
     - `quit;`
 
     - `cd VOWIFI_ROOT/ims/utils/kamctl/mysql`
