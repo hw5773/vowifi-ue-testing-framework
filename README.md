@@ -549,7 +549,8 @@
 
 
 ## Tested UEs
- - Our framework supports the following 26 UEs:
+- Our framework supports the following 26 UEs:
+ 
   | No. | Device Vendor | Device Model | Android Version | Baseband Vendor | Baseband Model |
   | --- | --- | --- | --- | --- | --- |
   | 1 | Blackcyber | I14 Pro Max | 13  | Qualcomm | Snapdragon 888 |
