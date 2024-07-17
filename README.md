@@ -546,7 +546,7 @@
  - To conduct a UE testing, we implement the control architecture for VoWiFi to controll all the modules in the VoWiFi network including a UE, an ePDG, an IMS, and an HSS.
 
 ## Testcase Samples
-
+ - The following JSON object is a testcase to test a UE on an adversarial 
 
 ## Tested UEs
 - Our framework supports the following 26 UEs:
