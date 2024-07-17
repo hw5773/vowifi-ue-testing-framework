@@ -4,6 +4,17 @@
 - Tested with 24 UEs
 - Includes capability to generate adversarial and out-of-order messages in testcases
 
+# Directories
+- control: includes the source files of the controllers
+- epdg: includes the source files of the ePDG (StrongSwan)
+- hss: includes the source files of the HSS
+- ims: includes the source files of the IMS (Kamailio)
+- scripts: includes useful Python scripts
+- settings: includes configuration files in running modules in the VoWiFi testbed
+- simcard: includes setting/configuration files to make SIM cards
+- testcaess: includes example testcases
+- vagrant: includes VM configuration files
+
 # How to setup the VoWiFi testbed
 
 ## Overview
@@ -76,22 +87,19 @@
       - `sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script`
 
   ### List of SIM card settings preset in the repository (within the sql file for the HSS)
-  (TBD)
+  | No. | IMSI | Ki | OP | OPc | 
+  | --- | --- | --- | --- | --- |
+  | 0 | 310260123456780 | 00000000000000001111111111111111 | 0123456789abcdef0123456789abcdef | 39e98f41b6d0ed76f89f1be1db95d6ca |
+  | 1 | 310260123456781 | 11111111111111110000000000000000 | 0123456789abcdef0123456789abcdef | cae66d4110513d5f71e7ae0986d9c3d9 |
+  | 2 | 310260123456782 | 22222222222222223333333333333333 | 0123456789abcdef0123456789abcdef | 05ac79b5bb02b825a5cda8dfcc09439e |
+  | 3 | 310260123456783 | 33333333333333332222222222222222 | 0123456789abcdef0123456789abcdef | 3b907342af465290c3250e2e750e91fe |
+  | 4 | 310260123456784 | 44444444444444445555555555555555 | 0123456789abcdef0123456789abcdef | d8206cd5ed008a739fafe3d5d4d9e5c7 |
+  | 5 | 310260123456785 | 55555555555555554444444444444444 | 0123456789abcdef0123456789abcdef | a7eb0198858cc008985ae4fce81abff5 |
+  | 6 | 310260123456786 | 66666666666666667777777777777777 | 0123456789abcdef0123456789abcdef | af1ecb112aa057c15765ad96de61d9cc |
+  | 7 | 310260123456787 | 77777777777777776666666666666666 | 0123456789abcdef0123456789abcdef | 26321ae82e97a5b51128fa6ccedc932d |
+  | 8 | 310260123456788 | 88888888888888889999999999999999 | 0123456789abcdef0123456789abcdef | b292d947b09e60301f601b4faf22697f |
+  | 9 | 310260123456789 | 99999999999999998888888888888888 | 0123456789abcdef0123456789abcdef | 987b215969f494bb8c8380e38fb6c107 |
   
-## WiFi AP (deprecated)
-  - **(we found that the wifi-ap application is deprecated and no longer provided. Please refer to the next one if you cannot install wifi-ap.)**
-  - S/W: wifi-ap (or hostapd + dnsmasq)
-  - `sudo apt-get install snapd`
-  - `snap install wifi-ap`
-  - `sudo wifi-ap.config set wifi.interface=<wifi interface name>` (e.g., wlan0)
-  - `sudo wifi-ap.config set wifi.ssid=VoWiFi`
-  - `sudo wifi-ap.config set wifi.security-passphrase=vowifiaccess`
-  - `sudo wifi-ap.config set wifi.address=172.24.1.1`
-  - `sudo wifi-ap.config set dhcp.range-start=172.24.1.2`
-  - `sudo wifi-ap.config set dhcp.range-stop=172.24.1.254`
-  - `sudo wifi-ap.config set disabled=false`
-  - `sudo wifi-ap.status restart-ap`
-
 ## WiFi AP
   - I will assume that the laptop (or the desktop) has two network interfaces: the wlan interface and the other interface
   - `sudo apt-get update && sudo apt-get install git dnsmasq hostapd net-tools`
@@ -232,9 +240,9 @@
 
   - [Guest] Database for P-CSCF, I-CSCF, and S-CSCF
     - `mysql -u root -p`
-    - `create database `pcscf`;`
-    - `create database `icscf`;`
-    - `create database `scscf`;`
+    - `create database 'pcscf';`
+    - `create database 'icscf';`
+    - `create database 'scscf';`
     - `quit;`
 
     - `cd VOWIFI_ROOT/ims/utils/kamctl/mysql`
@@ -263,9 +271,9 @@
     - `flush privileges;`
 
     - `use icscf;`
-    - `insert into `nds_trusted_domains` values (1, 'ims.mnc210.mcc310.3gppnetwork.org');`
-    - `insert into `s_cscf` values (1, 'First and only S-CSCF', 'sip:scscf.ims.mnc210.mcc310.3gppnetwork.org:6060');`
-    - `insert into `s_cscf_capabilities` values (1,1,0),(2,1,1);`
+    - `insert into 'nds_trusted_domains' values (1, 'ims.mnc210.mcc310.3gppnetwork.org');`
+    - `insert into 's_cscf' values (1, 'First and only S-CSCF', 'sip:scscf.ims.mnc210.mcc310.3gppnetwork.org:6060');`
+    - `insert into 's_cscf_capabilities' values (1,1,0),(2,1,1);`
 
 ## DNS Setting
   - [Guest] Bind9 Installation
@@ -450,7 +458,7 @@
   - Login with ID: hssAdmin / Password: hss
   
   ### Subscription with an example value
-  - UE1: IMSI 310260123456781 (with the phone number 17657751111
+  - UE1: IMSI 310260123456781 (with the phone number 17657751111)
     - Click [Create] under [IMS Subscription]
     - Name: `310260123456781`
     - Capabilities Set: cap_set1
@@ -489,8 +497,9 @@
       - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
       - List IMPUs from Implicit-Set: sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org
       - List of associated IMPIs: 310260123456781@msg.pc.t-mobile.com / 310260123456781@ims.mnc260.mcc310.3gppnetwork.org
+    - Bind the IMPIs with sip:17657751111@msg.pc.t-mobile.com, sip:+17657751111@ims.mnc260.mcc310.3gppnetwork.org, sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org, and sip:+17657751111@msg.pr.t-mobile.com
 
-  - UE2: IMSI 310260123456782
+  - UE2: IMSI 310260123456782 (with the phone number 17657752222)
     - Click [Create] under [IMS Subscription]
     - Name: 310260123456782
     - Capabilities Set: cap_set1
@@ -529,14 +538,113 @@
       - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
       - List IMPUs from Implicit-Set: sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org
       - List of associated IMPIs: 310260123456782@msg.pc.t-mobile.com / 310260123456782@ims.mnc260.mcc310.3gppnetwork.org
+    - Bind the IMPIs with sip:17657752222@msg.pc.t-mobile.com, sip:+17657752222@ims.mnc260.mcc310.3gppnetwork.org, sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org, and sip:+17657752222@msg.pr.t-mobile.com
 
 ## Turn on WiFi on UEs
-  ### Samsung Phone Settings
-    - 
+
 ## Control Architecture
+ - To conduct a UE testing, we implement the control architecture for VoWiFi to controll all the modules in the VoWiFi network including a UE, an ePDG, an IMS, and an HSS.
+   ![alt text](https://github.com/hw5773/vowifi-ue-testing-framework/main/figure/controller.png?raw=true)
+
 ## Testcase Samples
+ - The following JSON object is a testcase to test a UE on adversarial messages sent by ePDG and IMS according to the testcase. The testcase includes a scenario, where the encryption algorithm is set to null in the ealg attribute of the 401 unauthorized message.
+ - ```json
+   {
+     "testcases": [
+       {
+         "testcase": [
+           {
+             "receiver": "ue",
+             "name": "enable_vowifi",
+             "reporter": "epdg",
+             "id": "update-401_unauthorized-security_server-ealg-null"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_sa_init_response",
+             "reporter": "epdg"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_auth_1_response",
+             "reporter": "epdg"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_auth_2_response",
+             "reporter": "epdg"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_auth_3_response",
+             "reporter": "ims"
+           },
+           {
+             "receiver": "ims",
+             "name": "401_unauthorized",
+             "reporter": "ims",
+             "sub": [
+               {
+                 "name": "security_server",
+                 "sub": [
+                   {
+                     "name": "ealg",
+                     "op": "update",
+                     "type": "string",
+                     "value": "null"
+                   }
+                 ]
+               }
+             ]
+           },
+         ]
+       }
+     ]
+   }
+   ```
+
 ## Tested UEs
+- Our framework supports the following 26 UEs:
+ 
+  | No. | Device Vendor | Device Model | Android Version | Baseband Vendor | Baseband Model |
+  | --- | --- | --- | --- | --- | --- |
+  | 1 | Blackcyber | I14 Pro Max | 13  | Qualcomm | Snapdragon 888 |
+  | 2 | Blackcyber | I15 Pro Max | 13 | Qualcomm | Snapdragon 8 Gen2 |
+  | 3 | Blackview | A55 | 11 | MediaTek | Helio A22 (MT6761) |
+  | 4 | Google | Pixel 4a | 13 | Qualcomm | Snapdragon 765G |
+  | 5 | Google | Pixel 6a | 12 | Google | Tensor |
+  | 6 | HTC | U11 life | 8 | Qualcomm | Snapdragon 630 (SDM630) |
+  | 7 | Huawei | Nexus 6P | 8 | Qualcomm | Snapdragon 810 (MSM8994) |
+  | 8 | LG | Stylo 6 | 10 | MediaTek | Helio P35 (MT6765) |
+  | 9 | LG | Velvet 5G | 10 | Qualcomm | Snapdragon 765G |
+  | 10 | Motorola | Moto e5 Plus | 8 | Qualcomm | Snapdragon 430 (MSM8937) |
+  | 11 | Motorola | G Power 2021 | 10 | Qualcomm | Snapdragon 662 (SM6115) |
+  | 12 | Nokia | G100 | 12 | Qualcomm | Snapdragon 665 |
+  | 13 | NUU | B15 (S6701L) | 11 | MediaTek | Helio G80 (MT6768) |
+  | 14 | OnePlus | Nord N20 (CPH2459) | 12 | Qualcomm | Snapdragon 695 (SM6375) |
+  | 15 | OnePlus | 7T | 11 | Qualcomm | Snapdragon 855 (SM8150) |
+  | 16 | Samsung | Galaxy S6 (G920T) | 7 | Samsung | Exynos 7 Octa 7420 |
+  | 17 | Samsung | Galaxy A21 | 10 | MediaTek | Helio P35 (MT6765) |
+  | 18 | Samsung | Galaxy A21s | 12 | Samsung | Exynos 850 |
+  | 19 | Samsung | Galaxy A23 | 12 | Qualcomm | Snapdragon 665 (SM6225) |
+  | 20 | Samsung | Galaxy A33 | 13 | Samsung | Exynos 1280 |
+  | 21 | Samsung | Galaxy A34 5G | 14 | Samsung | Exynos 1280 |
+  | 22 | TCL | 40XL (T608M) | 13 | MediaTek | Helio P35 (MT6765V/CA) |
+  | 23 | T-Mobile | Revvl4+ | 10 | MediaTek | Helio A22 (MT6761) |
+  | 24 | Ulefone | Note 14 | 12 | MediaTek | Helio A22 (MT6761) |
+  | 25 | UMIDIGI | A13 Pro | 11 | Unisoc | T610 |
+  | 26 | ZTE | Stage 5G (A2020N3) | 9 | Qualcomm | Snapdragon 855 (SM8150) |
+
 ## How to run the testbed
+ - UE controller
+   - Attach the target UE to a laptop (or a desktop) through a USB cable (UE must be in a USB debugging mode)
+   - Run the script ue_controller.py under the control/ue_controller directory by `python3 ue_controller.py`
+ - ePDG controller
+   - Run the script 310210.sh or 310260.sh according to the IMSI of the target UE
+ - IMS controller
+   - Run the ims components in the order of P-CSCF, I-CSCF, and S-CSCF
+ - Main controller
+   - Run the main controller by `java -cp build/libs -jar build/libs/main_controller.jar --config ../config/310210.properties --file ../../testcases/epdg.json
 
 ## Note
-We have been working on the development of an open-source VoWiFi testbed and testing framework for the last 3 years. Recently, Osmocom () open-sourced their Osmo-epdg for creating open-source VoWiFi networks. We are really happy that the community is finally aiming to fill the gap of VoWiFi testbeds and testing. 
+We have been working on the development of an open-source VoWiFi testbed and testing framework for the last 3 years. Recently and concurrently Osmocom (https://osmocom.org/projects/osmo-epdg) open-sourced their Osmo-epdg for creating open-source VoWiFi networks. We are really happy that the community is finally aiming to fill the gap in VoWiFi testbeds and testing. 
