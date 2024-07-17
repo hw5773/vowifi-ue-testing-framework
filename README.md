@@ -87,22 +87,28 @@
       - `sudo python3 pySim-shell.py -p 0 -a <ADM value> --script VOWIFI_ROOT/scripts/vowifi-setting.script`
 
   ### List of SIM card settings preset in the repository (within the sql file for the HSS)
-  (TBD)
+  | No. | IMSI | Ki | OP | OPc | 
+  | --- | --- | --- | --- | --- |
+  | 0 | 310260123456780 | 00000000000000001111111111111111 | 0123456789abcdef0123456789abcdef | 39e98f41b6d0ed76f89f1be1db95d6ca |
+  | --- | --- | --- | --- | --- |
+  | 1 | 310260123456781 | 11111111111111110000000000000000 | 0123456789abcdef0123456789abcdef | cae66d4110513d5f71e7ae0986d9c3d9 |
+  | --- | --- | --- | --- | --- |
+  | 2 | 310260123456782 | 22222222222222223333333333333333 | 0123456789abcdef0123456789abcdef | 05ac79b5bb02b825a5cda8dfcc09439e |
+  | --- | --- | --- | --- | --- |
+  | 3 | 310260123456783 | 33333333333333332222222222222222 | 0123456789abcdef0123456789abcdef | 3b907342af465290c3250e2e750e91fe |
+  | --- | --- | --- | --- | --- |
+  | 4 | 310260123456784 | 44444444444444445555555555555555 | 0123456789abcdef0123456789abcdef | d8206cd5ed008a739fafe3d5d4d9e5c7 |
+  | --- | --- | --- | --- | --- |
+  | 5 | 310260123456785 | 55555555555555554444444444444444 | 0123456789abcdef0123456789abcdef | a7eb0198858cc008985ae4fce81abff5 |
+  | --- | --- | --- | --- | --- |
+  | 6 | 310260123456786 | 66666666666666667777777777777777 | 0123456789abcdef0123456789abcdef | af1ecb112aa057c15765ad96de61d9cc |
+  | --- | --- | --- | --- | --- |
+  | 7 | 310260123456787 | 77777777777777776666666666666666 | 0123456789abcdef0123456789abcdef | 26321ae82e97a5b51128fa6ccedc932d |
+  | --- | --- | --- | --- | --- |
+  | 8 | 310260123456788 | 88888888888888889999999999999999 | 0123456789abcdef0123456789abcdef | b292d947b09e60301f601b4faf22697f |
+  | --- | --- | --- | --- | --- |
+  | 9 | 310260123456789 | 99999999999999998888888888888888 | 0123456789abcdef0123456789abcdef | 987b215969f494bb8c8380e38fb6c107 |
   
-## WiFi AP (deprecated)
-  - **(we found that the wifi-ap application is deprecated and no longer provided. Please refer to the next one if you cannot install wifi-ap.)**
-  - S/W: wifi-ap (or hostapd + dnsmasq)
-  - `sudo apt-get install snapd`
-  - `snap install wifi-ap`
-  - `sudo wifi-ap.config set wifi.interface=<wifi interface name>` (e.g., wlan0)
-  - `sudo wifi-ap.config set wifi.ssid=VoWiFi`
-  - `sudo wifi-ap.config set wifi.security-passphrase=vowifiaccess`
-  - `sudo wifi-ap.config set wifi.address=172.24.1.1`
-  - `sudo wifi-ap.config set dhcp.range-start=172.24.1.2`
-  - `sudo wifi-ap.config set dhcp.range-stop=172.24.1.254`
-  - `sudo wifi-ap.config set disabled=false`
-  - `sudo wifi-ap.status restart-ap`
-
 ## WiFi AP
   - I will assume that the laptop (or the desktop) has two network interfaces: the wlan interface and the other interface
   - `sudo apt-get update && sudo apt-get install git dnsmasq hostapd net-tools`
