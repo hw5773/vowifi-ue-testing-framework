@@ -590,7 +590,7 @@
                      "name": "ealg",
                      "op": "update",
                      "type": "string",
-                     "value": "null
+                     "value": "null"
                    }
                  ]
                }
