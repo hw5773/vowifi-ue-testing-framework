@@ -546,10 +546,61 @@
  - To conduct a UE testing, we implement the control architecture for VoWiFi to controll all the modules in the VoWiFi network including a UE, an ePDG, an IMS, and an HSS.
 
 ## Testcase Samples
- - The following JSON object is a testcase to test a UE on an adversarial messages sent by ePDG according to the testcase.
+ - The following JSON object is a testcase to test a UE on adversarial messages sent by ePDG and IMS according to the testcase.
  - ```json
-   "testcase": {
+   {
+     "testcases": [
+       {
+         "testcase": [
+           {
+             "receiver": "ue",
+             "name": "enable_vowifi",
+             "reporter": "epdg",
+             "id": "update-401_unauthorized-security_server-ealg-null"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_sa_init_response",
+             "reporter": "epdg"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_auth_1_response",
+             "reporter": "epdg"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_auth_2_response",
+             "reporter": "epdg"
+           },
+           {
+             "receiver": "epdg",
+             "name": "ike_auth_3_response",
+             "reporter": "ims"
+           },
+           {
+             "receiver": "ims",
+             "name": "401_unauthorized",
+             "reporter": "ims",
+             "sub": [
+               {
+                 "name": "security_server",
+                 "sub": [
+                   {
+                     "name": "ealg",
+                     "op": "update",
+                     "type": "string",
+                     "value": "null
+                   }
+                 ]
+               }
+             ]
+           },
+         ]
+       }
+     ]
    }
+   ```
 
 ## Tested UEs
 - Our framework supports the following 26 UEs:
