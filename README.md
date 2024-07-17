@@ -544,7 +544,7 @@
 
 ## Control Architecture
  - To conduct a UE testing, we implement the control architecture for VoWiFi to controll all the modules in the VoWiFi network including a UE, an ePDG, an IMS, and an HSS.
-   ![alt text](https://github.com/hw5773/vowifi-ue-testing-framework/main/figure/controller.png?raw=true)
+   ![The control architecture of the VoWiFi-UE-testing framework](figure/controller.png?raw=true)
 
 ## Testcase Samples
  - The following JSON object is a testcase to test a UE on adversarial messages sent by ePDG and IMS according to the testcase. The testcase includes a scenario, where the encryption algorithm is set to null in the ealg attribute of the 401 unauthorized message.
