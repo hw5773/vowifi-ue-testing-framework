@@ -1,3 +1,9 @@
+# Open-source VoWiFi UE Testing Framework
+- Includes a separate control architecture
+- Includes a JSON-based testing format for describing any testcase
+- Tested with 24 UEs
+- Includes capability to generate adversarial and out-of-order messages in testcases
+
 # How to setup the VoWiFi testbed
 
 ## Overview
@@ -527,4 +533,10 @@
 ## Turn on WiFi on UEs
   ### Samsung Phone Settings
     - 
+## Control Architecture
+## Testcase Samples
+## Tested UEs
+## How to run the testbed
 
+## Note
+We have been working on the development of an open-source VoWiFi testbed and testing framework for the last 3 years. Recently, Osmocom () open-sourced their Osmo-epdg for creating open-source VoWiFi networks. We are really happy that the community is finally aiming to fill the gap of VoWiFi testbeds and testing. 
