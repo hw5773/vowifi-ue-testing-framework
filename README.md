@@ -458,7 +458,7 @@
   - Login with ID: hssAdmin / Password: hss
   
   ### Subscription with an example value
-  - UE1: IMSI 310260123456781 (with the phone number 17657751111
+  - UE1: IMSI 310260123456781 (with the phone number 17657751111)
     - Click [Create] under [IMS Subscription]
     - Name: `310260123456781`
     - Capabilities Set: cap_set1
@@ -497,8 +497,9 @@
       - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
       - List IMPUs from Implicit-Set: sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org
       - List of associated IMPIs: 310260123456781@msg.pc.t-mobile.com / 310260123456781@ims.mnc260.mcc310.3gppnetwork.org
+    - Bind the IMPIs with sip:17657751111@msg.pc.t-mobile.com, sip:+17657751111@ims.mnc260.mcc310.3gppnetwork.org, sip:310260123456781@ims.mnc260.mcc310.3gppnetwork.org, and sip:+17657751111@msg.pr.t-mobile.com
 
-  - UE2: IMSI 310260123456782
+  - UE2: IMSI 310260123456782 (with the phone number 17657752222)
     - Click [Create] under [IMS Subscription]
     - Name: 310260123456782
     - Capabilities Set: cap_set1
@@ -537,13 +538,47 @@
       - List of Visitied Networks: ims.mnc260.mcc310.3gppnetwork.org
       - List IMPUs from Implicit-Set: sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org
       - List of associated IMPIs: 310260123456782@msg.pc.t-mobile.com / 310260123456782@ims.mnc260.mcc310.3gppnetwork.org
+    - Bind the IMPIs with sip:17657752222@msg.pc.t-mobile.com, sip:+17657752222@ims.mnc260.mcc310.3gppnetwork.org, sip:310260123456782@ims.mnc260.mcc310.3gppnetwork.org, and sip:+17657752222@msg.pr.t-mobile.com
 
 ## Turn on WiFi on UEs
-  ### Samsung Phone Settings
-    - 
+
 ## Control Architecture
+ - To conduct a UE testing, we implement the control architecture for VoWiFi to controll all the modules in the VoWiFi network including a UE, an ePDG, an IMS, and an HSS.
+
 ## Testcase Samples
+
+
 ## Tested UEs
+ - Our framework supports the following 26 UEs:
+  | No. | Device Vendor | Device Model | Android Version | Baseband Vendor | Baseband Model |
+  | --- | --- | --- | --- | --- | --- |
+  | 1 | Blackcyber | I14 Pro Max | 13  | Qualcomm | Snapdragon 888 |
+  | 2 | Blackcyber | I15 Pro Max | 13 | Qualcomm | Snapdragon 8 Gen2 |
+  | 3 | Blackview | A55 | 11 | MediaTek | Helio A22 (MT6761) |
+  | 4 | Google | Pixel 4a | 13 | Qualcomm | Snapdragon 765G |
+  | 5 | Google | Pixel 6a | 12 | Google | Tensor |
+  | 6 | HTC | U11 life | 8 | Qualcomm | Snapdragon 630 (SDM630) |
+  | 7 | Huawei | Nexus 6P | 8 | Qualcomm | Snapdragon 810 (MSM8994) |
+  | 8 | LG | Stylo 6 | 10 | MediaTek | Helio P35 (MT6765) |
+  | 9 | LG | Velvet 5G | 10 | Qualcomm | Snapdragon 765G |
+  | 10 | Motorola | Moto e5 Plus | 8 | Qualcomm | Snapdragon 430 (MSM8937) |
+  | 11 | Motorola | G Power 2021 | 10 | Qualcomm | Snapdragon 662 (SM6115) |
+  | 12 | Nokia | G100 | 12 | Qualcomm | Snapdragon 665 |
+  | 13 | NUU | B15 (S6701L) | 11 | MediaTek | Helio G80 (MT6768) |
+  | 14 | OnePlus | Nord N20 (CPH2459) | 12 | Qualcomm | Snapdragon 695 (SM6375) |
+  | 15 | OnePlus | 7T | 11 | Qualcomm | Snapdragon 855 (SM8150) |
+  | 16 | Samsung | Galaxy S6 (G920T) | 7 | Samsung | Exynos 7 Octa 7420 |
+  | 17 | Samsung | Galaxy A21 | 10 | MediaTek | Helio P35 (MT6765) |
+  | 18 | Samsung | Galaxy A21s | 12 | Samsung | Exynos 850 |
+  | 19 | Samsung | Galaxy A23 | 12 | Qualcomm | Snapdragon 665 (SM6225) |
+  | 20 | Samsung | Galaxy A33 | 13 | Samsung | Exynos 1280 |
+  | 21 | Samsung | Galaxy A34 5G | 14 | Samsung | Exynos 1280 |
+  | 22 | TCL | 40XL (T608M) | 13 | MediaTek | Helio P35 (MT6765V/CA) |
+  | 23 | T-Mobile | Revvl4+ | 10 | MediaTek | Helio A22 (MT6761) |
+  | 24 | Ulefone | Note 14 | 12 | MediaTek | Helio A22 (MT6761) |
+  | 25 | UMIDIGI | A13 Pro | 11 | Unisoc | T610 |
+  | 26 | ZTE | Stage 5G (A2020N3) | 9 | Qualcomm | Snapdragon 855 (SM8150) |
+
 ## How to run the testbed
 
 ## Note
