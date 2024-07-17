@@ -1,4 +1,4 @@
-# TBA
+# RFC5996 (pp. 62 -- 63): The specific requirements for supporting NAT traversal are listed below. Support for NAT traversal is optional. Both the IKE initiator and responder MUST include in their IKE_SA_INIT packets Notify payloads of type NAT_DETECTION_SOURCE_IP and NAT_DETECTION_DESTINATION_IP. Implementations MUST process received UDP-encapsulated ESP packets even when no NAT was detected.
 
 {
   "testcases": [

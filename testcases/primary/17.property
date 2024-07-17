@@ -25,7 +25,7 @@
                       "sub": [
                         {
                           "name": "encryption_key_length",
-                          "op": ["update"],
+                          "op": ["insert", "update"],
                           "type": "uint16",
                           "value": VALUE([0, 128, 192, 256, 65535], [256])
                         }

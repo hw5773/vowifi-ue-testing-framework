@@ -21,11 +21,10 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd.h \
- /usr/include/x86_64-linux-gnu/bits/unistd_ext.h sa/ike_sa_instance.h \
- /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
- /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
- /usr/include/x86_64-linux-gnu/bits/floatn.h \
- /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ ../../src/libstrongswan/collections/array.h \
+ ../../src/libstrongswan/collections/enumerator.h \
+ ../../src/libstrongswan/utils/utils.h \
  /usr/include/x86_64-linux-gnu/sys/types.h \
  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
@@ -46,38 +45,21 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
- /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+ /usr/include/x86_64-linux-gnu/bits/floatn.h \
+ /usr/include/x86_64-linux-gnu/bits/floatn-common.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/strings.h \
  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
- /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
- /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
- /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
- /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h /usr/include/pthread.h \
- /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/x86_64-linux-gnu/bits/setjmp.h encoding/payloads/payload.h \
- ../../src/libstrongswan/library.h \
- ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
- ../../src/libstrongswan/utils/utils.h \
- /usr/include/x86_64-linux-gnu/sys/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/sys/param.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
@@ -126,10 +108,14 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/socket2.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netdb.h \
  /usr/include/rpc/netdb.h /usr/include/x86_64-linux-gnu/bits/netdb.h \
- /usr/include/poll.h /usr/include/x86_64-linux-gnu/sys/poll.h \
+ /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
+ /usr/include/x86_64-linux-gnu/bits/cpu-set.h /usr/include/poll.h \
+ /usr/include/x86_64-linux-gnu/sys/poll.h \
  /usr/include/x86_64-linux-gnu/bits/poll.h \
  /usr/include/x86_64-linux-gnu/bits/poll2.h \
  ../../src/libstrongswan/utils/utils/types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  ../../src/libstrongswan/utils/enum.h \
  ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
  ../../src/libstrongswan/utils/utils/atomics.h \
@@ -142,10 +128,26 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
  ../../src/libstrongswan/utils/utils/object.h \
  ../../src/libstrongswan/utils/utils/path.h \
  ../../src/libstrongswan/utils/utils/time.h \
- ../../src/libstrongswan/utils/utils/tty.h \
+ ../../src/libstrongswan/utils/utils/tty.h sa/ike_sa_instance.h \
+ /usr/include/stdio.h /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/pthread.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h encoding/payloads/payload.h \
+ ../../src/libstrongswan/library.h \
+ ../../src/libstrongswan/utils/printf_hook/printf_hook.h \
+ ../../src/libstrongswan/utils/utils.h \
  ../../src/libstrongswan/networking/host_resolver.h \
  ../../src/libstrongswan/networking/host.h \
- ../../src/libstrongswan/utils/utils.h \
  ../../src/libstrongswan/utils/chunk.h \
  ../../src/libstrongswan/utils/utils.h \
  ../../src/libstrongswan/networking/streams/stream_manager.h \
@@ -156,7 +158,6 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
  ../../src/libstrongswan/processing/scheduler.h \
  ../../src/libstrongswan/processing/watcher.h \
  ../../src/libstrongswan/crypto/crypto_factory.h \
- ../../src/libstrongswan/collections/enumerator.h \
  ../../src/libstrongswan/crypto/crypters/crypter.h \
  ../../src/libstrongswan/crypto/aead.h \
  ../../src/libstrongswan/crypto/signers/signer.h \
@@ -284,17 +285,11 @@ sa/ike_sa_instance.lo: sa/ike_sa_instance.c /usr/include/stdc-predef.h \
 
 /usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
-sa/ike_sa_instance.h:
+../../src/libstrongswan/collections/array.h:
 
-/usr/include/stdlib.h:
+../../src/libstrongswan/collections/enumerator.h:
 
-/usr/include/x86_64-linux-gnu/bits/waitflags.h:
-
-/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
-
-/usr/include/x86_64-linux-gnu/bits/floatn.h:
-
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+../../src/libstrongswan/utils/utils.h:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
@@ -340,6 +335,16 @@ sa/ike_sa_instance.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
+/usr/include/stdlib.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+
+/usr/include/x86_64-linux-gnu/bits/floatn.h:
+
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
 /usr/include/alloca.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
@@ -347,6 +352,8 @@ sa/ike_sa_instance.h:
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib.h:
+
+/usr/include/x86_64-linux-gnu/sys/time.h:
 
 /usr/include/string.h:
 
@@ -360,61 +367,7 @@ sa/ike_sa_instance.h:
 
 /usr/include/x86_64-linux-gnu/bits/string_fortified.h:
 
-/usr/include/stdio.h:
-
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
-/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
-
-/usr/include/pthread.h:
-
-/usr/include/sched.h:
-
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
-
-/usr/include/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
-
-/usr/include/x86_64-linux-gnu/bits/setjmp.h:
-
-encoding/payloads/payload.h:
-
-../../src/libstrongswan/library.h:
-
-../../src/libstrongswan/utils/printf_hook/printf_hook.h:
-
-../../src/libstrongswan/utils/utils.h:
-
-/usr/include/x86_64-linux-gnu/sys/time.h:
 
 /usr/include/x86_64-linux-gnu/sys/param.h:
 
@@ -528,6 +481,14 @@ encoding/payloads/payload.h:
 
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
 
+/usr/include/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
+
+/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
+
 /usr/include/poll.h:
 
 /usr/include/x86_64-linux-gnu/sys/poll.h:
@@ -537,6 +498,8 @@ encoding/payloads/payload.h:
 /usr/include/x86_64-linux-gnu/bits/poll2.h:
 
 ../../src/libstrongswan/utils/utils/types.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
 
 ../../src/libstrongswan/utils/enum.h:
 
@@ -564,11 +527,53 @@ encoding/payloads/payload.h:
 
 ../../src/libstrongswan/utils/utils/tty.h:
 
+sa/ike_sa_instance.h:
+
+/usr/include/stdio.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:
+
+/usr/include/pthread.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+encoding/payloads/payload.h:
+
+../../src/libstrongswan/library.h:
+
+../../src/libstrongswan/utils/printf_hook/printf_hook.h:
+
+../../src/libstrongswan/utils/utils.h:
+
 ../../src/libstrongswan/networking/host_resolver.h:
 
 ../../src/libstrongswan/networking/host.h:
-
-../../src/libstrongswan/utils/utils.h:
 
 ../../src/libstrongswan/utils/chunk.h:
 
@@ -589,8 +594,6 @@ encoding/payloads/payload.h:
 ../../src/libstrongswan/processing/watcher.h:
 
 ../../src/libstrongswan/crypto/crypto_factory.h:
-
-../../src/libstrongswan/collections/enumerator.h:
 
 ../../src/libstrongswan/crypto/crypters/crypter.h:
 
