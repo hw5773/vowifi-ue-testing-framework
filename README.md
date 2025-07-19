@@ -12,7 +12,7 @@
 - scripts: includes useful Python scripts
 - settings: includes configuration files in running modules in the VoWiFi testbed
 - simcard: includes setting/configuration files to make SIM cards
-- testcaess: includes example testcases
+- testcases: includes example testcases
 - vagrant: includes VM configuration files
 
 # How to setup the VoWiFi testbed
@@ -602,6 +602,86 @@
      ]
    }
    ```
+
+A testcase (TC), shown in the follwoing Figure, is an interface provided for a tester to describe the scenario of their interest encoded in a simple JSON format. 
+
+
+![VoWiFi-UE-testcases json format](figure/testcase-examples.png?raw=true)
+
+# VoWiFi Property Extraction using RAG
+
+## Prompt to extract properties
+```
+<|system|>  
+% Role Declaration  
+You are a Vo-WiFi expert. Your task is to extract properties of Vo-WiFi from the contexts given from specifications.  
+
+Below you will find the basic structure of Properties in a Vo-WiFi specification.  
+
+% Rules  
+Properties often  
+1. Use "shall", "must", or "should" to indicate mandatory actions or strong recommendations.  
+2. Describe specific actions, such as taking input, sending parameters, or generating output.  
+3. Include terms like Input, Output, Parameter etc.  
+4. Specify interactions between network components (e.g., UE, ePDG, AAA Server) and the data exchanged (e.g., AUTH parameter, Notify payload).  
+5. Describe steps in a process and the dependencies between them, specify conditions or contexts for actions to occur.  
+
+% Instructions  
+1. Be concise while generating; only give the extracted properties as a response, and don't add anything on your own.  
+
+% Example Properties  
+Some example properties are:  
+1. The UE shall take its own copy of the MSK as input to generate the AUTH parameter to authenticate the first IKE_SA_INIT message.  
+2. The AUTH parameter is sent to the ePDG. The UE includes a Notify payload ANOTHER_AUTH_FOLLOWS indicating to the ePDG that another authentication and authorization round will follow.  
+3. The UE sends the identity in the private network in IDi payload that is used for the next authentication and authorization with the External AAA Server and without an AUTH payload.  
+
+% Context Block  
+You will find the required information about vo-wifi properties in the following context:  
+
+{context} % retrieved from the specifications  
+
+<|assistant|>  % Assistant Output Section
+```
+##  List of properties extracted using LLM
+
+| Sl | Property |
+|----|----------|
+| 1 | The UE shall take its own copy of the MSK as input to generate the AUTH parameter to authenticate the first IKE_SA_INIT message. |
+| 2 | The UE takes its own copy of the MSK (Master Session Key) as input to generate the AUTH parameter to authenticate the first IKE_SA_INIT message. |
+| 3 | The AUTH parameter is sent to the ePDG, and the UE includes a Notify payload ANOTHER_AUTH_FOLLOWS to indicate that another authentication and authorization round will follow. |
+| 4 | The UE sends its identity in the private network in the IDi payload for the next authentication and authorization with the External AAA Server and without an AUTH payload. |
+| 5 | The UE shall take its own copy of the MSK as input to generate the AUTH parameter to authenticate the first IKE_SA_INIT message. |
+| 6 | EAP-AKA, as specified in RFC 4187, within IKEv2, as specified in RFC 5996, shall be used to authenticate UEs, and certificates used for authentication of the ePDG shall meet the certificate profiles given in TS 33.310. |
+| 7 | The ePDG shall authenticate itself to the UE with an identity that is the same as the FQDN of the ePDG determined by the ePDG selection procedures defined in TS 23.402, and this identity shall be contained in the IKEv2 ID_FQDN payload and shall match a dNSName SubjectAltName component in the ePDG's certificate. |
+| 8 | The UE shall use the Configuration Payload of IKEv2 to obtain the Remote IP address. |
+| 9 | Replay protection is provided in IKEv2 as the UE and ePDG generate nonces as input to derive the encryption and authentication keys, preventing intermediate nodes from modifying or changing the user identity. |
+| 10 | The UE omits the AUTH parameter in order to indicate to the ePDG that it wants to use EAP over IKEv2. |
+| 11 | When the UE requests with a CERTREQ payload, the ePDG responds by sending the certificates requested by the UE in the CERT payload. To protect the previous message in the IKE_SA_INIT exchange, the ePDG includes an AUTH payload in the response. |
+| 12 | The UE checks the authentication parameters and responds to the authentication challenge, and the IKE_AUTH request message includes the EAP message (EAP-Response/AKA-Challenge) containing the UE's response to the authentication challenge. |
+| 13 | The UE takes its own copy of the MSK as input to generate the AUTH parameter, and the AUTH parameter is sent to the ePDG. |
+| 14 | The UE shall send X.509 certificate - Signature payloads with encoding value 4. |
+| 15 | The UE shall not assume that any except the first IKEv2 CERT payload is ordered in any way. |
+| 16 | The UE shall be able to support certificate paths containing up to four certificates, where the intermediate CA certificates and the ePDG certificate are obtained from the IKEv2 CERT payload and the self-signed CA certificate is obtained from a UE local store of trusted root certificates. |
+| 17 | The UE shall be prepared to receive irrelevant certificates, or certificates it does not understand. |
+| 18 | The UE shall be able to process certificates even if naming attributes are unknown. |
+| 19 | The UE shall support both UTCTime and GeneralizedTime encoding for validity time. |
+| 20 | The UE shall check the validity time, and reject certificates that are either not yet valid or are expired. |
+| 21 | The UE shall support processing of the BasicConstraints, NameConstraints, and KeyUsage extensions. |
+| 22 | Support for OCSP is mandatory in the UE. |
+| 23 | The UE should send an OCSP request message to the OCSP server after the tunnel is established, and before user data is transmitted, to check the certificate status of the ePDG. |
+| 24 | The UE shall establish a new IPsec tunnel with the new ePDG as described in subclause 8.2.2. |
+| 25 | The UE receives an IKE_AUTH Response message from the ePDG, containing its identity, a certificate, and the AUTH parameter to protect the previous message it sent to the UE. |
+| 26 | The UE shall re-establish the IPsec Tunnel for the corresponding PDN connection after its release. |
+| 27 | The first certificate provided MUST contain the public key used to verify the AUTH field. |
+| 28 | The responder might use some other IDr to finish the exchange. |
+| 29 | If the initiator guesses the wrong Diffie-Hellman group during the IKE_SA_INIT, it must retry the IKE_SA_INIT with the corrected Diffie-Hellman group, and it should again propose its full supported set of groups, while picking an element of the selected group for its KE value. |
+| 30 | The IKE SA is still created as usual, and the Notify message types that do not prevent an IKE SA from being set up include at least NO_PROPOSAL_CHOSEN, TS_UNACCEPTABLE, SINGLE_PAIR_REQUIRED, INTERNAL_ADDRESS_FAILURE, and FAILED_CP_REQUIRED. |
+| 31 | If the failure is related to creating the IKE SA, the IKE SA is not created. The information needs to be treated with caution, assuming the peer receiving the Notify error message has not yet authenticated the other end, or if the peer fails to authenticate the other end for some reason. |
+| 32 | The responder MUST reject the request and indicate its preferred Diffie-Hellman group in the response. |
+| 33 | INFORMATIONAL exchanges MUST ONLY occur after the initial exchanges and are cryptographically protected with the negotiated keys. |
+| 34 | The IKE SA MUST be closed or rekeyed. |
+| 35 | An endpoint MUST NOT conclude that the other endpoint has failed based on any routing information (e.g., ICMP messages) or IKE messages that arrive without cryptographic protection (e.g., Notify messages complaining about unknown SPIs), because these messages can be forged or sent by attackers. |
+
 
 ## Tested UEs
 - Our framework supports the following 26 UEs:
