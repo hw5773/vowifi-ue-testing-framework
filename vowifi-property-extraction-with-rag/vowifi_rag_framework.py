@@ -607,28 +607,36 @@ class VoWiFiRAGPipeline:
         )
         
         # Create prompt template for VoWiFi property extraction
-        prompt_template = """<|system|>
-You are a VoWiFi (Voice over WiFi) expert specializing in property extraction from technical specifications. 
-Your task is to extract and identify specific properties, requirements, and behaviors from VoWiFi documentation.
+        prompt_template = """<|system|>  
+                            % Role Declaration  
+                            You are a Vo-WiFi expert. Your task is to extract properties of Vo-WiFi from the contexts given from specifications.  
 
-A property is a statement that describes:
-1. Requirements (using "shall", "must", "required")
-2. Conditional behaviors (starting with "if", "when", "unless")
-3. Technical specifications and procedures
-4. Security and authentication requirements
-5. Message exchange protocols
-6. System constraints and limitations
+                            Below you will find the basic structure of Properties in a Vo-WiFi specification.  
 
-Focus on extracting precise, actionable properties that define how VoWiFi systems should behave.
+                            % Rules  
+                            Properties often  
+                            1. Use "shall", "must", or "should" to indicate mandatory actions or strong recommendations.  
+                            2. Describe specific actions, such as taking input, sending parameters, or generating output.  
+                            3. Include terms like Input, Output, Parameter etc.  
+                            4. Specify interactions between network components (e.g., UE, ePDG, AAA Server) and the data exchanged (e.g., AUTH parameter, Notify payload).  
+                            5. Describe steps in a process and the dependencies between them, specify conditions or contexts for actions to occur.  
 
-Context from VoWiFi specifications:
-{context}
+                            % Instructions  
+                            1. Be concise while generating; only give the extracted properties as a response, and don't add anything on your own.  
 
-</s>
-<|user|>
-{question}
-</s>
-<|assistant|>"""
+                            % Example Properties  
+                            Some example properties are:  
+                            1. The UE shall take its own copy of the MSK as input to generate the AUTH parameter to authenticate the first IKE_SA_INIT message.  
+                            2. The AUTH parameter is sent to the ePDG. The UE includes a Notify payload ANOTHER_AUTH_FOLLOWS indicating to the ePDG that another authentication and authorization round will follow.  
+                            3. The UE sends the identity in the private network in IDi payload that is used for the next authentication and authorization with the External AAA Server and without an AUTH payload.  
+
+                            % Context Block  
+                            You will find the required information about vo-wifi properties in the following context:  
+
+                            {context} % retrieved from the specifications  
+
+                            % Assistant Output Section
+                            """
         
         prompt = PromptTemplate(
             input_variables=["context", "question"],
