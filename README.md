@@ -4,6 +4,8 @@
 - Tested with 24 UEs
 - Includes capability to generate adversarial and out-of-order messages in testcases
 
+# Overview
+   ![Overview of the VoWiFi-UE-testing framework](figure/vwattacker.png?raw=true)
 # Directories
 - control: includes the source files of the controllers
 - epdg: includes the source files of the ePDG (StrongSwan)
@@ -14,6 +16,7 @@
 - simcard: includes setting/configuration files to make SIM cards
 - testcases: includes example testcases
 - vagrant: includes VM configuration files
+- vowifi-property-extraction-with-rag: includes rag-based vowifi property extraction framework
 
 # How to setup the VoWiFi testbed
 
@@ -725,6 +728,56 @@ You will find the required information about vo-wifi properties in the following
    - Run the ims components in the order of P-CSCF, I-CSCF, and S-CSCF
  - Main controller
    - Run the main controller by `java -cp build/libs -jar build/libs/main_controller.jar --config ../config/310210.properties --file ../../testcases/epdg.json
+
+
+## VoWiFi Property Extraction with RAG
+
+This framework provides a streamlined framework for extracting VoWiFi (Voice over Wi-Fi) properties from RFC documents using Retrieval-Augmented Generation (RAG).
+
+
+### Prerequisites
+
+- Python 3.8 or higher
+- At least 8GB RAM (16GB recommended)
+- CUDA-compatible GPU (optional, for faster processing)
+
+## Quick Start
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd vowifi-property-extraction-with-rag
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   # Create virtual environment (recommended)
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   
+   # Install dependencies
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+### Property Extraction from RFCs
+
+The framework automatically extracts VoWiFi properties from RFC documents in the `rfcs/` folder.
+
+#### Basic Usage
+
+```bash
+python vowifi_rag_framework.py
+```
+
+This will:
+- Process all documents in the `rfcs/` folder
+- Build a vector knowledge base
+- Extract all VoWiFi properties automatically
+- Save results to `extracted_properties/vowifi_properties.txt`
 
 ## Note
 We have been working on the development of an open-source VoWiFi testbed and testing framework for the last 3 years. Recently and concurrently Osmocom (https://osmocom.org/projects/osmo-epdg) open-sourced their Osmo-epdg for creating open-source VoWiFi networks. We are really happy that the community is finally aiming to fill the gap in VoWiFi testbeds and testing. 
